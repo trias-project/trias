@@ -46,8 +46,8 @@ gbif_download <- function(taxa="https://raw.githubusercontent.com/trias-project/
   download.file(taxa,destfile,method="auto")
   species_table <- read.table(destfile, header = TRUE, sep = ",")
 
-  # check whether the column gbif_nubKey is present in the input file
-  if ("gbif_nubKey" %in% colnames(species_table) == FALSE) {
-    stop("gbif_nubKey column not present in the csv file")
+  # check whether the column gbif_species_taxonKey is present in the input file
+  if ("gbif_species_taxonKey" %in% colnames(species_table) == FALSE) {
+    stop("gbif_species_taxonKey column not present in the csv file")
   }
 }
