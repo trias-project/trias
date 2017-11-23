@@ -1,0 +1,14 @@
+Package: trias
+Title: R Package with Functions for the Trias Project
+Version: 0.1.0
+Authors@R: c(
+    person("Damiano", "Oldoni", email = "damiano.oldoni@inbo.be", role = "cre"),
+    person("Peter", "Desmet", email = "peter.desmet@inbo.be", role = "aut"))
+Description: Package with functions for the Tracking Invasive Alien Species project.
+License: MIT + file LICENSE
+LazyData: true
+RoxygenNote: 6.0.1
+Imports:
+        httr
+URL: https://github.com/trias-project/trias
+BugReports: https://github.com/trias-project/trias/issues
