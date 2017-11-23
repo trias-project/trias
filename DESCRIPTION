@@ -1,14 +1,14 @@
 Package: trias
-Type: Package
-Title: R package with functions for TrIAS project.
+Title: R Package with Functions for the Trias Project
 Version: 0.1.0
-Author: Peter De Smet, Damiano Oldoni
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
-Encoding: UTF-8
+Authors@R: c(
+    person("Damiano", "Oldoni", email = "damiano.oldoni@inbo.be", role = "cre"),
+    person("Peter", "Desmet", email = "peter.desmet@inbo.be", role = "aut"))
+Description: Package with functions for the Tracking Invasive Alien Species project.
+License: MIT + file LICENSE
 LazyData: true
 RoxygenNote: 6.0.1
 Imports:
         httr
+URL: https://github.com/trias-project/trias
+BugReports: https://github.com/trias-project/trias/issues
