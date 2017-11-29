@@ -9,6 +9,9 @@ License: MIT + file LICENSE
 LazyData: true
 RoxygenNote: 6.0.1
 Imports:
-        httr
+        httr,
+        rgbif,
+        jsonlite
 URL: https://github.com/trias-project/trias
 BugReports: https://github.com/trias-project/trias/issues
+Suggests: testthat
