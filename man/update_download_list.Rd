@@ -11,6 +11,8 @@ update_download_list(file, download_to_add, input_checklist, countries)
 
 \item{download_to_add}{GBIF download key to be added in database}
 
+\item{input_checklist}{input file with species}
+
 \item{countries}{vector with countries}
 }
 \value{
