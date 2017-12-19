@@ -9,17 +9,19 @@ update_download_list(file, download_to_add, input_checklist, countries)
 \arguments{
 \item{file}{file containing all occurrence downloads from GBIF}
 
-\item{download_to_add}{GBIF download key to be added in database}
+\item{download_to_add}{GBIF download key to be added to file}
 
-\item{input_checklist}{input file with species}
+\item{input_checklist}{file with taxon keys used for that download}
 
-\item{countries}{vector with countries}
+\item{countries}{vector with country codes used for that download}
 }
 \value{
 message with the performed updates
 }
 \description{
 This function opens a csv file containing all occurrence downloads from GBIF.
-It updates the stauts of all downloads with status RUNNING.
-In case download key is passed which is not present in the file it will be added as a new line.
+It updates the status of all downloads with status RUNNING.
+}
+\details{
+If a download key is passed which is not present in the file it will be added as a new line.
 }
