@@ -4,7 +4,7 @@
 \alias{checklists_import}
 \title{Import GBIF or ad hoc checklists}
 \usage{
-checklists_import(checklists, tot_limit = NULL)
+checklists_import(checklists, tot_limit = NULL, verbose = FALSE)
 }
 \arguments{
 \item{checklists}{list containing all GBIF checklist datasetKey or tsv file paths}
