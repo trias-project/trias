@@ -13,12 +13,12 @@
 #'
 #' @export
 #' @importFrom rgbif occ_download_meta
+#' @importFrom readr read_delim
 update_download_list <- function(file, download_to_add, input_checklist, countries) {
-  
-  downloads <- read.table(file = file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+  downloads <- readr::read_delim(file, "\t", escape_double = FALSE, trim_ws = TRUE)
   # downloadKey not present
   if (is.element(download_to_add, downloads$gbif_download_key) == FALSE) {
-    metadata <- occ_download_meta(key = download_to_add)
+    metadata <- rgbif::occ_download_meta(key = download_to_add)
     gbif_download_status <- metadata$status
     gbif_download_doi <- metadata$doi
     gbif_download_created <- metadata$created
@@ -31,12 +31,12 @@ update_download_list <- function(file, download_to_add, input_checklist, countri
     downloads <- read.table(file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
   } else {
     print(paste0("gbif_download_Key ", download_to_add, " already present in ", file))
-    }
+  }
   # check all downloads with status "PREPARING" or "RUNNING".
   changes <- FALSE
-  for (i in 1:length(downloads)) {
+  for (i in 1:nrow(downloads)) {
     if (is.element(downloads$gbif_download_status[i], c("RUNNING","PREPARING"))) {
-      metadata <- occ_download_meta(key = downloads$gbif_download_key[i])
+      metadata <- rgbif::occ_download_meta(key = downloads$gbif_download_key[i])
       gbif_download_status <- metadata$status
       # In case status SUCCEEDED or FAILED, update it
       if (is.element(gbif_download_status, c("SUCCEEDED","FAILED"))) {
