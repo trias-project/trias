@@ -33,6 +33,10 @@ testthat::test_that("Limit is a number", {
   expect_error(get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
                         limit = "10"),
                "Limit has to be numeric.")
+  expect_error(get_taxa(taxon_keys = 1, limit = -4),
+               "Limit has to be a positive number.")
+  expect_error(get_taxa(taxon_keys = 1, limit = 0),
+               "Limit has to be a positive number.")
   })
 
 testthat::test_that("taxon_keys not found in GBIF, error from rgbif", {
@@ -42,8 +46,7 @@ testthat::test_that("taxon_keys not found in GBIF, error from rgbif", {
                "Not Found")
   expect_error(get_taxa(taxon_keys = c(2,103451)),
                "Not Found")
-  
-})
+  })
 
 testthat::test_that("checklist_keys not found in GBIF, error from rgbif", {
   expect_error(get_taxa(checklist_keys =  "falcon heavy"),

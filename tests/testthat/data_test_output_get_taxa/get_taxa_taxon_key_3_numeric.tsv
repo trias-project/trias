@@ -1,0 +1,2 @@
+"key"	"scientificName"	"nubKey"	"nameKey"	"taxonID"	"kingdom"	"kingdomKey"	"datasetKey"	"constituentKey"	"canonicalName"	"authorship"	"nameType"	"rank"	"origin"	"taxonomicStatus"	"nomenclaturalStatus"	"remarks"	"numDescendants"	"lastCrawled"	"lastInterpreted"	"issues"	"synonym"
+3	"Bacteria"	3	13555164	"gbif:3"	"Bacteria"	3	"d7dddbf4-2cf0-4f39-9b2a-bb099caae36c"	"d7dddbf4-2cf0-4f39-9b2a-bb099caae36c"	"Bacteria"	""	"SCIENTIFIC"	"KINGDOM"	"SOURCE"	"ACCEPTED"	NA	""	26326	"2017-02-14T13:42:21.926+0000"	"2017-02-14T13:00:10.285+0000"	NA	FALSE

@@ -1,0 +1,2 @@
+key	scientificName	nubKey	nameKey	taxonID	kingdom	kingdomKey	datasetKey	constituentKey	canonicalName	authorship	nameType	rank	origin	taxonomicStatus	nomenclaturalStatus	remarks	numDescendants	lastCrawled	lastInterpreted	issues	synonym
+2	Archaea	2	13555055	gbif:2	Archaea	2	d7dddbf4-2cf0-4f39-9b2a-bb099caae36c	d7dddbf4-2cf0-4f39-9b2a-bb099caae36c	Archaea		SCIENTIFIC	KINGDOM	SOURCE	ACCEPTED	NA		716	2017-02-14T13:42:21.926+0000	2017-02-14T13:00:09.478+0000	NA	FALSE
