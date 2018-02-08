@@ -12,19 +12,12 @@
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage
 #' @importFrom tibble tibble
+#' @importFrom purrr map
+#' @importFrom  interp
 get_taxa <- function(
   taxon_keys = NULL,
   checklist_keys = NULL,
   limit = NULL) {
-  API_terms = c("key", "nubKey", "nameKey", "taxonID", "sourceTaxonKey",
-                "kingdom", "phylum", "order", "family", "genus", "species",
-                "kingdomKey", "phylumKey", "classKey", "orderKey", "familyKey",
-                "genusKey", "speciesKey", "datasetKey", "constituentKey",
-                "parentKey", "parent", "basionymKey", "basionym", 
-                "scientificName", "canonicalName", "authorship","nameType",
-                "rank", "origin", "taxonomicStatus", "nomenclaturalStatus", 
-                "remarks", "publishedIn", "numDescendants", "lastCrawled",
-                "lastInterpreted","issues", "synonym", "class")
   
   # test incoming arguments
   assertthat::assert_that(!all(!is.null(taxon_keys), !is.null(checklist_keys)),
@@ -33,67 +26,61 @@ get_taxa <- function(
   
   # test parameter taxon_keys
   if (!is.null(taxon_keys)) {
-    assertthat::assert_that(is.numeric(taxon_keys) | is.character(taxon_keys) |
-                              inherits(taxon_keys, "list") | 
-                              inherits(taxon_keys, "tbl_df"),
-              msg = paste("taxon_keys should be a numeric, character, vector,",
-                          "tibble data.frame or a list.", sep = " "))
-  
-    if (inherits(taxon_keys, "list")) {
-      assertthat::assert_that(isTRUE(all.equal(names(taxon_keys), c("meta", "data"))),
-                  msg = paste("List is corrupted: meta and data are both",
-                              "expected and nothing else.", sep = " "))
-      assertthat::assert_that(isTRUE(all.equal(class(taxon_keys$data), 
-                                               c("tbl_df","tbl","data.frame"))),
-                  msg = paste("List is corrupted: class(data) !=", 
-                              "class(name_usage(key = ...)), tibble.", sep = " "))
-      gbif_terms <- colnames(taxon_keys$data)
-      assertthat::assert_that(isTRUE(all(gbif_terms %in% API_terms)),
-                              msg = "One or more attributes don't match API terms.")
-    }
-    
-    if (inherits(taxon_keys, "tbl_df")) {
-      gbif_terms <- colnames(taxon_keys)
-      assertthat::assert_that(isTRUE(all(gbif_terms %in% API_terms)),
-                              msg = "One or more attributes don't match API terms.")
-    }
+    assertthat::assert_that(is.numeric(taxon_keys) | is.character(taxon_keys),
+                msg = "taxon_keys should be a numeric, character or a vector.")
   }
   
   # test parameter checklist_keys
   if (!is.null(checklist_keys)) {
-    assertthat::assert_that(is.character(checklist_keys) |
-                              inherits(checklist_keys, "list") | 
-                              inherits(checklist_keys, "tbl_df"),
-                          msg = paste("checklist_keys should be a character,",
-                                      "vector, tibble data.frame or a list.", 
-                                      sep = " "))
-    if (inherits(checklist_keys, "list")) {
-      assertthat::assert_that(isTRUE(all.equal(names(checklist_keys), 
-                                               c("meta", "data"))),
-                              msg = paste("List is corrupted: meta and data are",
-                                          "both expected and nothing else.", 
-                                          sep = " "))
-      assertthat::assert_that(isTRUE(all.equal(class(checklist_keys$data), 
-                                               c("tbl_df","tbl","data.frame"))),
-                  msg = paste("List is corrupted: class(checklist_keys$data) !=", 
-                              "class(name_usage(datasetKey = ...)), tibble.", 
-                              sep = " "))
-      gbif_terms <- colnames(checklist_keys$data)
-      assertthat::assert_that(isTRUE(all(gbif_terms %in% API_terms)),
-                              msg = "One or more attributes don't match API terms.")
-    }
-    
-    if (inherits(checklist_keys, "tbl_df")) {
-      gbif_terms <- colnames(checklist_keys)
-      assertthat::assert_that(isTRUE(all(gbif_terms %in% API_terms)),
-                              msg = "One or more attributes don't match API terms.")
-    }
-    
+    assertthat::assert_that(is.character(checklist_keys),
+                msg = "checklist_keys should be a character or a vector.")
   }
   
   if (!is.null(limit)) {
     assertthat::assert_that(is.numeric(class(limit)),
                             msg = "Limit has to be numeric.")
   }
+  
+  # working with taxon_keys
+  if (!is.null(taxon_keys)) {
+    return <- "taxon"
+    if (is.character(taxon_keys) | is.numeric(taxon_keys)) {
+      taxon_taxa <- as.data.frame(as.integer(taxon_keys)) %>% rowwise() %>%
+        do_(interp(~ as.data.frame(rgbif::name_usage(key = .,
+                                                     limit = limit,
+                                                     return = "data")))) 
+      # GBIF Backbone matching
+      number_no_nubkey <- nrow(taxon_taxa %>% filter(is.na(nubKey)))
+    }
   }
+  
+  # working with checklist_keys
+  if (!is.null(checklist_keys) & is.character(checklist_keys)) {
+    return <- "checklist"
+      if (is.null(limit)) {
+        limit <- 1000 # limit = 1000 is the max (up to now) for name_usage()
+      }
+    checklist_taxa <- as.data.frame(checklist_keys) %>% rowwise() %>%
+      do_(interp(~ as.data.frame(rgbif::name_usage(datasetKey = .,
+                                                     limit = limit,
+                                                     return = "data"))))
+    # GBIF Backbone matching
+    number_no_nubkey <- nrow(checklist_taxa %>% 
+                               filter(is.na(nubKey)))
+  }
+  
+  # print on screen GBIF Backbone matching
+  if (number_no_nubkey == 0) {
+    print("All taxon keys match GBIF Backbone.")
+  } else{
+    print(paste("No match with GBIF Backbone for", number_no_nubkey,
+                "taxon keys.", sep = " "))
+  }
+
+  # select output
+  return <- match.arg(return, c("taxon","checklist"))
+  switch(return,
+         taxon = taxon_taxa,
+         checklist = checklist_taxa
+  )
 }
