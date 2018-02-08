@@ -37,33 +37,45 @@ get_taxa <- function(
   }
   
   if (!is.null(limit)) {
-    assertthat::assert_that(is.numeric(class(limit)),
+    assertthat::assert_that(is.numeric(limit),
                             msg = "Limit has to be numeric.")
+    assertthat::assert_that(limit > 0,
+                            msg = "Limit has to be a positive number.")
   }
   
   # working with taxon_keys
   if (!is.null(taxon_keys)) {
     return <- "taxon"
-    if (is.character(taxon_keys) | is.numeric(taxon_keys)) {
-      taxon_taxa <- as.data.frame(as.integer(taxon_keys)) %>% rowwise() %>%
-        do_(interp(~ as.data.frame(rgbif::name_usage(key = .,
-                                                     limit = limit,
+    if (is.null(limit)) {
+      maxlimit <- length(taxon_keys)
+    } else {
+      if (limit > length(taxon_keys)) {
+        warning("Limit is higher than number of taxon keys.")
+        maxlimit = length(taxon_keys)
+      } else maxlimit <- limit
+    }
+    taxon_taxa <- as.data.frame(as.integer(taxon_keys[1:maxlimit])) %>% 
+      rowwise() %>%
+      do_(interp(~ as.data.frame(rgbif::name_usage(key = .,
                                                      return = "data")))) 
       # GBIF Backbone matching
       number_no_nubkey <- nrow(taxon_taxa %>% filter(is.na(nubKey)))
-    }
   }
   
   # working with checklist_keys
   if (!is.null(checklist_keys) & is.character(checklist_keys)) {
     return <- "checklist"
-      if (is.null(limit)) {
-        limit <- 1000 # limit = 1000 is the max (up to now) for name_usage()
-      }
+    if (is.null(limit)) {
+      maxlimit <- 1000 # 1000 is the hard maximum (up to now) for name_usage()
+    } else maxlimit <- limit
     checklist_taxa <- as.data.frame(checklist_keys) %>% rowwise() %>%
       do_(interp(~ as.data.frame(rgbif::name_usage(datasetKey = .,
-                                                     limit = limit,
+                                                     limit = maxlimit,
                                                      return = "data"))))
+    if (!is.null(limit) & (nrow(checklist_taxa) < maxlimit)) {
+        warning("Dataset contains less records than limit.")
+    }
+    
     # GBIF Backbone matching
     number_no_nubkey <- nrow(checklist_taxa %>% 
                                filter(is.na(nubKey)))
@@ -72,7 +84,7 @@ get_taxa <- function(
   # print on screen GBIF Backbone matching
   if (number_no_nubkey == 0) {
     print("All taxon keys match GBIF Backbone.")
-  } else{
+  } else {
     print(paste("No match with GBIF Backbone for", number_no_nubkey,
                 "taxon keys.", sep = " "))
   }
