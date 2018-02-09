@@ -97,7 +97,11 @@ get_taxa <- function(
                                                      return = "data"))))
     if (!is.null(limit) & 
         (nrow(checklist_taxa) < maxlimit*length(checklist_keys))) {
+      if (length(checklist_keys) > 1) {
+        warning("One of the datasets contains less records than limit.")
+      } else {
         warning("Dataset contains less records than limit.")
+      }
     }
     
     # GBIF Backbone matching
