@@ -1,13 +1,36 @@
 #' Get taxa and combine it with backbone information
 #'
-#' This function gets taxa and combine informations from GBIF backbone.
-#'
-#' @param taxon_keys a key (numeric or character), a vector of keys, or the output
-#' of a call to name_usage()
-#' @param checklist_keys a datasetKey (character), a vector of datasetkeys
-#' @param limit With taxon_keys: limit to `limit` taxa. With  `checklist_keys`: 
-#' limit to `limit` taxa PER DATASET
-#' @return A dataframe with all returned attributes for any taxa
+#' This function retrieves taxa information. It is a higher level function built 
+#' on rgbif function `name_usage()`.
+#' @param taxon_keys (single numeric or character or a vector) a single key or a 
+#' vector of keys. Not to use together with `checklist_keys`.
+#' @param checklist_keys (single character or a vector) a datasetKey (character) 
+#' or a vector of datasetkeys. Not to use together with `checklist_keys`.
+#' @param limit With taxon_keys: limit number of taxa. 
+#' With checklist_keys: limit number of taxa per each dataset.
+#' A warning is given if limit is higher than the length of taxon_keys or number of records
+#' in the checklist_keys (if string) or any of the checklist_keys (if vector)
+#' @return A data.frame with all returned attributes for any taxa
+#' @examples
+#' # A single numeric taxon_keys
+#' get_taxa(taxon_keys = 1)
+#' # A single character taxon_keys
+#' get_taxa(taxon_keys = "1")
+#' # Multiple numeric taxon_keys (vector)
+#' get_taxa(taxon_keys = c(1,2,3,4,5,6))
+#' # Multiple character taxon_keys (vector)
+#' get_taxa(taxon_keys = c("1","2","3","4","5","6"))
+#' # Limit number of taxa (coupled with taxon_keys)
+#' get_taxa(taxon_keys = c(1,2,3,4,5,6), limit = 3)
+#' # A single checklist_keys (character)
+#' get_taxa(checklist_keys = "b3fa7329-a002-4243-a7a7-cd066092c9a6")
+#' # Multiple checklist_keys (vector)
+#' get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92", 
+#'                             "b3fa7329-a002-4243-a7a7-cd066092c9a6"))
+#' # Limit number of taxa (coupled with checklist_keys)
+#' get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92", 
+#'                             "b3fa7329-a002-4243-a7a7-cd066092c9a6"), 
+#'          limit = 30)
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage
