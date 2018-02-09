@@ -45,7 +45,7 @@ get_taxa <- function(
   # test incoming arguments
   assertthat::assert_that(!all(!is.null(taxon_keys), !is.null(checklist_keys)),
               msg = paste("Both taxon_keys and checklist_keys not NULL.", 
-                          "You should choose one of the two!", sep = " "))
+                          "You should choose one of the two!"))
   
   # test parameter taxon_keys
   if (!is.null(taxon_keys)) {
@@ -81,8 +81,10 @@ get_taxa <- function(
       rowwise() %>%
       do_(interp(~ as.data.frame(rgbif::name_usage(key = .,
                                                      return = "data")))) 
-      # GBIF Backbone matching
-      number_no_nubkey <- nrow(taxon_taxa %>% filter(is.na(nubKey)))
+    
+    # GBIF Backbone matching
+    number_key <- nrow(taxon_taxa)
+    number_no_nubkey <- taxon_taxa %>% filter(is.na(nubKey)) %>% nrow
   }
   
   # working with checklist_keys
