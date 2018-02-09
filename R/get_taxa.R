@@ -95,7 +95,8 @@ get_taxa <- function(
       do_(interp(~ as.data.frame(rgbif::name_usage(datasetKey = .,
                                                      limit = maxlimit,
                                                      return = "data"))))
-    if (!is.null(limit) & (nrow(checklist_taxa) < maxlimit)) {
+    if (!is.null(limit) & 
+        (nrow(checklist_taxa) < maxlimit*length(checklist_keys))) {
         warning("Dataset contains less records than limit.")
     }
     
