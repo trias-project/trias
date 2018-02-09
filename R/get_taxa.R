@@ -1,4 +1,4 @@
-#' Get taxa and combine it with backbone information
+#' Get taxa information
 #'
 #' This function retrieves taxa information. It is a higher level function built 
 #' on rgbif function `name_usage()`.
