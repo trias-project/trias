@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_taxa.R
 \name{get_taxa}
 \alias{get_taxa}
-\title{Get taxa and combine it with backbone information}
+\title{Get taxa information}
 \usage{
 get_taxa(taxon_keys = NULL, checklist_keys = NULL, limit = NULL)
 }
