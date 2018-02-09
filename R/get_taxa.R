@@ -35,7 +35,6 @@
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage
 #' @importFrom tibble tibble
-#' @importFrom purrr map
 #' @importFrom lazyeval interp
 get_taxa <- function(
   taxon_keys = NULL,
