@@ -35,7 +35,7 @@ testthat::test_that("output if taxon_keys is character", {
                                                    limit = 1), na.rm = TRUE))
 })
 
-testthat::test_that("output if taxon_keys is (numeric) vector", {
+testthat::test_that("taxon_keys is (numeric) vector", {
   # file saved with write.table()
   # write.table(get_taxa_taxon_key_2,
   # "./tests/testthat/data_test_output_get_taxa/get_taxa_taxon_key_2_character.tsv",
@@ -53,7 +53,7 @@ testthat::test_that("output if taxon_keys is (numeric) vector", {
                   na.rm = TRUE))
 })
 
-testthat::test_that("output if taxon_keys is (character) vector", {
+testthat::test_that("taxon_keys is (character) vector", {
   # file saved with write.table()
   # write.table(get_taxa_taxon_key_2,
   # "./tests/testthat/data_test_output_get_taxa/get_taxa_taxon_key_2_character.tsv",
@@ -75,7 +75,7 @@ testthat::test_that("output if taxon_keys is (character) vector", {
                   na.rm = TRUE))
 })
 
-testthat::test_that("output if limit < number of taxon_keys", {
+testthat::test_that("limit < number of taxon_keys", {
   keys = c("134086855", "134086856", "134086857", "134086858", "134086859",
            "134086860", "134086861", "134086863", "134086865", "134086867",
            "134086868", "134086869", "134086870", "134086871", "134086872",

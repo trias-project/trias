@@ -105,18 +105,18 @@ get_taxa <- function(
     }
     
     # GBIF Backbone matching
-    number_no_nubkey <- nrow(checklist_taxa %>% 
-                               filter(is.na(nubKey)))
+    number_key <- nrow(checklist_taxa)
+    number_no_nubkey <- checklist_taxa %>% filter(is.na(nubKey)) %>% nrow
   }
   
-  # print on screen GBIF Backbone matching
+  # print GBIF Backbone matching on screen
   if (number_no_nubkey == 0) {
-    print("All taxon keys match GBIF Backbone.")
+    print(paste("All", number_key, "taxon keys match GBIF Backbone."))
   } else {
-    print(paste("No match with GBIF Backbone for", number_no_nubkey,
-                "taxon keys.", sep = " "))
+    print(paste(number_key, "taxa found of which", number_no_nubkey, 
+                "could not be matched to GBIF Backbone."))
   }
-
+  
   # select output
   return <- match.arg(return, c("taxon","checklist"))
   switch(return,
