@@ -13,7 +13,7 @@
 #' @importFrom rgbif name_usage
 #' @importFrom tibble tibble
 #' @importFrom purrr map
-#' @importFrom  interp
+#' @importFrom lazyeval interp
 get_taxa <- function(
   taxon_keys = NULL,
   checklist_keys = NULL,
