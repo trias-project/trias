@@ -112,7 +112,7 @@ get_taxa <- function(
   
   # print GBIF Backbone matching on screen
   if (number_no_nubkey == 0) {
-    print(paste("All", number_key, "taxon keys match GBIF Backbone."))
+    print(paste("All", number_key, "taxa match GBIF Backbone."))
   } else {
     print(paste(number_key, "taxa found of which", number_no_nubkey, 
                 "could not be matched to GBIF Backbone."))
