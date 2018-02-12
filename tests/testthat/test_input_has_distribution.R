@@ -1,4 +1,4 @@
-context("input_has_synonym")
+context("input_has_distribution")
 
 testthat::test_that("distribution properties", {
   expect_error(has_distribution("134086893", i_am_not_a_distribution_prop = "nooo"),
