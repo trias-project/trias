@@ -3,8 +3,7 @@
 #' user requests and returns a logical (TRUE or FALSE).
 #' It is a function built on rgbif function `name_usage()`.
 #' @param taxon_key (single numeric or character) a single taxon key.
-#' @param ... one or more distribution properties and related values listed by GBIF:
-#' http://rs.gbif.org/extension/gbif/1.0/distribution.xml.
+#' @param ... one or more distribution properties and related values.
 #' @return A data.frame with taxon_keys as first column and a second column 
 #' (logical: TRUE or FALSE) based on match with user arguments
 #' @export
@@ -15,12 +14,6 @@
 #' @importFrom purrr map map_df cross_df
 #' @importFrom stringr str_split
 has_distribution <- function(taxon_key, ...) {
-  # GBIF_distr_terms <- c("locationID", "locality", "country", "lifeStage",
-  #                       "occurrenceStatus", "threatStatus", "establishmentMeans",
-  #                       "appendixCITES", "eventDate", "startDayOfYear",
-  #                       "endDayOfYear", "source", "occurrenceRemarks",
-  #                       "datasetID")
-  
   # df with all possible combinations of user's distribution properties values
   user_properties <- list(...) %>% purrr::cross_df()
   # set all characters uppercase
