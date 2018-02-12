@@ -80,6 +80,7 @@ get_taxa <- function(
       rowwise() %>%
       do_(interp(~ as.data.frame(rgbif::name_usage(key = .,
                                                      return = "data")))) 
+    taxon_taxa %<>% ungroup
     
     # GBIF Backbone matching
     number_key <- nrow(taxon_taxa)
@@ -96,6 +97,7 @@ get_taxa <- function(
       do_(interp(~ as.data.frame(rgbif::name_usage(datasetKey = .,
                                                      limit = maxlimit,
                                                      return = "data"))))
+    checklist_taxa %<>% ungroup
     if (!is.null(limit) & 
         (nrow(checklist_taxa) < maxlimit*length(checklist_keys))) {
       if (length(checklist_keys) > 1) {
