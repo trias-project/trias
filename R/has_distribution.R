@@ -1,11 +1,22 @@
 #' Compare desired distribution information with actual one.
+#' 
 #' This function compares distribution information based on a single taxon key with 
 #' user requests and returns a logical (TRUE or FALSE).
 #' It is a function built on rgbif function `name_usage()`.
-#' @param taxon_key (single numeric or character) a single taxon key.
-#' @param ... one or more distribution properties and related values.
-#' @return A data.frame with taxon_keys as first column and a second column 
-#' (logical: TRUE or FALSE) based on match with user arguments
+#' @param taxon_key (single numeric or character) a single taxon key.  
+#' @param ... one or more distribution properties and related values. 
+#' Tested to support at least the following properties: 
+#' country, status and establishedMeans (the last one doesn't show up among 
+#' distribution properties in GBIF, but it is well present if accessed 
+#' via verbatim). 
+#' @return a logical, TRUE or FALSE.
+#' @examples 
+#' # numeric taxonKey, atomic parameters
+#' has_distribution(134086954, country = "BE", status = "DOUBTFUL")
+#' 
+#' #character taxonKey, distribution properties as vectors
+#' has_distribution("134086954", country = c("NL","BE"), 
+#'                  status = c("PRESENT", "DOUBTFUL"))
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage

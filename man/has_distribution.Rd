@@ -2,26 +2,32 @@
 % Please edit documentation in R/has_distribution.R
 \name{has_distribution}
 \alias{has_distribution}
-\title{Compare desired distribution information with actual one.
-This function compares distribution information based on a single taxon key with 
-user requests and returns a logical (TRUE or FALSE).
-It is a function built on rgbif function `name_usage()`.}
+\title{Compare desired distribution information with actual one.}
 \usage{
 has_distribution(taxon_key, ...)
 }
 \arguments{
 \item{taxon_key}{(single numeric or character) a single taxon key.}
 
-\item{...}{one or more distribution properties and related values listed by GBIF:
-http://rs.gbif.org/extension/gbif/1.0/distribution.xml.}
+\item{...}{one or more distribution properties and related values. 
+Tested to support at least the following properties: 
+country, status and establishedMeans (the last one doesn't show up among 
+distribution properties in GBIF, but it is well present if accessed 
+via verbatim).}
 }
 \value{
-A data.frame with taxon_keys as first column and a second column 
-(logical: TRUE or FALSE) based on match with user arguments
+a logical, TRUE or FALSE.
 }
 \description{
-Compare desired distribution information with actual one.
 This function compares distribution information based on a single taxon key with 
 user requests and returns a logical (TRUE or FALSE).
 It is a function built on rgbif function `name_usage()`.
+}
+\examples{
+# numeric taxonKey, atomic parameters
+has_distribution(134086954, country = "BE", status = "DOUBTFUL")
+
+#character taxonKey, distribution properties as vectors
+has_distribution("134086954", country = c("NL","BE"), 
+                 status = c("PRESENT", "DOUBTFUL"))
 }

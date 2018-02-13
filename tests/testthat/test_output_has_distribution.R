@@ -10,4 +10,3 @@ expect_true(has_distribution(134086954, country = "BE", status = c("PRESENT",
 expect_true(has_distribution(134086954, country = c("NL","BE"), 
                              status = c("PRESENT", "DOUBTFUL")))
 })
-
