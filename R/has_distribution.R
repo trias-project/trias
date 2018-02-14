@@ -7,7 +7,7 @@
 #' @param ... one or more GBIF distribution properties and related values. 
 #' Up to now it supports the following properties: 
 #' country (and its synoynym: countryCode), status (and its synonym: 
-#' occurrenceStatus) and establishedMeans.
+#' occurrenceStatus) and establishmentMeans.
 #' @return a logical, TRUE or FALSE.
 #' @examples 
 #' # numeric taxonKey, atomic parameters
