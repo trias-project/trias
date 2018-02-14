@@ -13,7 +13,7 @@ testthat::test_that("distribution properties: character or vectors", {
                "Invalid distribution properties.")
   
   expect_error(has_distribution(134086954, 
-                                countryCode = "BE", 
+                                country = "BE", 
                                 lifeStatus = "PRESENT"),
                "Invalid distribution properties.")
   
