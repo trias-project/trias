@@ -25,7 +25,6 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage
-#' @importFrom lazyeval interp
 #' @importFrom dplyr mutate_all select intersect
 #' @importFrom purrr map map_df cross_df
 #' @importFrom stringr str_split
