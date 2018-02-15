@@ -24,3 +24,19 @@ testthat::test_that("has_distribution without user parameters", {
   expect_true(has_distribution(2225776))
   expect_false(has_distribution(121483688))
 })
+
+testthat::test_that("has_distribution with multiple distributions", {
+  expect_true(has_distribution(139334288, country = "CA"))
+  expect_true(has_distribution(139334288, 
+                               country = "CA",
+                               status = "present"))
+  expect_true(has_distribution(139334288, 
+                               country = "CA",
+                               status = "absent"))
+  expect_true(has_distribution(139334288, country = "CA", 
+                               status = "present", 
+                               establishmentMeans = "native"))
+  expect_false(has_distribution(139334288, country = "CA", 
+                               status = "absent", 
+                               establishmentMeans = "native"))
+})
