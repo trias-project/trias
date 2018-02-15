@@ -12,7 +12,7 @@ has_distribution(taxon_key, ...)
 \item{...}{one or more GBIF distribution properties and related values. 
 Up to now it supports the following properties: 
 country (and its synoynym: countryCode), status (and its synonym: 
-occurrenceStatus) and establishedMeans.}
+occurrenceStatus) and establishmentMeans.}
 }
 \value{
 a logical, TRUE or FALSE.
