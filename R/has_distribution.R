@@ -69,22 +69,31 @@ has_distribution <- function(taxon_key, ...) {
   assertthat::assert_that(
     all(names(user_properties) %in% GBIF_distr_terms),
     msg = "Invalid distribution properties.")
-  
-  # create all possible combinations of distribution properties
-  user_properties %<>% purrr::cross_df()
-  # set all characters uppercase
-  user_properties %<>% dplyr::mutate_all(funs(toupper))
-  
+
   # retrieve distribution properties from GBIF
   distr_properties <- rgbif::name_usage(key = as.integer(taxon_key),
                                         return = "data",
-                                        data = "distribution") %>% 
-    dplyr::select(names(user_properties))
-  
-  # df -> list -> split all properties values by "," -> df with all combinations
-  distr_properties %<>% as.list() %>% 
-    purrr::map(~stringr::str_split(., pattern = ",")) %>% 
-    unlist(recursive = FALSE) %>% expand.grid() %>% 
-    set_colnames(names(distr_properties)) %>% purrr::map_df(~as.character(.))
-  return(dplyr::intersect(user_properties, distr_properties) %>% nrow > 0)
+                                        data = "distribution") 
+
+  # no ditribution properties values specified by user
+  if (is.null(names(user_properties)))
+    return(nrow(distr_properties) > 0)
+  else {
+    # taxa has no distribution
+    if (nrow(distr_properties) == 0) return(FALSE)
+    else {
+      distr_properties %<>% dplyr::select(names(user_properties))
+      # make all combinations of distribution properties allowed by user
+      user_properties %<>% purrr::cross_df()
+      # set all characters uppercase
+      user_properties %<>% dplyr::mutate_all(funs(toupper))
+      user_properties %<>% dplyr::select(names(user_properties))
+      # df -> list -> split all properties values by "," -> df with all combinations
+      distr_properties %<>% as.list() %>% 
+        purrr::map(~stringr::str_split(., pattern = ",")) %>% 
+        unlist(recursive = FALSE) %>% expand.grid() %>% 
+        set_colnames(names(distr_properties)) %>% purrr::map_df(~as.character(.))
+      return(dplyr::intersect(user_properties, distr_properties) %>% nrow > 0)
+    }
+  }
 }
