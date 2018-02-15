@@ -19,3 +19,8 @@ has_distribution(taxon_key = 140563025,
                  establishmentMeans = c("introduced", "original"), 
                  country = "BE", status = c("PRESENT", "ABSENT"))
 })
+
+testthat::test_that("has_distribution without user parameters", {
+  expect_true(has_distribution(2225776))
+  expect_false(has_distribution(121483688))
+})
