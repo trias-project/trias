@@ -82,17 +82,23 @@ has_distribution <- function(taxon_key, ...) {
     # taxa has no distribution
     if (nrow(distr_properties) == 0) return(FALSE)
     else {
-      distr_properties %<>% dplyr::select(names(user_properties))
       # make all combinations of distribution properties allowed by user
       user_properties %<>% purrr::cross_df()
-      # set all characters uppercase
       user_properties %<>% dplyr::mutate_all(funs(toupper))
       user_properties %<>% dplyr::select(names(user_properties))
-      # df -> list -> split all properties values by "," -> df with all combinations
-      distr_properties %<>% as.list() %>% 
-        purrr::map(~stringr::str_split(., pattern = ",")) %>% 
-        unlist(recursive = FALSE) %>% expand.grid() %>% 
-        set_colnames(names(distr_properties)) %>% purrr::map_df(~as.character(.))
+      
+      distr_properties %<>% dplyr::select(names(user_properties))
+      distr_properties_exp <- data.frame()
+      # row->list->split all properties values by ","->df with all combinations
+      # ->add to expanded df 
+      for (i in 1:nrow(distr_properties)) {
+        distr_properties[i,] %>% as.list() %>% 
+          purrr::map(~stringr::str_split(., pattern = ",")) %>% 
+          unlist(recursive = FALSE) %>% expand.grid() %>% 
+          set_colnames(names(distr_properties)) %>% 
+          purrr::map_df(~as.character(.)) %>%
+          bind_rows(distr_properties_exp,.)
+      }
       return(dplyr::intersect(user_properties, distr_properties) %>% nrow > 0)
     }
   }
