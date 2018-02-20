@@ -1,6 +1,6 @@
-#' Get taxa information
+#' Get taxa information from GBIF
 #'
-#' This function retrieves taxa information. It is a higher level function built 
+#' This function retrieves taxa information from GBIF. It is a higher level function built 
 #' on rgbif function `name_usage()`.
 #' @param taxon_keys (single numeric or character or a vector) a single key or a 
 #' vector of keys. Not to use together with `checklist_keys`.
@@ -13,22 +13,22 @@
 #' @return A data.frame with all returned attributes for any taxa
 #' @examples
 #' # A single numeric taxon_keys
-#' get_taxa(taxon_keys = 1)
+#' gbif_get_taxa(taxon_keys = 1)
 #' # A single character taxon_keys
-#' get_taxa(taxon_keys = "1")
+#' gbif_get_taxa(taxon_keys = "1")
 #' # Multiple numeric taxon_keys (vector)
-#' get_taxa(taxon_keys = c(1,2,3,4,5,6))
+#' gbif_get_taxa(taxon_keys = c(1,2,3,4,5,6))
 #' # Multiple character taxon_keys (vector)
-#' get_taxa(taxon_keys = c("1","2","3","4","5","6"))
+#' gbif_get_taxa(taxon_keys = c("1","2","3","4","5","6"))
 #' # Limit number of taxa (coupled with taxon_keys)
-#' get_taxa(taxon_keys = c(1,2,3,4,5,6), limit = 3)
+#' gbif_get_taxa(taxon_keys = c(1,2,3,4,5,6), limit = 3)
 #' # A single checklist_keys (character)
-#' get_taxa(checklist_keys = "b3fa7329-a002-4243-a7a7-cd066092c9a6")
+#' gbif_get_taxa(checklist_keys = "b3fa7329-a002-4243-a7a7-cd066092c9a6")
 #' # Multiple checklist_keys (vector)
-#' get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92", 
+#' gbif_get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92", 
 #'                             "b3fa7329-a002-4243-a7a7-cd066092c9a6"))
 #' # Limit number of taxa (coupled with checklist_keys)
-#' get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92", 
+#' gbif_get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92", 
 #'                             "b3fa7329-a002-4243-a7a7-cd066092c9a6"), 
 #'          limit = 30)
 #' @export
@@ -36,7 +36,7 @@
 #' @importFrom rgbif name_usage
 #' @importFrom tibble tibble
 #' @importFrom lazyeval interp
-get_taxa <- function(
+gbif_get_taxa <- function(
   taxon_keys = NULL,
   checklist_keys = NULL,
   limit = NULL) {
