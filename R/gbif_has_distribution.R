@@ -1,6 +1,6 @@
 #' Compare desired distribution information with actual one.
 #' 
-#' This function compares distribution information based on a single taxon key with 
+#' This function compares GBIF distribution information based on a single taxon key with 
 #' user requests and returns a logical (TRUE or FALSE).
 #' It is a function built on rgbif function `name_usage()`.
 #' @param taxon_key (single numeric or character) a single taxon key.  
