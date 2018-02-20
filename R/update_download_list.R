@@ -3,7 +3,7 @@
 #' This function opens a csv file containing all occurrence downloads from GBIF.
 #' It updates the status of all downloads with status RUNNING.
 #'
-#' If a download key is passed which is not present in the file it will be added as a new line. 
+#' If a download key is passed which is not present in the file it will be added as a new line.
 #'
 #' @param file file containing all occurrence downloads from GBIF
 #' @param download_to_add GBIF download key to be added to file
@@ -22,10 +22,10 @@ update_download_list <- function(file, download_to_add, input_checklist, countri
     gbif_download_status <- metadata$status
     gbif_download_doi <- metadata$doi
     gbif_download_created <- metadata$created
-    write.table(x = list(toString(download_to_add), input_checklist, toString(countries$country), 
+    write.table(x = list(toString(download_to_add), input_checklist, toString(countries$country),
                          gbif_download_created, gbif_download_status, gbif_download_doi), file = file,
                 append = TRUE, sep = "\t", quote = FALSE, row.names = FALSE, col.names =! file.exists(file))
-    print(paste0("gbif_download_Key ", download_to_add, 
+    print(paste0("gbif_download_Key ", download_to_add,
                  " added to ", file, "; download status = ", gbif_download_status))
     # reload file
     downloads <- read.table(file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
@@ -45,13 +45,13 @@ update_download_list <- function(file, download_to_add, input_checklist, countri
         } else {
           downloads$gbif_download_status[i] <- "FAILED"
         }
-        print(paste0("gbif_download_Key ", 
+        print(paste0("gbif_download_Key ",
                      downloads$gbif_download_key[i], ", status: ", gbif_download_status))
         changes <- TRUE
       }
     }
   }
-  # if download status changes are detected, then csv is rewritten with the needed changes  
+  # if download status changes are detected, then csv is rewritten with the needed changes
   if (!changes) {
     print("No changes in download status detected")
   } else {
