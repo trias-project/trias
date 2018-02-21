@@ -1,6 +1,6 @@
 #' Compare desired distribution information with actual one.
 #' 
-#' This function compares distribution information based on a single taxon key with 
+#' This function compares GBIF distribution information based on a single taxon key with 
 #' user requests and returns a logical (TRUE or FALSE).
 #' It is a function built on rgbif function `name_usage()`.
 #' @param taxon_key (single numeric or character) a single taxon key.  
@@ -11,15 +11,15 @@
 #' @return a logical, TRUE or FALSE.
 #' @examples 
 #' # numeric taxonKey, atomic parameters
-#' has_distribution(134086954, country = "BE", status = "DOUBTFUL")
+#' gbif_has_distribution(134086954, country = "BE", status = "DOUBTFUL")
 #' 
 #' # character taxonKey, distribution properties as vectors
-#' has_distribution("134086954", country = c("NL","BE"), 
+#' gbif_has_distribution("134086954", country = c("NL","BE"), 
 #'                  status = c("PRESENT", "DOUBTFUL"))
 #'                  
 #' # use alternative names: countryCode, occurrenceStatus. 
 #' Function works. Warning is given.
-#' has_distribution("134086954", countryCode = c("NL","BE"), 
+#' gbif_has_distribution("134086954", countryCode = c("NL","BE"), 
 #'                  occurrenceStatus = c("PRESENT", "DOUBTFUL"))
 #'                  
 #' @export
@@ -28,7 +28,7 @@
 #' @importFrom dplyr mutate_all select intersect
 #' @importFrom purrr map map_df cross_df
 #' @importFrom stringr str_split
-has_distribution <- function(taxon_key, ...) {
+gbif_has_distribution <- function(taxon_key, ...) {
   # df with all possible combinations of user's distribution properties values
   GBIF_distr_terms <- c("country", 
                         "status","establishmentMeans")
