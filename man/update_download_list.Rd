@@ -4,7 +4,8 @@
 \alias{update_download_list}
 \title{Update the list with all downloads}
 \usage{
-update_download_list(file, download_to_add, input_checklist, countries)
+update_download_list(file, download_to_add, input_checklist,
+  url_doi_base = "")
 }
 \arguments{
 \item{file}{file containing all occurrence downloads from GBIF}
@@ -13,7 +14,9 @@ update_download_list(file, download_to_add, input_checklist, countries)
 
 \item{input_checklist}{file with taxon keys used for that download}
 
-\item{countries}{vector with country codes used for that download}
+\item{url_doi_base}{(character) doi base URL; `url_doi_base` + doi form a link to a
+page with download information; 
+default: "https://doi.org/"}
 }
 \value{
 message with the performed updates

@@ -8,7 +8,9 @@
 #' @param file file containing all occurrence downloads from GBIF
 #' @param download_to_add GBIF download key to be added to file
 #' @param input_checklist file with taxon keys used for that download
-#' @param countries vector with country codes used for that download
+#' @param url_doi_base (character) doi base URL; `url_doi_base` + doi form a link to a
+#' page with download information; 
+#' default: "https://doi.org/"
 #' @return message with the performed updates
 #' @export
 #' @importFrom rgbif occ_download_meta
@@ -24,9 +26,12 @@ update_download_list <- function(file, download_to_add, input_checklist,
     gbif_download_status <- metadata$status
     gbif_download_doi <- stringr::str_c(url_doi_base,metadata$doi)
     gbif_download_created <- metadata$created
-    write.table(x = list(toString(download_to_add), input_checklist, toString(countries$country),
-                         gbif_download_created, gbif_download_status, gbif_download_doi), file = file,
-                append = TRUE, sep = "\t", quote = FALSE, row.names = FALSE, col.names =! file.exists(file))
+    write.table(x = list(toString(download_to_add), input_checklist,
+                         gbif_download_created, gbif_download_status, 
+                         gbif_download_doi), 
+                file = file,
+                append = TRUE, sep = "\t", quote = FALSE, 
+                row.names = FALSE, col.names =! file.exists(file))
     print(paste("gbif_download_Key", download_to_add,
                  "added to", file, "; download status =", gbif_download_status))
     # reload file
