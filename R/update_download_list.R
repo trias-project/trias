@@ -17,7 +17,7 @@
 #' @importFrom readr read_delim
 #' @importFrom stringr str_c
 update_download_list <- function(file, download_to_add, input_checklist, 
-                                 url_doi_base = "") {
+                                 url_doi_base = "https://doi.org/") {
   downloads <- readr::read_delim(file, "\t", 
                                  escape_double = FALSE, trim_ws = TRUE)
   # downloadKey not present
@@ -25,6 +25,7 @@ update_download_list <- function(file, download_to_add, input_checklist,
     metadata <- rgbif::occ_download_meta(key = download_to_add)
     gbif_download_status <- metadata$status
     gbif_download_doi <- stringr::str_c(url_doi_base,metadata$doi)
+    print(gbif_download_doi)
     gbif_download_created <- metadata$created
     write.table(x = list(toString(download_to_add), input_checklist,
                          gbif_download_created, gbif_download_status, 
