@@ -4,7 +4,8 @@
 \alias{gbif_get_taxa}
 \title{Get taxa information from GBIF}
 \usage{
-gbif_get_taxa(taxon_keys = NULL, checklist_keys = NULL, limit = NULL)
+gbif_get_taxa(taxon_keys = NULL, checklist_keys = NULL, origin = NULL,
+  limit = NULL)
 }
 \arguments{
 \item{taxon_keys}{(single numeric or character or a vector) a single key or a 
@@ -13,7 +14,9 @@ vector of keys. Not to use together with `checklist_keys`.}
 \item{checklist_keys}{(single character or a vector) a datasetKey (character) 
 or a vector of datasetkeys. Not to use together with `checklist_keys`.}
 
-\item{limit}{With taxon_keys: limit number of taxa. 
+\item{origin}{(single character or a vector) filter by origin. 
+It can take many inputs, and treated as ’OR’ (e.g., a or b or c)
+#' @param limit With taxon_keys: limit number of taxa. 
 With checklist_keys: limit number of taxa per each dataset.
 A warning is given if limit is higher than the length of taxon_keys or number of records
 in the checklist_keys (if string) or any of the checklist_keys (if vector)}
@@ -45,4 +48,7 @@ gbif_get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
 gbif_get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92", 
                             "b3fa7329-a002-4243-a7a7-cd066092c9a6"), 
          limit = 30)
+# Filter by origin
+get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42", 
+         origin = "source", limit = 3000)
 }
