@@ -106,7 +106,7 @@ gbif_get_taxa <- function(
   if (!is.null(checklist_keys) & is.character(checklist_keys)) {
     return <- "checklist"
     if (is.null(limit)) {
-      maxlimit <- 1000 # 1000 is the hard maximum (up to now) for name_usage()
+      maxlimit <- 1000000 # a sufficient high limit:name_usage supports paging now
     } else maxlimit <- limit
     checklist_taxa <- as.data.frame(checklist_keys) %>% rowwise() %>%
       do_(interp(~ as.data.frame(rgbif::name_usage(datasetKey = .,
