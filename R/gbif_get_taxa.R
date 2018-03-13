@@ -98,6 +98,8 @@ gbif_get_taxa <- function(
     taxon_taxa %<>% 
       ungroup %>% 
       mutate(origin = str_to_lower(origin))
+    if (!is.null(origin))
+      taxon_taxa %<>% filter(origin %in% origins)
     
     # GBIF Backbone matching
     number_key <- nrow(taxon_taxa)
@@ -117,6 +119,8 @@ gbif_get_taxa <- function(
     checklist_taxa %<>% 
       ungroup %>% 
       mutate(origin = str_to_lower(origin))
+    if (!is.null(origin))
+      checklist_taxa %<>% filter(origin %in% origins)
     
     if (!is.null(limit) & 
         (nrow(checklist_taxa) < maxlimit*length(checklist_keys))) {
