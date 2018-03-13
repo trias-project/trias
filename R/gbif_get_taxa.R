@@ -92,7 +92,7 @@ gbif_get_taxa <- function(
     }
     taxon_taxa <- as.data.frame(as.integer(taxon_keys[1:maxlimit])) %>% 
       rowwise() %>%
-      do_(interp(~ as.data.frame(rgbif::name_usage(key = .,
+      do_(interp(~ as.data.frame(rgbif::name_usage(key = .$taxon_keys,
                                                      return = "data")))) 
     taxon_taxa %<>% ungroup
     taxon_taxa %<>% filter(origin == origin)
@@ -109,7 +109,7 @@ gbif_get_taxa <- function(
       maxlimit <- 1000000 # a sufficient high limit:name_usage supports paging now
     } else maxlimit <- limit
     checklist_taxa <- as.data.frame(checklist_keys) %>% rowwise() %>%
-      do_(interp(~ as.data.frame(rgbif::name_usage(datasetKey = .,
+      do_(interp(~ as.data.frame(rgbif::name_usage(datasetKey = .$checklist_keys,
                                                      limit = maxlimit,
                                                      return = "data"))))
     checklist_taxa %<>% ungroup
