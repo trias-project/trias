@@ -41,8 +41,11 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage
+#' @importFrom dplyr filter mutate rowwise do_ ungroup %>%
 #' @importFrom tibble tibble
 #' @importFrom lazyeval interp
+#' @importFrom stringr str_to_lower
+#' @importFrom magrittr %<>%
 
 gbif_get_taxa <- function(
   taxon_keys = NULL,
@@ -51,27 +54,27 @@ gbif_get_taxa <- function(
   limit = NULL) {
   
   # test incoming arguments
-  assertthat::assert_that(!all(!is.null(taxon_keys), !is.null(checklist_keys)),
+  assert_that(!all(!is.null(taxon_keys), !is.null(checklist_keys)),
               msg = paste("Both taxon_keys and checklist_keys not NULL.", 
                           "You should choose one of the two!"))
   
   # test parameter taxon_keys
   if (!is.null(taxon_keys)) {
-    assertthat::assert_that(is.numeric(taxon_keys) | is.character(taxon_keys),
+    assert_that(is.numeric(taxon_keys) | is.character(taxon_keys),
                 msg = "taxon_keys should be a numeric, character or a vector.")
   }
   
   # test parameter checklist_keys
   if (!is.null(checklist_keys)) {
-    assertthat::assert_that(is.character(checklist_keys),
+    assert_that(is.character(checklist_keys),
                 msg = "checklist_keys should be a character or a vector.")
   }
   
   # test limit
   if (!is.null(limit)) {
-    assertthat::assert_that(is.numeric(limit),
+    assert_that(is.numeric(limit),
                             msg = "Limit has to be numeric.")
-    assertthat::assert_that(limit > 0,
+    assert_that(limit > 0,
                             msg = "Limit has to be a positive number.")
   }
   

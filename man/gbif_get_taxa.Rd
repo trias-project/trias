@@ -49,6 +49,8 @@ gbif_get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
                             "b3fa7329-a002-4243-a7a7-cd066092c9a6"), 
          limit = 30)
 # Filter by origin
-get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42", 
+gbif_get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42", 
          origin = "source", limit = 3000)
+gbif_get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42", 
+         origin = c("source" ,"denormed_classification"), limit = 3000)
 }
