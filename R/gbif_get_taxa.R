@@ -98,7 +98,7 @@ gbif_get_taxa <- function(
     }
     taxon_taxa <- as.data.frame(as.integer(taxon_keys[1:maxlimit])) %>% 
       rowwise() %>%
-      do_(interp(~ as.data.frame(rgbif::name_usage(key = .$taxon_keys,
+      do_(interp(~ as.data.frame(rgbif::name_usage(key = .,
                                                      return = "data")))) 
     taxon_taxa %<>% 
       ungroup %>% 
