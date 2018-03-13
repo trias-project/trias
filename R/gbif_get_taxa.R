@@ -39,6 +39,7 @@
 gbif_get_taxa <- function(
   taxon_keys = NULL,
   checklist_keys = NULL,
+  origin = NULL,
   limit = NULL) {
   
   # test incoming arguments
@@ -58,11 +59,18 @@ gbif_get_taxa <- function(
                 msg = "checklist_keys should be a character or a vector.")
   }
   
+  # test limit
   if (!is.null(limit)) {
     assertthat::assert_that(is.numeric(limit),
                             msg = "Limit has to be numeric.")
     assertthat::assert_that(limit > 0,
                             msg = "Limit has to be a positive number.")
+  }
+  
+  # test origin
+  if (!is.null(origin)) {
+    assertthat::assert_that(is.character(origin),
+                            msg = "origin should be a character or a vector.")
   }
   
   # working with taxon_keys
@@ -81,6 +89,7 @@ gbif_get_taxa <- function(
       do_(interp(~ as.data.frame(rgbif::name_usage(key = .,
                                                      return = "data")))) 
     taxon_taxa %<>% ungroup
+    taxon_taxa %<>% filter(origin == origin)
     
     # GBIF Backbone matching
     number_key <- nrow(taxon_taxa)
@@ -98,6 +107,8 @@ gbif_get_taxa <- function(
                                                      limit = maxlimit,
                                                      return = "data"))))
     checklist_taxa %<>% ungroup
+    checklist_taxa %<>% filter(origin == origin)
+    
     if (!is.null(limit) & 
         (nrow(checklist_taxa) < maxlimit*length(checklist_keys))) {
       if (length(checklist_keys) > 1) {
