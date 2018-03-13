@@ -73,10 +73,11 @@ gbif_get_taxa <- function(
                             msg = "Limit has to be a positive number.")
   }
   
-  # test origin
+  # test origin and set to lower
   if (!is.null(origin)) {
-    assertthat::assert_that(is.character(origin),
+    assert_that(is.character(origin),
                             msg = "origin should be a character or a vector.")
+    origins <- stringr::str_to_lower(origin)
   }
   
   # working with taxon_keys
@@ -94,8 +95,9 @@ gbif_get_taxa <- function(
       rowwise() %>%
       do_(interp(~ as.data.frame(rgbif::name_usage(key = .$taxon_keys,
                                                      return = "data")))) 
-    taxon_taxa %<>% ungroup
-    taxon_taxa %<>% filter(origin == origin)
+    taxon_taxa %<>% 
+      ungroup %>% 
+      mutate(origin = str_to_lower(origin))
     
     # GBIF Backbone matching
     number_key <- nrow(taxon_taxa)
@@ -112,8 +114,9 @@ gbif_get_taxa <- function(
       do_(interp(~ as.data.frame(rgbif::name_usage(datasetKey = .$checklist_keys,
                                                      limit = maxlimit,
                                                      return = "data"))))
-    checklist_taxa %<>% ungroup
-    checklist_taxa %<>% filter(origin == origin)
+    checklist_taxa %<>% 
+      ungroup %>% 
+      mutate(origin = str_to_lower(origin))
     
     if (!is.null(limit) & 
         (nrow(checklist_taxa) < maxlimit*length(checklist_keys))) {
