@@ -1,11 +1,12 @@
-context("output_get_taxa")
+context("output_gbif_get_taxa")
 
 
 testthat::test_that("output if taxon_keys is numeric", {
   get_taxa_taxon_key_3 <- readRDS(file = 
-                          paste0("./data_test_output_get_taxa/",
-                                 "get_taxa_taxon_key_3_numeric.Rda"))
-  expect_true(all(get_taxa_taxon_key_3 == get_taxa(taxon_keys = 3, limit = 1), 
+                          paste0("./data_test_output_gbif_get_taxa/",
+                                 "gbif_get_taxa_taxon_key_3_numeric.Rda"))
+  get_taxa_taxon_key_3 %<>% mutate(origin = str_to_lower(origin))
+  expect_true(all(get_taxa_taxon_key_3 == gbif_get_taxa(taxon_keys = 3, limit = 1), 
                   na.rm = TRUE))
 })
 
@@ -15,18 +16,20 @@ testthat::test_that("output if taxon_keys is character", {
   # "./tests/testthat/data_test_output_get_taxa/get_taxa_taxon_key_2_character.tsv",
   # sep = "\t", quote = FALSE, row.names = FALSE)
   get_taxa_taxon_key_2 <- readRDS(file = 
-                          paste0("./data_test_output_get_taxa/",
-                                 "get_taxa_taxon_key_2_character.Rda"))
-  expect_true(all(get_taxa_taxon_key_2 == get_taxa(taxon_keys = "2",
+                          paste0("./data_test_output_gbif_get_taxa/",
+                                 "gbif_get_taxa_taxon_key_2_character.Rda"))
+  get_taxa_taxon_key_2 %<>% mutate(origin = str_to_lower(origin))
+  expect_true(all(get_taxa_taxon_key_2 == gbif_get_taxa(taxon_keys = "2",
                                                    limit = 1), 
                   na.rm = TRUE))
 })
 
 testthat::test_that("taxon_keys is (numeric) vector", {
   get_taxa_taxon_key_1_6 <- readRDS(file = 
-                            paste0("./data_test_output_get_taxa/",
-                                   "get_taxa_taxon_key_1_6_numeric.Rda"))
-  expect_true(all(get_taxa_taxon_key_1_6 == get_taxa(taxon_keys = c(1,2,3,4,5,6)),
+                            paste0("./data_test_output_gbif_get_taxa/",
+                                   "gbif_get_taxa_taxon_key_1_6_numeric.Rda"))
+  get_taxa_taxon_key_1_6 %<>% mutate(origin = str_to_lower(origin))
+  expect_true(all(get_taxa_taxon_key_1_6 == gbif_get_taxa(taxon_keys = c(1,2,3,4,5,6)),
                   na.rm = TRUE))
 })
 
@@ -36,9 +39,10 @@ testthat::test_that("taxon_keys is (character) vector", {
            "134086868", "134086869", "134086870", "134086871", "134086872",
            "134086873", "134086875", "134086876", "134086877", "134086878")
   get_taxa_taxon_key_char_vector <- readRDS(file = 
-                                    paste0("./data_test_output_get_taxa/",
-                                           "get_taxa_taxon_key_char_vector.Rda"))
-  expect_true(all(get_taxa_taxon_key_char_vector == get_taxa(taxon_keys = keys),
+                                    paste0("./data_test_output_gbif_get_taxa/",
+                                           "gbif_get_taxa_taxon_key_char_vector.Rda"))
+  get_taxa_taxon_key_char_vector %<>% mutate(origin = str_to_lower(origin))
+  expect_true(all(get_taxa_taxon_key_char_vector == gbif_get_taxa(taxon_keys = keys),
                   na.rm = TRUE))
 })
 
@@ -48,27 +52,30 @@ testthat::test_that("limit < number of taxon_keys", {
            "134086868", "134086869", "134086870", "134086871", "134086872",
            "134086873", "134086875", "134086876", "134086877", "134086878")
   get_taxa_taxon_key_lim_10 <- readRDS(file = 
-                                      paste0("./data_test_output_get_taxa/",
-                                      "get_taxa_taxon_key_lim_10.Rda"))
-  expect_true(all(get_taxa_taxon_key_lim_10 == get_taxa(taxon_keys = keys,
+                                      paste0("./data_test_output_gbif_get_taxa/",
+                                      "gbif_get_taxa_taxon_key_lim_10.Rda"))
+  get_taxa_taxon_key_lim_10 %<>% mutate(origin = str_to_lower(origin))
+  expect_true(all(get_taxa_taxon_key_lim_10 == gbif_get_taxa(taxon_keys = keys,
                                                         limit = 10),
                   na.rm = TRUE))
 })
 
 testthat::test_that("checklist is a character, valid limit", {
-  get_taxa_checklist <- readRDS(file = paste0("./data_test_output_get_taxa/",
-                                              "get_taxa_checklist.Rda"))
-  expect_true(all(get_taxa_checklist == get_taxa(checklist_keys = 
+  get_taxa_checklist <- readRDS(file = paste0("./data_test_output_gbif_get_taxa/",
+                                              "gbif_get_taxa_checklist.Rda"))
+  get_taxa_checklist %<>% mutate(origin = str_to_lower(origin))
+  expect_true(all(get_taxa_checklist == gbif_get_taxa(checklist_keys = 
                                         "46261ec5-38e8-44c9-b8e9-edaddf99fa29",
                                         limit = 10),
                   na.rm = TRUE))
 })
 
 testthat::test_that("checklist is a vector, valid limit", {
-  get_taxa_checklists <- readRDS(file = paste0("./data_test_output_get_taxa/",
-                                               "get_taxa_checklists.Rda")) %>%
+  get_taxa_checklists <- readRDS(file = paste0("./data_test_output_gbif_get_taxa/",
+                                               "gbif_get_taxa_checklists.Rda")) %>%
     select(-issues)
-  test <- get_taxa(
+  get_taxa_checklists %<>% mutate(origin = str_to_lower(origin))
+  test <- gbif_get_taxa(
     checklist_keys = c("46261ec5-38e8-44c9-b8e9-edaddf99fa29",
                        "e4746398-f7c4-47a1-a474-ae80a4f18e92"),
     limit = 5) %>% select(-issues)
