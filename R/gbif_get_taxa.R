@@ -8,7 +8,7 @@
 #' or a vector of datasetkeys. Not to use together with `checklist_keys`.
 #' @param origin (single character or a vector) filter by origin. 
 #' It can take many inputs, and treated as ’OR’ (e.g., a or b or c)
-#' #' @param limit With taxon_keys: limit number of taxa. 
+#' @param limit With taxon_keys: limit number of taxa. 
 #' With checklist_keys: limit number of taxa per each dataset.
 #' A warning is given if limit is higher than the length of taxon_keys or number of records
 #' in the checklist_keys (if string) or any of the checklist_keys (if vector)
