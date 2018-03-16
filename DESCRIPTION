@@ -15,7 +15,8 @@ Imports:
         lazyeval,
         purrr,
         stringr,
-        assertthat
+        assertthat,
+        readr
 Remotes: github::ropensci/rgbif
 URL: https://github.com/trias-project/trias
 BugReports: https://github.com/trias-project/trias/issues
