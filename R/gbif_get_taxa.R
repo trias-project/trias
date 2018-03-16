@@ -1,7 +1,7 @@
 #' Get taxa information from GBIF
 #'
 #' This function retrieves taxa information from GBIF. It is a higher level function built 
-#' on rgbif function `name_usage()`.
+#' on rgbif functions `name_usage()` and `name_lookup()`.
 #' @param taxon_keys (single numeric or character or a vector) a single key or a 
 #' vector of keys. Not to use together with `checklist_keys`.
 #' @param checklist_keys (single character or a vector) a datasetKey (character) 
