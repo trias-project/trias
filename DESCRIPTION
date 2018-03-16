@@ -17,7 +17,7 @@ Imports:
         stringr,
         assertthat,
         readr
-Remotes: github::ropensci/rgbif
+Remotes: damianooldoni/rgbif@b73fd2d
 URL: https://github.com/trias-project/trias
 BugReports: https://github.com/trias-project/trias/issues
 Suggests: testthat
