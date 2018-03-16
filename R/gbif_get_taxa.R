@@ -72,10 +72,10 @@ gbif_get_taxa <- function(
   
   # test limit
   if (!is.null(limit)) {
-    assert_that(is.numeric(limit),
-                            msg = "Limit has to be numeric.")
-    assert_that(limit > 0,
-                            msg = "Limit has to be a positive number.")
+    assert_that(is.numeric(limit), msg = "Limit has to be numeric.")
+    assert_that(limit > 0, msg = "Limit has to be a positive number.")
+  }
+  
   # test number of taxa
   if (!is.null(checklist_keys) & !is.null(limit)) {
     assert_that(limit < 100000, 
