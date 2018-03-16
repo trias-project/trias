@@ -1,0 +1,2 @@
+key	scientificName	nubKey	nameKey	taxonID	sourceTaxonKey	kingdom	kingdomKey	datasetKey	constituentKey	canonicalName	authorship	nameType	rank	origin	taxonomicStatus	nomenclaturalStatus	remarks	numDescendants	lastCrawled	lastInterpreted	issues	synonym
+3	Bacteria	3	17111608	gbif:3	140191885	Bacteria	3	d7dddbf4-2cf0-4f39-9b2a-bb099caae36c	d7dddbf4-2cf0-4f39-9b2a-bb099caae36c	Bacteria		SCIENTIFIC	KINGDOM	source	ACCEPTED	NA		22607	2018-02-01T18:31:59.197+0000	2018-02-01T18:07:12.643+0000	NA	FALSE
