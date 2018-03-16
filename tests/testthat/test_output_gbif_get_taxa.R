@@ -124,3 +124,21 @@ testthat::test_that("checklist is a vector, valid limit", {
 
   expect_true(all(get_taxa_checklists == aa, na.rm = TRUE))
 })
+
+testthat::test_that("check single origin", {
+  aa_denormed <- gbif_get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+                               origin = "denormed_classification", limit = 10)
+  
+  expect_true(nrow(aa_denormed) == 10)
+})
+
+testthat::test_that("check multiple origins", {
+  aa_origin <- gbif_get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+                    origin = c("denormed_classification","source"), 
+                    limit = 3000)
+  
+  aa <- gbif_get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+                      limit = 3000)
+  
+  expect_true(nrow(aa) == nrow(aa_origin))
+})
