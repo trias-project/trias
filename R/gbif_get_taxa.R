@@ -76,6 +76,14 @@ gbif_get_taxa <- function(
                             msg = "Limit has to be numeric.")
     assert_that(limit > 0,
                             msg = "Limit has to be a positive number.")
+  # test number of taxa
+  if (!is.null(checklist_keys) & !is.null(limit)) {
+    assert_that(limit < 100000, 
+                msg = "Too many keys. API maximum is 99999.")
+    if (limit * length(checklist_keys) > 100000)
+      warning(paste("Attention: if all datasets contain at least as many taxa",
+                    "as limit, you are querying too many taxa.",
+                    "API maximum is 99999."))
   }
   
   # test origin and set to lower
@@ -93,7 +101,7 @@ gbif_get_taxa <- function(
     } else {
       if (limit > length(taxon_keys)) {
         warning("Limit is higher than number of taxon keys.")
-        maxlimit = length(taxon_keys)
+        maxlimit <- length(taxon_keys)
       } else maxlimit <- limit
     }
     taxon_keys = as.integer(taxon_keys[1:maxlimit])
@@ -117,17 +125,32 @@ gbif_get_taxa <- function(
   if (!is.null(checklist_keys) & is.character(checklist_keys)) {
     return <- "checklist"
     if (is.null(limit)) {
-      maxlimit <- 1000000 # a sufficient high limit:name_usage supports paging now
-    } else maxlimit <- limit
-    checklist_taxa <- as.data.frame(checklist_keys) %>% rowwise() %>%
-      do_(interp(~ as.data.frame(rgbif::name_usage(datasetKey = .$checklist_keys,
-                                                     limit = maxlimit,
-                                                     return = "data"))))
+      maxlimit <- 1000 # after paging implmentation, set maxlimit <- 99999
+    } else {
+      maxlimit <- limit
+      if (maxlimit > 1000)  # remove after paging implementation!
+        maxlimit <- 1000
+    }
+    
+    if (!is.null(origin)) {
+      checklist_keys = as.character(checklist_keys)
+      checklist_keys_df <- as.data.frame(checklist_keys)
+      checklist_taxa <- checklist_keys_df %>% 
+        rowwise() %>%
+        do_(interp(~ as.data.frame(rgbif::name_lookup(datasetKey = .,
+                                                      origin = origins,
+                                                      limit = maxlimit,
+                                                      return = "data"))))
+    } else {
+      checklist_taxa <- as.data.frame(checklist_keys) %>% rowwise() %>%
+        do_(interp(~ as.data.frame(rgbif::name_lookup(datasetKey = .,
+                                                      limit = maxlimit,
+                                                      return = "data"))))
+    }
+    
     checklist_taxa %<>% 
       ungroup %>% 
       mutate(origin = str_to_lower(origin))
-    if (!is.null(origin))
-      checklist_taxa %<>% filter(origin %in% origins)
     
     if (!is.null(limit) & 
         (nrow(checklist_taxa) < maxlimit*length(checklist_keys))) {
