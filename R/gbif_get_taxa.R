@@ -125,11 +125,9 @@ gbif_get_taxa <- function(
   if (!is.null(checklist_keys) & is.character(checklist_keys)) {
     return <- "checklist"
     if (is.null(limit)) {
-      maxlimit <- 1000 # after paging implmentation, set maxlimit <- 99999
+      maxlimit <- 99999 # after paging implmentation, set maxlimit <- 99999
     } else {
       maxlimit <- limit
-      if (maxlimit > 1000)  # remove after paging implementation!
-        maxlimit <- 1000
     }
     
     if (!is.null(origin)) {
