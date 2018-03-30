@@ -50,8 +50,8 @@ testthat::test_that("taxon_keys not found in GBIF, error from rgbif", {
 
 testthat::test_that("checklist_keys not found in GBIF, error from rgbif", {
   expect_error(gbif_get_taxa(checklist_keys =  "falcon heavy"),
-               "Not Found")
+               "Invalid UUID string: falcon heavy")
   expect_error(gbif_get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
                                            "batman")),
-               "Not Found")
+               "Invalid UUID string: batman")
 })

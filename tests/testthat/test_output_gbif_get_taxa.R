@@ -2,7 +2,7 @@ context("output_gbif_get_taxa")
 
 
 testthat::test_that("output if taxon_keys is numeric", {
-  get_taxa_taxon_key_3 <- read_tsv(file = 
+  get_taxa_taxon_key_3 <- readr::read_tsv(file = 
                           paste0("./data_test_output_gbif_get_taxa/",
                                  "gbif_get_taxa_taxon_key_3_numeric.tsv"))
   get_taxa_taxon_key_3 %<>% 
@@ -22,7 +22,7 @@ testthat::test_that("output if taxon_keys is character", {
   # write.table(get_taxa_taxon_key_2,
   # "./tests/testthat/data_test_output_gbif_get_taxa/get_taxa_taxon_key_2_character.tsv",
   # sep = "\t", quote = FALSE, row.names = FALSE)
-  get_taxa_taxon_key_2 <- read_tsv(file = 
+  get_taxa_taxon_key_2 <- readr::read_tsv(file = 
                           paste0("./data_test_output_gbif_get_taxa/",
                                  "gbif_get_taxa_taxon_key_2_character.tsv"))
   get_taxa_taxon_key_2 %<>% 
@@ -38,7 +38,7 @@ testthat::test_that("output if taxon_keys is character", {
 })
 
 testthat::test_that("taxon_keys is (numeric) vector", {
-  get_taxa_taxon_key_1_6 <- read_tsv(file = 
+  get_taxa_taxon_key_1_6 <- readr::read_tsv(file = 
                             paste0("./data_test_output_gbif_get_taxa/",
                                    "gbif_get_taxa_taxon_key_1_6_numeric.tsv"))
   get_taxa_taxon_key_1_6 %<>% 
@@ -55,7 +55,7 @@ testthat::test_that("taxon_keys is (numeric) vector", {
 
 testthat::test_that("taxon_keys is (character) vector", {
   keys = c("7", "3")
-  get_taxa_taxon_key_char_vector <- read_tsv(file = 
+  get_taxa_taxon_key_char_vector <- readr::read_tsv(file = 
                                     paste0("./data_test_output_gbif_get_taxa/",
                                            "gbif_get_taxa_taxon_key_char_vector.tsv"))
   get_taxa_taxon_key_char_vector %<>% 
@@ -73,7 +73,7 @@ testthat::test_that("taxon_keys is (character) vector", {
 
 testthat::test_that("limit < number of taxon_keys", {
   keys = c(7, 3, 7765738)
-  get_taxa_taxon_key_lim_2 <- read_tsv(file = 
+  get_taxa_taxon_key_lim_2 <- readr::read_tsv(file = 
                                       paste0("./data_test_output_gbif_get_taxa/",
                                       "gbif_get_taxa_taxon_key_lim_2.tsv"))
   get_taxa_taxon_key_lim_2 %<>% mutate(origin = str_to_lower(origin))
@@ -92,35 +92,27 @@ testthat::test_that("limit < number of taxon_keys", {
 })
 
 testthat::test_that("checklist is a character, valid limit", {
-  get_taxa_checklist <- read_tsv(file = paste0("./data_test_output_gbif_get_taxa/",
+  get_taxa_checklist <- readr::read_tsv(file = paste0("./data_test_output_gbif_get_taxa/",
                                               "gbif_get_taxa_checklist.tsv"))
   get_taxa_checklist %<>% mutate(origin = str_to_lower(origin))
-  get_taxa_checklist %<>% 
-    mutate(origin = str_to_lower(origin)) %>%
-    select(-lastCrawled, -lastInterpreted, 
-           -issues, -nomenclaturalStatus)
-  
-  aa <- gbif_get_taxa(checklist_keys = "46261ec5-38e8-44c9-b8e9-edaddf99fa29",
+  aa <- gbif_get_taxa(checklist_keys = "3f8a1297-3259-4700-91fc-acc4170b27ce",
                       limit = 10)
   aa %<>% 
-    mutate(origin = str_to_lower(origin)) %>%
-    select(-lastCrawled, -lastInterpreted, 
-           -issues, -nomenclaturalStatus)
+    mutate(origin = str_to_lower(origin))
+  
   expect_true(all(get_taxa_checklist == aa, na.rm = TRUE))
 })
 
 testthat::test_that("checklist is a vector, valid limit", {
-  get_taxa_checklists <- read_tsv(file = paste0("./data_test_output_gbif_get_taxa/",
+  get_taxa_checklists <- readr::read_tsv(file = paste0("./data_test_output_gbif_get_taxa/",
                                                "gbif_get_taxa_checklists.tsv"))
   get_taxa_checklists %<>% mutate(origin = str_to_lower(origin))
 
     aa <- gbif_get_taxa(
-    checklist_keys = c("46261ec5-38e8-44c9-b8e9-edaddf99fa29",
-                       "e4746398-f7c4-47a1-a474-ae80a4f18e92"),
-    limit = 5) %>% select(-issues, -lastCrawled, 
-                          -lastInterpreted, -nomenclaturalStatus)
-  aa %<>% 
-    mutate(origin = str_to_lower(origin))
+    checklist_keys = c("3f8a1297-3259-4700-91fc-acc4170b27ce",
+                       "c6aaec5d-716e-46a1-826b-dc324feb4ede"),
+    limit = 5)
+  aa %<>% mutate(origin = str_to_lower(origin))
 
   expect_true(all(get_taxa_checklists == aa, na.rm = TRUE))
 })
