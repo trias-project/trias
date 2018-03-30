@@ -27,7 +27,7 @@ A data.frame with all returned attributes for any taxa
 }
 \description{
 This function retrieves taxa information from GBIF. It is a higher level function built 
-on rgbif function `name_usage()`.
+on rgbif functions `name_usage()` and `name_lookup()`.
 }
 \examples{
 # A single numeric taxon_keys
