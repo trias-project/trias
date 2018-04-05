@@ -15,7 +15,8 @@ vector of keys. Not to use together with `checklist_keys`.}
 or a vector of datasetkeys. Not to use together with `checklist_keys`.}
 
 \item{origin}{(single character or a vector) filter by origin. 
-It can take many inputs, and treated as ’OR’ (e.g., a or b or c)}
+It can take many inputs, and treated as OR (e.g., a or b or c)
+To be used only in combination with `checklist_keys`. Ignored otherwise.}
 
 \item{limit}{With taxon_keys: limit number of taxa. 
 With checklist_keys: limit number of taxa per each dataset.

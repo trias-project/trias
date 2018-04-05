@@ -8,6 +8,7 @@
 #' or a vector of datasetkeys. Not to use together with `checklist_keys`.
 #' @param origin (single character or a vector) filter by origin. 
 #' It can take many inputs, and treated as OR (e.g., a or b or c)
+#' To be used only in combination with `checklist_keys`. Ignored otherwise.
 #' @param limit With taxon_keys: limit number of taxa. 
 #' With checklist_keys: limit number of taxa per each dataset.
 #' A warning is given if limit is higher than the length of taxon_keys or number of records
@@ -91,6 +92,8 @@ gbif_get_taxa <- function(
     assert_that(is.character(origin),
                             msg = "origin should be a character or a vector.")
     origins <- stringr::str_to_lower(origin)
+    if (!is.null(taxon_keys))
+      warning("origin parameter ignored if used in combination with taxon_keys.")
   }
   
   # working with taxon_keys
