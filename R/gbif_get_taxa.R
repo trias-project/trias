@@ -41,7 +41,7 @@
 #'          origin = c("source" ,"denormed_classification"), limit = 3000)
 #' @export
 #' @importFrom assertthat assert_that
-#' @importFrom rgbif name_usage
+#' @importFrom rgbif name_usage name_lookup
 #' @importFrom dplyr filter mutate rowwise do_ ungroup %>%
 #' @importFrom tibble tibble
 #' @importFrom lazyeval interp
@@ -111,7 +111,7 @@ gbif_get_taxa <- function(
     taxon_keys_df <- as.data.frame(taxon_keys)
     taxon_taxa <-  taxon_keys_df %>% 
       rowwise() %>%
-      do_(interp(~ as.data.frame(rgbif::name_usage(key = .$taxon_keys,
+      do_(interp(~ as.data.frame(name_usage(key = .$taxon_keys,
                                                      return = "data")))) 
     taxon_taxa %<>% 
       ungroup %>% 
@@ -138,13 +138,13 @@ gbif_get_taxa <- function(
       checklist_keys_df <- as.data.frame(checklist_keys)
       checklist_taxa <- checklist_keys_df %>% 
         rowwise() %>%
-        do_(interp(~ as.data.frame(rgbif::name_lookup(datasetKey = .,
+        do_(interp(~ as.data.frame(name_lookup(datasetKey = .,
                                                       origin = origins,
                                                       limit = maxlimit,
                                                       return = "data"))))
     } else {
       checklist_taxa <- as.data.frame(checklist_keys) %>% rowwise() %>%
-        do_(interp(~ as.data.frame(rgbif::name_lookup(datasetKey = .,
+        do_(interp(~ as.data.frame(name_lookup(datasetKey = .,
                                                       limit = maxlimit,
                                                       return = "data"))))
     }
