@@ -74,6 +74,12 @@
 #'               "dummy example 3: nothing should be changed");
 #'   stringsAsFactors = FALSE)
 #' gbif_verify_synonyms(taxa = taxa_in, verified_synonyms = verified_synonyms_in)
+#' @export
+#' @importFrom assertthat assert_that
+#' @importFrom rgbif name_usage
+#' @importFrom dplyr filter rowwise mutate rename bind_rows
+#' @importFrom dplyr pull anti_join select left_join
+#' @importFrom magrittr %<>%
 gbif_verify_synonyms <- function(taxa, verified_synonyms) {
   
   # test incoming arguments
