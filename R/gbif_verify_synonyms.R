@@ -74,7 +74,6 @@
 #'               "dummy example 3: nothing should be changed");
 #'   stringsAsFactors = FALSE)
 #' gbif_verify_synonyms(taxa = taxa_in, verified_synonyms = verified_synonyms_in)
-
 gbif_verify_synonyms <- function(taxa, verified_synonyms) {
   
   # test incoming arguments
