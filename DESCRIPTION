@@ -9,14 +9,15 @@ License: MIT + file LICENSE
 LazyData: true
 RoxygenNote: 6.0.1.9000
 Imports:
+        assertthat,
+        dplyr,
+        lazyeval,
+        magrittr,
+        purrr,
         readr,
         rgbif,
-        dplyr,
-        magrittr,
-        lazyeval,
-        purrr,
         stringr,
-        assertthat
+        tibble
 Remotes: ropensci/rgbif
 URL: https://github.com/trias-project/trias
 BugReports: https://github.com/trias-project/trias/issues
