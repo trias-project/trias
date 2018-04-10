@@ -37,15 +37,16 @@
 #' backbone_accepted + updated_backbone_accepted}
 #' }
 #' @examples
-#' taxa_in <- data.frame(backbone_taxonKey = c(2360181, 2427092, 2651108),
-#'                    backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
-#'                                                "Rana catesbeiana Shaw, 1802",
-#'                                                "Polystichum tsus-simense (Hook.) J.Sm."),
-#'                    backbone_acceptedKey = c(5851603, 2427091, 4046493),
-#'                    backbone_accepted = c("Leuciscus aspius (Linnaeus, 1758)",
-#'                                          "Lithobates catesbeianus (Shaw, 1802)",
-#'                                          "Polystichum luctuosum (Kunze) Moore."),
-#'                    stringsAsFactors = FALSE)
+#' taxa_in <- data.frame(
+#'   backbone_taxonKey = c(2360181, 2427092, 2651108),
+#'   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
+#'                               "Rana catesbeiana Shaw, 1802",
+#'                               "Polystichum tsus-simense (Hook.) J.Sm."),
+#'   backbone_acceptedKey = c(5851603, 2427091, 4046493),
+#'   backbone_accepted = c("Leuciscus aspius (Linnaeus, 1758)",
+#'                        "Lithobates catesbeianus (Shaw, 1802)",
+#'                        "Polystichum luctuosum (Kunze) Moore."),
+#'   stringsAsFactors = FALSE)
 #' verified_synonyms_in <- data.frame(
 #'   backbone_taxonKey = c(2427092,
 #'                         2651108,
