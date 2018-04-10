@@ -7,46 +7,33 @@
 gbif_verify_synonyms(taxa, verified_synonyms)
 }
 \arguments{
-\item{taxa:}{a dataframe with at least the following columns:
-\itemize{
- \item{backbone_taxonKey}
- \item{backbone_scientificName}
- \item{backbone_acceptedKey}
- \item{backbone_accepted}
-}}
+\item{taxa:}{a dataframe with at least the following columns: \itemize{
+\item{backbone_taxonKey} \item{backbone_scientificName}
+\item{backbone_acceptedKey} \item{backbone_accepted} }}
 
 \item{verified_synonyms:}{a dataframe with at least the following columns:
-\itemize{
- \item{backbone_taxonKey}
- \item{backbone_scientificName}
- \item{backbone_acceptedKey}
- \item{backbone_accepted}
- \item{backbone_kingdom}{: to be populated from GBIF (is not in taxa)}
- \item{date_added}{: to be populated by function}
- \item{verified_key}{: to be populated manually by expert 
-(not required by this function, but any other functionality will use this 
-key so it is good to check its existence)
-}
-}}
+\itemize{ \item{backbone_taxonKey} \item{backbone_scientificName}
+\item{backbone_acceptedKey} \item{backbone_accepted}
+\item{backbone_kingdom}{: to be populated from GBIF (is not in taxa)}
+\item{date_added}{: to be populated by function} \item{verified_key}{: to
+be populated manually by expert (not required by this function, but any
+other functionality will use this key so it is good to check its existence)
+} }}
 }
 \value{
-a list of five dataframes:
-\itemize{
- \item{verified_synonyms}{: same dataframe as input verified_synonyms, but now with 
-updated info.}
- \item{new_synonyms}{: a subset of verified_synonyms (same columns) with added synonym 
-relations (found in taxa, but not in verified_synonyms)}
- \item{unused_synonyms}{: a subset of verified_synonyms (same columns) with 
-unused synonym relations (found in verified_synonyms, but not in taxa)}
- \item{updated_scientificName}{: a dataframe with 
-backbone_scientificName + updated_backbone_scientificName}
- \item{updated_accepted}{: a dataframe with 
-backbone_accepted + updated_backbone_accepted}
-}
+a list of five dataframes: \itemize{ \item{verified_synonyms}{: same
+  dataframe as input verified_synonyms, but now with updated info.}
+  \item{new_synonyms}{: a subset of verified_synonyms (same columns) with
+  added synonym relations (found in taxa, but not in verified_synonyms)}
+  \item{unused_synonyms}{: a subset of verified_synonyms (same columns) with
+  unused synonym relations (found in verified_synonyms, but not in taxa)}
+  \item{updated_scientificName}{: a dataframe with backbone_scientificName +
+  updated_backbone_scientificName} \item{updated_accepted}{: a dataframe with
+  backbone_accepted + updated_backbone_accepted} }
 }
 \description{
-This function checks all verified synonyms, add new sysnonyms in order to be 
-evaluated by an expert, update taxa names in case they have been changed and 
+This function checks all verified synonyms, add new sysnonyms in order to be
+evaluated by an expert, update taxa names in case they have been changed and
 report the changes.
 }
 \examples{
@@ -76,15 +63,15 @@ verified_synonyms_in <- data.frame(
   backbone_kingdom = c("Animalia",
                        "Plantae",
                        "Plantae"),
-  date_added = c("2018-01-01",
-                 "2018-01-01",
-                 "2018-01-01"),
+  date_added = as.Date(c("2018-01-01",
+                         "2018-01-01",
+                         "2018-01-01")),
   verified_key = c(2427091,
                    4046493,
                    6979),
   remarks = c("dummy example 1: backbone_accepted should be updated",
               "dummy example 2: backbone_scientificName should be updated",
-              "dummy example 3: nothing should be changed");
+              "dummy example 3: nothing should be changed"),
   stringsAsFactors = FALSE)
 gbif_verify_synonyms(taxa = taxa_in, verified_synonyms = verified_synonyms_in)
 }
