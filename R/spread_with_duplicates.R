@@ -1,6 +1,6 @@
 #' Spread a key-value pair across multiple columns in presence of duplicates
 #' 
-#' @param .df A dataframe
+#' @param .data A dataframe
 #' @param key,value Column names or positions
 #' @param fill If set, missing values will be replaced with this value. 
 #' @return A data.frame
@@ -22,20 +22,20 @@
 #' @importFrom dplyr mutate_all filter full_join pull
 #' @importFrom magrittr %>%
 #' @importFrom tidyselect vars_pull enquo
-spread_with_duplicates <- function(.df, key, value, by, fill = NA){
-  key_var <- vars_pull(names(.df), !! enquo(key))
-  col <- .df[key_var] %>% pull() %>% unique()
-  .df <- map(col, function(x) .df %>% filter(key == x)) %>%
+spread_with_duplicates <- function(.data, key, value, by, fill = NA){
+  key_var <- vars_pull(names(.data), !! enquo(key))
+  col <- .data[key_var] %>% pull() %>% unique()
+  .data <- map(col, function(x) .data %>% filter(key == x)) %>%
     map2(col, ~ change_colname(.x, .y, value)) %>%
     reduce(full_join, by = by)
   if (!is.na(fill)){
-    .df <- .df %>% mutate_all(funs(replace(., is.na(.), fill)))
+    .data <- .data %>% mutate_all(funs(replace(., is.na(.), fill)))
   }
-  return(.df)
+  return(.data)
 }
 
-change_colname <- function(.df, new_colname, value){
-  .df %>% 
+change_colname <- function(.data, new_colname, value){
+  .data %>% 
     rename(!!new_colname := value) %>%
     select(-key)
 }
