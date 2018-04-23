@@ -17,11 +17,11 @@
 #' test2 %>% spread_with_duplicates(key, value, by = "taxonKey")
 #' test2 %>% spread_with_duplicates(key, value, by = "taxonKey", fill = 0)
 spread_with_duplicates <- function(.df, key, value, by, fill = NA){
-  key_var <- tidyselect::vars_pull(names(.df), !! enquo(key))
+  key_var <- vars_pull(names(.df), !! enquo(key))
   col <- .df[key_var] %>% pull() %>% unique()
-  .df <- purrr::map(col, function(x) .df %>% filter(key == x)) %>%
-    purrr::map2(col, ~ change_colname(.x, .y, value)) %>%
-    purrr::reduce(dplyr::full_join, by = by)
+  .df <- map(col, function(x) .df %>% filter(key == x)) %>%
+    map2(col, ~ change_colname(.x, .y, value)) %>%
+    reduce(full_join, by = by)
   if (!is.na(fill)){
     .df <- .df %>% mutate_all(funs(replace(., is.na(.), fill)))
   }
