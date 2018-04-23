@@ -24,7 +24,9 @@
 #' @importFrom tidyselect vars_pull enquo
 spread_with_duplicates <- function(.data, key, value, by, fill = NA){
   key_var <- vars_pull(names(.data), !! enquo(key))
-  col <- .data[key_var] %>% pull() %>% unique()
+  col <- .data %>% 
+    pull(key_var) %>% 
+    unique()
   .data <- map(col, function(x) .data %>% filter(key == x)) %>%
     map2(col, ~ change_colname(.x, .y, value)) %>%
     reduce(full_join, by = by)
