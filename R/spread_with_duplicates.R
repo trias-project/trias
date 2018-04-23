@@ -1,21 +1,27 @@
 #' Spread a key-value pair across multiple columns in presence of duplicates
 #' 
-#' @param .data A dataframe
+#' @param .df A dataframe
 #' @param key,value Column names or positions
 #' @param fill If set, missing values will be replaced with this value. 
+#' @return A data.frame
 #' @examples 
 #' test1 <- data.frame(taxonKey = c(1, 1, 1, 1),	
 #'                 key = c("A", "B", "C", "C"),
 #'                 value = c("R", "S", "T", "X"),
 #'                 stringsAsFactors = FALSE)
-#' test1 %>% spread_with_duplicates(key, value, by = "taxonKey")
+#' spread_with_duplicates(test1, key, value, by = "taxonKey")
 #' # with NAs
 #' test2 <- data.frame(taxonKey = c(1, 1, 1, 2),	
-#'                 key = c("A", C", "C", "A"),
+#'                 key = c("A", "C", "C", "A"),
 #'                 value = c("R", "T", "X", "R"),
 #'                 stringsAsFactors = FALSE)
-#' test2 %>% spread_with_duplicates(key, value, by = "taxonKey")
-#' test2 %>% spread_with_duplicates(key, value, by = "taxonKey", fill = 0)
+#' spread_with_duplicates(test2, key, value, by = "taxonKey")
+#' spread_with_duplicates(test2, key, value, by = "taxonKey", fill = 0)
+#' @export
+#' @importFrom purrr map map2 reduce
+#' @importFrom dplyr mutate_all filter full_join pull
+#' @importFrom magrittr %>%
+#' @importFrom tidyselect vars_pull enquo
 spread_with_duplicates <- function(.df, key, value, by, fill = NA){
   key_var <- vars_pull(names(.df), !! enquo(key))
   col <- .df[key_var] %>% pull() %>% unique()
