@@ -4,10 +4,10 @@
 \alias{spread_with_duplicates}
 \title{Spread a key-value pair across multiple columns in presence of duplicates}
 \usage{
-spread_with_duplicates(.df, key, value, by, fill = NA)
+spread_with_duplicates(.data, key, value, fill = NA)
 }
 \arguments{
-\item{.df}{A dataframe}
+\item{.data}{A dataframe}
 
 \item{key, value}{Column names or positions}
 
@@ -20,16 +20,19 @@ A data.frame
 Spread a key-value pair across multiple columns in presence of duplicates
 }
 \examples{
-test1 <- data.frame(taxonKey = c(1, 1, 1, 1),	
+test1 <- data.frame(col1 = c(1, 1, 1, 1),	
+                col2 = c("H", "H", "H", "H"),
                 key = c("A", "B", "C", "C"),
                 value = c("R", "S", "T", "X"),
                 stringsAsFactors = FALSE)
-spread_with_duplicates(test1, key, value, by = "taxonKey")
+spread_with_duplicates(test1, key, value)
+spread_with_duplicates(test1, 3, 4)
+spread_with_duplicates(test1, -2, -1)
 # with NAs
-test2 <- data.frame(taxonKey = c(1, 1, 1, 2),	
+test2 <- data.frame(col1 = c(1, 1, 1, 2),	
                 key = c("A", "C", "C", "A"),
                 value = c("R", "T", "X", "R"),
                 stringsAsFactors = FALSE)
-spread_with_duplicates(test2, key, value, by = "taxonKey")
-spread_with_duplicates(test2, key, value, by = "taxonKey", fill = 0)
+spread_with_duplicates(test2, key, value)
+spread_with_duplicates(test2, key, value, fill = 0)
 }
