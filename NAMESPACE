@@ -2,8 +2,8 @@
 
 export(gbif_get_taxa)
 export(gbif_has_distribution)
-export(gbif_verify_synonyms)
 export(update_download_list)
+export(verify_synonyms)
 importFrom(assertthat,assert_that)
 importFrom(dplyr,"%>%")
 importFrom(dplyr,anti_join)
