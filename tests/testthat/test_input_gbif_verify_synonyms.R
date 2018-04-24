@@ -2,14 +2,17 @@ context("input_gbif_verify_synonyms")
 
 # correct inputs
 taxa_in <- data.frame(
-  backbone_taxonKey = c(2360181, 2427092, 2651108),
+  backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676),
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
                               "Rana catesbeiana Shaw, 1802",
-                              "Polystichum tsus-simense (Hook.) J.Sm."),
-  backbone_acceptedKey = c(5851603, 2427091, 4046493),
+                              "Polystichum tsus-simense (Hook.) J.Sm.",
+                              "Apus apus (Linnaeus, 1758)"),
+  backbone_acceptedKey = c(5851603, 2427091, 4046493, 5228676),
   backbone_accepted = c("Leuciscus aspius (Linnaeus, 1758)",
                         "Lithobates catesbeianus (Shaw, 1802)",
-                        "Polystichum luctuosum (Kunze) Moore."),
+                        "Polystichum luctuosum (Kunze) Moore.",
+                        "Apus apus (Linnaeus, 1758)"),
+  backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", "ACCEPTED"),
   stringsAsFactors = FALSE)
 
 verified_synonyms_in <- data.frame(
@@ -25,12 +28,12 @@ verified_synonyms_in <- data.frame(
   backbone_acceptedKey = c(2427091,
                            4046493,
                            6979),
-  backbone_kingdom = c("Animalia",
-                       "Plantae",
-                       "Plantae"),
-  date_added = c("2018-01-01",
-                 "2018-01-01",
-                 "2018-01-01"),
+  backbone_taxonomicStatus = c("SYNONYM", 
+                               "SYNONYM", 
+                               "SYNONYM"),
+  date_added = as.Date(c("2018-01-01",
+                         "2018-01-01",
+                         "2018-01-01")),
   verified_key = c(2427091,
                    4046493,
                    6979),
@@ -62,6 +65,7 @@ taxa_test1 <- data.frame(
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
   backbone_acceptedKey = c(5851603),
   backbone_accepted = c("Leuciscus aspius (Linnaeus, 1758)"),
+  backbone_taxonomicStatus = c("SYNONYM"),
   stringsAsFactors = FALSE)
 
 taxa_test2 <- data.frame(
@@ -69,12 +73,15 @@ taxa_test2 <- data.frame(
   i_am_bad_too = c("Aspius aspius (Linnaeus, 1758)"),
   i_am_the_worst_one = c(5851603),
   no_i_am_the_worst_one_please = c("Leuciscus aspius (Linnaeus, 1758)"),
+  are_you_kidding_me = c("SYNONYM"),
   stringsAsFactors = FALSE)
 
 taxa_test3 <- data.frame(
   backbone_taxonKey = c(2360181),
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
+  # backbone_acceptedKey is missing
   backbone_accepted = c("Leuciscus aspius (Linnaeus, 1758)"),
+  backbone_taxonomicStatus = c("SYNONYM"),
   stringsAsFactors = FALSE)
 
 testthat::test_that("taxa column names are correct", {
@@ -84,7 +91,7 @@ expect_error(gbif_verify_synonyms(taxa = taxa_test1,
              fixed = TRUE)
 expect_error(gbif_verify_synonyms(taxa = taxa_test2, 
                                   verified_synonyms = verified_synonyms_in),
-             "Elements 1, 2, 3, 4 of name_col_taxa %in% names(taxa) are not true",
+             "Elements 1, 2, 3, 4, 5 of name_col_taxa %in% names(taxa) are not true",
              fixed = TRUE)
 expect_error(gbif_verify_synonyms(taxa = taxa_test3, 
                                   verified_synonyms = verified_synonyms_in),
@@ -97,7 +104,7 @@ verified_syno_test1 <- data.frame(
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
   backbone_acceptedKey = c(5851603),
   backbone_accepted = c("Leuciscus aspius (Linnaeus, 1758)"),
-  backbone_kingdom = c("Animalia"),
+  backbone_taxonomicStatus = c("SYNONYM"),
   date_added = c("2018-01-01"),
   verified_key = c(2427091),
   remarks = c("dummy example 1: backbone_accepted should be updated"),
@@ -108,7 +115,7 @@ verified_syno_test2 <- data.frame(
   i_am_bad_too = c("Aspius aspius (Linnaeus, 1758)"),
   i_am_the_worst_one = c(5851603),
   no_i_am_the_worst_one_please = c("Leuciscus aspius (Linnaeus, 1758)"),
-  we_are_alomost_perfect_backbone_kingdom = c("Animalia"),
+  we_are_alomost_perfect_backbone_kingdom = c("SYNONYM"),
   are_you_sure_date_added = c("2018-01-01"),
   i_have_doubts_about_it_verified_key = c(2427091),
   i_remark_it_remarks = c("dummy example 1: backbone_accepted should be updated"),
@@ -119,7 +126,7 @@ verified_syno_test3 <- data.frame(
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
   backbone_acceptedKey = c(5851603),
   backbone_accepted = c("Leuciscus aspius (Linnaeus, 1758)"),
-  backbone_kingdom = c("Animalia"),
+  backbone_taxonomicStatus = c("SYNONYM"),
   # date_added column missing
   verified_key = c(2427091),
   remarks = c("dummy example 1: backbone_accepted should be updated"),
