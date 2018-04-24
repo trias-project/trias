@@ -83,7 +83,7 @@ gbif_verify_synonyms <- function(taxa, verified_synonyms) {
   
   # find new synonyms
   new_synonyms <- taxa %>% 
-    filter(!backbone_taxonomicStatus == "SYNONYM") %>%
+    filter(backbone_taxonomicStatus == "SYNONYM") %>%
     filter(!backbone_taxonKey %in% verified_synonyms$backbone_taxonKey) %>% 
     rowwise() %>%
     mutate(date_added = Sys.Date()) %>% ungroup()
