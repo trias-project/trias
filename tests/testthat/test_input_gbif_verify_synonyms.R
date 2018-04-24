@@ -115,7 +115,7 @@ verified_syno_test2 <- data.frame(
   i_am_bad_too = c("Aspius aspius (Linnaeus, 1758)"),
   i_am_the_worst_one = c(5851603),
   no_i_am_the_worst_one_please = c("Leuciscus aspius (Linnaeus, 1758)"),
-  we_are_alomost_perfect_backbone_kingdom = c("SYNONYM"),
+  we_are_alomost_perfect_backbone_taxonomicStatus = c("SYNONYM"),
   are_you_sure_date_added = c("2018-01-01"),
   i_have_doubts_about_it_verified_key = c(2427091),
   i_remark_it_remarks = c("dummy example 1: backbone_accepted should be updated"),
