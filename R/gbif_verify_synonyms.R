@@ -68,8 +68,6 @@
 #' @importFrom magrittr %<>%
 #' @importFrom tibble as.tibble
 gbif_verify_synonyms <- function(taxa, verified_synonyms) {
-  
-  # 
   # test incoming arguments
   name_col_taxa <- c("backbone_taxonKey","backbone_scientificName",
                 "backbone_acceptedKey","backbone_accepted",
@@ -85,6 +83,7 @@ gbif_verify_synonyms <- function(taxa, verified_synonyms) {
   
   # find new synonyms
   new_synonyms <- taxa %>% 
+    filter(backbone_taxonomicStatus == "SYNONYM") %>%
     filter(!backbone_taxonKey %in% verified_synonyms$backbone_taxonKey) %>% 
     rowwise() %>%
     mutate(date_added = Sys.Date()) %>% ungroup()
