@@ -34,6 +34,7 @@
 #'                        "Lithobates catesbeianus (Shaw, 1802)",
 #'                        "Polystichum luctuosum (Kunze) Moore.",
 #'                        "Apus apus (Linnaeus, 1758)"),
+#'   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", "ACCEPTED"),
 #'   stringsAsFactors = FALSE)
 #' verified_synonyms_in <- data.frame(
 #'   backbone_taxonKey = c(2427092,
@@ -68,9 +69,11 @@
 #' @importFrom tibble as.tibble
 gbif_verify_synonyms <- function(taxa, verified_synonyms) {
   
+  # 
   # test incoming arguments
   name_col_taxa <- c("backbone_taxonKey","backbone_scientificName",
-                "backbone_acceptedKey","backbone_accepted")
+                "backbone_acceptedKey","backbone_accepted",
+                "backbone_taxonomicStatus")
   assert_that(is.data.frame(taxa))
   assert_that(all(name_col_taxa %in% names(taxa)))
   
