@@ -5,13 +5,13 @@
 #' @param fill If set, missing values will be replaced with this value. 
 #' @return A data.frame
 #' @examples 
-#' test1 <- data.frame(taxonKey = c(1, 1, 1, 1),	
+#' test1 <- data.frame(col1 = c(1, 1, 1, 1),	
 #'                 key = c("A", "B", "C", "C"),
 #'                 value = c("R", "S", "T", "X"),
 #'                 stringsAsFactors = FALSE)
 #' spread_with_duplicates(test1, key, value)
 #' # with NAs
-#' test2 <- data.frame(taxonKey = c(1, 1, 1, 2),	
+#' test2 <- data.frame(col1 = c(1, 1, 1, 2),	
 #'                 key = c("A", "C", "C", "A"),
 #'                 value = c("R", "T", "X", "R"),
 #'                 stringsAsFactors = FALSE)
