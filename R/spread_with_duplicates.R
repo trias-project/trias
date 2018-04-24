@@ -9,14 +9,14 @@
 #'                 key = c("A", "B", "C", "C"),
 #'                 value = c("R", "S", "T", "X"),
 #'                 stringsAsFactors = FALSE)
-#' spread_with_duplicates(test1, key, value, by = "taxonKey")
+#' spread_with_duplicates(test1, key, value)
 #' # with NAs
 #' test2 <- data.frame(taxonKey = c(1, 1, 1, 2),	
 #'                 key = c("A", "C", "C", "A"),
 #'                 value = c("R", "T", "X", "R"),
 #'                 stringsAsFactors = FALSE)
-#' spread_with_duplicates(test2, key, value, by = "taxonKey")
-#' spread_with_duplicates(test2, key, value, by = "taxonKey", fill = 0)
+#' spread_with_duplicates(test2, key, value)
+#' spread_with_duplicates(test2, key, value, fill = 0)
 #' @export
 #' @importFrom purrr map map2 reduce
 #' @importFrom dplyr mutate_all filter full_join pull
