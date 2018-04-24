@@ -9,7 +9,6 @@
 #' @param verified_synonyms: a dataframe with at least the following columns:
 #'   \itemize{ \item{backbone_taxonKey} \item{backbone_scientificName}
 #'   \item{backbone_acceptedKey} \item{backbone_accepted}
-#'   \item{backbone_kingdom}{: to be populated from GBIF (is not in taxa)}
 #'   \item{date_added}{: to be populated by function} \item{verified_key}{: to
 #'   be populated manually by expert (not required by this function, but any
 #'   other functionality will use this key so it is good to check its existence)
@@ -47,9 +46,6 @@
 #'   backbone_acceptedKey = c(2427091,
 #'                            4046493,
 #'                            6979),
-#'   backbone_kingdom = c("Animalia",
-#'                        "Plantae",
-#'                        "Plantae"),
 #'   date_added = as.Date(c("2018-01-01",
 #'                          "2018-01-01",
 #'                          "2018-01-01")),
@@ -78,7 +74,7 @@ gbif_verify_synonyms <- function(taxa, verified_synonyms) {
   
   name_col_synonyms <- c("backbone_taxonKey","backbone_scientificName",
                      "backbone_acceptedKey","backbone_accepted",
-                     "backbone_kingdom", "date_added", "verified_key")
+                     "date_added", "verified_key")
   assert_that(is.data.frame(verified_synonyms))
   assert_that(all(name_col_synonyms %in% names(verified_synonyms)))
   
@@ -86,9 +82,7 @@ gbif_verify_synonyms <- function(taxa, verified_synonyms) {
   new_synonyms <- taxa %>% 
     filter(!backbone_taxonKey %in% verified_synonyms$backbone_taxonKey) %>% 
     rowwise() %>%
-    mutate(backbone_kingdom = name_usage(key = backbone_taxonKey,
-                                         return = "data") %>% pull(kingdom),
-           date_added = Sys.Date()) %>% ungroup()
+    mutate(date_added = Sys.Date()) %>% ungroup()
 
   # create df of updated scientificNames 
   updated_scientificName <- verified_synonyms %>%
