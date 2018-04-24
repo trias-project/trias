@@ -3,14 +3,17 @@ context("output_gbif_verify_synonyms")
 
 # correct inputs
 taxa_in <- data.frame(
-  backbone_taxonKey = c(2360181, 2427092, 2651108),
+  backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676),
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
                               "Rana catesbeiana Shaw, 1802",
-                              "Polystichum tsus-simense (Hook.) J.Sm."),
-  backbone_acceptedKey = c(5851603, 2427091, 4046493),
+                              "Polystichum tsus-simense (Hook.) J.Sm.",
+                              "Apus apus (Linnaeus, 1758)"),
+  backbone_acceptedKey = c(5851603, 2427091, 4046493, 5228676),
   backbone_accepted = c("Leuciscus aspius (Linnaeus, 1758)",
                         "Lithobates catesbeianus (Shaw, 1802)",
-                        "Polystichum luctuosum (Kunze) Moore."),
+                        "Polystichum luctuosum (Kunze) Moore.",
+                        "Apus apus (Linnaeus, 1758)"),
+  backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", "ACCEPTED"),
   stringsAsFactors = FALSE)
 
 verified_synonyms_in <- data.frame(
@@ -26,12 +29,12 @@ verified_synonyms_in <- data.frame(
   backbone_acceptedKey = c(2427091,
                            4046493,
                            6979),
-  backbone_kingdom = c("Animalia",
-                       "Plantae",
-                       "Plantae"),
+  backbone_taxonomicStatus = c("SYNONYM", 
+                               "SYNONYM", 
+                               "SYNONYM"),
   date_added = as.Date(c("2018-01-01",
-                 "2018-01-01",
-                 "2018-01-01")),
+                         "2018-01-01",
+                         "2018-01-01")),
   verified_key = c(2427091,
                    4046493,
                    6979),
