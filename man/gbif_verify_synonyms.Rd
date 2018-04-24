@@ -14,7 +14,6 @@ gbif_verify_synonyms(taxa, verified_synonyms)
 \item{verified_synonyms:}{a dataframe with at least the following columns:
 \itemize{ \item{backbone_taxonKey} \item{backbone_scientificName}
 \item{backbone_acceptedKey} \item{backbone_accepted}
-\item{backbone_kingdom}{: to be populated from GBIF (is not in taxa)}
 \item{date_added}{: to be populated by function} \item{verified_key}{: to
 be populated manually by expert (not required by this function, but any
 other functionality will use this key so it is good to check its existence)
@@ -38,14 +37,17 @@ report the changes.
 }
 \examples{
 taxa_in <- data.frame(
-  backbone_taxonKey = c(2360181, 2427092, 2651108),
+  backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676),
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
                               "Rana catesbeiana Shaw, 1802",
-                              "Polystichum tsus-simense (Hook.) J.Sm."),
-  backbone_acceptedKey = c(5851603, 2427091, 4046493),
+                              "Polystichum tsus-simense (Hook.) J.Sm.",
+                              "Apus apus (Linnaeus, 1758)"),
+  backbone_acceptedKey = c(5851603, 2427091, 4046493, 5228676),
   backbone_accepted = c("Leuciscus aspius (Linnaeus, 1758)",
                        "Lithobates catesbeianus (Shaw, 1802)",
-                       "Polystichum luctuosum (Kunze) Moore."),
+                       "Polystichum luctuosum (Kunze) Moore.",
+                       "Apus apus (Linnaeus, 1758)"),
+  backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", "ACCEPTED"),
   stringsAsFactors = FALSE)
 verified_synonyms_in <- data.frame(
   backbone_taxonKey = c(2427092,
@@ -60,9 +62,6 @@ verified_synonyms_in <- data.frame(
   backbone_acceptedKey = c(2427091,
                            4046493,
                            6979),
-  backbone_kingdom = c("Animalia",
-                       "Plantae",
-                       "Plantae"),
   date_added = as.Date(c("2018-01-01",
                          "2018-01-01",
                          "2018-01-01")),
