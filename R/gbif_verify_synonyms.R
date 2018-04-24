@@ -36,29 +36,30 @@
 #'                        "Apus apus (Linnaeus, 1758)"),
 #'   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", "ACCEPTED"),
 #'   stringsAsFactors = FALSE)
-#' verified_synonyms_in <- data.frame(
-#'   backbone_taxonKey = c(2427092,
-#'                         2651108,
-#'                         6723),
-#'   backbone_scientificName = c("Rana catesbeiana Shaw, 1802",
-#'                               "Polystichum tsus-tsus-tsus (Hook.) Captain",
-#'                               "Lemnaceae"),
-#'   backbone_accepted = c("Lithobates dummyus (Batman, 2018)",
-#'                         "Polystichum luctuosum (Kunze) Moore.",
-#'                         "Araceae"),
-#'   backbone_acceptedKey = c(2427091,
-#'                            4046493,
-#'                            6979),
-#'   date_added = as.Date(c("2018-01-01",
-#'                          "2018-01-01",
-#'                          "2018-01-01")),
-#'   verified_key = c(2427091,
-#'                    4046493,
-#'                    6979),
-#'   remarks = c("dummy example 1: backbone_accepted should be updated",
-#'               "dummy example 2: backbone_scientificName should be updated",
-#'               "dummy example 3: nothing should be changed"),
-#'   stringsAsFactors = FALSE)
+# verified_synonyms_in <- data.frame(
+#   backbone_taxonKey = c(2427092,
+#                         2651108,
+#                         6723),
+#   backbone_scientificName = c("Rana catesbeiana Shaw, 1802",
+#                               "Polystichum tsus-tsus-tsus (Hook.) Captain",
+#                               "Lemnaceae"),
+#   backbone_accepted = c("Lithobates dummyus (Batman, 2018)",
+#                         "Polystichum luctuosum (Kunze) Moore.",
+#                         "Araceae"),
+#   backbone_acceptedKey = c(2427091,
+#                            4046493,
+#                            6979),
+#   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM"),
+#   date_added = as.Date(c("2018-01-01",
+#                          "2018-01-01",
+#                          "2018-01-01")),
+#   verified_key = c(2427091,
+#                    4046493,
+#                    6979),
+#   remarks = c("dummy example 1: backbone_accepted should be updated",
+#               "dummy example 2: backbone_scientificName should be updated",
+#               "dummy example 3: nothing should be changed"),
+#   stringsAsFactors = FALSE)
 #' gbif_verify_synonyms(taxa = taxa_in, verified_synonyms = verified_synonyms_in)
 #' @export
 #' @importFrom assertthat assert_that
@@ -77,7 +78,7 @@ gbif_verify_synonyms <- function(taxa, verified_synonyms) {
   
   name_col_synonyms <- c("backbone_taxonKey","backbone_scientificName",
                      "backbone_acceptedKey","backbone_accepted",
-                     "date_added", "verified_key")
+                     "backbone_taxonomicStatus", "date_added", "verified_key")
   assert_that(is.data.frame(verified_synonyms))
   assert_that(all(name_col_synonyms %in% names(verified_synonyms)))
   
