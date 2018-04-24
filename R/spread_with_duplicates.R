@@ -22,8 +22,10 @@
 #' @importFrom dplyr mutate_all filter full_join pull
 #' @importFrom magrittr %>%
 #' @importFrom tidyselect vars_pull enquo
-spread_with_duplicates <- function(.data, key, value, by, fill = NA){
+spread_with_duplicates <- function(.data, key, value, fill = NA){
   key_var <- vars_pull(names(.data), !! enquo(key))
+  value_var <- vars_pull(names(.data), !! enquo(value))
+  by = colnames(.data)[which(!colnames(.data) %in% c(key_var,value_var))]
   col <- .data %>% 
     pull(key_var) %>% 
     unique()
