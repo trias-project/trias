@@ -1,4 +1,4 @@
-context("input_gbif_verify_synonyms")
+context("input_verify_synonyms")
 
 # correct inputs
 taxa_in <- data.frame(
@@ -43,19 +43,19 @@ verified_synonyms_in <- data.frame(
   stringsAsFactors = FALSE)
 
 testthat::test_that("taxa is a data.frames", {
-  expect_error(gbif_verify_synonyms(taxa = 3, 
+  expect_error(verify_synonyms(taxa = 3, 
                                     verified_synonyms = data.frame(test = c(23))), 
                "taxa is not a data frame")
-  expect_error(gbif_verify_synonyms(taxa = c("23"), 
+  expect_error(verify_synonyms(taxa = c("23"), 
                                     verified_synonyms = data.frame(test = c(23))), 
                "taxa is not a data frame")})
 
 
 testthat::test_that("verified_synonyms is a data.frame", {
-  expect_error(gbif_verify_synonyms(taxa = taxa_in, 
+  expect_error(verify_synonyms(taxa = taxa_in, 
                                     verified_synonyms = 3),
                "verified_synonyms is not a data frame")
-  expect_error(gbif_verify_synonyms(taxa = taxa_in, 
+  expect_error(verify_synonyms(taxa = taxa_in, 
                                     verified_synonyms = c("3")),
                "verified_synonyms is not a data frame")})
 
@@ -85,15 +85,15 @@ taxa_test3 <- data.frame(
   stringsAsFactors = FALSE)
 
 testthat::test_that("taxa column names are correct", {
-expect_error(gbif_verify_synonyms(taxa = taxa_test1, 
+expect_error(verify_synonyms(taxa = taxa_test1, 
                                   verified_synonyms = verified_synonyms_in),
              "Elements 1 of name_col_taxa %in% names(taxa) are not true", 
              fixed = TRUE)
-expect_error(gbif_verify_synonyms(taxa = taxa_test2, 
+expect_error(verify_synonyms(taxa = taxa_test2, 
                                   verified_synonyms = verified_synonyms_in),
              "Elements 1, 2, 3, 4, 5 of name_col_taxa %in% names(taxa) are not true",
              fixed = TRUE)
-expect_error(gbif_verify_synonyms(taxa = taxa_test3, 
+expect_error(verify_synonyms(taxa = taxa_test3, 
                                   verified_synonyms = verified_synonyms_in),
              "Elements 3 of name_col_taxa %in% names(taxa) are not true",
              fixed = TRUE)})
@@ -133,17 +133,17 @@ verified_syno_test3 <- data.frame(
   stringsAsFactors = FALSE)
 
 testthat::test_that("verified_synonyms column names are correct", {
-  expect_error(gbif_verify_synonyms(taxa = taxa_in, 
+  expect_error(verify_synonyms(taxa = taxa_in, 
                                     verified_synonyms = verified_syno_test1),
                paste("Elements 1 of name_col_synonyms %in%", 
                      "names(verified_synonyms) are not true"), 
                fixed = TRUE)
-  expect_error(gbif_verify_synonyms(taxa = taxa_in, 
+  expect_error(verify_synonyms(taxa = taxa_in, 
                                     verified_synonyms = verified_syno_test2),
                paste("Elements 1, 2, 3, 4, 5, 6, 7 of name_col_synonyms %in%", 
                      "names(verified_synonyms) are not true"),
                fixed = TRUE)
-  expect_error(gbif_verify_synonyms(taxa = taxa_in, 
+  expect_error(verify_synonyms(taxa = taxa_in, 
                                     verified_synonyms = verified_syno_test3),
                paste("Elements 6 of name_col_synonyms %in%", 
                      "names(verified_synonyms) are not true"),

@@ -1,5 +1,5 @@
 #' @importFrom readr read_tsv
-context("output_gbif_verify_synonyms")
+context("output_verify_synonyms")
 
 # correct inputs
 taxa_in <- data.frame(
@@ -44,7 +44,7 @@ verified_synonyms_in <- data.frame(
   stringsAsFactors = FALSE)
 
 # correct output
-output <- gbif_verify_synonyms(taxa = taxa_in, 
+output <- verify_synonyms(taxa = taxa_in, 
                                verified_synonyms = verified_synonyms_in)
 
 testthat::test_that("output type", {
@@ -57,7 +57,7 @@ testthat::test_that("output type", {
 
 
 output_verified_synonyms <- 
-  readr::read_tsv(file = paste0("./data_test_output_gbif_verify_synonyms/",
+  readr::read_tsv(file = paste0("./data_test_output_verify_synonyms/",
                                "output_verified_synonyms.tsv"),
                   col_types = readr::cols(
                     date_added = readr::col_date(format = "%Y-%m-%d"),
@@ -65,14 +65,14 @@ output_verified_synonyms <-
                     backbone_acceptedKey = readr::col_number(),
                     verified_key = readr::col_number()))
 output_new_synonyms <- 
-  readr::read_tsv(file = paste0("./data_test_output_gbif_verify_synonyms/",
+  readr::read_tsv(file = paste0("./data_test_output_verify_synonyms/",
                                 "output_new_synonyms.tsv"),
                   col_types = readr::cols(
                     date_added = readr::col_date(format = "%Y-%m-%d"),
                     backbone_taxonKey = readr::col_number(),
                     backbone_acceptedKey = readr::col_number()))
 output_unused_synonyms <- 
-  readr::read_tsv(file = paste0("./data_test_output_gbif_verify_synonyms/",
+  readr::read_tsv(file = paste0("./data_test_output_verify_synonyms/",
                                 "output_unused_synonyms.tsv"),
                   col_types = readr::cols(
                     date_added = readr::col_date(format = "%Y-%m-%d"),
@@ -80,10 +80,10 @@ output_unused_synonyms <-
                     backbone_acceptedKey = readr::col_number(),
                     verified_key = readr::col_number()))
 output_updated_scientificName <- 
-  readr::read_tsv(file = paste0("./data_test_output_gbif_verify_synonyms/",
+  readr::read_tsv(file = paste0("./data_test_output_verify_synonyms/",
                                 "output_updated_scientificName.tsv"))
 output_updated_accepted <- 
-  readr::read_tsv(file = paste0("./data_test_output_gbif_verify_synonyms/",
+  readr::read_tsv(file = paste0("./data_test_output_verify_synonyms/",
                                 "output_updated_accepted.tsv"))
 
 testthat::test_that("output data.frames are correct", {
