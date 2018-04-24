@@ -11,6 +11,8 @@
 #'                 value = c("R", "S", "T", "X"),
 #'                 stringsAsFactors = FALSE)
 #' spread_with_duplicates(test1, key, value)
+#' spread_with_duplicates(test1, 3, 4)
+#' spread_with_duplicates(test1, -2, -1)
 #' # with NAs
 #' test2 <- data.frame(col1 = c(1, 1, 1, 2),	
 #'                 key = c("A", "C", "C", "A"),
