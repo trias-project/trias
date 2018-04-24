@@ -6,6 +6,7 @@
 #' @return A data.frame
 #' @examples 
 #' test1 <- data.frame(col1 = c(1, 1, 1, 1),	
+#'                 col2 = c("H", "H", "H", "H"),
 #'                 key = c("A", "B", "C", "C"),
 #'                 value = c("R", "S", "T", "X"),
 #'                 stringsAsFactors = FALSE)
