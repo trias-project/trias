@@ -1,0 +1,86 @@
+context("test_output_spread_with_duplicates")
+
+test0 <- data.frame(col1 = c(1, 1, 1),
+                    col2 = c("H", "H", "H"),
+                    key = c("A", "B", "C"),
+                    value = c("R", "S", "T"),
+                    stringsAsFactors = FALSE)
+
+test1 <- data.frame(col1 = c(1, 1, 1, 1),
+                    col2 = c("H", "H", "H", "H"),
+                    key = c("A", "B", "C", "C"),
+                    value = c("R", "S", "T", "X"),
+                    stringsAsFactors = FALSE)
+
+test2 <- data.frame(col1 = c(1,1,1,1),
+                    col2  = c("H", "H", "H", "H"),
+                    key = c("A", "B", "C", "C"),
+                    value = c(2, 3, 1, 8),
+                    stringsAsFactors = FALSE)
+
+test3 <- data.frame(col1 = c(1, 1, 1, 2),	
+                    key = c("A", "C", "C", "A"),
+                    value = c("R", "T", "X", "R"),
+                    stringsAsFactors = FALSE)
+
+testthat::test_that("no duplicates present", {
+  expect_equal(spread_with_duplicates(test0, key, value), spread(test0, key, value))
+  expect_equal(spread_with_duplicates(test0, 3, 4), spread(test0, key, value))
+  expect_equal(spread_with_duplicates(test0, -2, -1), spread(test0, key, value))
+})
+
+testthat::test_that("keep duplicates", {
+  expect_equal(spread_with_duplicates(test1, key, value) %>% nrow(), 2)
+  expect_equal(spread_with_duplicates(test1, 3, 4) %>% nrow(), 2)
+  expect_equal(spread_with_duplicates(test1, -2, -1) %>% nrow(), 2)
+  expect_equal(spread_with_duplicates(test2, key, value) %>% nrow(), 2)
+  expect_equal(spread_with_duplicates(test2, 3, 4) %>% nrow(), 2)
+  expect_equal(spread_with_duplicates(test2, -2, -1) %>% nrow(), 2)
+  expect_equal(test1 %>% 
+                 spread_with_duplicates(key, value) %>% 
+                 pull(C), 
+               test1 %>% filter(key == "C") %>% pull(value))
+  expect_equal(test2 %>% 
+                 spread_with_duplicates(key, value) %>% 
+                 pull(C), 
+               test2 %>% filter(key == "C") %>% pull(value))
+})
+
+testthat::test_that("handle NAs", {
+  expect_true("No_idea" %in%
+                (test3 %>% spread_with_duplicates(key, value, 
+                                                 fill = "No_idea") %>% 
+                pull(C)))
+})
+
+testthat::test_that("apply aggregate function", {
+  expect_equal(test1 %>%
+                 spread_with_duplicates(key, value, 
+                                        aggfunc = str_c, collapse = "-") %>%
+                 pull(C), 
+               test1 %>% 
+                 filter(key == "C") %>% 
+                 pull(value) %>% 
+                 str_c(collapse = "-"))
+  expect_equal(test2 %>%
+                 spread_with_duplicates(key, value, 
+                                        aggfunc = max) %>% 
+                 pull(C),
+               test2 %>% 
+                 filter(key == "C") %>% 
+                 summarize(max = max(value)) %>% 
+                 pull())
+  expect_equal(test2 %>%
+                 spread_with_duplicates(key, value, 
+                                        aggfunc = mean) %>% 
+                 pull(C),
+               test2 %>% 
+                 filter(key == "C") %>% 
+                 summarize(max = mean(value)) %>% 
+                 pull())
+  expect_equal(test2 %>%
+                 spread_with_duplicates(key, value, 
+                                        aggfunc = length) %>% pull(C),
+               test2 %>% 
+                 filter(key == "C") %>% nrow())
+})
