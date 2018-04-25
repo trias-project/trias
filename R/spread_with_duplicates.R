@@ -1,9 +1,9 @@
 #' Spread a key-value pair across multiple columns in presence of duplicates
 #' 
-#' @param .data A dataframe
-#' @param key,value Column names or positions
-#' @param fill If set, missing values will be replaced with this value
-#' @param aggfunc function to aggregate key duplicates. 
+#' @param .data A dataframe.
+#' @param key,value Column names or positions.
+#' @param fill If set, missing values will be replaced with this value.
+#' @param aggfunc Aggregation function. 
 #' Default: NA (keep dulicates)
 #' @return A data.frame
 #' @examples 
