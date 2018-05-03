@@ -1,6 +1,6 @@
 #' Spread a key-value pair across multiple columns in presence of duplicates
 #' 
-#' @param .data A dataframe.
+#' @param data A dataframe.
 #' @param key,value Column names or positions.
 #' @param fill If set, missing values will be replaced with this value.
 #' @param aggfunc Aggregation function. 
@@ -38,42 +38,42 @@
 #' @importFrom rlang sym
 #' @importFrom dplyr mutate_all filter full_join pull %>% rename one_of
 #' @importFrom tidyselect vars_pull enquo
-spread_with_duplicates <- function(.data, key, value, fill = NA, 
+spread_with_duplicates <- function(data, key, value, fill = NA, 
                                    aggfunc = NA, ...){
   args = list(...)
-  key_var <- vars_pull(names(.data), !! enquo(key))
-  value_var <- vars_pull(names(.data), !! enquo(value))
-  by = colnames(.data)[which(!colnames(.data) %in% c(key_var,value_var))]
-  col <- .data %>% 
+  key_var <- vars_pull(names(data), !! enquo(key))
+  value_var <- vars_pull(names(data), !! enquo(value))
+  by = colnames(data)[which(!colnames(data) %in% c(key_var,value_var))]
+  col <- data %>% 
     pull(key_var) %>% 
     unique()
-  .data <- map(
+  data <- map(
     col, 
-    function(x) .data %>% 
+    function(x) data %>% 
       filter(!! sym(key_var) == x)) %>%
     map2(col, ~ change_colname(.x, .y, value_var, key_var))  %>%
     map2(col, ~ apply_aggfunc(.x, .y,  aggfunc = aggfunc, args)) %>%
     reduce(full_join, by = by)
-  .data
+  data
   if (!is.na(fill)){
-    .data <- .data %>% mutate_all(funs(replace(., is.na(.), fill)))
+    data <- data %>% mutate_all(funs(replace(., is.na(.), fill)))
   }
-  return(.data)
+  return(data)
 }
 
-change_colname <- function(.data, new_col, value, old_col){
-  .data %>% 
+change_colname <- function(data, new_col, value, old_col){
+  data %>% 
     rename(!!new_col := !!value) %>%
     select(-one_of(old_col))
 }
 
-apply_aggfunc <- function(.data, col_name,  aggfunc, args){
+apply_aggfunc <- function(data, col_name,  aggfunc, args){
   if (is.function(aggfunc)) {
-    args[["x"]] <- .data %>% pull(!! quo(col_name))
+    args[["x"]] <- data %>% pull(!! quo(col_name))
     aggregated_value <- do.call(aggfunc, args = args)
-    .data %>% mutate(!!col_name := aggregated_value) %>%
+    data %>% mutate(!!col_name := aggregated_value) %>%
       distinct()
   } else {
-    .data
+    data
   }
 }

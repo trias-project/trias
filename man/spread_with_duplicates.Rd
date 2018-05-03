@@ -4,10 +4,10 @@
 \alias{spread_with_duplicates}
 \title{Spread a key-value pair across multiple columns in presence of duplicates}
 \usage{
-spread_with_duplicates(.data, key, value, fill = NA, aggfunc = NA, ...)
+spread_with_duplicates(data, key, value, fill = NA, aggfunc = NA, ...)
 }
 \arguments{
-\item{.data}{A dataframe.}
+\item{data}{A dataframe.}
 
 \item{key, value}{Column names or positions.}
 
