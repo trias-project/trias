@@ -49,6 +49,10 @@ testthat::test_that("no duplicates present", {
   expect_equal(
     spread(test4, key = stock, value = price),
     spread_with_duplicates(test4, key = stock, value = price))
+  expect_equal(
+    spread(test4, key = time, value = price),
+    spread_with_duplicates(test4, key = time, value = price))
+  
 })
 
 testthat::test_that("keep duplicates", {
