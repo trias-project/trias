@@ -35,8 +35,8 @@
 #' spread_with_duplicates(test2, key, value, aggfunc = mean)
 #' @export
 #' @importFrom purrr map map2 reduce
-#' @importFrom dplyr mutate_all filter full_join pull
-#' @importFrom magrittr %>%
+#' @importFrom rlang sym
+#' @importFrom dplyr mutate_all filter full_join pull %>% rename one_of
 #' @importFrom tidyselect vars_pull enquo
 spread_with_duplicates <- function(.data, key, value, fill = NA, 
                                    aggfunc = NA, ...){
@@ -47,26 +47,29 @@ spread_with_duplicates <- function(.data, key, value, fill = NA,
   col <- .data %>% 
     pull(key_var) %>% 
     unique()
-  .data <- map(col, function(x) .data %>% filter(key == x)) %>%
-    map2(col, ~ change_colname(.x, .y, value)) %>%
+  .data <- map(
+    col, 
+    function(x) .data %>% 
+      filter(!! sym(key_var) == x)) %>%
+    map2(col, ~ change_colname(.x, .y, value_var, key_var))  %>%
     map2(col, ~ apply_aggfunc(.x, .y,  aggfunc = aggfunc, args)) %>%
     reduce(full_join, by = by)
-  
+  .data
   if (!is.na(fill)){
     .data <- .data %>% mutate_all(funs(replace(., is.na(.), fill)))
   }
   return(.data)
 }
 
-change_colname <- function(.data, new_colname, value){
+change_colname <- function(.data, new_col, value, old_col){
   .data %>% 
-    rename(!!new_colname := value) %>%
-    select(-key)
+    rename(!!new_col := !!value) %>%
+    select(-one_of(old_col))
 }
 
 apply_aggfunc <- function(.data, col_name,  aggfunc, args){
   if (is.function(aggfunc)) {
-    args[["x"]] <- .data %>% pull(col_name)
+    args[["x"]] <- .data %>% pull(!! quo(col_name))
     aggregated_value <- do.call(aggfunc, args = args)
     .data %>% mutate(!!col_name := aggregated_value) %>%
       distinct()

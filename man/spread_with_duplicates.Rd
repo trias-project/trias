@@ -4,14 +4,17 @@
 \alias{spread_with_duplicates}
 \title{Spread a key-value pair across multiple columns in presence of duplicates}
 \usage{
-spread_with_duplicates(.data, key, value, fill = NA)
+spread_with_duplicates(.data, key, value, fill = NA, aggfunc = NA, ...)
 }
 \arguments{
-\item{.data}{A dataframe}
+\item{.data}{A dataframe.}
 
-\item{key, value}{Column names or positions}
+\item{key, value}{Column names or positions.}
 
 \item{fill}{If set, missing values will be replaced with this value.}
+
+\item{aggfunc}{Aggregation function. 
+Default: NA (keep dulicates)}
 }
 \value{
 A data.frame
@@ -28,11 +31,22 @@ test1 <- data.frame(col1 = c(1, 1, 1, 1),
 spread_with_duplicates(test1, key, value)
 spread_with_duplicates(test1, 3, 4)
 spread_with_duplicates(test1, -2, -1)
+
 # with NAs
 test2 <- data.frame(col1 = c(1, 1, 1, 2),	
                 key = c("A", "C", "C", "A"),
                 value = c("R", "T", "X", "R"),
                 stringsAsFactors = FALSE)
 spread_with_duplicates(test2, key, value)
-spread_with_duplicates(test2, key, value, fill = 0)
+spread_with_duplicates(test2, key, value, fill = "No idea")
+
+# apply aggregate function
+test3 <- data.frame(col1 = c(1,1,1,1),
+  col2  = c("H", "H", "H", "H"),
+  key = c("A", "B", "C", "C"),
+  value = c(2, 3, 1, 8),
+  stringsAsFactors = FALSE)
+spread_with_duplicates(test1, key, value, aggfunc = str_c, collapse = "-")
+spread_with_duplicates(test2, key, value, aggfunc = min)
+spread_with_duplicates(test2, key, value, aggfunc = mean)
 }
