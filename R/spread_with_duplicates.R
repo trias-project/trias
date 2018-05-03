@@ -33,6 +33,18 @@
 #' spread_with_duplicates(test1, key, value, aggfunc = str_c, collapse = "-")
 #' spread_with_duplicates(test2, key, value, aggfunc = min)
 #' spread_with_duplicates(test2, key, value, aggfunc = mean)
+#' 
+#' # same output of spread() if no more than one value per key
+#' library(dplyr)
+#' stocks <- data.frame(
+#'  time = as.Date('2009-01-01') + 0:9,
+#'  X = rnorm(10, 0, 1),
+#'  Y = rnorm(10, 0, 2),
+#'  Z = rnorm(10, 0, 4)
+#' )
+#' stocksm <- stocks %>% gather(stock, price, -time)
+#' stocksm %>% spread_with_duplicates(stock, price)
+#' stocksm %>% spread(stock, key = stock, value = price)
 #' @export
 #' @importFrom purrr map map2 reduce
 #' @importFrom rlang sym

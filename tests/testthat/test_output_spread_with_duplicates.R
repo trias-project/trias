@@ -23,10 +23,20 @@ test3 <- data.frame(col1 = c(1, 1, 1, 2),
                     value = c("R", "T", "X", "R"),
                     stringsAsFactors = FALSE)
 
+test4 <- data.frame(
+  time = as.Date('2009-01-01') + 0:9,
+  X = rnorm(10, 0, 1),
+  Y = rnorm(10, 0, 2),
+  Z = rnorm(10, 0, 4)
+)
+test4 <- tidyr::gather(test4, stock, price, -time)
+
 testthat::test_that("no duplicates present", {
   expect_equal(spread_with_duplicates(test0, key, value), spread(test0, key, value))
   expect_equal(spread_with_duplicates(test0, 3, 4), spread(test0, key, value))
   expect_equal(spread_with_duplicates(test0, -2, -1), spread(test0, key, value))
+  expect_equal(spread(test4, key = stock, value = price),
+               spread_with_duplicates(test4, key = stock, value = price))
 })
 
 testthat::test_that("keep duplicates", {
