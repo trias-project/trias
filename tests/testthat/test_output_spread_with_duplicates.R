@@ -1,27 +1,35 @@
 context("test_output_spread_with_duplicates")
 
-test0 <- data.frame(col1 = c(1, 1, 1),
-                    col2 = c("H", "H", "H"),
-                    key = c("A", "B", "C"),
-                    value = c("R", "S", "T"),
-                    stringsAsFactors = FALSE)
+test0 <- data.frame(
+  col1 = c(1, 1, 1),
+  col2 = c("H", "H", "H"),
+  key = c("A", "B", "C"),
+  value = c("R", "S", "T"),
+  stringsAsFactors = FALSE
+)
 
-test1 <- data.frame(col1 = c(1, 1, 1, 1),
-                    col2 = c("H", "H", "H", "H"),
-                    key = c("A", "B", "C", "C"),
-                    value = c("R", "S", "T", "X"),
-                    stringsAsFactors = FALSE)
+test1 <- data.frame(
+  col1 = c(1, 1, 1, 1),
+  col2 = c("H", "H", "H", "H"),
+  key = c("A", "B", "C", "C"),
+  value = c("R", "S", "T", "X"),
+  stringsAsFactors = FALSE
+)
 
-test2 <- data.frame(col1 = c(1,1,1,1),
-                    col2  = c("H", "H", "H", "H"),
-                    key = c("A", "B", "C", "C"),
-                    value = c(2, 3, 1, 8),
-                    stringsAsFactors = FALSE)
+test2 <- data.frame(
+  col1 = c(1,1,1,1),
+  col2  = c("H", "H", "H", "H"),
+  key = c("A", "B", "C", "C"),
+  value = c(2, 3, 1, 8),
+  stringsAsFactors = FALSE
+)
 
-test3 <- data.frame(col1 = c(1, 1, 1, 2),	
-                    key = c("A", "C", "C", "A"),
-                    value = c("R", "T", "X", "R"),
-                    stringsAsFactors = FALSE)
+test3 <- data.frame(
+  col1 = c(1, 1, 1, 2),	
+  key = c("A", "C", "C", "A"),
+  value = c("R", "T", "X", "R"),
+  stringsAsFactors = FALSE
+)
 
 test4 <- data.frame(
   time = as.Date('2009-01-01') + 0:9,
