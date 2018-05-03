@@ -83,7 +83,7 @@ spread_with_duplicates <- function(data, key, value, fill = NA,
 
 change_colname <- function(data, new_col, value, old_col){
   data %>% 
-    rename(!!new_col := !!value) %>%
+    rename(!!as.character(new_col) := !!value) %>%
     select(-one_of(old_col))
 }
 
