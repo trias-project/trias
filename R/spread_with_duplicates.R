@@ -76,7 +76,10 @@ spread_with_duplicates <- function(data, key, value, fill = NA,
     function(x) data %>% 
       filter(!! sym(key_var) == x)) %>%
     map2(col, ~ change_colname(.x, .y, value_var, key_var))  %>%
-    map2(col, ~ apply_aggfunc(.x, .y,  aggfunc = aggfunc, args)) %>%
+    map2(col, ~ apply_aggfunc(.x, .y, 
+                              group_by_col = by, 
+                              aggfunc = aggfunc, 
+                              args)) %>%
     reduce(full_join, by = by)
   data
   if (!is.na(fill)){
@@ -91,12 +94,14 @@ change_colname <- function(data, new_col, value, old_col){
     select(-one_of(old_col))
 }
 
-apply_aggfunc <- function(data, col_name,  aggfunc, args){
+apply_aggfunc <- function(data, col_name, group_by_col,  aggfunc, args) {
   if (is.function(aggfunc)) {
-    args[["x"]] <- data %>% pull(!! quo(col_name))
-    aggregated_value <- do.call(aggfunc, args = args)
-    data %>% mutate(!!col_name := aggregated_value) %>%
-      distinct()
+    data <- data %>%
+      group_by(!!! syms(group_by_col)) %>% 
+      summarize(
+        !! col_name := do.call(
+          aggfunc, args = c(list(!! sym(col_name)), args) %>% compact)
+      ) %>% ungroup()
   } else {
     data
   }
