@@ -60,7 +60,9 @@
 #' )
 #' stocksm <- stocks %>% gather(stock, price, -time)
 #' stocksm %>% spread_with_duplicates(stock, price)
-#' stocksm %>% spread(stock, stock, price)
+#' stocksm %>% spread(stock, price)
+#' stocksm %>% spread_with_duplicates(time, price)
+#' stocksm %>% spread(time, price)
 #' }
 spread_with_duplicates <- function(data, key, value, fill = NA, 
                                    aggfunc = NA, ...){
