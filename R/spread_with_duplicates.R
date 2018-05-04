@@ -65,7 +65,7 @@
 #' stocksm %>% spread(time, price)
 #' }
 spread_with_duplicates <- function(data, key, value, fill = NA, 
-                                   aggfunc = NA, ...){
+                                   aggfunc = NA, ...) {
   args = list(...)
   key_var <- vars_pull(names(data), !! enquo(key))
   value_var <- vars_pull(names(data), !! enquo(value))
@@ -90,7 +90,7 @@ spread_with_duplicates <- function(data, key, value, fill = NA,
   return(data)
 }
 
-change_colname <- function(data, new_col, value, old_col){
+change_colname <- function(data, new_col, value, old_col) {
   data %>% 
     rename(!!as.character(new_col) := !!value) %>%
     select(-one_of(old_col))
