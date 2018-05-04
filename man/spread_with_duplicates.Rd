@@ -13,11 +13,10 @@ spread_with_duplicates(data, key, value, fill = NA, aggfunc = NA, ...)
 
 \item{fill}{If set, missing values will be replaced with this value.}
 
-\item{aggfunc}{Aggregation function. 
-Default: NA (keep dulicates)}
+\item{aggfunc}{Aggregation function. Default: NA (keep dulicates)}
 }
 \value{
-A data.frame
+A data.frame.
 }
 \description{
 Spread a key-value pair across multiple columns in presence of duplicates
@@ -34,6 +33,7 @@ stringsAsFactors = FALSE
 spread_with_duplicates(test1, key, value)
 spread_with_duplicates(test1, 3, 4)
 spread_with_duplicates(test1, -2, -1)
+spread_with_duplicates(test1, "key", "value")
 
 # with NAs
 test2 <- data.frame(
