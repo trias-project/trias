@@ -3,9 +3,17 @@
 #' @param data A dataframe.
 #' @param key,value Column names or positions.
 #' @param fill If set, missing values will be replaced with this value.
-#' @param aggfunc Aggregation function. 
-#' Default: NA (keep dulicates)
-#' @return A data.frame
+#' @param aggfunc Aggregation function. Default: NA (keep dulicates)
+#' 
+#' @return A data.frame.
+#' 
+#' @export
+#' 
+#' @importFrom purrr map map2 reduce
+#' @importFrom rlang sym
+#' @importFrom dplyr mutate_all filter full_join pull %>% rename one_of
+#' @importFrom tidyselect vars_pull enquo
+#' 
 #' @examples 
 #' \dontrun{
 #' test1 <- data.frame(
@@ -53,11 +61,6 @@
 #' stocksm %>% spread_with_duplicates(stock, price)
 #' stocksm %>% spread(stock, stock, price)
 #' }
-#' @export
-#' @importFrom purrr map map2 reduce
-#' @importFrom rlang sym
-#' @importFrom dplyr mutate_all filter full_join pull %>% rename one_of
-#' @importFrom tidyselect vars_pull enquo
 spread_with_duplicates <- function(data, key, value, fill = NA, 
                                    aggfunc = NA, ...){
   args = list(...)
