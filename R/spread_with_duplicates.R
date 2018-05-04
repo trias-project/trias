@@ -9,9 +9,9 @@
 #' 
 #' @export
 #' 
-#' @importFrom purrr map map2 reduce
+#' @importFrom purrr map map2 reduce compact
 #' @importFrom rlang sym
-#' @importFrom dplyr mutate_all filter full_join pull %>% rename one_of
+#' @importFrom dplyr mutate_all filter full_join pull %>% rename one_of group_by
 #' @importFrom tidyselect vars_pull enquo
 #' 
 #' @examples 
