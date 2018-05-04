@@ -26,6 +26,7 @@
 #' spread_with_duplicates(test1, key, value)
 #' spread_with_duplicates(test1, 3, 4)
 #' spread_with_duplicates(test1, -2, -1)
+#' spread_with_duplicates(test1, "key", "value")
 #' 
 #' # with NAs
 #' test2 <- data.frame(
