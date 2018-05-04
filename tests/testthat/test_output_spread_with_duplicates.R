@@ -39,6 +39,10 @@ test4 <- data.frame(
 )
 test4 <- tidyr::gather(test4, stock, price, -time)
 
+test5 <- test4
+# two different price values for same time - stock combination
+test5[2, 1] <- as.Date('2009-01-01')  
+
 testthat::test_that("no duplicates present", {
   expect_equal(
     spread_with_duplicates(test0, key, value), spread(test0, key, value))
@@ -95,6 +99,11 @@ testthat::test_that("handle NAs", {
 testthat::test_that("apply aggregate function", {
   expect_equal(
     test1 %>%
+      spread_with_duplicates(key, value, aggfunc = paste, collapse = "-") %>%
+      pull(C), 
+    test1 %>% filter(key == "C") %>% pull(value) %>% paste(collapse = "-"))
+  expect_equal(
+    test1 %>%
       spread_with_duplicates(key, value, aggfunc = str_c, collapse = "-") %>%
       pull(C), 
     test1 %>% filter(key == "C") %>% pull(value) %>% str_c(collapse = "-"))
@@ -107,8 +116,17 @@ testthat::test_that("apply aggregate function", {
     test2 %>% 
       spread_with_duplicates(key, value, aggfunc = mean) %>% 
       pull(C),
-    test2 %>% filter(key == "C") %>% summarize(max = mean(value)) %>% pull())
+    test2 %>% filter(key == "C") %>% summarize(mean = mean(value)) %>% pull())
   expect_equal(
     test2 %>% spread_with_duplicates(key, value, aggfunc = length) %>% pull(C),
     test2 %>% filter(key == "C") %>% nrow())
+  expect_equal(
+    test5 %>% 
+      spread_with_duplicates(stock, price, aggfunc = mean) %>% 
+      filter(time == as.Date("2009-01-01")) %>% 
+      select("X"), 
+    test5 %>% 
+      filter(stock == "X") %>% 
+      filter(time == as.Date("2009-01-01")) %>%
+      summarize(X = mean(price)))
 })
