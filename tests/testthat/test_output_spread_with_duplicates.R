@@ -74,6 +74,17 @@ testthat::test_that("keep duplicates", {
     test2 %>% filter(key == "C") %>% pull(value))
 })
 
+testthat::test_that("key and value columns quoted", {
+  expect_equal(
+    spread_with_duplicates(test1, "key", "value"),
+    spread_with_duplicates(test1, key, value)
+  )
+  expect_equal(
+    spread_with_duplicates(test1, "key", value),
+    spread_with_duplicates(test1, key, "value")
+  )
+})
+
 testthat::test_that("handle NAs", {
   expect_true(
     "No_idea" %in%
