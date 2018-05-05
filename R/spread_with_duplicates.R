@@ -1,7 +1,14 @@
-#' Spread a key-value pair across multiple columns in presence of duplicates
+#' Spread key-value pairs across multiple columns.
 #' 
+#' @description This function spread one or more key-value pairs across multiple columns.
+#' 
+#' If only one value exists per key, then this functions is the same as `tidyr::spread()`.
+#' Otherwise, aggregation function `aggfunc` is applied. 
+#' If no function is passed, then the key-value(s) are spread on multiple rows.
+
 #' @param data A dataframe.
-#' @param key,value Column names or positions.
+#' @param key,value Column names or positions. This is passed to [`tidyselect::vars_pull()`](http://127.0.0.1:45083/help/library/tidyselect/html/vars_pull.html).
+#' These arguments are passed by expression and support quasiquotation (you can unquote column names or column positions)
 #' @param fill If set, missing values will be replaced with this value.
 #' @param aggfunc Aggregation function. Default: NA (keep dulicates)
 #' 
