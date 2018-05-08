@@ -43,6 +43,10 @@ test5 <- test4
 # two different price values for same time - stock combination
 test5[2, 1] <- as.Date('2009-01-01')  
 
+test6 <- data.frame(row = rep(c(1, 51), each = 3),
+                    var = c("Sepal.Length", "Species", "Species_num"),
+                    value = c(5.1, "setosa", 1, 7.0, "versicolor", 2))
+
 testthat::test_that("no duplicates present", {
   expect_equal(
     spread_with_duplicates(test0, key, value), spread(test0, key, value))
@@ -129,4 +133,11 @@ testthat::test_that("apply aggregate function", {
       filter(stock == "X") %>% 
       filter(time == as.Date("2009-01-01")) %>%
       summarize(X = mean(price)))
+})
+
+testthat::test_that("test convert equal TRUE", {
+  expect_equal(test6 %>% 
+                 spread_with_duplicates(var, value, convert = TRUE),
+               test6 %>% 
+                 spread(var, value, convert = TRUE))
 })
