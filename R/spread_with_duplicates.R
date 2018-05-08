@@ -72,31 +72,34 @@
 #' stocksm %>% spread(time, price)
 #' }
 spread_with_duplicates <- function(data, key, value, fill = NA, 
-                                   aggfunc = NA, ...) {
+                                        convert = FALSE, aggfunc = NA, ...) {
   args = list(...)
   key_var <- vars_pull(names(data), !! enquo(key))
   value_var <- vars_pull(names(data), !! enquo(value))
   by = colnames(data)[which(!colnames(data) %in% c(key_var,value_var))]
   col <- data %>% 
     pull(key_var) %>% 
-    unique()
+    unique() %>%
+    as.character()
+  
   data <- map(
     col, 
     function(x) data %>% 
       filter(!! sym(key_var) == x)) %>%
     map2(col, ~ change_colname(.x, .y, value_var, key_var))  %>%
     map2(col, ~ apply_aggfunc(.x, .y, 
-                              group_by_col = by, 
-                              aggfunc = aggfunc, 
-                              args)) %>%
+                                   group_by_col = by, 
+                                   aggfunc = aggfunc, 
+                                   args)) %>%
+    map2(col, ~ apply_convert(.x, .y, convert)) %>%
     reduce(full_join, by = by)
-  data
+  
   if (!is.na(fill)){
     data <- data %>% mutate_all(funs(replace(., is.na(.), fill)))
   }
+  
   return(data)
 }
-
 change_colname <- function(data, new_col, value, old_col) {
   data %>% 
     rename(!!as.character(new_col) := !!value) %>%
@@ -114,4 +117,13 @@ apply_aggfunc <- function(data, col_name, group_by_col,  aggfunc, args) {
   } else {
     data
   }
+}
+
+apply_convert <- function(data, col_name, convert){
+  values <- data[[col_name]]
+  if (isTRUE(convert) & !is_character(values)) {
+    values <- as.character(values)
+    values <- type.convert(values, as.is = TRUE)
+  }
+  data <- data %>% mutate(!! col_name := values)
 }
