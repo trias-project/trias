@@ -7,9 +7,15 @@
 #' If no function is passed, then the key-value(s) are spread on multiple rows.
 
 #' @param data A dataframe.
-#' @param key,value Column names or positions. This is passed to [`tidyselect::vars_pull()`](http://127.0.0.1:45083/help/library/tidyselect/html/vars_pull.html).
+#' @param key,value Column names or positions. This is passed to [`tidyselect::vars_pull()`].
 #' These arguments are passed by expression and support quasiquotation (you can unquote column names or column positions)
 #' @param fill If set, missing values will be replaced with this value.
+#' @param convert If `TRUE`, [type.convert()] with \code{asis =
+#'   TRUE} will be run on each of the new columns. This is useful if the value
+#'   column was a mix of variables that was coerced to a string. If the class of
+#'   the value column was factor or date, note that will not be true of the new
+#'   columns that are produced, which are coerced to character before type
+#'   conversion.
 #' @param aggfunc Aggregation function. Default: NA (keep dulicates)
 #' 
 #' @return A data.frame.
@@ -18,7 +24,7 @@
 #' 
 #' @importFrom purrr map map2 reduce compact
 #' @importFrom rlang sym
-#' @importFrom dplyr mutate_all filter full_join pull %>% rename one_of group_by
+#' @importFrom dplyr mutate_all mutate_at filter full_join pull %>% rename one_of group_by
 #' @importFrom tidyselect vars_pull enquo
 #' 
 #' @examples 
@@ -70,6 +76,13 @@
 #' stocksm %>% spread(stock, price)
 #' stocksm %>% spread_with_duplicates(time, price)
 #' stocksm %>% spread(time, price)
+#' 
+#' # Use 'convert = TRUE' to produce variables of mixed type
+#' df <- data.frame(row = rep(c(1, 51), each = 3),
+#'                  var = c("Sepal.Length", "Species", "Species_num"),
+#'                  value = c(5.1, "setosa", 1, 7.0, "versicolor", 2))
+#' df %>% spread_with_duplicates(var, value) %>% str
+#' df %>% spread_with_duplicates(var, value, convert = TRUE) %>% str
 #' }
 spread_with_duplicates <- function(data, key, value, fill = NA, 
                                         convert = FALSE, aggfunc = NA, ...) {

@@ -2,16 +2,25 @@
 % Please edit documentation in R/spread_with_duplicates.R
 \name{spread_with_duplicates}
 \alias{spread_with_duplicates}
-\title{Spread a key-value pair across multiple columns in presence of duplicates}
+\title{Spread key-value pairs across multiple columns.}
 \usage{
-spread_with_duplicates(data, key, value, fill = NA, aggfunc = NA, ...)
+spread_with_duplicates(data, key, value, fill = NA, convert = FALSE,
+  aggfunc = NA, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
 
-\item{key, value}{Column names or positions.}
+\item{key, value}{Column names or positions. This is passed to [`tidyselect::vars_pull()`].
+These arguments are passed by expression and support quasiquotation (you can unquote column names or column positions)}
 
 \item{fill}{If set, missing values will be replaced with this value.}
+
+\item{convert}{If `TRUE`, [type.convert()] with \code{asis =
+TRUE} will be run on each of the new columns. This is useful if the value
+column was a mix of variables that was coerced to a string. If the class of
+the value column was factor or date, note that will not be true of the new
+columns that are produced, which are coerced to character before type
+conversion.}
 
 \item{aggfunc}{Aggregation function. Default: NA (keep dulicates)}
 }
@@ -19,7 +28,11 @@ spread_with_duplicates(data, key, value, fill = NA, aggfunc = NA, ...)
 A data.frame.
 }
 \description{
-Spread a key-value pair across multiple columns in presence of duplicates
+This function spread one or more key-value pairs across multiple columns.
+
+If only one value exists per key, then this functions is the same as `tidyr::spread()`.
+Otherwise, aggregation function `aggfunc` is applied. 
+If no function is passed, then the key-value(s) are spread on multiple rows.
 }
 \examples{
 \dontrun{
@@ -70,5 +83,12 @@ stocksm \%>\% spread_with_duplicates(stock, price)
 stocksm \%>\% spread(stock, price)
 stocksm \%>\% spread_with_duplicates(time, price)
 stocksm \%>\% spread(time, price)
+
+# Use 'convert = TRUE' to produce variables of mixed type
+df <- data.frame(row = rep(c(1, 51), each = 3),
+                 var = c("Sepal.Length", "Species", "Species_num"),
+                 value = c(5.1, "setosa", 1, 7.0, "versicolor", 2))
+df \%>\% spread_with_duplicates(var, value) \%>\% str
+df \%>\% spread_with_duplicates(var, value, convert = TRUE) \%>\% str
 }
 }
