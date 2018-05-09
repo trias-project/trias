@@ -85,7 +85,8 @@
 #' df %>% spread_with_duplicates(var, value, convert = TRUE) %>% str
 #' }
 spread_with_duplicates <- function(data, key, value, fill = NA, 
-                                        convert = FALSE, aggfunc = NA, ...) {
+                                   convert = FALSE, aggfunc = NA,
+                                   sep = NULL, ...) {
   args = list(...)
   key_var <- vars_pull(names(data), !! enquo(key))
   value_var <- vars_pull(names(data), !! enquo(value))
@@ -99,12 +100,13 @@ spread_with_duplicates <- function(data, key, value, fill = NA,
     col, 
     function(x) data %>% 
       filter(!! sym(key_var) == x)) %>%
-    map2(col, ~ change_colname(.x, .y, value_var, key_var))  %>%
+    map2(col, ~ change_colname(.x, .y, value_var, key_var,  sep))  %>%
     map2(col, ~ apply_aggfunc(.x, .y, 
                                    group_by_col = by, 
                                    aggfunc = aggfunc, 
                                    args)) %>%
     map2(col, ~ apply_convert(.x, .y, convert)) %>%
+    map2(col, ~ apply_sep(.x, .y, key_var, sep)) %>%
     reduce(full_join, by = by)
   
   if (!is.na(fill)){
@@ -139,4 +141,14 @@ apply_convert <- function(data, col_name, convert){
     values <- type.convert(values, as.is = TRUE)
   }
   data <- data %>% mutate(!! col_name := values)
+}
+
+apply_sep <- function(data, new_col, old_col, sep) {
+  if (!is.null(sep)) {
+    data %>% 
+    rename(!!str_c(as.character(old_col), as.character(new_col), 
+                   sep = sep) := !! as.character(new_col))
+  } else {
+    data
+  }
 }
