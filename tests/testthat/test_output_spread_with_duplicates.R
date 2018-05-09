@@ -141,3 +141,14 @@ testthat::test_that("test convert equal TRUE", {
                test6 %>% 
                  spread(var, value, convert = TRUE))
 })
+
+testthat::test_that("test sep non-NULL", {
+  expect_equal(test0 %>% 
+                 spread_with_duplicates(key, value, sep = "_var_"),
+               test0 %>%
+                 spread(key, value, sep = "_var_"))
+  expect_equal(df %>% 
+                 spread_with_duplicates(var, value, sep = "_"),
+               df %>% 
+                 spread(var, value, sep = "_"))
+})
