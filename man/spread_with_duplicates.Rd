@@ -5,7 +5,7 @@
 \title{Spread key-value pairs across multiple columns.}
 \usage{
 spread_with_duplicates(data, key, value, fill = NA, convert = FALSE,
-  aggfunc = NA, ...)
+  aggfunc = NA, sep = NULL, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -23,6 +23,10 @@ columns that are produced, which are coerced to character before type
 conversion.}
 
 \item{aggfunc}{Aggregation function. Default: NA (keep dulicates)}
+
+\item{sep}{If `NULL`, the column names will be taken from the values of
+`key` variable. If non-`NULL`, the column names will be given
+by "<key_name><sep><key_value>".}
 }
 \value{
 A data.frame.
@@ -90,5 +94,9 @@ df <- data.frame(row = rep(c(1, 51), each = 3),
                  value = c(5.1, "setosa", 1, 7.0, "versicolor", 2))
 df \%>\% spread_with_duplicates(var, value) \%>\% str
 df \%>\% spread_with_duplicates(var, value, convert = TRUE) \%>\% str
+
+# Use sep non-NULL
+spread_with_duplicates(test2, key, value, sep = "_var_")
+spread_with_duplicates(df, var, value, sep = "_")
 }
 }

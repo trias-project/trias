@@ -16,6 +16,9 @@
 #'   the value column was factor or date, note that will not be true of the new
 #'   columns that are produced, which are coerced to character before type
 #'   conversion.
+#' @param sep If `NULL`, the column names will be taken from the values of
+#'   `key` variable. If non-`NULL`, the column names will be given
+#'   by "<key_name><sep><key_value>".
 #' @param aggfunc Aggregation function. Default: NA (keep dulicates)
 #' 
 #' @return A data.frame.
@@ -83,6 +86,10 @@
 #'                  value = c(5.1, "setosa", 1, 7.0, "versicolor", 2))
 #' df %>% spread_with_duplicates(var, value) %>% str
 #' df %>% spread_with_duplicates(var, value, convert = TRUE) %>% str
+#' 
+#' # Use sep non-NULL
+#' spread_with_duplicates(test2, key, value, sep = "_var_")
+#' spread_with_duplicates(df, var, value, sep = "_")
 #' }
 spread_with_duplicates <- function(data, key, value, fill = NA, 
                                    convert = FALSE, aggfunc = NA,
