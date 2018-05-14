@@ -48,6 +48,13 @@ test6 <- data.frame(row = rep(c(1, 51), each = 3),
                     var = c("Sepal.Length", "Species", "Species_num"),
                     value = c(5.1, "setosa", 1, 7.0, "versicolor", 2))
 
+test7 <- tibble(
+  x1 = factor(c("a", "b"), levels = c("a", "b", "c")), 
+  x2 = c("b", "a"), 
+  key = c("A", "B"),
+  value = 1:2
+)
+
 testthat::test_that("no duplicates present", {
   expect_equal(
     spread_with_duplicates(test0, key, value), spread(test0, key, value))
@@ -148,8 +155,25 @@ testthat::test_that("test sep non-NULL", {
                  spread_with_duplicates(key, value, sep = "_var_"),
                test0 %>%
                  spread(key, value, sep = "_var_"))
-  expect_equal(df %>% 
+  expect_equal(test6 %>% 
                  spread_with_duplicates(var, value, sep = "_"),
-               df %>% 
+               test6 %>% 
                  spread(var, value, sep = "_"))
+})
+
+testthat::test_that("drop is FALSE", {
+  expect_equal(test7 %>% 
+                 spread_with_duplicates(key, value, drop = FALSE),
+               test7 %>%
+                 spread(key, value, drop = FALSE))
+  expect_equal(table2[-c(1:2),] %>% 
+                  spread_with_duplicates(type, 
+                                         count, 
+                                         drop = FALSE, 
+                                         fill = 0),
+                table2[-c(1:2),] %>% 
+                  spread(type, 
+                         count, 
+                         drop = FALSE, 
+                         fill = 0))
 })
