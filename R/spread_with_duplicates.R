@@ -1,43 +1,46 @@
 #' Spread key-value pairs across multiple columns.
-#' 
-#' @description This function spread one or more key-value pairs across multiple columns.
-#' 
-#' If only one value exists per key, then this functions is the same as \code{\link[tidyr]{tidyr::spread()}}.
-#' Otherwise, aggregation function \code{aggfunc} is applied. 
-#' If no function is passed, then the key-value(s) are spread on multiple rows.
+#'
+#' @description This function spread one or more key-value pairs across multiple
+#'   columns. If only one value exists per key, then this functions is the same
+#'   as \code{\link[tidyr]{spread}}. Otherwise, aggregation function
+#'   \code{aggfunc} is applied. If no function is passed, then the key-value(s)
+#'   are spread on multiple rows.
 
 #' @param data A dataframe.
-#' @param key,value Column names or positions. This is passed to \code{\link[tidyselect]{tidyselect::vars_pull()}}.
-#' These arguments are passed by expression and support \code{\link[rlang]{quasiquotation}} (you can unquote column names or column positions)
+#' @param key,value Column names or positions. This is passed to
+#'   \code{\link[tidyselect]{vars_pull}}. These arguments are passed by
+#'   expression and support \code{\link[rlang]{quasiquotation}} (you can unquote
+#'   column names or column positions)
 #' @param fill If set, missing values will be replaced with this value.
-#' @param convert If \code{TRUE}, \code{\link[utils]{utils::type.convert()}} with \code{asis =
-#'   TRUE} will be run on each of the new columns. This is useful if the value
-#'   column was a mix of variables that was coerced to a string. If the class of
-#'   the value column was factor or date, note that will not be true of the new
-#'   columns that are produced, which are coerced to character before type
-#'   conversion.
+#' @param convert If \code{TRUE}, \code{\link[utils]{type.convert}} with
+#'   \code{asis = TRUE} will be run on each of the new columns. This is useful
+#'   if the value column was a mix of variables that was coerced to a string. If
+#'   the class of the value column was factor or date, note that will not be
+#'   true of the new columns that are produced, which are coerced to character
+#'   before type conversion.
 #' @param drop If \code{FALSE}, will keep factor levels that don't appear in the
 #'   data, filling in missing combinations with \code{fill}.
 #' @param sep If \code{NULL}, the column names will be taken from the values of
-#'   \code{key} variable. If non-\code{NULL}, the column names will be given
-#'   by "<key_name><sep><key_value>".
+#'   \code{key} variable. If non-\code{NULL}, the column names will be given by
+#'   "<key_name><sep><key_value>".
 #' @param aggfunc Aggregation function. Default: NA (keep dulicates)
-#' 
+#'
 #' @return A data.frame.
-#' 
+#'
 #' @export
-#' 
+#'
 #' @importFrom purrr map map2 reduce compact
 #' @importFrom magrittr %<>%
 #' @importFrom rlang sym syms is_character
-#' @importFrom dplyr summarize funs rename mutate_all mutate_at filter full_join pull %>% one_of group_by
+#' @importFrom dplyr summarize funs rename mutate_all mutate_at filter full_join
+#'   pull %>% one_of group_by
 #' @importFrom tidyselect vars_pull enquo
 #' @importFrom tidyr complete_
-#' 
-#' @examples 
+#'
+#' @examples
 #' \dontrun{
 #' test1 <- data.frame(
-#' col1 = c(1, 1, 1, 1),	
+#' col1 = c(1, 1, 1, 1),
 #' col2 = c("H", "H", "H", "H"),
 #' key = c("A", "B", "C", "C"),
 #' value = c("R", "S", "T", "X"),
@@ -47,17 +50,17 @@
 #' spread_with_duplicates(test1, 3, 4)
 #' spread_with_duplicates(test1, -2, -1)
 #' spread_with_duplicates(test1, "key", "value")
-#' 
+#'
 #' # with NAs
 #' test2 <- data.frame(
-#' col1 = c(1, 1, 1, 2),	
+#' col1 = c(1, 1, 1, 2),
 #' key = c("A", "C", "C", "A"),
 #' value = c("R", "T", "X", "R"),
 #' stringsAsFactors = FALSE
 #' )
 #' spread_with_duplicates(test2, key, value)
 #' spread_with_duplicates(test2, key, value, fill = "No idea")
-#' 
+#'
 #' # apply aggregate function
 #' test3 <- data.frame(
 #' col1 = c(1,1,1,1),
@@ -69,7 +72,7 @@
 #' spread_with_duplicates(test1, key, value, aggfunc = str_c, collapse = "-")
 #' spread_with_duplicates(test2, key, value, aggfunc = min)
 #' spread_with_duplicates(test2, key, value, aggfunc = mean)
-#' 
+#'
 #' # same output of spread() if no more than one value per key
 #' library(dplyr)
 #' stocks <- data.frame(
@@ -83,14 +86,14 @@
 #' stocksm %>% spread(stock, price)
 #' stocksm %>% spread_with_duplicates(time, price)
 #' stocksm %>% spread(time, price)
-#' 
+#'
 #' # Use 'convert = TRUE' to produce variables of mixed type
 #' df <- data.frame(row = rep(c(1, 51), each = 3),
 #'                  var = c("Sepal.Length", "Species", "Species_num"),
 #'                  value = c(5.1, "setosa", 1, 7.0, "versicolor", 2))
 #' df %>% spread_with_duplicates(var, value) %>% str
 #' df %>% spread_with_duplicates(var, value, convert = TRUE) %>% str
-#' 
+#'
 #' # Use sep non-NULL
 #' spread_with_duplicates(test2, key, value, sep = "_var_")
 #' spread_with_duplicates(df, var, value, sep = "_")
