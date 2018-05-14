@@ -7,7 +7,7 @@
 #' If no function is passed, then the key-value(s) are spread on multiple rows.
 
 #' @param data A dataframe.
-#' @param key,value Column names or positions. This is passed to \code{\link[tidyselect]{tydyselect::vars_pull()}}.
+#' @param key,value Column names or positions. This is passed to \code{\link[tidyselect]{tidyselect::vars_pull()}}.
 #' These arguments are passed by expression and support \code{\link[rlang]{quasiquotation}} (you can unquote column names or column positions)
 #' @param fill If set, missing values will be replaced with this value.
 #' @param convert If \code{TRUE}, \code{\link[utils]{utils::type.convert()}} with \code{asis =
