@@ -170,16 +170,3 @@ apply_sep <- function(data, new_col, old_col, sep) {
     data
   }
 }
-
-apply_drop <- function(data, col) {
-  levels_df <- levels(data[[sym(col)]])
-  if (!all(levels_df %in% data[[col]])) {
-    levels_to_add <- levels_df[which(!levels_df %in% data[[col]])]
-  } else {
-    levels_to_add <- NULL
-  }
-  if (!is.null(levels_to_add)) {
-    data <- data %>% add_row(!! col := levels_to_add)
-  }
-  data
-}
