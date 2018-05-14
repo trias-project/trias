@@ -2,20 +2,22 @@
 #' 
 #' @description This function spread one or more key-value pairs across multiple columns.
 #' 
-#' If only one value exists per key, then this functions is the same as `tidyr::spread()`.
+#' If only one value exists per key, then this functions is the same as \code{\link[tidyr]{spread()}}.
 #' Otherwise, aggregation function `aggfunc` is applied. 
 #' If no function is passed, then the key-value(s) are spread on multiple rows.
 
 #' @param data A dataframe.
-#' @param key,value Column names or positions. This is passed to [`tidyselect::vars_pull()`].
-#' These arguments are passed by expression and support quasiquotation (you can unquote column names or column positions)
+#' @param key,value Column names or positions. This is passed to \code{\link[tidyselect]{tydyselect::vars_pull()}}.
+#' These arguments are passed by expression and support \code{\link[rlang]{quasiquotation}} (you can unquote column names or column positions)
 #' @param fill If set, missing values will be replaced with this value.
-#' @param convert If `TRUE`, [type.convert()] with \code{asis =
+#' @param convert If `TRUE`, \code{\link[utils]{type.convert()} with \code{asis =
 #'   TRUE} will be run on each of the new columns. This is useful if the value
 #'   column was a mix of variables that was coerced to a string. If the class of
 #'   the value column was factor or date, note that will not be true of the new
 #'   columns that are produced, which are coerced to character before type
 #'   conversion.
+#' @param drop If `FALSE`, will keep factor levels that don't appear in the
+#'   data, filling in missing combinations with `fill`.
 #' @param sep If `NULL`, the column names will be taken from the values of
 #'   `key` variable. If non-`NULL`, the column names will be given
 #'   by "<key_name><sep><key_value>".
@@ -26,9 +28,11 @@
 #' @export
 #' 
 #' @importFrom purrr map map2 reduce compact
+#' @importFrom magrittr %<>%
 #' @importFrom rlang sym
 #' @importFrom dplyr mutate_all mutate_at filter full_join pull %>% rename one_of group_by
 #' @importFrom tidyselect vars_pull enquo
+#' @importFrom tidyr complete_
 #' 
 #' @examples 
 #' \dontrun{
@@ -92,8 +96,8 @@
 #' spread_with_duplicates(df, var, value, sep = "_")
 #' }
 spread_with_duplicates <- function(data, key, value, fill = NA, 
-                                   convert = FALSE, aggfunc = NA,
-                                   sep = NULL, ...) {
+                                   convert = FALSE, drop = TRUE,
+                                   sep = NULL, aggfunc = NA, ...) {
   args = list(...)
   key_var <- vars_pull(names(data), !! enquo(key))
   value_var <- vars_pull(names(data), !! enquo(value))
@@ -106,31 +110,38 @@ spread_with_duplicates <- function(data, key, value, fill = NA,
   data <- map(
     col, 
     function(x) data %>% 
-      filter(!! sym(key_var) == x)) %>%
-    map2(col, ~ change_colname(.x, .y, value_var, key_var,  sep))  %>%
-    map2(col, ~ apply_aggfunc(.x, .y, 
-                                   group_by_col = by, 
-                                   aggfunc = aggfunc, 
+      filter(!! sym(key_var) == x)
+  ) %>%
+    map2(col, ~ change_colname_test(.x, .y, value_var, key_var)) %>%
+    map2(col, ~ apply_aggfunc_test(.x, .y,
+                                   group_by_col = by,
+                                   aggfunc = aggfunc,
                                    args)) %>%
-    map2(col, ~ apply_convert(.x, .y, convert)) %>%
-    map2(col, ~ apply_sep(.x, .y, key_var, sep)) %>%
+    map2(col, ~ apply_convert_test(.x, .y, convert)) %>%
+    map2(col, ~ apply_sep_test(.x, .y, key_var, sep)) %>%
     reduce(full_join, by = by)
   
+  if (!drop) {
+    data <- data %>% complete_(by)
+  }
+  
   if (!is.na(fill)){
-    data <- data %>% mutate_all(funs(replace(., is.na(.), fill)))
+    data %<>% mutate_all(funs(replace(., is.na(.), fill)))
   }
   
   return(data)
 }
+
 change_colname <- function(data, new_col, value, old_col) {
   data %>% 
-    rename(!!as.character(new_col) := !!value) %>%
+    rename(!! as.character(new_col) := !!value) %>%
     select(-one_of(old_col))
 }
 
+
 apply_aggfunc <- function(data, col_name, group_by_col,  aggfunc, args) {
   if (is.function(aggfunc)) {
-    data <- data %>%
+    data %<>%
       group_by(!!! syms(group_by_col)) %>% 
       summarize(
         !! col_name := do.call(
@@ -143,11 +154,11 @@ apply_aggfunc <- function(data, col_name, group_by_col,  aggfunc, args) {
 
 apply_convert <- function(data, col_name, convert){
   values <- data[[col_name]]
-  if (isTRUE(convert) & !is_character(values)) {
+  if (convert & !is_character(values)) {
     values <- as.character(values)
     values <- type.convert(values, as.is = TRUE)
   }
-  data <- data %>% mutate(!! col_name := values)
+  data %<>% mutate(!! col_name := values)
 }
 
 apply_sep <- function(data, new_col, old_col, sep) {
@@ -158,4 +169,17 @@ apply_sep <- function(data, new_col, old_col, sep) {
   } else {
     data
   }
+}
+
+apply_drop <- function(data, col) {
+  levels_df <- levels(data[[sym(col)]])
+  if (!all(levels_df %in% data[[col]])) {
+    levels_to_add <- levels_df[which(!levels_df %in% data[[col]])]
+  } else {
+    levels_to_add <- NULL
+  }
+  if (!is.null(levels_to_add)) {
+    data <- data %>% add_row(!! col := levels_to_add)
+  }
+  data
 }

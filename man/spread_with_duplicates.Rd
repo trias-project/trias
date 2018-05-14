@@ -5,28 +5,24 @@
 \title{Spread key-value pairs across multiple columns.}
 \usage{
 spread_with_duplicates(data, key, value, fill = NA, convert = FALSE,
-  aggfunc = NA, sep = NULL, ...)
+  drop = TRUE, sep = NULL, aggfunc = NA, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
 
-\item{key, value}{Column names or positions. This is passed to [`tidyselect::vars_pull()`].
-These arguments are passed by expression and support quasiquotation (you can unquote column names or column positions)}
+\item{key, value}{Column names or positions. This is passed to \code{\link[tidyselect]{tydyselect::vars_pull()}}.
+These arguments are passed by expression and support \code{\link[rlang]{quasiquotation}} (you can unquote column names or column positions)}
 
 \item{fill}{If set, missing values will be replaced with this value.}
 
-\item{convert}{If `TRUE`, [type.convert()] with \code{asis =
-TRUE} will be run on each of the new columns. This is useful if the value
-column was a mix of variables that was coerced to a string. If the class of
-the value column was factor or date, note that will not be true of the new
-columns that are produced, which are coerced to character before type
-conversion.}
-
-\item{aggfunc}{Aggregation function. Default: NA (keep dulicates)}
+\item{drop}{If `FALSE`, will keep factor levels that don't appear in the
+data, filling in missing combinations with `fill`.}
 
 \item{sep}{If `NULL`, the column names will be taken from the values of
 `key` variable. If non-`NULL`, the column names will be given
 by "<key_name><sep><key_value>".}
+
+\item{aggfunc}{Aggregation function. Default: NA (keep dulicates)}
 }
 \value{
 A data.frame.
@@ -34,7 +30,7 @@ A data.frame.
 \description{
 This function spread one or more key-value pairs across multiple columns.
 
-If only one value exists per key, then this functions is the same as `tidyr::spread()`.
+If only one value exists per key, then this functions is the same as \code{\link[tidyr]{spread()}}.
 Otherwise, aggregation function `aggfunc` is applied. 
 If no function is passed, then the key-value(s) are spread on multiple rows.
 }
