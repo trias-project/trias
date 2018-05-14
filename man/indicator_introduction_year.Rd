@@ -2,7 +2,7 @@
 % Please edit documentation in R/indicator_introduction_year.R
 \name{indicator_introduction_year}
 \alias{indicator_introduction_year}
-\title{Calculate number of new introductions per year.}
+\title{Plot number of new introductions per year.}
 \usage{
 indicator_introduction_year(df, start_year_plot = 1920, smooth_span = 0.85,
   x_major_scale_stepsize = 10, x_minor_scale_stepsize = 5,

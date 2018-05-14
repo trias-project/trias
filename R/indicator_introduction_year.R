@@ -1,4 +1,4 @@
-#' Calculate number of new introductions per year.
+#' Plot number of new introductions per year.
 #'
 #' @description Calculate how many new species has been introduced in a year.
 #'
