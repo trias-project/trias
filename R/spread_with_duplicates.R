@@ -126,7 +126,9 @@ spread_with_duplicates <- function(data, key, value, fill = NA,
   }
   
   if (!is.na(fill)){
-    data %<>% mutate_all(funs(replace(., is.na(.), fill)))
+    key_value_cols <- colnames(data)[which(!colnames(data) %in% by)]
+    data <- data %>% mutate_at(vars(one_of(key_value_cols)),
+                               funs(replace(., is.na(.), fill)))
   }
   
   return(data)
