@@ -2,24 +2,24 @@
 #' 
 #' @description This function spread one or more key-value pairs across multiple columns.
 #' 
-#' If only one value exists per key, then this functions is the same as \code{\link[tidyr]{spread()}}.
-#' Otherwise, aggregation function `aggfunc` is applied. 
+#' If only one value exists per key, then this functions is the same as \code{\link[tidyr]{tidyr::spread()}}.
+#' Otherwise, aggregation function \code{aggfunc} is applied. 
 #' If no function is passed, then the key-value(s) are spread on multiple rows.
 
 #' @param data A dataframe.
 #' @param key,value Column names or positions. This is passed to \code{\link[tidyselect]{tydyselect::vars_pull()}}.
 #' These arguments are passed by expression and support \code{\link[rlang]{quasiquotation}} (you can unquote column names or column positions)
 #' @param fill If set, missing values will be replaced with this value.
-#' @param convert If `TRUE`, \code{\link[utils]{type.convert()} with \code{asis =
+#' @param convert If \code{TRUE}, \code{\link[utils]{utils::type.convert()}} with \code{asis =
 #'   TRUE} will be run on each of the new columns. This is useful if the value
 #'   column was a mix of variables that was coerced to a string. If the class of
 #'   the value column was factor or date, note that will not be true of the new
 #'   columns that are produced, which are coerced to character before type
 #'   conversion.
-#' @param drop If `FALSE`, will keep factor levels that don't appear in the
-#'   data, filling in missing combinations with `fill`.
-#' @param sep If `NULL`, the column names will be taken from the values of
-#'   `key` variable. If non-`NULL`, the column names will be given
+#' @param drop If \code{FALSE}, will keep factor levels that don't appear in the
+#'   data, filling in missing combinations with \code{fill}.
+#' @param sep If \code{NULL}, the column names will be taken from the values of
+#'   \code{key} variable. If non-\code{NULL}, the column names will be given
 #'   by "<key_name><sep><key_value>".
 #' @param aggfunc Aggregation function. Default: NA (keep dulicates)
 #' 
