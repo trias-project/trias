@@ -29,8 +29,8 @@
 #' 
 #' @importFrom purrr map map2 reduce compact
 #' @importFrom magrittr %<>%
-#' @importFrom rlang sym
-#' @importFrom dplyr rename mutate_all mutate_at filter full_join pull %>% one_of group_by
+#' @importFrom rlang sym syms is_character
+#' @importFrom dplyr summarize funs rename mutate_all mutate_at filter full_join pull %>% one_of group_by
 #' @importFrom tidyselect vars_pull enquo
 #' @importFrom tidyr complete_
 #' 

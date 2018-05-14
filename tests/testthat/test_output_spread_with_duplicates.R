@@ -1,4 +1,5 @@
 context("test_output_spread_with_duplicates")
+library(tidyr)
 
 test0 <- data.frame(
   col1 = c(1, 1, 1),
