@@ -164,8 +164,8 @@ apply_convert <- function(data, col_name, convert){
 apply_sep <- function(data, new_col, old_col, sep) {
   if (!is.null(sep)) {
     data %>% 
-    rename(!!str_c(as.character(old_col), as.character(new_col), 
-                   sep = sep) := !! as.character(new_col))
+      rename(!!str_c(as.character(old_col), as.character(new_col), 
+                     sep = sep) := !! as.character(new_col))
   } else {
     data
   }
