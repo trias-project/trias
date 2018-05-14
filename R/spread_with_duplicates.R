@@ -30,7 +30,7 @@
 #' @importFrom purrr map map2 reduce compact
 #' @importFrom magrittr %<>%
 #' @importFrom rlang sym
-#' @importFrom dplyr mutate_all mutate_at filter full_join pull %>% rename one_of group_by
+#' @importFrom dplyr rename mutate_all mutate_at filter full_join pull %>% one_of group_by
 #' @importFrom tidyselect vars_pull enquo
 #' @importFrom tidyr complete_
 #' 
@@ -112,13 +112,13 @@ spread_with_duplicates <- function(data, key, value, fill = NA,
     function(x) data %>% 
       filter(!! sym(key_var) == x)
   ) %>%
-    map2(col, ~ change_colname_test(.x, .y, value_var, key_var)) %>%
-    map2(col, ~ apply_aggfunc_test(.x, .y,
-                                   group_by_col = by,
-                                   aggfunc = aggfunc,
-                                   args)) %>%
-    map2(col, ~ apply_convert_test(.x, .y, convert)) %>%
-    map2(col, ~ apply_sep_test(.x, .y, key_var, sep)) %>%
+    map2(col, ~ change_colname(.x, .y, value_var, key_var)) %>%
+    map2(col, ~ apply_aggfunc(.x, .y,
+                              group_by_col = by,
+                              aggfunc = aggfunc,
+                              args)) %>%
+    map2(col, ~ apply_convert(.x, .y, convert)) %>%
+    map2(col, ~ apply_sep(.x, .y, key_var, sep)) %>%
     reduce(full_join, by = by)
   
   if (!drop) {
