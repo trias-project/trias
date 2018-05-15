@@ -2,15 +2,19 @@
 #'
 #' @description Calculate how many new species has been introduced in a year.
 #'
-#' @param data A dataframe.
-#' @param start_year_plot Year where the plot starts from.
+#' @param data A data frame.
+#' @param start_year_plot Year where the plot starts from. Default: 1920.
 #' @param smooth_span (numeric) Parameter for the applied Loess smoother. For
 #'   more information on the appropriate value, see \code{\link[stats]{loess}}.
-#' @param x_scale_stepsize (numeric) Parameter that indicates the major breaks
-#'   of the x axis
+#'   Default: 0.85.
+#' @param x_major_scale_stepsize (numeric) Parameter that indicates the breaks
+#'   of the x axis. Default: 10.
+#' @param x_minor_scale_stepsize (numeric) Parameter that indicates the minor
+#'   breaks of the x axis. Default: 5.
 #' @param facet_column NULL or character. The column to use to create additional
 #'   facet wrap plots underneath the main graph. When NULL, no facet graph are
-#'   created.
+#'   created. Valid facet options: "family", "order", "class", "phylum",
+#'   "kingdom", "pathway_level1", "locality", "native_range". Default: NULL.
 #'
 #' @return A ggplot2 object.
 #'
@@ -26,9 +30,13 @@
 #'
 #' @examples
 #' \dontrun{
+#' library(readr)
+#' datafile <- "https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv"
+#' data <- read_tsv(datafile)
 #' indicator_introduction_year(data)
 #' indicator_introduction_year(data, start_year_plot = 1940,
 #'                             smooth_span = 0.6)
+#' indicator_introduction_year(data, facet_column = "kingdom")
 #' }
 indicator_introduction_year <- function(df, start_year_plot = 1920,
                                         smooth_span = .85,
