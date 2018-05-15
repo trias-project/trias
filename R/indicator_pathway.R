@@ -15,6 +15,7 @@
 #' @importFrom dplyr %>% filter group_by count ungroup mutate_at mutate
 #' @importFrom ggplot2 ggplot geom_bar xlab ylab facet_grid theme element_text
 #'   element_blank coord_flip
+#' @importFrom stringr str_replace
 #' @importFrom INBOtheme theme_inbo
 #'
 #' @examples
