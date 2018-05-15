@@ -33,7 +33,7 @@
 #' @importFrom magrittr %<>%
 #' @importFrom rlang sym syms is_character
 #' @importFrom dplyr summarize funs rename mutate_all mutate_at filter full_join
-#'   pull %>% one_of group_by
+#'   pull %>% one_of group_by vars
 #' @importFrom tidyselect vars_pull enquo
 #' @importFrom tidyr complete_
 #'
