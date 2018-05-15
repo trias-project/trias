@@ -16,12 +16,15 @@ the visualisation.}
 A ggplot2 figure.
 }
 \description{
-Make a figure of pathways of introduction. Use  \code{subcategory}
-option to take into account only main categories or include subcategories as
-well.
+Make a figure of pathways of introduction. Use
+  \code{subcategory} option to take into account only main categories or
+  include subcategories as well.
 }
 \examples{
 \dontrun{
+library(readr)
+datafile <- "https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv"
+data <- read_tsv(datafile)
 indicator_pathway(data)
 indicator_pathway(data, subcategory = TRUE)
 }
