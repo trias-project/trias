@@ -34,7 +34,7 @@ indicator_pathway <- function(data, subcategory = TRUE) {
   
   # uppercase on category names for figure styling
   df_pathway <- mutate_at(df_pathway, 
-                          .cols = c("pathway_level1"), 
+                          .vars = c("pathway_level1"), 
                           .funs = toupper)
   # replace underscore by spaces
   df_pathway <- df_pathway %>%
