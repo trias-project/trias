@@ -24,7 +24,8 @@
 #' datafile <- "https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv"
 #' data <- read_tsv(datafile)
 #' indicator_pathway(data)
-#' indicator_pathway(data, subcategory = TRUE)
+#' # only main categories
+#' indicator_pathway(data, subcategory = FALSE)
 #' }
 indicator_pathway <- function(data, subcategory = TRUE) {
   
