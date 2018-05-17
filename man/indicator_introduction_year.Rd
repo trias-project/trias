@@ -11,8 +11,8 @@ indicator_introduction_year(df, start_year_plot = 1920, smooth_span = 0.85,
 \arguments{
 \item{start_year_plot}{Year where the plot starts from. Default: 1920.}
 
-\item{smooth_span}{(numeric) Parameter for the applied Loess smoother. For
-more information on the appropriate value, see \code{\link[stats]{loess}}.
+\item{smooth_span}{(numeric) Parameter for the applied \code{\link[stats]{loess}} smoother. For
+more information on the appropriate value, see \code{\link[ggplot2]{geom_smooth}}.
 Default: 0.85.}
 
 \item{x_major_scale_stepsize}{(numeric) Parameter that indicates the breaks
