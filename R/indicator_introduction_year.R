@@ -4,7 +4,7 @@
 #'
 #' @param data A data frame.
 #' @param start_year_plot Year where the plot starts from. Default: 1920.
-#' @param smooth_span (numeric) Parameter for the applied Loess smoother. For
+#' @param smooth_span (numeric) Parameter for the applied \code{\link[stats]{loess}} smoother. For
 #'   more information on the appropriate value, see \code{\link[ggplot2]{geom_smooth}}.
 #'   Default: 0.85.
 #' @param x_major_scale_stepsize (numeric) Parameter that indicates the breaks
