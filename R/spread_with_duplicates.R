@@ -70,8 +70,8 @@
 #'   stringsAsFactors = FALSE
 #' )
 #' spread_with_duplicates(test1, key, value, aggfunc = str_c, collapse = "-")
-#' spread_with_duplicates(test2, key, value, aggfunc = min)
-#' spread_with_duplicates(test2, key, value, aggfunc = mean)
+#' spread_with_duplicates(test3, key, value, aggfunc = min)
+#' spread_with_duplicates(test3, key, value, aggfunc = mean)
 #'
 #' # same output of spread() if no more than one value per key
 #' library(dplyr)
