@@ -30,7 +30,6 @@
 #' @export
 #'
 #' @importFrom purrr map map2 reduce compact
-#' @importFrom magrittr %<>%
 #' @importFrom rlang sym syms is_character
 #' @importFrom dplyr summarize funs rename mutate_all mutate_at filter full_join
 #'   pull %>% one_of group_by vars
@@ -146,7 +145,7 @@ change_colname <- function(data, new_col, value, old_col) {
 
 apply_aggfunc <- function(data, col_name, group_by_col,  aggfunc, args) {
   if (is.function(aggfunc)) {
-    data %<>%
+    data <- data %>%
       group_by(!!! syms(group_by_col)) %>% 
       summarize(
         !! col_name := do.call(
@@ -163,7 +162,7 @@ apply_convert <- function(data, col_name, convert){
     values <- as.character(values)
     values <- type.convert(values, as.is = TRUE)
   }
-  data %<>% mutate(!! col_name := values)
+  data <- data %>% mutate(!! col_name := values)
 }
 
 apply_sep <- function(data, new_col, old_col, sep) {
