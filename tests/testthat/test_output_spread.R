@@ -1,4 +1,4 @@
-context("test_output_spread_with_duplicates")
+context("test_output")
 library(tidyr)
 
 test0 <- data.frame(
@@ -57,84 +57,84 @@ test7 <- tibble(
 
 testthat::test_that("no duplicates present", {
   expect_equal(
-    spread_with_duplicates(test0, key, value), spread(test0, key, value))
+    trias::spread(test0, key, value), tidyr::spread(test0, key, value))
   expect_equal(
-    spread_with_duplicates(test0, 3, 4), spread(test0, key, value))
+    trias::spread(test0, 3, 4), tidyr::spread(test0, key, value))
   expect_equal(
-    spread_with_duplicates(test0, -2, -1), spread(test0, key, value))
+    trias::spread(test0, -2, -1), tidyr::spread(test0, key, value))
   expect_equal(
-    spread(test4, key = stock, value = price),
-    spread_with_duplicates(test4, key = stock, value = price))
+    trias::spread(test4, key = stock, value = price),
+    tidyr::spread(test4, key = stock, value = price))
   expect_equal(
-    spread(test4, key = time, value = price),
-    spread_with_duplicates(test4, key = time, value = price))
+    trias::spread(test4, key = time, value = price),
+    tidyr::spread(test4, key = time, value = price))
   
 })
 
 testthat::test_that("keep duplicates", {
-  expect_equal(spread_with_duplicates(test1, key, value) %>% nrow(), 2)
-  expect_equal(spread_with_duplicates(test1, 3, 4) %>% nrow(), 2)
-  expect_equal(spread_with_duplicates(test1, -2, -1) %>% nrow(), 2)
-  expect_equal(spread_with_duplicates(test2, key, value) %>% nrow(), 2)
-  expect_equal(spread_with_duplicates(test2, 3, 4) %>% nrow(), 2)
-  expect_equal(spread_with_duplicates(test2, -2, -1) %>% nrow(), 2)
+  expect_equal(trias::spread(test1, key, value) %>% nrow(), 2)
+  expect_equal(trias::spread(test1, 3, 4) %>% nrow(), 2)
+  expect_equal(trias::spread(test1, -2, -1) %>% nrow(), 2)
+  expect_equal(trias::spread(test2, key, value) %>% nrow(), 2)
+  expect_equal(trias::spread(test2, 3, 4) %>% nrow(), 2)
+  expect_equal(trias::spread(test2, -2, -1) %>% nrow(), 2)
   expect_equal(
     test1 %>% 
-      spread_with_duplicates(key, value) %>% 
+      trias::spread(key, value) %>% 
       pull(C), 
     test1 %>% filter(key == "C") %>% pull(value))
   expect_equal(
     test2 %>% 
-      spread_with_duplicates(key, value) %>% 
+      trias::spread(key, value) %>% 
       pull(C), 
     test2 %>% filter(key == "C") %>% pull(value))
 })
 
 testthat::test_that("key and value columns quoted", {
   expect_equal(
-    spread_with_duplicates(test1, "key", "value"),
-    spread_with_duplicates(test1, key, value)
+    trias::spread(test1, "key", "value"),
+    trias::spread(test1, key, value)
   )
   expect_equal(
-    spread_with_duplicates(test1, "key", value),
-    spread_with_duplicates(test1, key, "value")
+    trias::spread(test1, "key", value),
+    trias::spread(test1, key, "value")
   )
 })
 
 testthat::test_that("handle NAs", {
   expect_true(
     "No_idea" %in%
-      (test3 %>% spread_with_duplicates(key, value, fill = "No_idea") %>% 
+      (test3 %>% trias::spread(key, value, fill = "No_idea") %>% 
          pull(C)))
 })
 
 testthat::test_that("apply aggregate function", {
   expect_equal(
     test1 %>%
-      spread_with_duplicates(key, value, aggfunc = paste, collapse = "-") %>%
+      trias::spread(key, value, aggfunc = paste, collapse = "-") %>%
       pull(C), 
     test1 %>% filter(key == "C") %>% pull(value) %>% paste(collapse = "-"))
   expect_equal(
     test1 %>%
-      spread_with_duplicates(key, value, aggfunc = str_c, collapse = "-") %>%
+      trias::spread(key, value, aggfunc = str_c, collapse = "-") %>%
       pull(C), 
     test1 %>% filter(key == "C") %>% pull(value) %>% str_c(collapse = "-"))
   expect_equal(
     test2 %>%
-      spread_with_duplicates(key, value, aggfunc = max) %>% 
+      trias::spread(key, value, aggfunc = max) %>% 
       pull(C),
     test2 %>% filter(key == "C") %>% summarize(max = max(value)) %>% pull())
   expect_equal(
     test2 %>% 
-      spread_with_duplicates(key, value, aggfunc = mean) %>% 
+      trias::spread(key, value, aggfunc = mean) %>% 
       pull(C),
     test2 %>% filter(key == "C") %>% summarize(mean = mean(value)) %>% pull())
   expect_equal(
-    test2 %>% spread_with_duplicates(key, value, aggfunc = length) %>% pull(C),
+    test2 %>% trias::spread(key, value, aggfunc = length) %>% pull(C),
     test2 %>% filter(key == "C") %>% nrow())
   expect_equal(
     test5 %>% 
-      spread_with_duplicates(stock, price, aggfunc = mean) %>% 
+      trias::spread(stock, price, aggfunc = mean) %>% 
       filter(time == as.Date("2009-01-01")) %>% 
       select("X"), 
     test5 %>% 
@@ -145,35 +145,29 @@ testthat::test_that("apply aggregate function", {
 
 testthat::test_that("test convert equal TRUE", {
   expect_equal(test6 %>% 
-                 spread_with_duplicates(var, value, convert = TRUE),
+                 trias::spread(var, value, convert = TRUE),
                test6 %>% 
-                 spread(var, value, convert = TRUE))
+                 tidyr::spread(var, value, convert = TRUE))
 })
 
 testthat::test_that("test sep non-NULL", {
   expect_equal(test0 %>% 
-                 spread_with_duplicates(key, value, sep = "_var_"),
+                 trias::spread(key, value, sep = "_var_"),
                test0 %>%
-                 spread(key, value, sep = "_var_"))
+                 tidyr::spread(key, value, sep = "_var_"))
   expect_equal(test6 %>% 
-                 spread_with_duplicates(var, value, sep = "_"),
+                 trias::spread(var, value, sep = "_"),
                test6 %>% 
-                 spread(var, value, sep = "_"))
+                 tidyr::spread(var, value, sep = "_"))
 })
 
 testthat::test_that("drop is FALSE", {
   expect_equal(test7 %>% 
-                 spread_with_duplicates(key, value, drop = FALSE),
+                 trias::spread(key, value, drop = FALSE),
                test7 %>%
-                 spread(key, value, drop = FALSE))
+                 tidyr::spread(key, value, drop = FALSE))
   expect_equal(table2[-c(1:2),] %>% 
-                  spread_with_duplicates(type, 
-                                         count, 
-                                         drop = FALSE, 
-                                         fill = 0),
+                  trias::spread(type, count, drop = FALSE, fill = 0),
                 table2[-c(1:2),] %>% 
-                  spread(type, 
-                         count, 
-                         drop = FALSE, 
-                         fill = 0))
+                  tidyr::spread(type, count, drop = FALSE, fill = 0))
 })

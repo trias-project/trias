@@ -45,10 +45,10 @@
 #' value = c("R", "S", "T", "X"),
 #' stringsAsFactors = FALSE
 #' )
-#' spread_with_duplicates(test1, key, value)
-#' spread_with_duplicates(test1, 3, 4)
-#' spread_with_duplicates(test1, -2, -1)
-#' spread_with_duplicates(test1, "key", "value")
+#' spread(test1, key, value)
+#' spread(test1, 3, 4)
+#' spread(test1, -2, -1)
+#' spread(test1, "key", "value")
 #'
 #' # with NAs
 #' test2 <- data.frame(
@@ -57,8 +57,8 @@
 #' value = c("R", "T", "X", "R"),
 #' stringsAsFactors = FALSE
 #' )
-#' spread_with_duplicates(test2, key, value)
-#' spread_with_duplicates(test2, key, value, fill = "No idea")
+#' spread(test2, key, value)
+#' spread(test2, key, value, fill = "No idea")
 #'
 #' # apply aggregate function
 #' test3 <- data.frame(
@@ -68,11 +68,11 @@
 #'   value = c(2, 3, 1, 8),
 #'   stringsAsFactors = FALSE
 #' )
-#' spread_with_duplicates(test1, key, value, aggfunc = str_c, collapse = "-")
-#' spread_with_duplicates(test3, key, value, aggfunc = min)
-#' spread_with_duplicates(test3, key, value, aggfunc = mean)
+#' spread(test1, key, value, aggfunc = str_c, collapse = "-")
+#' spread(test3, key, value, aggfunc = min)
+#' spread(test3, key, value, aggfunc = mean)
 #'
-#' # same output of spread() if no more than one value per key
+#' # same output of tidyr::spread() if one value per key and no aggfunc
 #' library(dplyr)
 #' stocks <- data.frame(
 #'  time = as.Date('2009-01-01') + 0:9,
@@ -81,25 +81,25 @@
 #'  Z = rnorm(10, 0, 4)
 #' )
 #' stocksm <- stocks %>% gather(stock, price, -time)
-#' stocksm %>% spread_with_duplicates(stock, price)
 #' stocksm %>% spread(stock, price)
-#' stocksm %>% spread_with_duplicates(time, price)
+#' stocksm %>% tidyr::spread(stock, price)
 #' stocksm %>% spread(time, price)
+#' stocksm %>% tidyr::spread(time, price)
 #'
 #' # Use 'convert = TRUE' to produce variables of mixed type
 #' df <- data.frame(row = rep(c(1, 51), each = 3),
 #'                  var = c("Sepal.Length", "Species", "Species_num"),
 #'                  value = c(5.1, "setosa", 1, 7.0, "versicolor", 2))
-#' df %>% spread_with_duplicates(var, value) %>% str
-#' df %>% spread_with_duplicates(var, value, convert = TRUE) %>% str
+#' df %>% spread(var, value) %>% str
+#' df %>% tidyr::spread(var, value, convert = TRUE) %>% str
 #'
 #' # Use sep non-NULL
-#' spread_with_duplicates(test2, key, value, sep = "_var_")
-#' spread_with_duplicates(df, var, value, sep = "_")
+#' spread(test2, key, value, sep = "_var_")
+#' spread(df, var, value, sep = "_")
 #' }
 spread_with_duplicates <- function(data, key, value, fill = NA, 
                                    convert = FALSE, drop = TRUE,
-                                   sep = NULL, aggfunc = NA, ...) {
+                                   sep = NULL, aggfunc = NULL, ...) {
   args = list(...)
   key_var <- vars_pull(names(data), !! enquo(key))
   value_var <- vars_pull(names(data), !! enquo(value))
