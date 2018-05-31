@@ -23,7 +23,7 @@
 #' @param sep If \code{NULL}, the column names will be taken from the values of
 #'   \code{key} variable. If non-\code{NULL}, the column names will be given by
 #'   "<key_name><sep><key_value>".
-#' @param aggfunc Aggregation function. Default: NA (keep dulicates)
+#' @param aggfunc Aggregation function. Default: NULL (keep dulicates)
 #'
 #' @return A data.frame.
 #'
