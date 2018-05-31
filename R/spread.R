@@ -97,7 +97,7 @@
 #' spread(test2, key, value, sep = "_var_")
 #' spread(df, var, value, sep = "_")
 #' }
-spread_with_duplicates <- function(data, key, value, fill = NA, 
+spread <- function(data, key, value, fill = NA, 
                                    convert = FALSE, drop = TRUE,
                                    sep = NULL, aggfunc = NULL, ...) {
   args = list(...)
