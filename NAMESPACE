@@ -2,7 +2,7 @@
 
 export(gbif_get_taxa)
 export(gbif_has_distribution)
-export(spread_with_duplicates)
+export(spread)
 export(update_download_list)
 importFrom(assertthat,assert_that)
 importFrom(dplyr,"%>%")
