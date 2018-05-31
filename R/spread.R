@@ -1,8 +1,8 @@
 #' Spread key-value pairs across multiple columns.
 #'
 #' @description This function spread one or more key-value pairs across multiple
-#'   columns. If only one value exists per key, then this functions is the same
-#'   as \code{\link[tidyr]{spread}}. Otherwise, aggregation function
+#'   columns. If only one value exists per key, then this functions returns the
+#'   same output as \code{\link[tidyr]{spread}}. Otherwise, aggregation function
 #'   \code{aggfunc} is applied. If no function is passed, then the key-value(s)
 #'   are spread on multiple rows.
 
