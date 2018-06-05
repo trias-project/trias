@@ -16,7 +16,11 @@ Imports:
         lazyeval,
         purrr,
         stringr,
-        assertthat
+        assertthat,
+        rlang,
+        tibble,
+        tidyr,
+        tidyselect
 Remotes: ropensci/rgbif
 URL: https://github.com/trias-project/trias
 BugReports: https://github.com/trias-project/trias/issues
