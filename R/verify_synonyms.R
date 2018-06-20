@@ -70,20 +70,20 @@
 #' @importFrom tibble as.tibble
 verify_synonyms <- function(taxa, verified_synonyms) {
   # test incoming arguments
-  name_col_taxa <- c("backbone_taxonKey","backbone_scientificName",
-                "backbone_acceptedKey","backbone_accepted",
+  name_col_taxa <- c("backbone_taxonKey", "backbone_scientificName",
+                "backbone_acceptedKey", "backbone_accepted",
                 "backbone_taxonomicStatus")
   assert_that(is.data.frame(taxa))
   assert_that(all(name_col_taxa %in% names(taxa)))
   
-  name_col_synonyms <- c("backbone_taxonKey","backbone_scientificName",
-                     "backbone_acceptedKey","backbone_accepted",
+  name_col_synonyms <- c("backbone_taxonKey", "backbone_scientificName",
+                     "backbone_acceptedKey", "backbone_accepted",
                      "backbone_taxonomicStatus", "date_added", "verified_key")
   assert_that(is.data.frame(verified_synonyms))
   assert_that(all(name_col_synonyms %in% names(verified_synonyms)))
   
   # find new synonyms
-  new_synonyms <- taxa %>% 
+  new_synonyms <- taxa %>%
     filter(backbone_taxonomicStatus == "SYNONYM") %>%
     filter(!backbone_taxonKey %in% verified_synonyms$backbone_taxonKey) %>% 
     rowwise() %>%
@@ -97,7 +97,8 @@ verify_synonyms <- function(taxa, verified_synonyms) {
     left_join(taxa, by = "backbone_taxonKey") %>%
     rename("backbone_scientificName" = "backbone_scientificName.x",
            "updated_backbone_scientificName" = "backbone_scientificName.y") %>%
-    select(backbone_scientificName, updated_backbone_scientificName) %>% as.tibble()
+    select(backbone_scientificName, updated_backbone_scientificName) %>% 
+    as.tibble()
   
   # create df of updated accepted
   updated_accepted <- verified_synonyms %>%
