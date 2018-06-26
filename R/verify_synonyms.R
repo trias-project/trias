@@ -1,6 +1,6 @@
 #' Check and update verified synonyms
 #'
-#' This function checks all verified synonyms, add new sysnonyms in order to be
+#' This function checks all verified synonyms, add new synonyms in order to be
 #' evaluated by an expert, update taxa names in case they have been changed and
 #' report the changes.
 #' @param taxa: a dataframe with at least the following columns: \itemize{

@@ -31,7 +31,7 @@ a list of five dataframes: \itemize{ \item{verified_synonyms}{: same
   backbone_accepted + updated_backbone_accepted} }
 }
 \description{
-This function checks all verified synonyms, add new sysnonyms in order to be
+This function checks all verified synonyms, add new synonyms in order to be
 evaluated by an expert, update taxa names in case they have been changed and
 report the changes.
 }
