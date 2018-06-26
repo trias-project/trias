@@ -111,14 +111,16 @@ verify_synonyms <- function(taxa, verified_synonyms) {
     select(backbone_accepted, updated_backbone_accepted) %>% as.tibble()
 
   #update scientificName of verified synonyms
-  verified_synonyms %<>% rowwise() %>%
+  verified_synonyms <- verified_synonyms %>% 
+    rowwise() %>%
     mutate(backbone_scientificName = ifelse(
       backbone_scientificName %in% updated_scientificName$backbone_scientificName,
       updated_scientificName$updated_backbone_scientificName[which(backbone_scientificName == updated_scientificName$backbone_scientificName)],
       backbone_scientificName)) %>% ungroup()
   
   # update accepted of verified synonyms
-  verified_synonyms %<>% rowwise() %>%
+  verified_synonyms <- verified_synonyms %>% 
+    rowwise() %>%
     mutate(backbone_accepted = ifelse(
       backbone_accepted %in% updated_accepted$backbone_accepted,
       updated_accepted$updated_backbone_accepted[which(backbone_accepted == updated_accepted$backbone_accepted)],
