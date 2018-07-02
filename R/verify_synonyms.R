@@ -127,7 +127,7 @@ verify_synonyms <- function(taxa, verified_synonyms) {
       backbone_accepted)) %>% ungroup()
 
   # add new synonyms to verified synonyms
-  verified_synonyms %<>% bind_rows(new_synonyms)
+  verified_synonyms <- verified_synonyms %>% bind_rows(new_synonyms)
   
   # unused synonyms
   unused_synonyms <- verified_synonyms %>% 
