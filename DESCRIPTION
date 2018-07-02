@@ -16,8 +16,11 @@ Imports:
         purrr,
         readr,
         rgbif,
+        rlang,        
         stringr,
-        tibble
+        tibble,
+        tidyr,
+        tidyselect
 Remotes: ropensci/rgbif
 URL: https://github.com/trias-project/trias
 BugReports: https://github.com/trias-project/trias/issues
