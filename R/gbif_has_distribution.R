@@ -28,7 +28,7 @@
 #' @importFrom dplyr mutate_all select intersect %>%
 #' @importFrom purrr map map_df cross_df
 #' @importFrom stringr str_split
-#' @importFrom magrittr %<>%
+#' @importFrom magrittr %<>% set_colnames
 
 gbif_has_distribution <- function(taxon_key, ...) {
   # df with all possible combinations of user's distribution properties values
