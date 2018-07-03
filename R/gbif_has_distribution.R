@@ -18,7 +18,7 @@
 #'                  status = c("PRESENT", "DOUBTFUL"))
 #'                  
 #' # use alternative names: countryCode, occurrenceStatus. 
-#' Function works. Warning is given.
+#' # Function works. Warning is given.
 #' gbif_has_distribution("134086954", countryCode = c("NL","BE"), 
 #'                  occurrenceStatus = c("PRESENT", "DOUBTFUL"))
 #'                  
