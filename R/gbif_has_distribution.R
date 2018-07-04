@@ -32,8 +32,6 @@
 
 gbif_has_distribution <- function(taxon_key, ...) {
   # df with all possible combinations of user's distribution properties values
-  GBIF_distr_terms <- c("country", 
-                        "status","establishmentMeans")
   user_properties <- list(...) 
   
   assertthat::assert_that(all(length(names(user_properties)) == 
@@ -105,3 +103,7 @@ gbif_has_distribution <- function(taxon_key, ...) {
     }
   }
 }
+
+#' Accepted GBIF distribution terms
+GBIF_distr_terms <- c("country", 
+                      "status","establishmentMeans")
