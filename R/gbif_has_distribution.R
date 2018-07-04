@@ -78,8 +78,10 @@ gbif_has_distribution <- function(taxon_key, ...) {
                                         data = "distribution") 
 
   # no ditribution properties values specified by user
-  if (is.null(names(user_properties)))
-    return(nrow(distr_properties) > 0)
+  if (is.null(names(user_properties))) {
+    has_distr <- nrow(distr_properties) > 0
+    return(has_distr)
+  }
   else {
     # taxa has no distribution
     if (nrow(distr_properties) == 0) return(FALSE)
@@ -105,7 +107,8 @@ gbif_has_distribution <- function(taxon_key, ...) {
             purrr::map_df(~as.character(.)) %>%
             bind_rows(distr_properties_exp,.)
         }
-        return(dplyr::intersect(user_properties, distr_properties) %>% nrow > 0)
+        has_distr <- dplyr::intersect(user_properties, distr_properties) %>% nrow > 0
+        return(has_distr)
       }
     }
   }
