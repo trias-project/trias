@@ -3,7 +3,6 @@ context("output_gbif_has_distribution")
 testthat::test_that("gbif_has_distribution with user parameters", {
 expect_true(gbif_has_distribution(140563025, country = "BE"))
 expect_false(gbif_has_distribution(113794849, country = "BE", status = "DOUBTFUL"))
-expect_false(gbif_has_distribution(113794849, country = "BE", status = "DOUBTFUL"))
 expect_true(gbif_has_distribution(140563025, 
                              country = c("BE"), 
                              status = c("PRESENT")))
