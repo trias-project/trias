@@ -81,33 +81,25 @@ gbif_has_distribution <- function(taxon_key, ...) {
   if (is.null(names(user_properties))) {
     has_distr <- nrow(distr_properties) > 0
     return(has_distr)
-  }
+    }
   else {
     # taxa has no distribution
     if (nrow(distr_properties) == 0) return(FALSE)
     else {
       # taxa has less distribution properties than specified by user
-      if (any(! names(user_properties) %in% colnames(distr_properties))) {
-        # make all combinations of distribution properties allowed by user
+      if (any(! names(user_properties) %in% colnames(distr_properties)))
         return(FALSE)
-      } else {
-        user_properties %<>% purrr::cross_df()
-        user_properties %<>% dplyr::mutate_all(funs(toupper))
-        user_properties %<>% dplyr::select(names(user_properties))
-        
-        distr_properties %<>% dplyr::select(names(user_properties))
-        distr_properties_exp <- data.frame()
-        # row->list->split all properties values by ","->df with all combinations
-        # ->add to expanded df 
-        for (i in 1:nrow(distr_properties)) {
-          distr_properties[i,] %>% as.list() %>% 
-            purrr::map(~stringr::str_split(., pattern = ",")) %>% 
-            unlist(recursive = FALSE) %>% expand.grid() %>% 
-            set_colnames(names(distr_properties)) %>% 
-            purrr::map_df(~as.character(.)) %>%
-            bind_rows(distr_properties_exp,.)
-        }
-        has_distr <- dplyr::intersect(user_properties, distr_properties) %>% nrow > 0
+      else {
+        # Avoid mismatch due to any upper/lowercase difference
+        user_properties <- map(user_properties, ~ toupper(.))
+        # Check whether at least 
+        has_distr <- intersect(user_properties %>% 
+                                 cross_df(),
+                               distr_properties %>% 
+                                 select(names(user_properties)) %>% 
+                                 distinct_(.dots = names(user_properties)) %>% 
+                                 mutate_all(toupper)) %>% 
+          nrow() > 0
         return(has_distr)
       }
     }
