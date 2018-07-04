@@ -1,7 +1,8 @@
 #' Compare desired distribution information with actual one.
 #' 
-#' This function compares GBIF distribution information based on a single taxon key with 
-#' user requests and returns a logical (TRUE or FALSE).
+#' This function compares GBIF distribution information based on a single taxon
+#' key with user requests and returns a logical (TRUE or FALSE). Comparison is
+#' case insensitive. User properties for each term ar treated as OR.
 #' It is a function built on rgbif function `name_usage()`.
 #' @param taxon_key (single numeric or character) a single taxon key.  
 #' @param ... one or more GBIF distribution properties and related values. 
@@ -11,24 +12,32 @@
 #' @return a logical, TRUE or FALSE.
 #' @examples 
 #' # numeric taxonKey, atomic parameters
-#' gbif_has_distribution(134086954, country = "BE", status = "DOUBTFUL")
+#' gbif_has_distribution(145953242, 
+#'                       country = "BE", 
+#'                       status = "PRESENT", 
+#'                       establishmentMeans = "INTRODUCED")
 #' 
-#' # character taxonKey, distribution properties as vectors
-#' gbif_has_distribution("134086954", country = c("NL","BE"), 
-#'                  status = c("PRESENT", "DOUBTFUL"))
+#' # character taxonKey, distribution properties as vectors, treated as OR
+#' gbif_has_distribution("145953242", 
+#'                       country = c("NL","BE"), 
+#'                       status = c("PRESENT", "DOUBTFUL"))
 #'                  
 #' # use alternative names: countryCode, occurrenceStatus. 
 #' # Function works. Warning is given.
-#' gbif_has_distribution("134086954", countryCode = c("NL","BE"), 
+#' gbif_has_distribution("145953242", countryCode = c("NL","BE"), 
 #'                  occurrenceStatus = c("PRESENT", "DOUBTFUL"))
 #'                  
+#' # Case insensitive
+#' gbif_has_distribution_alternative("145953242", countryCode = "be", 
+#'                  status = "PRESENT",
+#'                  establishmentMeans = "InTrOdUcEd")
+#'                  
 #' @export
+#' 
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage
-#' @importFrom dplyr mutate_all select intersect %>%
-#' @importFrom purrr map map_df cross_df
-#' @importFrom stringr str_split
-#' @importFrom magrittr %<>% set_colnames
+#' @importFrom dplyr select %>% intersect distinct_ mutate_all
+#' @importFrom purrr map cross_df
 
 gbif_has_distribution <- function(taxon_key, ...) {
   # df with all possible combinations of user's distribution properties values
