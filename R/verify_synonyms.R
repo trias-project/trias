@@ -7,12 +7,14 @@
 #'   \item{backbone_taxonKey} \item{backbone_scientificName}
 #'   \item{backbone_acceptedKey} \item{backbone_accepted} }
 #' @param verified_synonyms: a dataframe with at least the following columns:
-#'   \itemize{ \item{backbone_taxonKey} \item{backbone_scientificName}
-#'   \item{backbone_acceptedKey} \item{backbone_accepted}
-#'   \item{date_added}{: to be populated by function} \item{verified_key}{: to
-#'   be populated manually by expert (not required by this function, but any
-#'   other functionality will use this key so it is good to check its existence)
-#'   } }
+#' \itemize{ \item{checklist_scientificName} \item{backbone_scientificName}
+#' \item{backbone_acceptedName} \item{backbone_taxonKey}
+#' \item{backbone_acceptedKey} \item{verified_key}{: to be populated manually by
+#' expert (not required by this function, but any other functionality will use
+#' this key so it is good to check its existence)} \item{backbone_kingdom}
+#' \item{date_added}{: to be populated by function} \item{issues}
+#' \item{checklistst} {: checklists name where this taxa shows up}, \item{remarks}
+#' {: (optional) remarks as provided by the expert}}
 #' @return a list of five dataframes: \itemize{ \item{verified_synonyms}{: same
 #'   dataframe as input verified_synonyms, but now with updated info.}
 #'   \item{new_synonyms}{: a subset of verified_synonyms (same columns) with
@@ -36,30 +38,30 @@
 #'                        "Apus apus (Linnaeus, 1758)"),
 #'   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", "ACCEPTED"),
 #'   stringsAsFactors = FALSE)
-# verified_synonyms_in <- data.frame(
-#   backbone_taxonKey = c(2427092,
-#                         2651108,
-#                         6723),
-#   backbone_scientificName = c("Rana catesbeiana Shaw, 1802",
-#                               "Polystichum tsus-tsus-tsus (Hook.) Captain",
-#                               "Lemnaceae"),
-#   backbone_accepted = c("Lithobates dummyus (Batman, 2018)",
-#                         "Polystichum luctuosum (Kunze) Moore.",
-#                         "Araceae"),
-#   backbone_acceptedKey = c(2427091,
-#                            4046493,
-#                            6979),
-#   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM"),
-#   date_added = as.Date(c("2018-01-01",
-#                          "2018-01-01",
-#                          "2018-01-01")),
-#   verified_key = c(2427091,
-#                    4046493,
-#                    6979),
-#   remarks = c("dummy example 1: backbone_accepted should be updated",
-#               "dummy example 2: backbone_scientificName should be updated",
-#               "dummy example 3: nothing should be changed"),
-#   stringsAsFactors = FALSE)
+#' verified_synonyms_in <- data.frame(
+#'  backbone_taxonKey = c(2427092,
+#'                         2651108,
+#'                         6723),
+#'   backbone_scientificName = c("Rana catesbeiana Shaw, 1802",
+#'                               "Polystichum tsus-tsus-tsus (Hook.) Captain",
+#'                               "Lemnaceae"),
+#'   backbone_accepted = c("Lithobates dummyus (Batman, 2018)",
+#'                         "Polystichum luctuosum (Kunze) Moore.",
+#'                        "Araceae"),
+#'   backbone_acceptedKey = c(2427091,
+#'                            4046493,
+#'                            6979),
+#'   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM"),
+#'   date_added = as.Date(c("2018-01-01",
+#'                          "2018-01-01",
+#'                          "2018-01-01")),
+#'   verified_key = c(2427091,
+#'                    4046493,
+#'                    6979),
+#'   remarks = c("dummy example 1: backbone_accepted should be updated",
+#'               "dummy example 2: backbone_scientificName should be updated",
+#'               "dummy example 3: nothing should be changed"),
+#'   stringsAsFactors = FALSE)
 #' verify_synonyms(taxa = taxa_in, verified_synonyms = verified_synonyms_in)
 #' @export
 #' @importFrom assertthat assert_that
