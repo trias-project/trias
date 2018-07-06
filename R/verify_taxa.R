@@ -4,17 +4,27 @@
 #' evaluated by an expert, update taxa names in case they have been changed and
 #' report the changes.
 #' @param taxa: a dataframe with at least the following columns: \itemize{
-#'   \item{backbone_taxonKey} \item{backbone_scientificName}
-#'   \item{backbone_acceptedKey} \item{backbone_accepted} }
+#'   \item{checklist_key} {: taxon key as provided by GBIF}
+#'   \item{checklist_scientificName} {: scientific name as provided by GBIF}
+#'   \item{checklist_datasetKey} {: dataset key (a UUID) of the checklist the
+#'   taxon comes from.} \item{nubKey} {: a GBIF backbone key.}
+#'   \item{backbone_scientificName} {: scientific name as provided by GBIF
+#'   backbone.} \item{backbone_species} {: species name as provided by GBIF
+#'   backbone.} \item{backbone_speciesKey} {: a species key as provided by GBIF
+#'   backbone.} \item{backbone_taxonomicStatus} {taxonomic status as provided by
+#'   GBIF backbone.} \item{backbone_acceptedName} {: accepted name (in case of
+#'   synonyms) as provided by GBIF backbone.}  \item{backbone_acceptedKey} {:
+#'   accepted key as provided by GBIF backbone.} \item{backbone_issues} {:
+#'   issues as provided by GBIF backbone.} }
 #' @param verified_synonyms: a dataframe with at least the following columns:
-#' \itemize{ \item{checklist_scientificName} \item{backbone_scientificName}
-#' \item{backbone_acceptedName} \item{backbone_taxonKey}
-#' \item{backbone_acceptedKey} \item{verified_key}{: to be populated manually by
-#' expert (not required by this function, but any other functionality will use
-#' this key so it is good to check its existence)} \item{backbone_kingdom}
-#' \item{date_added}{: to be populated by function} \item{issues}
-#' \item{checklistst} {: checklists name where this taxa shows up}, \item{remarks}
-#' {: (optional) remarks as provided by the expert}}
+#'   \itemize{ \item{checklist_scientificName} \item{backbone_scientificName}
+#'   \item{backbone_acceptedName} \item{backbone_taxonKey}
+#'   \item{backbone_acceptedKey} \item{verified_key}{: to be populated manually
+#'   by expert (not required by this function, but any other functionality will
+#'   use this key so it is good to check its existence)} \item{backbone_kingdom}
+#'   \item{date_added}{: to be populated by function} \item{issues}
+#'   \item{checklistst} {: checklists name where this taxa shows up},
+#'   \item{remarks} {: (optional) remarks as provided by the expert}}
 #' @return a list of five dataframes: \itemize{ \item{verified_synonyms}{: same
 #'   dataframe as input verified_synonyms, but now with updated info.}
 #'   \item{new_synonyms}{: a subset of verified_synonyms (same columns) with
