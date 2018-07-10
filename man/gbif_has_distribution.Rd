@@ -2,7 +2,7 @@
 % Please edit documentation in R/gbif_has_distribution.R
 \name{gbif_has_distribution}
 \alias{gbif_has_distribution}
-\title{Compare desired distribution information with actual one (alternative).}
+\title{Compare desired distribution information with actual one.}
 \usage{
 gbif_has_distribution(taxon_key, ...)
 }
