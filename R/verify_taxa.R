@@ -11,8 +11,8 @@
 #'   backbone.} \item{backbone_taxonomicStatus} {taxonomic status as provided by
 #'   GBIF backbone.} \item{backbone_acceptedName} {: accepted name (in case of
 #'   synonyms) as provided by GBIF backbone.}  \item{backbone_acceptedKey} {:
-#'   accepted key as provided by GBIF backbone.} \item{backbone_issues} {:
-#'   issues as provided by GBIF backbone.} }
+#'   accepted key as provided by GBIF backbone.} \item{backbone_kingdom}
+#'   \item{backbone_issues} {: issues as provided by GBIF backbone.} }
 #' @param verified_taxa: a dataframe with at least the following columns:
 #'   \itemize{ \item{checklist_scientificName} \item{backbone_scientificName}
 #'   \item{backbone_acceptedName} \item{backbone_taxonKey}
@@ -24,13 +24,15 @@
 #'   \item{remarks} {: (optional) remarks as provided by the expert}}
 #' @return a list of five dataframes: \itemize{ \item{verified_taxa}{: same
 #'   dataframe as input verified_taxa, but now with updated info.}
-#'   \item{new_synonyms}{: a subset of verified_taxa (same columns) with
-#'   added synonym relations (found in taxa, but not in verified_taxa)}
+#'   \item{new_synonyms}{: a subset of verified_taxa (same columns) with added
+#'   synonym relations (found in taxa, but not in verified_taxa)}
 #'   \item{unused_synonyms}{: a subset of verified_taxa (same columns) with
 #'   unused synonym relations (found in verified_taxa, but not in taxa)}
 #'   \item{updated_scientificName}{: a dataframe with backbone_scientificName +
 #'   updated_backbone_scientificName} \item{updated_acceptedName}{: a dataframe
-#'   with backbone_accepted + updated_backbone_accepted} }
+#'   with backbone_acceptedName + updated_backbone_acceptedName}
+#'   \item{duplicates_taxa}{: a dataframe with all taxa present in more than one
+#'   checklist.} }
 #' @examples
 #' taxa_in <- data.frame(
 #'   checklist_scientificName = c("Aspius aspius",
