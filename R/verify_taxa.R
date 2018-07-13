@@ -37,30 +37,35 @@
 #'                                "Rana catesbeiana",
 #'                                "Polystichum tsus-simense J.Smith",
 #'                                "Apus apus (Linnaeus, 1758)",
-#'                                "Acmella spec."),
+#'                                "Acmella spec.",
+#'                                "Rana catesbeiana"),
 #'   checklist_datasetKey = c("98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
-#'                            "e4746398-f7c4-47a1-a474-ae80a4f18e92", 
+#'                            "e4746398-f7c4-47a1-a474-ae80a4f18e92",
 #'                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
 #'                            "39653f3e-8d6b-4a94-a202-859359c164c5",
-#'                            "9ff7d317-609b-4c08-bd86-3bc404b77c42"),
-#'   backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA),
+#'                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'                            "b351a324-77c4-41c9-a909-f30f77268bc4"),
+#'   backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA, 2427092),
 #'   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
 #'                               "Rana catesbeiana Shaw, 1802",
 #'                               "Polystichum tsus-simense (Hook.) J.Sm.",
 #'                               "Apus apus (Linnaeus, 1758)",
-#'                               NA),
-#'   backbone_kingdom = c("Animalia", "Animalia", "Plantae", "Plantae", NA),
-#'   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", 
-#'                                "ACCEPTED", NA),
-#'   backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA),
+#'                               NA,
+#'                               "Rana catesbeiana Shaw, 1802"),
+#'   backbone_kingdom = c("Animalia", "Animalia", "Plantae", 
+#'                        "Plantae", NA, "Animalia"),
+#'   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM",
+#'                                "ACCEPTED", NA, "SYNONYM"),
+#'   backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091),
 #'   backbone_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)",
 #'                             "Lithobates catesbeianus (Shaw, 1802)",
 #'                             "Polystichum luctuosum (Kunze) Moore.",
-#'                             NA, 
-#'                             NA),
-#'   backbone_issues = c("ORIGINAL_NAME_DERIVED", NA, 
-#'                       "ORIGINAL_NAME_DERIVED", NA, NA),
+#'                             NA, NA,
+#'                             "Lithobates catesbeianus (Shaw, 1802)"),
+#'   backbone_issues = c("ORIGINAL_NAME_DERIVED", NA,
+#'                       "ORIGINAL_NAME_DERIVED", NA, NA, NA),
 #'   stringsAsFactors = FALSE)
+#' 
 #' verified_taxa_in <- data.frame(
 #'   checklist_scientificName = c("Rana catesbeiana",
 #'                                "Polystichum tsus-simense J.Smith",
@@ -85,28 +90,30 @@
 #'   date_added = as.Date(c("2018-07-01",
 #'                          "2018-07-01",
 #'                          "2018-07-01")),
-#'   backbone_issues = c("ORIGINAL_NAME_DERIVED", NA, "ORIGINAL_NAME_DERIVED"),
-#'   checklists = c("e4746398-f7c4-47a1-a474-ae80a4f18e92", 
+#'   backbone_issues = c(NA, NA, NA),
+#'   checklists = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
 #'                  "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-#'                  "e4746398-f7c4-47a1-a474-ae80a4f18e92"),
-#'   remarks = c("dummy example 1: backbone_accepted should be updated",
-#'               "dummy example 2: backbone_scientificName should be updated",
+#'                  "e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5"),
+#'   remarks = c("dummy example 1: backbone_acceptedName and checklists should be updated",
+#'               "dummy example 2: backbone_scientificName and backbone_issues should be updated",
 #'               "dummy example 3: nothing should be changed"),
 #'   stringsAsFactors = FALSE)
 #' verify_taxa(taxa = taxa_in, verified_taxa = verified_taxa_in)
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage
-#' @importFrom dplyr filter rowwise mutate rename bind_rows
-#' @importFrom dplyr pull anti_join select left_join
-#' @importFrom magrittr %<>%
+#' @importFrom stringr str_detect
+#' @importFrom tidyr separate_rows
+#' @importFrom dplyr filter rowwise mutate rename bind_rows group_by_at
+#' @importFrom dplyr anti_join select left_join
 #' @importFrom tibble as.tibble
 verify_taxa <- function(taxa, verified_taxa) {
   # test incoming arguments
-  name_col_taxa <- c("checklist_scientificName", "checklist_datasetKey", 
-                     "backbone_taxonKey", "backbone_scientificName",
-                     "backbone_acceptedKey", "backbone_acceptedName",
-                     "backbone_taxonomicStatus", "backbone_issues")
+  name_col_taxa <- c("checklist_scientificName", "backbone_scientificName", 
+                     "backbone_taxonomicStatus", "backbone_acceptedName",
+                     "backbone_taxonKey", "backbone_acceptedKey",
+                     "backbone_kingdom", "backbone_issues",
+                     "checklist_datasetKey")
   assert_that(is.data.frame(taxa))
   assert_that(all(name_col_taxa %in% names(taxa)))
   
@@ -117,6 +124,10 @@ verify_taxa <- function(taxa, verified_taxa) {
                          "backbone_issues", "remarks", "checklists")
   assert_that(is.data.frame(verified_taxa))
   assert_that(all(name_col_verified %in% names(verified_taxa)))
+  
+  # convert backbone_issues from logical to character (in case only NA occur)
+  class(taxa$backbone_issues) <- "character"
+  class(verified_taxa$backbone_issues) <- "character"
   
   # find new synonyms
   new_synonyms <- taxa %>%
@@ -129,7 +140,7 @@ verify_taxa <- function(taxa, verified_taxa) {
     select(one_of(name_col_verified))
   
   # find new taxa not matched to GBIF backbone 
-  new_unmatches <- taxa %>%
+  new_unmatched_taxa <- taxa %>%
     filter(is.na(backbone_taxonKey)) %>%
     filter(!checklist_scientificName %in% 
              verified_taxa$checklist_scientificName) %>% 
@@ -138,9 +149,6 @@ verify_taxa <- function(taxa, verified_taxa) {
            checklists = checklist_datasetKey) %>% 
     ungroup() %>%
     select(one_of(name_col_verified))
-  
-  new_fuzzy_matches <- taxa %>% 
-    filter()
   
   # create df of updated scientificNames 
   updated_scientificName <- verified_taxa %>%
@@ -151,6 +159,7 @@ verify_taxa <- function(taxa, verified_taxa) {
     rename("backbone_scientificName" = "backbone_scientificName.x",
            "updated_backbone_scientificName" = "backbone_scientificName.y") %>%
     select(backbone_scientificName, updated_backbone_scientificName) %>% 
+    distinct() %>% 
     as.tibble()
   
   # create df of updated acceptedName
@@ -162,8 +171,24 @@ verify_taxa <- function(taxa, verified_taxa) {
     left_join(taxa, by = "backbone_taxonKey") %>%
     rename("backbone_acceptedName" = "backbone_acceptedName.x",
            "updated_backbone_acceptedName" = "backbone_acceptedName.y") %>%
-    select(backbone_acceptedName, updated_backbone_acceptedName) %>% as.tibble()
-
+    select(backbone_acceptedName, updated_backbone_acceptedName) %>% 
+    distinct() %>% 
+    as.tibble()
+  
+  # create df of updated backbone_issues
+  updated_backbone_issues <- verified_taxa %>%
+    filter(backbone_taxonKey %in% taxa$backbone_taxonKey) %>%
+    select(backbone_taxonKey, backbone_issues) %>%
+    anti_join(taxa, by = c("backbone_issues", "backbone_taxonKey")) %>%
+    left_join(taxa %>%
+                distinct(backbone_taxonKey, backbone_issues), 
+              by = c("backbone_taxonKey")) %>%
+    rename("backbone_issues" = "backbone_issues.x",
+           "updated_backbone_issues" = "backbone_issues.y") %>%
+    select(backbone_taxonKey, backbone_issues, updated_backbone_issues) %>% 
+    distinct() %>% 
+    as.tibble()
+  
   #update scientificName of verified taxa
   verified_taxa <- verified_taxa %>% 
     rowwise() %>%
@@ -172,7 +197,8 @@ verify_taxa <- function(taxa, verified_taxa) {
       updated_scientificName$updated_backbone_scientificName[
         which(backbone_scientificName == 
                 updated_scientificName$backbone_scientificName)],
-      backbone_scientificName)) %>% ungroup()
+      backbone_scientificName)) %>% 
+    ungroup()
   
   # update acceptedName of verified taxa
   verified_taxa <- verified_taxa %>% 
@@ -182,13 +208,54 @@ verify_taxa <- function(taxa, verified_taxa) {
       updated_acceptedName$updated_backbone_acceptedName[
         which(backbone_acceptedName == 
                 updated_acceptedName$backbone_acceptedName)],
-      backbone_acceptedName)) %>% ungroup()
-
+      backbone_acceptedName)) %>% 
+    ungroup()
+  
+  # update backbone_issues of verified taxa
+  verified_taxa <- verified_taxa %>% 
+    rowwise() %>%
+    mutate(backbone_issues = ifelse(
+      backbone_taxonKey %in% updated_backbone_issues$backbone_taxonKey,
+      updated_backbone_issues$updated_backbone_issues[
+        which(backbone_taxonKey == 
+                updated_backbone_issues$backbone_taxonKey)],
+      backbone_issues)) %>% 
+    ungroup()
+  
+  # update checklists
+  verified_taxa <- taxa %>% 
+    anti_join(verified_taxa %>% 
+                separate_rows(checklists, sep = ","), 
+              by = c(intersect(colnames(taxa), colnames(verified_taxa)),
+                     "checklist_datasetKey" = "checklists")) %>%
+    filter(checklist_scientificName %in% 
+             verified_taxa$checklist_scientificName) %>%
+    full_join(verified_taxa, 
+              by = intersect(colnames(taxa), colnames(verified_taxa))) %>%
+    rowwise() %>%
+    mutate(checklists = case_when(
+      !is.na(checklist_datasetKey) ~ paste(checklists, 
+                                           checklist_datasetKey, sep = ","),
+      is.na(checklist_datasetKey) ~ checklists)) %>%
+    ungroup() %>%
+    select(-checklist_datasetKey)
+  
+  # add (eventually updated) backbone_scientificName to updated_backbone_issues
+  # for readibility reasons: better to have a scientificName than just a key!
+  updated_backbone_issues <- updated_backbone_issues %>%
+    left_join(verified_taxa %>% 
+                select(backbone_taxonKey, backbone_scientificName), 
+              by = "backbone_taxonKey")
+  
   # add new synonyms to verified taxa
   verified_taxa <- verified_taxa %>% bind_rows(new_synonyms)
   
   # add new unmatches to verified taxa
-  verified_taxa <- verified_taxa %>% bind_rows(new_unmatches)
+  verified_taxa <- verified_taxa %>% bind_rows(new_unmatched_taxa)
+  
+  # taxa in several checklists
+  duplicates_taxa <- verified_taxa %>%
+    filter(str_detect(checklists, pattern = ","))
   
   # unused synonyms
   unused_taxa <- verified_taxa %>% 
@@ -196,7 +263,11 @@ verify_taxa <- function(taxa, verified_taxa) {
   
   return(list(verified_taxa = verified_taxa,
               new_synonyms = new_synonyms,
+              new_unmatched_taxa = new_unmatched_taxa,
               unused_taxa = unused_taxa,
               updated_scientificName = updated_scientificName,
-              updated_acceptedName = updated_acceptedName))
+              updated_acceptedName = updated_acceptedName,
+              updated_backbone_issues = updated_backbone_issues,
+              duplicates_taxa = duplicates_taxa
+  ))
 }
