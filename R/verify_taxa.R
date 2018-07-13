@@ -39,7 +39,7 @@
 #'                                "Rana catesbeiana",
 #'                                "Polystichum tsus-simense J.Smith",
 #'                                "Apus apus (Linnaeus, 1758)",
-#'                                "Acmella spec.",
+#'                                "Begonia x semperflorens hort.",
 #'                                "Rana catesbeiana"),
 #'   checklist_datasetKey = c("98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
 #'                            "e4746398-f7c4-47a1-a474-ae80a4f18e92",
