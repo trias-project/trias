@@ -103,11 +103,10 @@
 #' verify_taxa(taxa = taxa_in, verified_taxa = verified_taxa_in)
 #' @export
 #' @importFrom assertthat assert_that
-#' @importFrom rgbif name_usage
 #' @importFrom stringr str_detect
 #' @importFrom tidyr separate_rows
-#' @importFrom dplyr filter rowwise mutate rename bind_rows group_by_at
-#' @importFrom dplyr anti_join select left_join
+#' @importFrom dplyr filter distinct rowwise mutate rename bind_rows
+#' @importFrom dplyr anti_join select left_join full_join case_when
 #' @importFrom tibble as.tibble
 verify_taxa <- function(taxa, verified_taxa) {
   # test incoming arguments
