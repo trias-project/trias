@@ -15,8 +15,8 @@ taxon comes from.} \item{backbone_taxonKey} {: a GBIF backbone key.}
 backbone.} \item{backbone_taxonomicStatus} {taxonomic status as provided by
 GBIF backbone.} \item{backbone_acceptedName} {: accepted name (in case of
 synonyms) as provided by GBIF backbone.}  \item{backbone_acceptedKey} {:
-accepted key as provided by GBIF backbone.} \item{backbone_issues} {:
-issues as provided by GBIF backbone.} }}
+accepted key as provided by GBIF backbone.} \item{backbone_kingdom}
+\item{backbone_issues} {: issues as provided by GBIF backbone.} }}
 
 \item{verified_taxa:}{a dataframe with at least the following columns:
 \itemize{ \item{checklist_scientificName} \item{backbone_scientificName}
@@ -31,13 +31,15 @@ use this key so it is good to check its existence)} \item{backbone_kingdom}
 \value{
 a list of five dataframes: \itemize{ \item{verified_taxa}{: same
   dataframe as input verified_taxa, but now with updated info.}
-  \item{new_synonyms}{: a subset of verified_taxa (same columns) with
-  added synonym relations (found in taxa, but not in verified_taxa)}
+  \item{new_synonyms}{: a subset of verified_taxa (same columns) with added
+  synonym relations (found in taxa, but not in verified_taxa)}
   \item{unused_synonyms}{: a subset of verified_taxa (same columns) with
   unused synonym relations (found in verified_taxa, but not in taxa)}
   \item{updated_scientificName}{: a dataframe with backbone_scientificName +
-  updated_backbone_scientificName} \item{updated_accepted}{: a dataframe with
-  backbone_accepted + updated_backbone_accepted} }
+  updated_backbone_scientificName} \item{updated_acceptedName}{: a dataframe
+  with backbone_acceptedName + updated_backbone_acceptedName}
+  \item{duplicates_taxa}{: a dataframe with all taxa present in more than one
+  checklist.} }
 }
 \description{
 This function checks all verified taxa, add new synonyms or taxa not matched
@@ -50,28 +52,35 @@ taxa_in <- data.frame(
                                "Rana catesbeiana",
                                "Polystichum tsus-simense J.Smith",
                                "Apus apus (Linnaeus, 1758)",
-                               "Acmella spec."),
+                               "Acmella spec.",
+                               "Rana catesbeiana"),
   checklist_datasetKey = c("98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
-                           "e4746398-f7c4-47a1-a474-ae80a4f18e92", 
+                           "e4746398-f7c4-47a1-a474-ae80a4f18e92",
                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
                            "39653f3e-8d6b-4a94-a202-859359c164c5",
-                           "9ff7d317-609b-4c08-bd86-3bc404b77c42"),
-  backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA),
+                           "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+                           "b351a324-77c4-41c9-a909-f30f77268bc4"),
+  backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA, 2427092),
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
                               "Rana catesbeiana Shaw, 1802",
                               "Polystichum tsus-simense (Hook.) J.Sm.",
                               "Apus apus (Linnaeus, 1758)",
-                              NA),
-  backbone_kingdom = c("Animalia", "Animalia", "Plantae", "Plantae", NA),
-  backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", 
-                               "ACCEPTED", NA),
-  backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA),
+                              NA,
+                              "Rana catesbeiana Shaw, 1802"),
+  backbone_kingdom = c("Animalia", "Animalia", "Plantae", 
+                       "Plantae", NA, "Animalia"),
+  backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM",
+                               "ACCEPTED", NA, "SYNONYM"),
+  backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091),
   backbone_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)",
                             "Lithobates catesbeianus (Shaw, 1802)",
                             "Polystichum luctuosum (Kunze) Moore.",
-                            NA, 
-                            NA),
+                            NA, NA,
+                            "Lithobates catesbeianus (Shaw, 1802)"),
+  backbone_issues = c("ORIGINAL_NAME_DERIVED", NA,
+                      "ORIGINAL_NAME_DERIVED", NA, NA, NA),
   stringsAsFactors = FALSE)
+
 verified_taxa_in <- data.frame(
   checklist_scientificName = c("Rana catesbeiana",
                                "Polystichum tsus-simense J.Smith",
@@ -96,12 +105,12 @@ verified_taxa_in <- data.frame(
   date_added = as.Date(c("2018-07-01",
                          "2018-07-01",
                          "2018-07-01")),
-  issues = c(NA, "ORIGINAL_NAME_DERIVED", NA),
-  checklists = c("e4746398-f7c4-47a1-a474-ae80a4f18e92", 
+  backbone_issues = c(NA, NA, NA),
+  checklists = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
                  "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-                 "e4746398-f7c4-47a1-a474-ae80a4f18e92"),
-  remarks = c("dummy example 1: backbone_accepted should be updated",
-              "dummy example 2: backbone_scientificName should be updated",
+                 "e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5"),
+  remarks = c("dummy example 1: backbone_acceptedName and checklists should be updated",
+              "dummy example 2: backbone_scientificName and backbone_issues should be updated",
               "dummy example 3: nothing should be changed"),
   stringsAsFactors = FALSE)
 verify_taxa(taxa = taxa_in, verified_taxa = verified_taxa_in)
