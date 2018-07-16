@@ -1,7 +1,7 @@
-checklist_scientificName	backbone_taxonKey	backbone_scientificName	backbone_kingdom	backbone_taxonomicStatus	backbone_acceptedKey	backbone_acceptedName	backbone_issues	verified_key	date_added	checklists	remarks
+checklist_scientificName	backbone_taxonKey	backbone_scientificName	backbone_kingdom	backbone_taxonomicStatus	backbone_acceptedKey	backbone_acceptedName	backbone_issues	verification_key	date_added	checklists	remarks
 Rana catesbeiana	2427092	Rana catesbeiana Shaw, 1802	Animalia	SYNONYM	2427091	Lithobates catesbeianus (Shaw, 1802)		2427091	2018-07-01	e4746398-f7c4-47a1-a474-ae80a4f18e92,b351a324-77c4-41c9-a909-f30f77268bc4	dummy example 1: backbone_acceptedName and checklists should be updated
 Polystichum tsus-simense J.Smith	2651108	Polystichum tsus-simense (Hook.) J.Sm.	Plantae	SYNONYM	4046493	Polystichum luctuosum (Kunze) Moore.	ORIGINAL_NAME_DERIVED	4046493	2018-07-01	9ff7d317-609b-4c08-bd86-3bc404b77c42	dummy example 2: backbone_scientificName and backbone_issues should be updated
 Lemnaceae	6723	Lemnaceae	Plantae	SYNONYM	6979	Araceae		6979	2018-07-01	e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5	dummy example 3: nothing should be changed
-Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley								2805420,2805363	2018-07-16	9ff7d317-609b-4c08-bd86-3bc404b77c42	dummy example 4: multiple keys in verified_key are allowed
+Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley								2805420,2805363	2018-07-16	9ff7d317-609b-4c08-bd86-3bc404b77c42	dummy example 4: multiple keys in verification_key are allowed
 Aspius aspius	2360181	Aspius aspius (Linnaeus, 1758)	Animalia	SYNONYM	5851603	Leuciscus aspius (Linnaeus, 1758)	ORIGINAL_NAME_DERIVED		2018-07-16	98940a79-2bf1-46e6-afd6-ba2e85a26f9f	
 Begonia x semperflorens hort.									2018-07-16	9ff7d317-609b-4c08-bd86-3bc404b77c42	

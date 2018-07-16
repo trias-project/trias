@@ -16,7 +16,7 @@
 #' @param verified_taxa: a dataframe with at least the following columns:
 #'   \itemize{ \item{checklist_scientificName} \item{backbone_scientificName}
 #'   \item{backbone_acceptedName} \item{backbone_taxonKey}
-#'   \item{backbone_acceptedKey} \item{verified_key}{: to be populated manually
+#'   \item{backbone_acceptedKey} \item{verification_key}{: to be populated manually
 #'   by expert (not required by this function, but any other functionality will
 #'   use this key so it is good to check its existence)} \item{backbone_kingdom}
 #'   \item{date_added}{: to be populated by function} \item{issues}
@@ -88,7 +88,7 @@
 #'                             NA),
 #'   backbone_taxonKey = c(2427092, 2651108, 6723,NA),
 #'   backbone_acceptedKey = c(2427091, 4046493, 6979, NA),
-#'   verified_key = c(2427091,
+#'   verification_key = c(2427091,
 #'                    4046493,
 #'                    6979,
 #'                    "2805420,2805363"),
@@ -106,7 +106,7 @@
 #'   remarks = c("dummy example 1: backbone_acceptedName and checklists should be updated",
 #'               "dummy example 2: backbone_scientificName and backbone_issues should be updated",
 #'               "dummy example 3: nothing should be changed",
-#'               "dummy example 4: multiple keys in verified_key are allowed"),
+#'               "dummy example 4: multiple keys in verification_key are allowed"),
 #'   stringsAsFactors = FALSE)
 #' verify_taxa(taxa = taxa_in, verified_taxa = verified_taxa_in)
 #' @export
@@ -138,7 +138,7 @@ verify_taxa <- function(taxa, verified_taxa) {
   name_col_verified <- c("checklist_scientificName", "backbone_scientificName",
                          "backbone_taxonomicStatus", "backbone_acceptedName",
                          "backbone_taxonKey", "backbone_acceptedKey", 
-                         "verified_key", "backbone_kingdom", "date_added", 
+                         "verification_key", "backbone_kingdom", "date_added", 
                          "backbone_issues", "remarks", "checklists")
   assert_that(is.data.frame(verified_taxa))
   assert_that(all(name_col_verified %in% names(verified_taxa)))
@@ -150,7 +150,7 @@ verify_taxa <- function(taxa, verified_taxa) {
                  verified_taxa$checklists))
   is.numeric(c(taxa$backbone_taxonKey, taxa$backbone_acceptedKey))
   # multiple comma separated keys coul be added
-  class(verified_taxa$verified_key) <- "character"
+  class(verified_taxa$verification_key) <- "character"
   # in case backbone_issues contains only logical NA
   class(verified_taxa$backbone_issues) <- "character"
   
@@ -161,7 +161,7 @@ verify_taxa <- function(taxa, verified_taxa) {
     rowwise() %>%
     mutate(date_added = Sys.Date(),
            checklists = checklist_datasetKey,
-           verified_key = NA_character_,
+           verification_key = NA_character_,
            remarks = NA_character_) %>% 
     ungroup() %>%
     select(one_of(name_col_verified))
@@ -174,7 +174,7 @@ verify_taxa <- function(taxa, verified_taxa) {
     rowwise() %>%
     mutate(date_added = Sys.Date(),
            checklists = checklist_datasetKey,
-           verified_key = NA_character_,
+           verification_key = NA_character_,
            remarks = NA_character_) %>%
     ungroup() %>%
     select(one_of(name_col_verified))

@@ -56,7 +56,7 @@ verified_taxa_in <- data.frame(
                             NA),
   backbone_taxonKey = c(2427092, 2651108, 6723,NA),
   backbone_acceptedKey = c(2427091, 4046493, 6979, NA),
-  verified_key = c(2427091,
+  verification_key = c(2427091,
                    4046493,
                    6979,
                    "2805420,2805363"),
@@ -74,7 +74,7 @@ verified_taxa_in <- data.frame(
   remarks = c("dummy example 1: backbone_acceptedName and checklists should be updated",
               "dummy example 2: backbone_scientificName and backbone_issues should be updated",
               "dummy example 3: nothing should be changed",
-              "dummy example 4: multiple keys in verified_key are allowed"),
+              "dummy example 4: multiple keys in verification_key are allowed"),
   stringsAsFactors = FALSE)
 
 # correct output
@@ -99,7 +99,7 @@ output_verified_taxa <-
                     date_added = readr::col_date(format = "%Y-%m-%d"),
                     backbone_taxonKey = readr::col_number(),
                     backbone_acceptedKey = readr::col_number(),
-                    verified_key = readr::col_character()),
+                    verification_key = readr::col_character()),
                   na = "")
 output_new_synonyms <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
@@ -108,7 +108,7 @@ output_new_synonyms <-
                     date_added = readr::col_date(format = "%Y-%m-%d"),
                     backbone_taxonKey = readr::col_number(),
                     backbone_acceptedKey = readr::col_number(),
-                    verified_key = readr::col_character()))
+                    verification_key = readr::col_character()))
 
 output_new_unmatched_taxa <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
@@ -125,7 +125,7 @@ output_unused_taxa <-
                     date_added = readr::col_date(format = "%Y-%m-%d"),
                     backbone_taxonKey = readr::col_number(),
                     backbone_acceptedKey = readr::col_number(),
-                    verified_key = readr::col_character()))
+                    verification_key = readr::col_character()))
 
 output_updated_scientificName <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",

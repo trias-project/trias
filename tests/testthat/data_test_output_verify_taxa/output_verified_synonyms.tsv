@@ -1,4 +1,4 @@
-backbone_taxonKey	backbone_scientificName	backbone_accepted	backbone_acceptedKey	backbone_taxonomicStatus	date_added	verified_key	remarks
+backbone_taxonKey	backbone_scientificName	backbone_accepted	backbone_acceptedKey	backbone_taxonomicStatus	date_added	verification_key	remarks
 2427092	Rana catesbeiana Shaw, 1802	Lithobates catesbeianus (Shaw, 1802)	2427091	SYNONYM	2018-01-01	2427091	dummy example 1: backbone_accepted should be updated
 2651108	Polystichum tsus-simense (Hook.) J.Sm.	Polystichum luctuosum (Kunze) Moore.	4046493	SYNONYM	2018-01-01	4046493	dummy example 2: backbone_scientificName should be updated
 6723	Lemnaceae	Araceae	6979	SYNONYM	2018-01-01	6979	dummy example 3: nothing should be changed

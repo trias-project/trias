@@ -53,7 +53,7 @@ verified_taxa_in <- data.frame(
                             NA),
   backbone_taxonKey = c(2427092, 2651108, 6723,NA),
   backbone_acceptedKey = c(2427091, 4046493, 6979, NA),
-  verified_key = c(2427091,
+  verification_key = c(2427091,
                    4046493,
                    6979,
                    "2805420,2805363"),
@@ -71,7 +71,7 @@ verified_taxa_in <- data.frame(
   remarks = c("dummy example 1: backbone_acceptedName and checklists should be updated",
               "dummy example 2: backbone_scientificName and backbone_issues should be updated",
               "dummy example 3: nothing should be changed",
-              "dummy example 4: multiple keys in verified_key are allowed"),
+              "dummy example 4: multiple keys in verification_key are allowed"),
   stringsAsFactors = FALSE)
 
 testthat::test_that("taxa is a data frame", {
@@ -134,7 +134,7 @@ verified_taxa_test1 <- data.frame(
   bad_backbone_acceptedName_colname = c("Leuciscus aspius (Linnaeus, 1758)"),
   bad_backbone_taxonKey_colname = c(2360181),
   bad_backbone_acceptedKey_colname = c(5851603),
-  bad_verified_key_colname = c(2427091),
+  bad_verification_key_colname = c(2427091),
   bad_backbone_kingdom_colname = c("Animalia"),
   bad_date_added_colname = c("2018-01-01"),
   bad_backbone_issues_colname = c(NA),
@@ -149,7 +149,7 @@ verified_taxa_test2 <- data.frame(
   backbone_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
   backbone_taxonKey = c(2360181),
   backbone_acceptedKey = c(5851603),
-  verified_key = c(2427091),
+  verification_key = c(2427091),
   # backbone_kingdom column missing
   # date_added column missing
   backbone_issues = c(NA),
