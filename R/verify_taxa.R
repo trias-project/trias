@@ -136,7 +136,9 @@ verify_taxa <- function(taxa, verified_taxa) {
     filter(!backbone_taxonKey %in% verified_taxa$backbone_taxonKey) %>% 
     rowwise() %>%
     mutate(date_added = Sys.Date(),
-           checklists = checklist_datasetKey) %>% 
+           checklists = checklist_datasetKey,
+           verified_key = NA_integer_,
+           remarks = NA_character_) %>% 
     ungroup() %>%
     select(one_of(name_col_verified))
   
@@ -147,7 +149,9 @@ verify_taxa <- function(taxa, verified_taxa) {
              verified_taxa$checklist_scientificName) %>% 
     rowwise() %>%
     mutate(date_added = Sys.Date(),
-           checklists = checklist_datasetKey) %>% 
+           checklists = checklist_datasetKey,
+           verified_key = NA_integer_,
+           remarks = NA_character_) %>%
     ungroup() %>%
     select(one_of(name_col_verified))
   
