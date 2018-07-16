@@ -155,7 +155,7 @@ verify_taxa <- function(taxa, verified_taxa) {
     ungroup() %>%
     select(one_of(name_col_verified))
   
-  # create df of updated scientificNames 
+  # create df of updated scientificName 
   updated_scientificName <- verified_taxa %>%
     filter(backbone_taxonKey %in% taxa$backbone_taxonKey) %>%
     anti_join(taxa, by = "backbone_scientificName") %>%
