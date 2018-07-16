@@ -40,65 +40,73 @@
 #'                                "Polystichum tsus-simense J.Smith",
 #'                                "Apus apus (Linnaeus, 1758)",
 #'                                "Begonia x semperflorens hort.",
-#'                                "Rana catesbeiana"),
+#'                                "Rana catesbeiana",
+#'                                "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley"),
 #'   checklist_datasetKey = c("98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
 #'                            "e4746398-f7c4-47a1-a474-ae80a4f18e92",
 #'                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
 #'                            "39653f3e-8d6b-4a94-a202-859359c164c5",
 #'                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-#'                            "b351a324-77c4-41c9-a909-f30f77268bc4"),
-#'   backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA, 2427092),
+#'                            "b351a324-77c4-41c9-a909-f30f77268bc4",
+#'                            "9ff7d317-609b-4c08-bd86-3bc404b77c42"),
+#'   backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA, 2427092, NA),
 #'   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
 #'                               "Rana catesbeiana Shaw, 1802",
 #'                               "Polystichum tsus-simense (Hook.) J.Sm.",
 #'                               "Apus apus (Linnaeus, 1758)",
 #'                               NA,
-#'                               "Rana catesbeiana Shaw, 1802"),
+#'                               "Rana catesbeiana Shaw, 1802",
+#'                               NA),
 #'   backbone_kingdom = c("Animalia", "Animalia", "Plantae", 
-#'                        "Plantae", NA, "Animalia"),
+#'                        "Plantae", NA, "Animalia", NA),
 #'   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM",
-#'                                "ACCEPTED", NA, "SYNONYM"),
-#'   backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091),
+#'                                "ACCEPTED", NA, "SYNONYM", NA),
+#'   backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091, NA),
 #'   backbone_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)",
 #'                             "Lithobates catesbeianus (Shaw, 1802)",
 #'                             "Polystichum luctuosum (Kunze) Moore.",
 #'                             NA, NA,
-#'                             "Lithobates catesbeianus (Shaw, 1802)"),
+#'                             "Lithobates catesbeianus (Shaw, 1802)",
+#'                             NA),
 #'   backbone_issues = c("ORIGINAL_NAME_DERIVED", NA,
-#'                       "ORIGINAL_NAME_DERIVED", NA, NA, NA),
+#'                       "ORIGINAL_NAME_DERIVED", NA, NA, NA, NA),
 #'   stringsAsFactors = FALSE)
 #' 
 #' verified_taxa_in <- data.frame(
 #'   checklist_scientificName = c("Rana catesbeiana",
 #'                                "Polystichum tsus-simense J.Smith",
-#'                                "Lemnaceae"),
+#'                                "Lemnaceae",
+#'                                "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley"),
 #'   backbone_scientificName = c("Rana catesbeiana Shaw, 1802",
 #'                               "Polystichum tsus-tsus-tsus (Hook.) Captain",
-#'                               "Lemnaceae"),
-#'   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM"),
+#'                               "Lemnaceae",
+#'                               NA),
+#'   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", NA),
 #'   backbone_acceptedName = c("Lithobates dummyus (Batman, 2018)",
 #'                             "Polystichum luctuosum (Kunze) Moore.",
-#'                             "Araceae"),
-#'   backbone_taxonKey = c(2427092,
-#'                         2651108,
-#'                         6723),
-#'   backbone_acceptedKey = c(2427091,
-#'                           4046493,
-#'                           6979),
+#'                             "Araceae",
+#'                             NA),
+#'   backbone_taxonKey = c(2427092, 2651108, 6723,NA),
+#'   backbone_acceptedKey = c(2427091, 4046493, 6979, NA),
 #'   verified_key = c(2427091,
 #'                    4046493,
-#'                    6979),
-#'   backbone_kingdom = c("Animalia", "Plantae", "Plantae"),
+#'                    6979,
+#'                    "2805420,2805363"),
+#'   backbone_kingdom = c("Animalia", "Plantae", "Plantae", NA),
 #'   date_added = as.Date(c("2018-07-01",
 #'                          "2018-07-01",
-#'                          "2018-07-01")),
-#'   backbone_issues = c(NA, NA, NA),
+#'                          "2018-07-01",
+#'                          "2018-07-16")),
+#'   backbone_issues = c(NA_character_, NA_character_, NA_character_,
+#'                       NA_character_),
 #'   checklists = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
 #'                  "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-#'                  "e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5"),
+#'                  "e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5",
+#'                  "9ff7d317-609b-4c08-bd86-3bc404b77c42"),
 #'   remarks = c("dummy example 1: backbone_acceptedName and checklists should be updated",
 #'               "dummy example 2: backbone_scientificName and backbone_issues should be updated",
-#'               "dummy example 3: nothing should be changed"),
+#'               "dummy example 3: nothing should be changed",
+#'               "dummy example 4: multiple keys in verified_key are allowed"),
 #'   stringsAsFactors = FALSE)
 #' verify_taxa(taxa = taxa_in, verified_taxa = verified_taxa_in)
 #' @export
@@ -125,9 +133,16 @@ verify_taxa <- function(taxa, verified_taxa) {
                          "backbone_issues", "remarks", "checklists")
   assert_that(is.data.frame(verified_taxa))
   assert_that(all(name_col_verified %in% names(verified_taxa)))
-  
-  # convert backbone_issues from logical to character (in case only NA occur)
-  class(taxa$backbone_issues) <- "character"
+  is.character(c(verified_taxa$checklist_scientificName, 
+                 verified_taxa$backbone_scientificName,
+                 verified_taxa$backbone_taxonomicStatus,
+                 verified_taxa$backbone_acceptedName,
+                 verified_taxa$backbone_kingdom,
+                 verified_taxa$checklists))
+  is.numeric(c(taxa$backbone_taxonKey, taxa$backbone_acceptedKey))
+  # multiple comma separated keys coul be added
+  class(verified_taxa$verified_key) <- "character"
+  # in case backbone_issues contains only logical NA
   class(verified_taxa$backbone_issues) <- "character"
   
   # find new synonyms
@@ -137,7 +152,7 @@ verify_taxa <- function(taxa, verified_taxa) {
     rowwise() %>%
     mutate(date_added = Sys.Date(),
            checklists = checklist_datasetKey,
-           verified_key = NA_integer_,
+           verified_key = NA_character_,
            remarks = NA_character_) %>% 
     ungroup() %>%
     select(one_of(name_col_verified))
@@ -150,7 +165,7 @@ verify_taxa <- function(taxa, verified_taxa) {
     rowwise() %>%
     mutate(date_added = Sys.Date(),
            checklists = checklist_datasetKey,
-           verified_key = NA_integer_,
+           verified_key = NA_character_,
            remarks = NA_character_) %>%
     ungroup() %>%
     select(one_of(name_col_verified))
