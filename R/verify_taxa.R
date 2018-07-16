@@ -125,6 +125,14 @@ verify_taxa <- function(taxa, verified_taxa) {
                      "checklist_datasetKey")
   assert_that(is.data.frame(taxa))
   assert_that(all(name_col_taxa %in% names(taxa)))
+  is.character(c(taxa$checklist_scientificName, 
+                 taxa$backbone_scientificName,
+                 taxa$backbone_taxonomicStatus,
+                 taxa$backbone_acceptedName,
+                 taxa$backbone_kingdom,
+                 taxa$backbone_issues,
+                 taxa$checklist_datasetKey))
+  is.numeric(c(taxa$backbone_taxonKey, taxa$backbone_acceptedKey))
   
   name_col_verified <- c("checklist_scientificName", "backbone_scientificName",
                          "backbone_taxonomicStatus", "backbone_acceptedName",
