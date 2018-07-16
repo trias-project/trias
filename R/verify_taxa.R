@@ -26,8 +26,8 @@
 #'   dataframe as input verified_taxa, but now with updated info.}
 #'   \item{new_synonyms}{: a subset of verified_taxa (same columns) with added
 #'   synonym relations (found in taxa, but not in verified_taxa)}
-#'   \item{unused_synonyms}{: a subset of verified_taxa (same columns) with
-#'   unused synonym relations (found in verified_taxa, but not in taxa)}
+#'   \item{unused_taxa}{: a subset of verified_taxa (same columns) with
+#'   unused taxa (found in verified_taxa, but not in taxa)}
 #'   \item{updated_scientificName}{: a dataframe with backbone_scientificName +
 #'   updated_backbone_scientificName} \item{updated_acceptedName}{: a dataframe
 #'   with backbone_acceptedName + updated_backbone_acceptedName}
@@ -277,7 +277,7 @@ verify_taxa <- function(taxa, verified_taxa) {
   duplicates_taxa <- verified_taxa %>%
     filter(str_detect(checklists, pattern = ","))
   
-  # unused synonyms
+  # unused taxa
   unused_taxa <- verified_taxa %>% 
     filter(!backbone_taxonKey %in% taxa$backbone_taxonKey)
   
