@@ -130,9 +130,10 @@ verify_taxa <- function(taxa, verified_taxa) {
                  taxa$backbone_taxonomicStatus,
                  taxa$backbone_acceptedName,
                  taxa$backbone_kingdom,
-                 taxa$backbone_issues,
                  taxa$checklist_datasetKey))
   is.numeric(c(taxa$backbone_taxonKey, taxa$backbone_acceptedKey))
+  # in case backbone_issues contains only logical NA
+  class(taxa$backbone_issues) <- "character"
   
   name_col_verified <- c("checklist_scientificName", "backbone_scientificName",
                          "backbone_taxonomicStatus", "backbone_acceptedName",
