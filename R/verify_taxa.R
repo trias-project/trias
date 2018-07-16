@@ -287,7 +287,7 @@ verify_taxa <- function(taxa, verified_taxa) {
   
   # unused taxa
   unused_taxa <- verified_taxa %>% 
-    filter(!backbone_taxonKey %in% taxa$backbone_taxonKey)
+    filter(!checklist_scientificName %in% taxa$checklist_scientificName)
   
   return(list(verified_taxa = verified_taxa,
               new_synonyms = new_synonyms,
