@@ -1,7 +1,6 @@
 #' @importFrom readr read_tsv cols col_date col_number
 context("output_verify_taxa")
 
-# correct inputs
 taxa_in <- data.frame(
   checklist_scientificName = c("Aspius aspius",
                                "Rana catesbeiana",
@@ -17,7 +16,6 @@ taxa_in <- data.frame(
                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
                            "b351a324-77c4-41c9-a909-f30f77268bc4",
                            "9ff7d317-609b-4c08-bd86-3bc404b77c42"),
-  backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA, 2427092, NA),
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
                               "Rana catesbeiana Shaw, 1802",
                               "Polystichum tsus-simense (Hook.) J.Sm.",
@@ -25,17 +23,18 @@ taxa_in <- data.frame(
                               NA,
                               "Rana catesbeiana Shaw, 1802",
                               NA),
+  backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA, 2427092, NA),
   backbone_kingdom = c("Animalia", "Animalia", "Plantae", 
                        "Plantae", NA, "Animalia", NA),
   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM",
                                "ACCEPTED", NA, "SYNONYM", NA),
-  backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091, NA),
   backbone_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)",
                             "Lithobates catesbeianus (Shaw, 1802)",
                             "Polystichum luctuosum (Kunze) Moore.",
                             NA, NA,
                             "Lithobates catesbeianus (Shaw, 1802)",
                             NA),
+  backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091, NA),
   backbone_issues = c("ORIGINAL_NAME_DERIVED", NA,
                       "ORIGINAL_NAME_DERIVED", NA, NA, NA, NA),
   stringsAsFactors = FALSE)
@@ -49,24 +48,24 @@ verified_taxa_in <- data.frame(
                               "Polystichum tsus-tsus-tsus (Hook.) Captain",
                               "Lemnaceae",
                               NA),
+  backbone_taxonKey = c(2427092, 2651108, 6723,NA),
+  backbone_kingdom = c("Animalia", "Plantae", "Plantae", NA),
   backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", NA),
   backbone_acceptedName = c("Lithobates dummyus (Batman, 2018)",
                             "Polystichum luctuosum (Kunze) Moore.",
                             "Araceae",
                             NA),
-  backbone_taxonKey = c(2427092, 2651108, 6723,NA),
   backbone_acceptedKey = c(2427091, 4046493, 6979, NA),
+  backbone_issues = c(NA_character_, NA_character_, NA_character_,
+                      NA_character_),
   verification_key = c(2427091,
                    4046493,
                    6979,
                    "2805420,2805363"),
-  backbone_kingdom = c("Animalia", "Plantae", "Plantae", NA),
   date_added = as.Date(c("2018-07-01",
                          "2018-07-01",
                          "2018-07-01",
                          "2018-07-16")),
-  backbone_issues = c(NA_character_, NA_character_, NA_character_,
-                      NA_character_),
   checklists = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
                  "9ff7d317-609b-4c08-bd86-3bc404b77c42",
                  "e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5",
@@ -77,7 +76,7 @@ verified_taxa_in <- data.frame(
               "dummy example 4: multiple keys in verification_key are allowed"),
   stringsAsFactors = FALSE)
 
-# correct output
+# output
 output <- verify_taxa(taxa = taxa_in, verified_taxa = verified_taxa_in)
 
 testthat::test_that("output type", {
