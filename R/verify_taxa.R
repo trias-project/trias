@@ -252,22 +252,24 @@ verify_taxa <- function(taxa, verified_taxa) {
     ungroup()
   
   # update checklists
-  verified_taxa <- taxa %>% 
-    anti_join(verified_taxa %>% 
-                separate_rows(checklists, sep = ","), 
-              by = c(intersect(colnames(taxa), colnames(verified_taxa)),
-                     "checklist_datasetKey" = "checklists")) %>%
-    filter(checklist_scientificName %in% 
-             verified_taxa$checklist_scientificName) %>%
-    full_join(verified_taxa, 
-              by = intersect(colnames(taxa), colnames(verified_taxa))) %>%
-    rowwise() %>%
-    mutate(checklists = case_when(
-      !is.na(checklist_datasetKey) ~ paste(checklists, 
-                                           checklist_datasetKey, sep = ","),
-      is.na(checklist_datasetKey) ~ checklists)) %>%
-    ungroup() %>%
-    select(-checklist_datasetKey)
+  if (nrow(verified_taxa) > 0) {
+    verified_taxa <- taxa %>% 
+      anti_join(verified_taxa %>% 
+                  separate_rows(checklists, sep = ","), 
+                by = c(intersect(colnames(taxa), colnames(verified_taxa)),
+                       "checklist_datasetKey" = "checklists")) %>%
+      filter(checklist_scientificName %in% 
+               verified_taxa$checklist_scientificName) %>%
+      full_join(verified_taxa, 
+                by = intersect(colnames(taxa), colnames(verified_taxa))) %>%
+      rowwise() %>%
+      mutate(checklists = case_when(
+        !is.na(checklist_datasetKey) ~ paste(checklists, 
+                                             checklist_datasetKey, sep = ","),
+        is.na(checklist_datasetKey) ~ checklists)) %>%
+      ungroup() %>%
+      select(-checklist_datasetKey)
+  }
   
   # add (eventually updated) backbone_scientificName to updated_backbone_issues
   # for readibility reasons: better to have a scientificName than just a key!
