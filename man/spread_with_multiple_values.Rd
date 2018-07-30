@@ -4,8 +4,8 @@
 \alias{spread_with_multiple_values}
 \title{Spread key-value pairs across multiple columns.}
 \usage{
-spread_with_multiple_values(data, key, value, fill = NA, convert = FALSE,
-  drop = TRUE, sep = NULL, aggfunc = NULL, ...)
+spread_with_multiple_values(data, key, value, fill = NA,
+  convert = FALSE, drop = TRUE, sep = NULL, aggfunc = NULL, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
