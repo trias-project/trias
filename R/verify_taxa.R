@@ -134,6 +134,7 @@ verify_taxa <- function(taxa, verified_taxa) {
   is.numeric(c(taxa$backbone_taxonKey, taxa$backbone_acceptedKey))
   # in case backbone_issues contains only logical NA
   class(taxa$backbone_issues) <- "character"
+  taxa <- taxa %>% select_(name_col_taxa)
   
   name_col_verified <- c("checklist_scientificName", "backbone_scientificName",
                          "backbone_taxonomicStatus", "backbone_acceptedName",
