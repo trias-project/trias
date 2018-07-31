@@ -21,20 +21,20 @@ accepted key as provided by GBIF backbone.} \item{backbone_kingdom}
 \item{verified_taxa:}{a dataframe with at least the following columns:
 \itemize{ \item{checklist_scientificName} \item{backbone_scientificName}
 \item{backbone_acceptedName} \item{backbone_taxonKey}
-\item{backbone_acceptedKey} \item{verification_key}{: to be populated manually
-by expert (not required by this function, but any other functionality will
-use this key so it is good to check its existence)} \item{backbone_kingdom}
-\item{date_added}{: to be populated by function} \item{issues}
-\item{checklistst} {: checklists name where this taxa shows up},
-\item{remarks} {: (optional) remarks as provided by the expert}}}
+\item{backbone_acceptedKey} \item{verification_key}{: to be populated
+manually by expert (not required by this function, but any other
+functionality will use this key so it is good to check its existence)}
+\item{backbone_kingdom} \item{date_added}{: to be populated by function}
+\item{issues} \item{checklistst} {: checklists name where this taxa shows
+up}, \item{remarks} {: (optional) remarks as provided by the expert}}}
 }
 \value{
 a list of five dataframes: \itemize{ \item{verified_taxa}{: same
   dataframe as input verified_taxa, but now with updated info.}
   \item{new_synonyms}{: a subset of verified_taxa (same columns) with added
   synonym relations (found in taxa, but not in verified_taxa)}
-  \item{unused_taxa}{: a subset of verified_taxa (same columns) with
-  unused taxa (found in verified_taxa, but not in taxa)}
+  \item{unused_taxa}{: a subset of verified_taxa (same columns) with unused
+  taxa (found in verified_taxa, but not in taxa)}
   \item{updated_scientificName}{: a dataframe with backbone_scientificName +
   updated_backbone_scientificName} \item{updated_acceptedName}{: a dataframe
   with backbone_acceptedName + updated_backbone_acceptedName}
@@ -54,35 +54,40 @@ taxa_in <- data.frame(
                                "Apus apus (Linnaeus, 1758)",
                                "Begonia x semperflorens hort.",
                                "Rana catesbeiana",
-                               "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley"),
+                               "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley", "Atyaephyra desmaresti"),
   checklist_datasetKey = c("98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
                            "e4746398-f7c4-47a1-a474-ae80a4f18e92",
                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
                            "39653f3e-8d6b-4a94-a202-859359c164c5",
                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
                            "b351a324-77c4-41c9-a909-f30f77268bc4",
-                           "9ff7d317-609b-4c08-bd86-3bc404b77c42"),
+                           "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+                           "289244ee-e1c1-49aa-b2d7-d379391ce265"),
   backbone_scientificName = c("Aspius aspius (Linnaeus, 1758)",
                               "Rana catesbeiana Shaw, 1802",
                               "Polystichum tsus-simense (Hook.) J.Sm.",
                               "Apus apus (Linnaeus, 1758)",
                               NA,
                               "Rana catesbeiana Shaw, 1802",
-                              NA),
-  backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA, 2427092, NA),
-  backbone_kingdom = c("Animalia", "Animalia", "Plantae", 
-                       "Plantae", NA, "Animalia", NA),
-  backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM",
-                               "ACCEPTED", NA, "SYNONYM", NA),
+                              NA,
+                              "Atyaephyra desmarestii (Millet, 1831)"),
+  backbone_taxonKey = c(2360181, 2427092, 2651108, 5228676, NA, 2427092, NA,
+                        4309705),
+  backbone_kingdom = c("Animalia", "Animalia", "Plantae",
+                       "Plantae", NA, "Animalia", NA, "Animalia"),
+  backbone_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", "ACCEPTED",
+                               NA, "SYNONYM", NA, "HOMOTYPIC_SYNONYM"),
   backbone_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)",
                             "Lithobates catesbeianus (Shaw, 1802)",
                             "Polystichum luctuosum (Kunze) Moore.",
                             NA, NA,
                             "Lithobates catesbeianus (Shaw, 1802)",
-                            NA),
-  backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091, NA),
-  backbone_issues = c("ORIGINAL_NAME_DERIVED", NA,
-                      "ORIGINAL_NAME_DERIVED", NA, NA, NA, NA),
+                            NA,
+                            "Hippolyte desmarestii Millet, 1831"),
+  backbone_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091, NA,
+                           6454754),
+  backbone_issues = c("ORIGINAL_NAME_DERIVED", NA, "ORIGINAL_NAME_DERIVED",
+                      NA, NA, NA, NA, "CONFLICTING_BASIONYM_COMBINATION"),
   stringsAsFactors = FALSE)
 
 verified_taxa_in <- data.frame(
