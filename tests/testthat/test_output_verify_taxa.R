@@ -1,4 +1,3 @@
-#' @importFrom readr read_tsv cols col_date col_number
 context("output_verify_taxa")
 
 taxa_in <- data.frame(
@@ -140,16 +139,32 @@ output_updated_acceptedName <-
 
 output_updated_backbone_issues <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
-                                "output_updated_backbone_issues.tsv"))
+                                "output_updated_backbone_issues.tsv"),
+                  col_types = readr::cols(
+                    backbone_taxonKey = readr::col_number()))
 
 output_duplicates_taxa <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
-                                "output_duplicates_taxa.tsv"))
+                                "output_duplicates_taxa.tsv"),
+                  col_types = readr::cols(
+                    date_added = readr::col_date(format = "%Y-%m-%d"),
+                    backbone_taxonKey = readr::col_number(),
+                    backbone_acceptedKey = readr::col_number(),
+                    verification_key = readr::col_character()),
+                  na = "")
 
 testthat::test_that("output data.frames are correct", {
-  expect_equal(output$verified_taxa, output_verified_taxa)
-  expect_equal(output$new_synonyms, output_new_synonyms)
+  expect_equal(output$verified_taxa %>% select(-date_added), 
+               output_verified_taxa %>% select(-date_added))
+  expect_equal(output$new_synonyms %>% select(-date_added), 
+               output_new_synonyms %>% select(-date_added))
+  expect_equal(output$new_unmatched_taxa %>% select(-date_added), 
+               output_new_unmatched_taxa %>% select(-date_added))
   expect_equal(output$unused_taxa, output_unused_taxa)
   expect_equal(output$updated_scientificName, output_updated_scientificName)
   expect_equal(output$updated_acceptedName, output_updated_acceptedName)
+  expect_equal(output$updated_backbone_issues, 
+               output_updated_backbone_issues)
+  expect_equal(output$duplicates_taxa, 
+               output_duplicates_taxa)
   })
