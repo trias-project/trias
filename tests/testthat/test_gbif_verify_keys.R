@@ -1,6 +1,13 @@
 #' @importFrom purrr map_chr
 context("test_gbif_verify_keys")
 
+# input contains nothing
+key_null1 <- list()
+
+# input contains invalid taxon keys (they contain letters)
+keys_err1 <- c("1", "128", "120391203", "AE", "12k")
+keys_err2 <- c("", "")
+
 # input is a vector
 keys1 = c("12323785387253", # is not a taxonkey
           "128545334", # not a taxonKey from Backbone, but Euglenes nitidifrons 
@@ -21,12 +28,12 @@ names(keys3) <- purrr::map_chr(c(1:length(keys3)),
 # input keys are numeric
 keys4 <- as.numeric(keys1)
 
-# same output expected
+# output expected
 output_keys <- data.frame(key = c(12323785387253, 128545334, 
-                                   1000693),
-                           is_taxonKey = c(FALSE, TRUE, TRUE), 
-                           is_from_gbif_backbone = c(NA, FALSE, TRUE),
-                           is_synonym = c(NA, NA, TRUE),
+                                   1000693, 1000310),
+                           is_taxonKey = c(FALSE, TRUE, TRUE, TRUE), 
+                           is_from_gbif_backbone = c(NA, FALSE, TRUE, TRUE),
+                           is_synonym = c(NA, NA, TRUE, FALSE),
                            stringsAsFactors = FALSE)
 
 output1 <- gbif_verify_keys(keys1)
@@ -35,6 +42,11 @@ output3 <- gbif_verify_keys(keys3)
 output4 <- gbif_verify_keys(keys4)
 
 testthat::test_that("test several input types", {
+  expect_null(gbif_verify_keys(key_null1))
+  expect_error(gbif_verify_keys(keys_err1),
+               "Invalid keys: AE,12k .")
+  expect_error(gbif_verify_keys(keys_err2),
+               "Invalid keys: \"\"\"\",\"\"\"\" .")
   expect_error(gbif_verify_keys(as.Date("2018-01-01")),
                "keys should be a vector, a named list or a data.frame.")
   expect_error(gbif_verify_keys(data.frame(bad_col_name = 12)),
@@ -50,10 +62,10 @@ testthat::test_that("output type", {
 })
 
 testthat::test_that("output content", {
-  expect_true(nrow(output1) == 3)
-  expect_true(nrow(output2) == 3)
-  expect_true(nrow(output3) == 3)
-  expect_true(nrow(gbif_verify_keys(keys = "1")) == 0)
+  expect_true(nrow(output1) == nrow(output_keys))
+  expect_true(nrow(output2) == nrow(output_keys))
+  expect_true(nrow(output3) == nrow(output_keys))
+  expect_true(nrow(gbif_verify_keys(keys = "1")) == 1)
   expect_equal(output1, output_keys)
   expect_equal(output2, output1)
   expect_equal(output3, output2)
