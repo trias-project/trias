@@ -28,7 +28,7 @@
 #'                  occurrenceStatus = c("PRESENT", "DOUBTFUL"))
 #'                  
 #' # Case insensitive
-#' gbif_has_distribution_alternative("145953242", countryCode = "be", 
+#' gbif_has_distribution("145953242", countryCode = "be", 
 #'                  status = "PRESENT",
 #'                  establishmentMeans = "InTrOdUcEd")
 #'                  

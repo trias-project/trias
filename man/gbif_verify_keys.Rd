@@ -7,7 +7,7 @@
 gbif_verify_keys(keys)
 }
 \arguments{
-\item{keys:}{(character or numeric) a vector, a list, or a data.frame with
+\item{keys}{(character or numeric) a vector, a list, or a data.frame with
 column \code{key}.}
 }
 \value{

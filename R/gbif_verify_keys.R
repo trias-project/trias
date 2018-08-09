@@ -8,7 +8,7 @@
 #' https://www.gbif.org/species/ returns a GBIF page related to a taxa of the
 #' GBIF Backbone.)} \item{\code{keys} are synonyms of other taxa
 #' (taxonomicStauts neither \code{ACCEPTED} nor \code{DOUBTFUL}).}}.
-#' @param keys: (character or numeric) a vector, a list, or a data.frame with
+#' @param keys (character or numeric) a vector, a list, or a data.frame with
 #'   column \code{key}.
 #'
 #' @return a dataframe with the following columns: \itemize{\item{\code{key}}{:

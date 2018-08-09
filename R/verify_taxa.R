@@ -3,7 +3,7 @@
 #' This function checks all verified taxa, add new synonyms or taxa not matched
 #' to GBIF backbone in order to be evaluated by an expert, update taxa names in
 #' case they have been changed and report the changes.
-#' @param taxa: a dataframe with at least the following columns: \itemize{
+#' @param taxa a dataframe with at least the following columns: \itemize{
 #'   \item{checklist_scientificName} {: scientific name as provided by GBIF}
 #'   \item{checklist_datasetKey} {: dataset key (a UUID) of the checklist the
 #'   taxon comes from.} \item{backbone_taxonKey} {: a GBIF backbone key.}
@@ -13,7 +13,7 @@
 #'   synonyms) as provided by GBIF backbone.}  \item{backbone_acceptedKey} {:
 #'   accepted key as provided by GBIF backbone.} \item{backbone_kingdom}
 #'   \item{backbone_issues} {: issues as provided by GBIF backbone.} }
-#' @param verified_taxa: a dataframe with at least the following columns:
+#' @param verified_taxa a dataframe with at least the following columns:
 #'   \itemize{ \item{checklist_scientificName} \item{backbone_scientificName}
 #'   \item{backbone_acceptedName} \item{backbone_taxonKey}
 #'   \item{backbone_acceptedKey} \item{verification_key}{: to be populated

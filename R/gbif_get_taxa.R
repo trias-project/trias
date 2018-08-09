@@ -46,7 +46,6 @@
 #' @importFrom tibble tibble
 #' @importFrom lazyeval interp
 #' @importFrom stringr str_to_lower
-#' @importFrom magrittr %<>%
 
 gbif_get_taxa <- function(
   taxon_keys = NULL,
@@ -113,11 +112,11 @@ gbif_get_taxa <- function(
       rowwise() %>%
       do_(interp(~ as.data.frame(name_usage(key = .$taxon_keys,
                                                      return = "data")))) 
-    taxon_taxa %<>% 
+    taxon_taxa <- taxon_taxa %>%
       ungroup %>% 
       mutate(origin = str_to_lower(origin))
     if (!is.null(origin))
-      taxon_taxa %<>% filter(origin %in% origins)
+      taxon_taxa <- taxon_taxa %>% filter(origin %in% origins)
     
     # GBIF Backbone matching
     number_key <- nrow(taxon_taxa)
@@ -149,7 +148,7 @@ gbif_get_taxa <- function(
                                                       return = "data"))))
     }
     
-    checklist_taxa %<>% 
+    checklist_taxa <- checklist_taxa %>% 
       ungroup %>% 
       mutate(origin = str_to_lower(origin))
     

@@ -1,3 +1,3 @@
 library(trias)
 
-test_check("trias")
+testthat::test_check("trias")
