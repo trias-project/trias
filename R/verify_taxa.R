@@ -110,8 +110,8 @@
 #'                  "9ff7d317-609b-4c08-bd86-3bc404b77c42"),
 #'   remarks = c("dummy example 1: backbone_acceptedName and checklists should be updated",
 #'               "dummy example 2: backbone_scientificName and backbone_issues should be updated",
-#'               "dummy example 3: nothing should be changed",
-#'               "dummy example 4: multiple keys in verification_key are allowed"),
+#'               "dummy example 3: add 'Unused taxa.' at the end of remarks.",
+#'               "dummy example 4: multiple keys in verification_key are allowed."),
 #'   stringsAsFactors = FALSE)
 #' verify_taxa(taxa = taxa_in, verified_taxa = verified_taxa_in)
 #' @export
@@ -303,13 +303,24 @@ verify_taxa <- function(taxa, verified_taxa) {
   # add new unmatches to verified taxa
   verified_taxa <- verified_taxa %>% bind_rows(new_unmatched_taxa)
   
-  # taxa in several checklists
-  duplicates_taxa <- verified_taxa %>%
-    filter(str_detect(checklists, pattern = ","))
-  
   # unused taxa
   unused_taxa <- verified_taxa %>% 
     filter(!checklist_scientificName %in% taxa$checklist_scientificName)
+  unused_taxa <- unused_taxa %>%
+    mutate(remarks = ifelse(! "remarks" %in% colnames(unused_taxa) | 
+                              remarks == "" | is.na(remarks) | is.null(remarks),
+                            "Unused taxa.",
+                            str_c(remarks, " Unused taxa.")))
+  
+  # Update remarks of unused taxa in verified_taxa
+  verified_taxa <- bind_rows(verified_taxa %>% 
+                               filter(checklist_scientificName %in% 
+                                        taxa$checklist_scientificName),
+                             unused_taxa)
+  
+  # taxa in several checklists (duplicates)
+  duplicates_taxa <- verified_taxa %>%
+    filter(str_detect(checklists, pattern = ","))
   
   return(list(verified_taxa = verified_taxa,
               new_synonyms = new_synonyms,
