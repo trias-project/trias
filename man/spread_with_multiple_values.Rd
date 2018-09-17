@@ -4,8 +4,8 @@
 \alias{spread_with_multiple_values}
 \title{Spread key-value pairs across multiple columns.}
 \usage{
-spread_with_multiple_values(data, key, value, fill = NA, convert = FALSE,
-  drop = TRUE, sep = NULL, aggfunc = NULL, ...)
+spread_with_multiple_values(data, key, value, fill = NA,
+  convert = FALSE, drop = TRUE, sep = NULL, aggfunc = NULL, ...)
 }
 \arguments{
 \item{data}{A dataframe.}
@@ -13,7 +13,7 @@ spread_with_multiple_values(data, key, value, fill = NA, convert = FALSE,
 \item{key, value}{Column names or positions. This is passed to
 \code{\link[tidyselect]{vars_pull}}. These arguments are passed by
 expression and support \code{\link[rlang]{quasiquotation}} (you can unquote
-column names or column positions)}
+column names or column positions).}
 
 \item{fill}{If set, missing values will be replaced with this value.}
 
@@ -32,7 +32,9 @@ data, filling in missing combinations with \code{fill}.}
 "<key_name><sep><key_value>".}
 
 \item{aggfunc}{Aggregation function. Default: NULL (keep all values on
-different rows)}
+different rows).}
+
+\item{...}{Any parameter needed to apply \code{aggfunc}.}
 }
 \value{
 A data.frame.
