@@ -25,6 +25,7 @@ Imports:
     tidyr,
     tidyselect
 Suggests:
+    knitr,
     testthat
 Remotes:
     ropensci/rgbif
