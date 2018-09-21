@@ -4,8 +4,8 @@
 \alias{gbif_get_taxa}
 \title{Get taxa information from GBIF}
 \usage{
-gbif_get_taxa(taxon_keys = NULL, checklist_keys = NULL,
-  origin = NULL, limit = NULL)
+gbif_get_taxa(taxon_keys = NULL, checklist_keys = NULL, origin = NULL,
+  limit = NULL)
 }
 \arguments{
 \item{taxon_keys}{(single numeric or character or a vector) a single key or a 

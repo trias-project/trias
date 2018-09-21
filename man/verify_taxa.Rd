@@ -123,8 +123,8 @@ verified_taxa_in <- data.frame(
                  "9ff7d317-609b-4c08-bd86-3bc404b77c42"),
   remarks = c("dummy example 1: backbone_acceptedName and checklists should be updated",
               "dummy example 2: backbone_scientificName and backbone_issues should be updated",
-              "dummy example 3: nothing should be changed",
-              "dummy example 4: multiple keys in verification_key are allowed"),
+              "dummy example 3: add 'Unused taxa.' at the end of remarks.",
+              "dummy example 4: multiple keys in verification_key are allowed."),
   stringsAsFactors = FALSE)
 verify_taxa(taxa = taxa_in, verified_taxa = verified_taxa_in)
 }
