@@ -12,7 +12,7 @@
 #' @param facet_column NULL | char The column to use to create additional facet
 #'   wrap plots underneath the main graph. When NULL, no facet graph is
 #'   included. It is typically one of the highest taxonomic ranks:
-#'   \code{kingdom}, \code{phylum}, \code{class}, \code{order}, \code{family}. }
+#'   \code{kingdom}, \code{phylum}, \code{class}, \code{order}, \code{family}.
 #'
 #' @return ggplot2 object
 #'

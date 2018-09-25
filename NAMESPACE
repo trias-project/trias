@@ -2,6 +2,7 @@
 
 export(gbif_get_taxa)
 export(gbif_has_distribution)
+export(get_table_pathways)
 export(indicator_introduction_year)
 export(indicator_pathway)
 export(indicator_total_year)

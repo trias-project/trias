@@ -21,6 +21,11 @@ the x axis.}
 
 \item{x_minor_scale_stepsize}{int On which year interval minor breaks are
 placed on the x axis.}
+
+\item{facet_column}{NULL | char The column to use to create additional facet
+wrap plots underneath the main graph. When NULL, no facet graph is
+included. It is typically one of the highest taxonomic ranks:
+\code{kingdom}, \code{phylum}, \code{class}, \code{order}, \code{family}.}
 }
 \value{
 ggplot2 object
