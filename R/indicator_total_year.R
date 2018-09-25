@@ -69,7 +69,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   
   # Provide warning messages for last_observed/first_observed NA values
   if (nrow(filter(df, is.na(first_observed)) > 0)) {
-    warning("Some records have no first_observed",
+    warning("Some records have no first_observed ",
             "and are not taken into account.")
   }        
   
