@@ -57,6 +57,7 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
     count() %>%
     ungroup()
   
+  maxDate <- max(data_top_graph$first_observed)
   # top graph with all counts
   top_graph <- ggplot(data_top_graph, aes(x = first_observed, y = n)) +
     geom_point(stat = 'identity') +
@@ -64,10 +65,13 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
     xlab("Year") +
     ylab("Number of introduced alien species") +         
     scale_x_continuous(breaks = seq(start_year_plot, 
-                                    max(data_top_graph$first_observed), 
+                                    maxDate, 
                                     x_major_scale_stepsize), 
+                       minor_breaks = seq(start_year_plot,
+                                          maxDate, 
+                                          x_minor_scale_stepsize),
                        limits = c(start_year_plot, 
-                                  max(data_top_graph$first_observed))) +
+                                  maxDate)) +
     theme_inbo()
   
   if (is.null(facet_column)) {
@@ -84,6 +88,7 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
       count() %>%
       ungroup()
     
+    maxDate <- max(data_facet_graph$first_observed)
     facet_graph <- ggplot(data_facet_graph, aes(x = first_observed, y = n)) +
       geom_point(stat = 'identity') +
       geom_smooth(span = smooth_span) +
@@ -91,13 +96,13 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
       xlab("Year") +
       ylab("Number of introduced alien species") + 
       scale_x_continuous(breaks = seq(start_year_plot, 
-                                      max(data_facet_graph$first_observed), 
+                                      maxDate, 
                                       x_major_scale_stepsize),
                          minor_breaks = seq(start_year_plot,
-                                            max(data_facet_graph$first_observed), 
+                                            maxDate, 
                                             x_minor_scale_stepsize),
                          limits = c(start_year_plot, 
-                                    max(data_facet_graph$first_observed))) +
+                                    maxDate)) +
       theme_inbo()
     
     ggarrange(top_graph, facet_graph)
