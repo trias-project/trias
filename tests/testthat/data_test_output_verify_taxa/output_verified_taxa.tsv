@@ -1,4 +1,4 @@
-checklist_scientificName	backbone_scientificName	backbone_taxonomicStatus	backbone_acceptedName	backbone_taxonKey	backbone_acceptedKey	backbone_kingdom	backbone_issues	verification_key	date_added	checklists	remarks
+scientificName	bb_scientificName	bb_taxonomicStatus	bb_acceptedName	bb_key	bb_acceptedKey	bb_kingdom	issues	verification_key	date_added	checklists	remarks
 Rana catesbeiana	Rana catesbeiana Shaw, 1802	SYNONYM	Lithobates catesbeianus (Shaw, 1802)	2427092	2427091	Animalia		2427091	2018-07-01	e4746398-f7c4-47a1-a474-ae80a4f18e92,b351a324-77c4-41c9-a909-f30f77268bc4	dummy example 1: backbone_acceptedName and checklists should be updated.
 Polystichum tsus-simense J.Smith	Polystichum tsus-simense (Hook.) J.Sm.	SYNONYM	Polystichum luctuosum (Kunze) Moore.	2651108	4046493	Plantae	ORIGINAL_NAME_DERIVED	4046493	2018-07-01	9ff7d317-609b-4c08-bd86-3bc404b77c42	dummy example 2: backbone_scientificName and backbone_issues should be updated.
 Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley								2805420,2805363	2018-07-16	9ff7d317-609b-4c08-bd86-3bc404b77c42	dummy example 4: multiple keys in verification_key are allowed.

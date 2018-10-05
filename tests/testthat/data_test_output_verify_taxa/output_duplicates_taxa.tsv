@@ -1,3 +1,3 @@
-checklist_scientificName	backbone_scientificName	backbone_taxonomicStatus	backbone_acceptedName	backbone_taxonKey	backbone_acceptedKey	backbone_kingdom	backbone_issues	verification_key	date_added	checklists	remarks
+scientificName	bb_scientificName	bb_taxonomicStatus	bb_acceptedName	bb_key	bb_acceptedKey	bb_kingdom	issues	verification_key	date_added	checklists	remarks
 Rana catesbeiana	Rana catesbeiana Shaw, 1802	SYNONYM	Lithobates catesbeianus (Shaw, 1802)	2427092	2427091	Animalia		2427091	2018-07-01	e4746398-f7c4-47a1-a474-ae80a4f18e92,b351a324-77c4-41c9-a909-f30f77268bc4	dummy example 1: backbone_acceptedName and checklists should be updated.
 Lemnaceae	Lemnaceae	SYNONYM	Araceae	6723	6979	Plantae		6979	2018-07-01	e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5	dummy example 3: add 'Unused taxa.' at the end of remarks. Unused taxa.

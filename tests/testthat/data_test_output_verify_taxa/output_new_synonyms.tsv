@@ -1,3 +1,3 @@
-checklist_scientificName	backbone_scientificName	backbone_taxonomicStatus	backbone_acceptedName	backbone_taxonKey	backbone_acceptedKey	verification_key	backbone_kingdom	date_added	backbone_issues	remarks	checklists
+scientificName	bb_scientificName	bb_taxonomicStatus	bb_acceptedName	bb_key	bb_acceptedKey	verification_key	bb_kingdom	date_added	issues	remarks	checklists
 Aspius aspius	Aspius aspius (Linnaeus, 1758)	SYNONYM	Leuciscus aspius (Linnaeus, 1758)	2360181	5851603		Animalia	2018-07-31	ORIGINAL_NAME_DERIVED		98940a79-2bf1-46e6-afd6-ba2e85a26f9f
 Atyaephyra desmaresti	Atyaephyra desmarestii (Millet, 1831)	HOMOTYPIC_SYNONYM	Hippolyte desmarestii Millet, 1831	4309705	6454754		Animalia	2018-07-31	CONFLICTING_BASIONYM_COMBINATION		289244ee-e1c1-49aa-b2d7-d379391ce265
