@@ -288,10 +288,15 @@ verify_taxa <- function(taxa, verified_taxa) {
       rowwise() %>%
       mutate(checklists = case_when(
         !is.na(datasetKey) ~ paste(checklists, 
-                                             datasetKey, sep = ","),
+                                   datasetKey, sep = ","),
         is.na(datasetKey) ~ checklists)) %>%
       ungroup() %>%
-      select(-datasetKey)
+      select(-datasetKey) %>%
+      separate_rows(checklists, sep = ",") %>%
+      distinct() %>%
+      group_by_at(vars(-checklists)) %>%
+      summarize(checklists = paste(checklists, collapse = ",")) %>%
+      ungroup()
   }
   
   # add bb information for better understanding
