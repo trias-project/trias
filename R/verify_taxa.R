@@ -225,15 +225,19 @@ verify_taxa <- function(taxa, verified_taxa) {
   
   # create df of updated issues
   updated_issues <- verified_taxa %>%
-    filter(bb_key %in% taxa$bb_key) %>%
-    select(bb_key, issues) %>%
-    anti_join(taxa, by = c("issues", "bb_key")) %>%
+    select(scientificName, issues) %>%
+    anti_join(taxa %>%
+                select(scientificName, issues), 
+              by = c("scientificName", "issues")) %>%
     left_join(taxa %>%
-                distinct(bb_key, issues), 
-              by = c("bb_key")) %>%
+                distinct(scientificName, issues), 
+              by = c("scientificName")) %>%
     rename("issues" = "issues.x",
            "updated_issues" = "issues.y") %>%
-    select(bb_key, issues, updated_issues) %>% 
+    filter(updated_issues != issues | 
+             (is.na(updated_issues) & !is.na(issues)) |
+             (!is.na(updated_issues) & is.na(issues))) %>%
+    select(scientificName, issues, updated_issues) %>% 
     distinct() %>% 
     as.tibble()
   
@@ -263,10 +267,10 @@ verify_taxa <- function(taxa, verified_taxa) {
   verified_taxa <- verified_taxa %>% 
     rowwise() %>%
     mutate(issues = ifelse(
-      bb_key %in% updated_issues$bb_key,
+      scientificName %in% updated_issues$scientificName,
       updated_issues$updated_issues[
-        which(bb_key == 
-                updated_issues$bb_key)],
+        which(scientificName == 
+                updated_issues$scientificName)],
       issues)) %>% 
     ungroup()
   
@@ -290,12 +294,12 @@ verify_taxa <- function(taxa, verified_taxa) {
       select(-datasetKey)
   }
   
-  # add (eventually updated) bb_scientificName to updated_issues
-  # for readibility reasons: better to have a scientificName than just a key!
+  # add bb information for better understanding
   updated_issues <- updated_issues %>%
     left_join(verified_taxa %>% 
-                select(bb_key, bb_scientificName), 
-              by = "bb_key")
+                select(scientificName, bb_key, bb_scientificName), 
+              by = "scientificName") %>%
+    distinct()
   
   # add new synonyms to verified taxa
   verified_taxa <- verified_taxa %>% bind_rows(new_synonyms)
