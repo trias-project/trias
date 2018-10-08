@@ -5,114 +5,222 @@
 #' case they have been changed and report the changes.
 #' @param taxa a dataframe with at least the following columns: \itemize{
 #'   \item{scientificName} {: scientific name as provided by GBIF}
-#'   \item{datasetKey} {: dataset key (a UUID) of the checklist the
-#'   taxon comes from.} \item{bb_key} {: a GBIF backbone key.}
-#'   \item{bb_scientificName} {: scientific name as provided by GBIF
-#'   backbone.} \item{bb_taxonomicStatus} {taxonomic status as provided by
-#'   GBIF backbone.} \item{bb_acceptedName} {: accepted name (in case of
-#'   synonyms) as provided by GBIF backbone.}  \item{bb_acceptedKey} {:
-#'   accepted key as provided by GBIF backbone.} \item{bb_kingdom}
-#'   \item{issues} {: issues as provided by GBIF backbone.} }
+#'   \item{datasetKey} {: dataset key (a UUID) of the checklist the taxon comes
+#'   from.} \item{bb_key} {: a GBIF backbone key.} \item{bb_scientificName} {:
+#'   scientific name as provided by GBIF backbone.} \item{bb_taxonomicStatus}
+#'   {taxonomic status as provided by GBIF backbone.} \item{bb_acceptedName} {:
+#'   accepted name (in case of synonyms) as provided by GBIF backbone.}
+#'   \item{bb_acceptedKey} {: accepted key as provided by GBIF backbone.}
+#'   \item{bb_kingdom} \item{issues} {: issues as provided by GBIF backbone.} }
 #' @param verified_taxa a dataframe with at least the following columns:
 #'   \itemize{ \item{scientificName} \item{bb_scientificName}
-#'   \item{bb_acceptedName} \item{bb_key}
-#'   \item{bb_acceptedKey} \item{verification_key}{: to be populated
-#'   manually by expert (not required by this function, but any other
-#'   functionality will use this key so it is good to check its existence)}
-#'   \item{bb_kingdom} \item{date_added}{: to be populated by function}
-#'   \item{issues} \item{checklistst} {: checklists name where this taxa shows
-#'   up}, \item{remarks} {: (optional) remarks as provided by the expert}}
-#' @return a list of five dataframes: \itemize{ \item{verified_taxa}{: same
+#'   \item{bb_acceptedName} \item{bb_key} \item{bb_acceptedKey}
+#'   \item{verification_key}{: to be populated manually by expert (not required
+#'   by this function, but any other functionality will use this key so it is
+#'   good to check its existence)} \item{bb_kingdom} \item{date_added}{: to be
+#'   populated by function} \item{issues} \item{checklistst} {: checklists name
+#'   where this taxa shows up}, \item{remarks} {: (optional) remarks as provided
+#'   by the expert}}
+#' @return a list of eight dataframes: \itemize{ \item{verified_taxa}{: same
 #'   dataframe as input verified_taxa, but now with updated info.}
 #'   \item{new_synonyms}{: a subset of verified_taxa (same columns) with added
 #'   synonym relations (found in taxa, but not in verified_taxa)}
-#'   \item{unused_taxa}{: a subset of verified_taxa (same columns) with unused
-#'   taxa (found in verified_taxa, but not in taxa)}
-#'   \item{updated_scientificName}{: a dataframe with bb_scientificName +
-#'   updated_bb_scientificName} \item{updated_acceptedName}{: a dataframe
-#'   with bb_acceptedName + updated_bb_acceptedName}
-#'   \item{duplicates_taxa}{: a dataframe with all taxa present in more than one
-#'   checklist.} }
+#'   \item{new_unmatched_taxa}{: a subset of verified_taxa (same columns). New
+#'   taxa without match to GBIF backbone} \item{unused_taxa}{: a subset of
+#'   verified_taxa (same columns) with unused taxa (found in verified_taxa, but
+#'   not in taxa)} \item{updated_scientificName}{: a dataframe with
+#'   bb_scientificName + updated_bb_scientificName}
+#'   \item{updated_acceptedName}{: a dataframe with bb_acceptedName +
+#'   updated_bb_acceptedName} \item{updated_issues}{: a dataframe with issues +
+#'   udpated_issues} \item{duplicates_taxa}{: a dataframe with all taxa present
+#'   in more than one checklist.}}
 #' @examples
 #' taxa_in <- data.frame(
-#'   scientificName = c("Aspius aspius",
-#'                                "Rana catesbeiana",
-#'                                "Polystichum tsus-simense J.Smith",
-#'                                "Apus apus (Linnaeus, 1758)",
-#'                                "Begonia x semperflorens hort.",
-#'                                "Rana catesbeiana",
-#'                                "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley", "Atyaephyra desmaresti"),
-#'   datasetKey = c("98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
-#'                            "e4746398-f7c4-47a1-a474-ae80a4f18e92",
-#'                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-#'                            "39653f3e-8d6b-4a94-a202-859359c164c5",
-#'                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-#'                            "b351a324-77c4-41c9-a909-f30f77268bc4",
-#'                            "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-#'                            "289244ee-e1c1-49aa-b2d7-d379391ce265"),
-#'   bb_scientificName = c("Aspius aspius (Linnaeus, 1758)",
-#'                               "Rana catesbeiana Shaw, 1802",
-#'                               "Polystichum tsus-simense (Hook.) J.Sm.",
-#'                               "Apus apus (Linnaeus, 1758)",
-#'                               NA,
-#'                               "Rana catesbeiana Shaw, 1802",
-#'                               NA,
-#'                               "Atyaephyra desmarestii (Millet, 1831)"),
-#'   bb_key = c(2360181, 2427092, 2651108, 5228676, NA, 2427092, NA,
-#'                         4309705),
-#'   bb_kingdom = c("Animalia", "Animalia", "Plantae",
-#'                        "Plantae", NA, "Animalia", NA, "Animalia"),
-#'   bb_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", "ACCEPTED",
-#'                                NA, "SYNONYM", NA, "HOMOTYPIC_SYNONYM"),
-#'   bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)",
-#'                             "Lithobates catesbeianus (Shaw, 1802)",
-#'                             "Polystichum luctuosum (Kunze) Moore.",
-#'                             NA, NA,
-#'                             "Lithobates catesbeianus (Shaw, 1802)",
-#'                             NA,
-#'                             "Hippolyte desmarestii Millet, 1831"),
-#'   bb_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091, NA,
-#'                            6454754),
-#'   issues = c("ORIGINAL_NAME_DERIVED", NA, "ORIGINAL_NAME_DERIVED",
-#'                       NA, NA, NA, NA, "CONFLICTING_BASIONYM_COMBINATION"),
-#'   stringsAsFactors = FALSE)
-#'
+#'   scientificName = c(
+#'     "Aspius aspius",
+#'     "Rana catesbeiana",
+#'     "Polystichum tsus-simense J.Smith",
+#'     "Apus apus (Linnaeus, 1758)",
+#'     "Begonia x semperflorens hort.",
+#'     "Rana catesbeiana",
+#'     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
+#'     "Atyaephyra desmaresti",
+#'     "Ferrissia fragilis",
+#'     "Ferrissia fragilis",
+#'     "Ferrissia fragilis"
+#'   ),
+#'   datasetKey = c(
+#'     "98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
+#'     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "39653f3e-8d6b-4a94-a202-859359c164c5",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "b351a324-77c4-41c9-a909-f30f77268bc4",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "289244ee-e1c1-49aa-b2d7-d379391ce265",
+#'     "289244ee-e1c1-49aa-b2d7-d379391ce265",
+#'     "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
+#'     "1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2"
+#'   ),
+#'   bb_scientificName = c(
+#'     "Aspius aspius (Linnaeus, 1758)",
+#'     "Rana catesbeiana Shaw, 1802",
+#'     "Polystichum tsus-simense (Hook.) J.Sm.",
+#'     "Apus apus (Linnaeus, 1758)",
+#'     NA,
+#'     "Rana catesbeiana Shaw, 1802",
+#'     NA,
+#'     "Atyaephyra desmarestii (Millet, 1831)",
+#'     "Ferrissia fragilis (Tryon, 1863)",
+#'     "Ferrissia fragilis (Tryon, 1863)",
+#'     "Ferrissia fragilis (Tryon, 1863)"
+#'   ),
+#'   bb_key = c(
+#'     2360181,
+#'     2427092,
+#'     2651108,
+#'     5228676,
+#'     NA,
+#'     2427092,
+#'     NA,
+#'     4309705,
+#'     2291152,
+#'     2291152,
+#'     2291152
+#'   ),
+#'   bb_kingdom = c(
+#'     "Animalia",
+#'     "Animalia",
+#'     "Plantae",
+#'     "Plantae",
+#'     NA,
+#'     "Animalia",
+#'     NA,
+#'     "Animalia",
+#'     "Animalia",
+#'     "Animalia",
+#'     "Animalia"
+#'   ),
+#'   bb_taxonomicStatus = c(
+#'     "SYNONYM",
+#'     "SYNONYM",
+#'     "SYNONYM",
+#'     "ACCEPTED",
+#'     NA,
+#'     "SYNONYM",
+#'     NA,
+#'     "HOMOTYPIC_SYNONYM",
+#'     "SYNONYM",
+#'     "SYNONYM",
+#'     "SYNONYM"
+#'   ),
+#'   bb_acceptedName = c(
+#'     "Leuciscus aspius (Linnaeus, 1758)",
+#'     "Lithobates catesbeianus (Shaw, 1802)",
+#'     "Polystichum luctuosum (Kunze) Moore.",
+#'     NA,
+#'     NA,
+#'     "Lithobates catesbeianus (Shaw, 1802)",
+#'     NA,
+#'     "Hippolyte desmarestii Millet, 1831",
+#'     "Ferrissia californica (Rowell, 1863)",
+#'     "Ferrissia californica (Rowell, 1863)",
+#'     "Ferrissia californica (Rowell, 1863)"
+#'   ),
+#'   bb_acceptedKey = c(
+#'     5851603,
+#'     2427091,
+#'     4046493,
+#'     NA,
+#'     NA,
+#'     2427091,
+#'     NA,
+#'     6454754,
+#'     9520065,
+#'     9520065,
+#'     9520065
+#'   ),
+#'   issues = c(
+#'     "ORIGINAL_NAME_DERIVED",
+#'     NA,
+#'     "ORIGINAL_NAME_DERIVED",
+#'     NA,
+#'     "RANK_INVALID,BACKBONE_MATCH_NONE",
+#'     NA,
+#'     NA,
+#'     "CONFLICTING_BASIONYM_COMBINATION",
+#'     NA,
+#'     NA,
+#'     NA
+#'   ),
+#'   stringsAsFactors = FALSE
+#' )
+#' 
 #' verified_taxa_in <- data.frame(
-#'   scientificName = c("Rana catesbeiana",
-#'                                "Polystichum tsus-simense J.Smith",
-#'                                "Lemnaceae",
-#'                                "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley"),
-#'   bb_scientificName = c("Rana catesbeiana Shaw, 1802",
-#'                               "Polystichum tsus-tsus-tsus (Hook.) Captain",
-#'                               "Lemnaceae",
-#'                               NA),
-#'   bb_key = c(2427092, 2651108, 6723,NA),
-#'   bb_kingdom = c("Animalia", "Plantae", "Plantae", NA),
-#'   bb_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", NA),
-#'   bb_acceptedName = c("Lithobates dummyus (Batman, 2018)",
-#'                             "Polystichum luctuosum (Kunze) Moore.",
-#'                             "Araceae",
-#'                             NA),
-#'   bb_acceptedKey = c(2427091, 4046493, 6979, NA),
-#'   issues = c(NA_character_, NA_character_, NA_character_,
-#'                       NA_character_),
+#'   scientificName = c(
+#'     "Rana catesbeiana",
+#'     "Polystichum tsus-simense J.Smith",
+#'     "Lemnaceae",
+#'     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
+#'     "Begonia x semperflorens hort.",
+#'     "Ferrissia fragilis"
+#'   ),
+#'   bb_scientificName = c(
+#'     "Rana catesbeiana Shaw, 1802",
+#'     "Polystichum tsus-tsus-tsus (Hook.) Captain",
+#'     "Lemnaceae",
+#'     NA,
+#'     NA,
+#'     "Ferrissia fragilis (Tryon, 1863)"
+#'   ),
+#'   bb_key = c(2427092, 2651108, 6723, NA, NA, 2291152),
+#'   bb_kingdom = c("Animalia", "Plantae", "Plantae", NA, NA, "Animalia"),
+#'   bb_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", NA, NA, "SYNONYM"),
+#'   bb_acceptedName = c(
+#'     "Lithobates dummyus (Batman, 2018)",
+#'     "Polystichum luctuosum (Kunze) Moore.",
+#'     "Araceae",
+#'     NA,
+#'     NA,
+#'     "Ferrissia californica (Rowell, 1863)"
+#'   ),
+#'   bb_acceptedKey = c(2427091, 4046493, 6979, NA, NA, 9520065),
+#'   issues = c(NA, NA, NA, NA, NA, "ORIGINAL_NAME_DERIVED"),
 #'   verification_key = c(2427091,
-#'                    4046493,
-#'                    6979,
-#'                    "2805420,2805363"),
-#'   date_added = as.Date(c("2018-07-01",
-#'                          "2018-07-01",
-#'                          "2018-07-01",
-#'                          "2018-07-16")),
-#'   checklists = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
-#'                  "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-#'                  "e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5",
-#'                  "9ff7d317-609b-4c08-bd86-3bc404b77c42"),
-#'   remarks = c("dummy example 1: bb_acceptedName and checklists should be updated",
-#'               "dummy example 2: bb_scientificName and issues should be updated",
-#'               "dummy example 3: add 'Unused taxa.' at the end of remarks.",
-#'               "dummy example 4: multiple keys in verification_key are allowed."),
-#'   stringsAsFactors = FALSE)
+#'                        4046493,
+#'                        6979,
+#'                        "2805420,2805363",
+#'                        NA, NA),
+#'   date_added = as.Date(
+#'     c(
+#'       "2018-07-01",
+#'       "2018-07-01",
+#'       "2018-07-01",
+#'       "2018-07-16",
+#'       "2018-07-16",
+#'       "2018-07-01"
+#'     )
+#'   ),
+#'   checklists = c(
+#'     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "289244ee-e1c1-49aa-b2d7-d379391ce265"
+#'   ),
+#'   remarks = c(
+#'     "dummy example 1: bb_acceptedName and checklists should be updated.",
+#'     "dummy example 2: bb_scientificName and issues should be updated.",
+#'     "dummy example 3: add 'Unused taxa.' at the end of remarks.",
+#'     "dummy example 4: multiple keys in verification_key are allowed.",
+#'     "dummy example 5: issues should be updated.",
+#'     "dummy example 6: issues and checklists should be updated."
+#'   ),
+#'   stringsAsFactors = FALSE
+#' )
+#' 
+#' # output
 #' verify_taxa(taxa = taxa_in, verified_taxa = verified_taxa_in)
 #' @export
 #' @importFrom assertthat assert_that
