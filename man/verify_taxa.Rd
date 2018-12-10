@@ -2,53 +2,112 @@
 % Please edit documentation in R/verify_taxa.R
 \name{verify_taxa}
 \alias{verify_taxa}
-\title{Check and update verified taxa}
+\title{Verify and update taxa information.}
 \usage{
 verify_taxa(taxa, verified_taxa)
 }
 \arguments{
 \item{taxa}{a dataframe with at least the following columns: \itemize{
-\item{scientificName} {: scientific name as provided by GBIF}
+\item{taxonKey} {: taxon keys as mentioned in checklist.}
+\item{scientificName} {: scientific name as provided by GBIF.}
 \item{datasetKey} {: dataset key (a UUID) of the checklist the taxon comes
-from.} \item{bb_key} {: a GBIF backbone key.} \item{bb_scientificName} {:
-scientific name as provided by GBIF backbone.} \item{bb_taxonomicStatus}
-{taxonomic status as provided by GBIF backbone.} \item{bb_acceptedName} {:
-accepted name (in case of synonyms) as provided by GBIF backbone.}
-\item{bb_acceptedKey} {: accepted key as provided by GBIF backbone.}
-\item{bb_kingdom} \item{issues} {: issues as provided by GBIF backbone.} }}
+from.} 
+\item{bb_key} {: GBIF backbone key.} 
+\item{bb_scientificName} {:scientific name as provided by GBIF backbone.} 
+\item{bb_kingdom} {: kingdom
+as returned by GBIF Backbone.} 
+\item{bb_rank} {: rank as provided by GBIF Backbone.} 
+\item{bb_taxonomicStatus} {: taxonomic status as provided by
+GBIF Backbone.} 
+\item{bb_acceptedKey} {: accepted key (of synonym) as
+provided by GBIF Backbone.} 
+\item{bb_acceptedName} {: accepted name (ofsynonym) as provided by GBIF
+Backbone.} 
+}}
 
 \item{verified_taxa}{a dataframe with at least the following columns:
-\itemize{ \item{scientificName} \item{bb_scientificName}
-\item{bb_acceptedName} \item{bb_key} \item{bb_acceptedKey}
-\item{verification_key}{: to be populated manually by expert (not required
-by this function, but any other functionality will use this key so it is
-good to check its existence)} \item{bb_kingdom} \item{date_added}{: to be
-populated by function} \item{issues} \item{checklistst} {: checklists name
-where this taxa shows up}, \item{remarks} {: (optional) remarks as provided
-by the expert}}}
+\itemize{ 
+  \item{taxonKey} {: taxon keys as mentioned in checklist.}
+  \item{scientificName: scientific name as provided by GBIF.} 
+  \item{datasetKey} {: dataset key (UUID) of the checklist the taxon comes
+  from.}
+  \item{bb_key:} {: a GBIF backbone key.} 
+  \item{bb_scientificName} {: scientific name as provided by GBIF
+  backbone.}
+  \item{bb_kingdom} {: kingdom as returned by GBIF Backbone.} 
+  \item{bb_rank} {: rank as provided by GBIF Backbone.} 
+  \item{bb_taxonomicStatus} {: taxonomic status as provided by GBIF
+  Backbone.}
+  \item{bb_acceptedKey} {: accepted key (of synonym) as provided by GBIF
+  Backbone.}
+  \item{bb_acceptedName} {: accepted name (of synonym) as provided by GBIF
+  Backbone.}
+  \item{bb_acceptedKingdom} {: kingdom of \code{bb_acceptedName} as
+  provided by GBIF backbone. Expected to be equal to \code{bb_kingdom}.}
+  \item{bb_acceptedRank} {: rank of \code{bb_acceptedName} as provided by
+  GBIF Backbone.}
+  \item{bb_acceptedTaxonomicStatus} {: taxonomic status of
+  \code{bb_acceptedName} as provided by GBIF Backbone.}
+  \item{verificationKey}{: to be populated manually by expert.}
+  \item{remarks} {: remarks as provided by the expert (optional).}
+  \item{dateAdded}{: (date) for new taxa will be populated by function.}
+  \item{outdated}{: (logical) taxon is not in \code{taxa}.}
+  }}
 }
 \value{
-a list of eight dataframes: \itemize{ \item{verified_taxa}{: same
-  dataframe as input verified_taxa, but now with updated info.}
+a list of three objects: \itemize{ 
+  \item{taxa}{: same dataframe as input taxa with column
+  \code{verificationKey} added. This key is equal to \code{bb_key} for taxa
+  with \code{bb_taxonomicStatus} one of 'ACCEPTED' or 'DOUBTFUL'. In all
+  other cases (synonym or unmatched taxa) the key provided by experts in
+  verified_taxa, if present, is used.}
+  \item{verified_taxa}{: same dataframe as input verified_taxa, but now with
+  updated info. New synonyms and new unmatched taxa in input taxa are added.
+  Backbone names (\code{bb_scientificName} and \code{bb_acceptedName}) are
+  updated if needed.}
+  \item{info}{: a list of dataframes with ancillary informations related to
+  verified_taxa.}
+  }
+  Dataframes contained in info: \itemize{
   \item{new_synonyms}{: a subset of verified_taxa (same columns) with added
-  synonym relations (found in taxa, but not in verified_taxa)}
+  synonym relations (found in taxa, but not in verified_taxa).}
   \item{new_unmatched_taxa}{: a subset of verified_taxa (same columns). New
-  taxa without match to GBIF backbone} \item{unused_taxa}{: a subset of
-  verified_taxa (same columns) with unused taxa (found in verified_taxa, but
-  not in taxa)} \item{updated_scientificName}{: a dataframe with
-  bb_scientificName + updated_bb_scientificName}
-  \item{updated_acceptedName}{: a dataframe with bb_acceptedName +
-  updated_bb_acceptedName} \item{updated_issues}{: a dataframe with issues +
-  udpated_issues} \item{duplicates_taxa}{: a dataframe with all taxa present
-  in more than one checklist.}}
+  taxa without match to GBIF backbone.}
+  \item{outdated_taxa}{: a subset of verified_taxa (same columns) with unused
+  taxa (found in verified_taxa, but not in taxa).}
+  \item{updated_bb_scientificName}{: a dataframe with bb_scientificName +
+  updated_bb_scientificName.}
+  \item{updated_bb_acceptedName}{: a dataframe with bb_acceptedName +
+  updated_bb_acceptedName.}
+  \item{duplicates_taxa}{: a dataframe with all taxa present in more than
+  one checklist.}
+  \item{check_verificationKey} {: a dataframe with results of checking all
+  \code{verificationKey} against GBIF Backbone.}
+  }
 }
 \description{
-This function checks all verified taxa, add new synonyms or taxa not matched
-to GBIF backbone in order to be evaluated by an expert, update taxa names in
-case they have been changed and report the changes.
+This function checks all input taxa by adding automatically a verification
+key where possible (taxa with taxonomic status equal to \code{accepted} or
+\code{doubful}). The function also update a dataframe related to taxa which
+need expert's verification. Ancillary information are also given to explore
+the changes.
 }
 \examples{
 taxa_in <- data.frame(
+  taxonKey = c(
+    141117238,
+    113794952,
+    141264857,
+    100480872,
+    141264614,
+    100220432,
+    141264835,
+    140563014,
+    140562956,
+    145953989,
+    148437916,
+    114445583
+  ),
   scientificName = c(
     "Aspius aspius",
     "Rana catesbeiana",
@@ -60,7 +119,8 @@ taxa_in <- data.frame(
     "Atyaephyra desmaresti",
     "Ferrissia fragilis",
     "Ferrissia fragilis",
-    "Ferrissia fragilis"
+    "Ferrissia fragilis",
+    "Rana blanfordii Boulenger"
   ),
   datasetKey = c(
     "98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
@@ -73,7 +133,8 @@ taxa_in <- data.frame(
     "289244ee-e1c1-49aa-b2d7-d379391ce265",
     "289244ee-e1c1-49aa-b2d7-d379391ce265",
     "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
-    "1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2"
+    "1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2",
+    "3772da2f-daa1-4f07-a438-15a881a2142c"
   ),
   bb_scientificName = c(
     "Aspius aspius (Linnaeus, 1758)",
@@ -86,7 +147,8 @@ taxa_in <- data.frame(
     "Atyaephyra desmarestii (Millet, 1831)",
     "Ferrissia fragilis (Tryon, 1863)",
     "Ferrissia fragilis (Tryon, 1863)",
-    "Ferrissia fragilis (Tryon, 1863)"
+    "Ferrissia fragilis (Tryon, 1863)",
+    "Rana blanfordii Boulenger, 1882"
   ),
   bb_key = c(
     2360181,
@@ -99,20 +161,35 @@ taxa_in <- data.frame(
     4309705,
     2291152,
     2291152,
-    2291152
+    2291152,
+    2430304
   ),
   bb_kingdom = c(
     "Animalia",
     "Animalia",
     "Plantae",
-    "Plantae",
+    "Animalia",
     NA,
     "Animalia",
     NA,
+    "Animalia",
     "Animalia",
     "Animalia",
     "Animalia",
     "Animalia"
+  ),
+  bb_rank = c("SPECIES",
+              "SPECIES",
+              "SPECIES",
+              "SPECIES",
+              NA,
+              "SPECIES",
+              NA,
+              "SPECIES",
+              "SPECIES",
+              "SPECIES",
+              "SPECIES",
+              "SPECIES"
   ),
   bb_taxonomicStatus = c(
     "SYNONYM",
@@ -123,6 +200,7 @@ taxa_in <- data.frame(
     "SYNONYM",
     NA,
     "HOMOTYPIC_SYNONYM",
+    "SYNONYM",
     "SYNONYM",
     "SYNONYM",
     "SYNONYM"
@@ -138,7 +216,8 @@ taxa_in <- data.frame(
     "Hippolyte desmarestii Millet, 1831",
     "Ferrissia californica (Rowell, 1863)",
     "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)"
+    "Ferrissia californica (Rowell, 1863)",
+    "Nanorana blanfordii (Boulenger, 1882)"
   ),
   bb_acceptedKey = c(
     5851603,
@@ -151,32 +230,50 @@ taxa_in <- data.frame(
     6454754,
     9520065,
     9520065,
-    9520065
-  ),
-  issues = c(
-    "ORIGINAL_NAME_DERIVED",
-    NA,
-    "ORIGINAL_NAME_DERIVED",
-    NA,
-    "RANK_INVALID,BACKBONE_MATCH_NONE",
-    NA,
-    NA,
-    "CONFLICTING_BASIONYM_COMBINATION",
-    NA,
-    NA,
-    NA
+    9520065,
+    2430301
   ),
   stringsAsFactors = FALSE
 )
-
 verified_taxa_in <- data.frame(
+  taxonKey = c(
+    113794952,
+    141264857,
+    143920280,
+    141264835,
+    141264614,
+    140562956,
+    145953989,
+    114445583
+  ),
   scientificName = c(
     "Rana catesbeiana",
     "Polystichum tsus-simense J.Smith",
     "Lemnaceae",
     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
     "Begonia x semperflorens hort.",
-    "Ferrissia fragilis"
+    "Ferrissia fragilis",
+    "Ferrissia fragilis",
+    "Rana blanfordii Boulenger"
+  ),
+  datasetKey = c(
+    "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+    "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+    "289244ee-e1c1-49aa-b2d7-d379391ce265",
+    "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
+    "3772da2f-daa1-4f07-a438-15a881a2142c"
+  ),
+  bb_key = c(2427092,
+             2651108,
+             6723,
+             NA,
+             NA,
+             2291152,
+             2291152,
+             2430304
   ),
   bb_scientificName = c(
     "Rana catesbeiana Shaw, 1802",
@@ -184,51 +281,126 @@ verified_taxa_in <- data.frame(
     "Lemnaceae",
     NA,
     NA,
-    "Ferrissia fragilis (Tryon, 1863)"
+    "Ferrissia fragilis (Tryon, 1863)",
+    "Ferrissia fragilis (Tryon, 1863)",
+    "Rana blanfordii Boulenger, 1882"
   ),
-  bb_key = c(2427092, 2651108, 6723, NA, NA, 2291152),
-  bb_kingdom = c("Animalia", "Plantae", "Plantae", NA, NA, "Animalia"),
-  bb_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", NA, NA, "SYNONYM"),
+  bb_kingdom = c("Animalia",
+                 "Plantae",
+                 "Plantae",
+                 NA,
+                 NA,
+                 "Animalia",
+                 "Animalia",
+                 "Animalia"
+  ),
+  bb_rank = c("SPECIES",
+              "SPECIES",
+              "FAMILY",
+              NA,
+              NA,
+              "SPECIES",
+              "SPECIES",
+              "SPECIES"
+  ),
+  bb_taxonomicStatus = c("SYNONYM",
+                         "SYNONYM",
+                         "SYNONYM",
+                         NA,
+                         NA,
+                         "SYNONYM",
+                         "SYNONYM",
+                         "SYNONYM"
+  ),
   bb_acceptedName = c(
     "Lithobates dummyus (Batman, 2018)",
     "Polystichum luctuosum (Kunze) Moore.",
     "Araceae",
     NA,
     NA,
-    "Ferrissia californica (Rowell, 1863)"
+    "Ferrissia californica (Rowell, 1863)",
+    "Ferrissia californica (Rowell, 1863)",
+    "Hylarana chalconota (Schlegel, 1837)"
   ),
-  bb_acceptedKey = c(2427091, 4046493, 6979, NA, NA, 9520065),
-  issues = c(NA, NA, NA, NA, NA, "ORIGINAL_NAME_DERIVED"),
-  verification_key = c(2427091,
-                       4046493,
-                       6979,
-                       "2805420,2805363",
-                       NA, NA),
-  date_added = as.Date(
+  bb_acceptedKey = c(2427091,
+                     4046493,
+                     6979,
+                     NA,
+                     NA,
+                     9520065,
+                     9520065,
+                     2427008
+  ),
+  bb_acceptedKingdom = c("Animalia",
+                         "Plantae",
+                         "Plantae",
+                         NA,
+                         NA,
+                         "Animalia",
+                         "Animalia",
+                         "Animalia"
+  ),
+  bb_acceptedRank = c("SPECIES",
+                      "SPECIES",
+                      "FAMILY",
+                      NA,
+                      NA,
+                      "SPECIES",
+                      "SPECIES",
+                      "SPECIES"
+  ),
+  bb_acceptedTaxonomicStatus = c("ACCEPTED",
+                                 "ACCEPTED",
+                                 "ACCEPTED",
+                                 NA,
+                                 NA,
+                                 "ACCEPTED",
+                                 "ACCEPTED",
+                                 "ACCEPTED"
+  ),
+  verificationKey = c(2427091,
+                      4046493,
+                      6979,
+                      "2805420,2805363",
+                      NA,
+                      NA,
+                      NA,
+                      NA
+  ),
+  remarks = c(
+    "dummy example 1: bb_acceptedName should be updated.",
+    "dummy example 2: bb_scientificName should be updated.",
+    "dummy example 3: not used anymore. Set outdated = TRUE. Add 'Outdated taxa.' to remarks.",
+    "dummy example 4: multiple keys in verificationKey are allowed.",
+    "dummy example 5: nothing should happen.",
+    "dummy example 6: datasetKey should not be modified. If new taxa come in
+    with same name from other checklsits, they should be added as new rows.
+    Report them as duplicates in duplicates_taxa",
+    "dummy example 7: datasetKey should not be modified. If new taxa come in
+    with same name from other checklsits, they should be added as new rows.
+    Report them as duplicates in duplicates_taxa",
+    "dummy example 8: outdated synonym. Set outdated = TRUE. Add 'Outdated taxa.' to remarks."
+  ),
+  dateAdded = as.Date(
     c(
       "2018-07-01",
       "2018-07-01",
       "2018-07-01",
       "2018-07-16",
       "2018-07-16",
-      "2018-07-01"
+      "2018-07-01",
+      "2018-11-20",
+      "2018-11-29"
     )
   ),
-  checklists = c(
-    "e4746398-f7c4-47a1-a474-ae80a4f18e92",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "289244ee-e1c1-49aa-b2d7-d379391ce265"
-  ),
-  remarks = c(
-    "dummy example 1: bb_acceptedName and checklists should be updated.",
-    "dummy example 2: bb_scientificName and issues should be updated.",
-    "dummy example 3: add 'Unused taxa.' at the end of remarks.",
-    "dummy example 4: multiple keys in verification_key are allowed.",
-    "dummy example 5: issues should be updated.",
-    "dummy example 6: issues and checklists should be updated."
+  outdated = c(FALSE,
+               FALSE,
+               FALSE,
+               NA,
+               NA,
+               FALSE,
+               FALSE,
+               FALSE
   ),
   stringsAsFactors = FALSE
 )
