@@ -1,26 +1,35 @@
 #' Check keys against GBIF Backbone Taxonomy
 #'
-#' This function performs three checks: \itemize{\item{\code{keys} are valid
-#' GBIF taxon keys. That means that adding a key at the end of the URL
-#' https://www.gbif.org/species/ returns a GBIF page related to a taxa.}
-#' \item{\code{keys} are taxon keys of the GBIF Backbone Taxonomy checklist.
-#' That means that adding a key at the end of the URL
-#' https://www.gbif.org/species/ returns a GBIF page related to a taxa of the
-#' GBIF Backbone.)} \item{\code{keys} are synonyms of other taxa
-#' (taxonomicStauts neither \code{ACCEPTED} nor \code{DOUBTFUL}).}}.
-#' @param keys (character or numeric) a vector, a list, or a data.frame with
-#'   column \code{key}.
+#' This function performs three checks: 
+#' \itemize{
+#'   \item{\code{keys} are valid GBIF taxon keys. That means that adding a key
+#'   at the end of the URL https://www.gbif.org/species/ returns a GBIF page
+#'   related to a taxa.}
+#'   \item{\code{keys} are taxon keys of the GBIF Backbone Taxonomy checklist.
+#'   That means that adding a key at the end of the URL
+#'   https://www.gbif.org/species/ returns a GBIF page related to a taxa of the
+#'   GBIF Backbone.)}
+#'   \item{\code{keys} are synonyms of other taxa (taxonomicStauts neither
+#'   \code{ACCEPTED} nor \code{DOUBTFUL}).}
+#'   }.
+#' @param keys (character or numeric) a vector, a list, or a data.frame
+#'   containing the keys to verify.
+#' @param col_keys (character) name of column containing keys in case
+#'   \code{keys} is a data.frame.
 #'
-#' @return a dataframe with the following columns: \itemize{\item{\code{key}}{:
-#'   (numeric) keys as input keys.} \item{\code{is_taxonKey}} {: (logical) is
-#'   the key a valid GBIF taxon key?} \item{\code{is_from_gbif_backbone}} {:
-#'   (logical) is the key a valid taxon key from GBIF Backbone Taxonomy
-#'   checklist?} \item{\code{is_synonym}} {: (logical) is the key related to a
-#'   synonym (not \code{ACCEPTED} or \code{DOUBTFUL})?}} If a key didn't pass
-#'   the first check (\code{is_taxonKey = FALSE}) then \code{NA} for other two
-#'   columns. If a key didn't pass the second check (\code{is_from_gbif_backbone
-#'   = FALSE}) then \code{is_synonym} = \code{NA}.
-#'
+#' @return a data.frame with the following columns: 
+#'   \itemize{
+#'     \item{\code{key}}{:(numeric) keys as input keys.} 
+#'     \item{\code{is_taxonKey}} {: (logical) is the key a valid GBIF taxon
+#'     key?}
+#'   \item{\code{is_from_gbif_backbone}} {:(logical) is the key a valid taxon
+#'   key from GBIF Backbone Taxonomy checklist?}
+#'   \item{\code{is_synonym}} {: (logical) is the key related to a synonym (not
+#'   \code{ACCEPTED} or \code{DOUBTFUL})?}
+#'   } 
+#'   If a key didn't pass the first check (\code{is_taxonKey = FALSE}) then
+#'   \code{NA} for other two columns. If a key didn't pass the second check
+#'   (\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
 #' @examples
 #' # input is a vector
 #' keys1 = c("12323785387253", # is not a GBIF taxonKey
@@ -29,7 +38,7 @@
 #'           "1000310", # is an accepted taxon: Pyrococcus woesei Zillig, 1988
 #'           NA, NA)
 #' # input is a df
-#' keys2 <- data.frame(key = keys1,
+#' keys2 <- data.frame(keys = keys1,
 #'                     other_col = sample.int(40, size = length(keys1)),
 #'                     stringsAsFactors = FALSE)
 #' # input is a named list
@@ -40,25 +49,28 @@
 #'                                       collapse=""))
 #' # input keys are numeric
 #' keys4 <- as.numeric(keys1)
-#' 
+#'
 #' gbif_verify_keys(keys1)
+#' gbif_verify_keys(keys2, col_keys = "keys")
+#' gbif_verify_keys(keys3)
+#' gbif_verify_keys(keys4)
 #'
 #' @export
 #'
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr pull mutate filter left_join full_join select
-#' @importFrom rgbif name_usage
 #' @importFrom purrr reduce map_df
+#' @importFrom rgbif name_usage
+#' @importFrom rlang !!
 #' @importFrom tidyr gather
-gbif_verify_keys <- function(keys) {
+#' @importFrom tidyselect vars_pull enquo
+gbif_verify_keys <- function(keys, col_keys = "key") {
   assert_that(is.data.frame(keys) | is.vector(keys), 
               msg = "keys should be a vector, a named list or a data.frame.")
   if (is.data.frame(keys)) {
-    name_cols <- c("key")
-    assert_that(all(name_cols %in% names(keys)), 
-                msg = "Columns 'key' not found.")
+    name_col <- vars_pull(names(keys), !! enquo(col_keys))
     # extract vector of keys from df
-    keys <- keys %>% pull(name_cols)
+    keys <- keys %>% pull(name_col)
   }
   keys <- keys[!is.na(keys)]
   if (length(keys) == 0) {
