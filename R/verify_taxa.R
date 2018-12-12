@@ -59,14 +59,384 @@
 #'   dataframe with results of checking all \code{verificationKey} against GBIF
 #'   Backbone.} }
 #' @examples
-#'
+#' taxa_in <- data.frame(
+#'   taxonKey = c(
+#'     141117238,
+#'     113794952,
+#'     141264857,
+#'     100480872,
+#'     141264614,
+#'     100220432,
+#'     141264835,
+#'     140563014,
+#'     140562956,
+#'     145953989,
+#'     148437916,
+#'     114445583,
+#'     141264849,
+#'     101790530
+#'   ),
+#'   scientificName = c(
+#'     "Aspius aspius",
+#'     "Rana catesbeiana",
+#'     "Polystichum tsus-simense J.Smith",
+#'     "Apus apus (Linnaeus, 1758)",
+#'     "Begonia x semperflorens hort.",
+#'     "Rana catesbeiana",
+#'     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
+#'     "Atyaephyra desmaresti",
+#'     "Ferrissia fragilis",
+#'     "Ferrissia fragilis",
+#'     "Ferrissia fragilis",
+#'     "Rana blanfordii Boulenger",
+#'     "Pterocarya x rhederiana C.K. Schneider",
+#'     "Stenelmis williami Schmude"
+#'   ),
+#'   datasetKey = c(
+#'     "98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
+#'     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "39653f3e-8d6b-4a94-a202-859359c164c5",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "b351a324-77c4-41c9-a909-f30f77268bc4",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "289244ee-e1c1-49aa-b2d7-d379391ce265",
+#'     "289244ee-e1c1-49aa-b2d7-d379391ce265",
+#'     "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
+#'     "1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2",
+#'     "3772da2f-daa1-4f07-a438-15a881a2142c",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "9ca92552-f23a-41a8-a140-01abaa31c931"
+#'   ),
+#'   bb_key = c(
+#'     2360181,
+#'     2427092,
+#'     2651108,
+#'     5228676,
+#'     NA,
+#'     2427092,
+#'     NA,
+#'     4309705,
+#'     2291152,
+#'     2291152,
+#'     2291152,
+#'     2430304,
+#'     NA,
+#'     1033588
+#'   ),
+#'   bb_scientificName = c(
+#'     "Aspius aspius (Linnaeus, 1758)",
+#'     "Rana catesbeiana Shaw, 1802",
+#'     "Polystichum tsus-simense (Hook.) J.Sm.",
+#'     "Apus apus (Linnaeus, 1758)",
+#'     NA,
+#'     "Rana catesbeiana Shaw, 1802",
+#'     NA,
+#'     "Atyaephyra desmarestii (Millet, 1831)",
+#'     "Ferrissia fragilis (Tryon, 1863)",
+#'     "Ferrissia fragilis (Tryon, 1863)",
+#'     "Ferrissia fragilis (Tryon, 1863)",
+#'     "Rana blanfordii Boulenger, 1882",
+#'     NA,
+#'     "Stenelmis williami Schmude"
+#'   ),
+#'   bb_kingdom = c(
+#'     "Animalia",
+#'     "Animalia",
+#'     "Plantae",
+#'     "Animalia",
+#'     NA,
+#'     "Animalia",
+#'     NA,
+#'     "Animalia",
+#'     "Animalia",
+#'     "Animalia",
+#'     "Animalia",
+#'     "Animalia",
+#'     NA,
+#'     "Animalia"
+#'   ),
+#'   bb_rank = c("SPECIES",
+#'               "SPECIES",
+#'               "SPECIES",
+#'               "SPECIES",
+#'               NA,
+#'               "SPECIES",
+#'               NA,
+#'               "SPECIES",
+#'               "SPECIES",
+#'               "SPECIES",
+#'               "SPECIES",
+#'               "SPECIES",
+#'               NA,
+#'               "SPECIES"
+#'   ),
+#'   bb_taxonomicStatus = c(
+#'     "SYNONYM",
+#'     "SYNONYM",
+#'     "SYNONYM",
+#'     "ACCEPTED",
+#'     NA,
+#'     "SYNONYM",
+#'     NA,
+#'     "HOMOTYPIC_SYNONYM",
+#'     "SYNONYM",
+#'     "SYNONYM",
+#'     "SYNONYM",
+#'     "SYNONYM",
+#'     NA,
+#'     "SYNONYM"
+#'   ),
+#'   bb_acceptedName = c(
+#'     "Leuciscus aspius (Linnaeus, 1758)",
+#'     "Lithobates catesbeianus (Shaw, 1802)",
+#'     "Polystichum luctuosum (Kunze) Moore.",
+#'     NA,
+#'     NA,
+#'     "Lithobates catesbeianus (Shaw, 1802)",
+#'     NA,
+#'     "Hippolyte desmarestii Millet, 1831",
+#'     "Ferrissia californica (Rowell, 1863)",
+#'     "Ferrissia californica (Rowell, 1863)",
+#'     "Ferrissia californica (Rowell, 1863)",
+#'     "Nanorana blanfordii (Boulenger, 1882)",
+#'     NA,
+#'     "Stenelmis Dufour, 1835"
+#'   ),
+#'   bb_acceptedKey = c(
+#'     5851603,
+#'     2427091,
+#'     4046493,
+#'     NA,
+#'     NA,
+#'     2427091,
+#'     NA,
+#'     6454754,
+#'     9520065,
+#'     9520065,
+#'     9520065,
+#'     2430301,
+#'     NA,
+#'     1033553
+#'   ),
+#' stringsAsFactors = FALSE
+#' )
+#' 
+#' taxa_to_verify_in <- data.frame(
+#'   taxonKey = c(
+#'     113794952,
+#'     141264857,
+#'     143920280,
+#'     141264835,
+#'     141264614,
+#'     140562956,
+#'     145953989,
+#'     114445583,
+#'     128897752,
+#'     101790530
+#'   ),
+#'   scientificName = c(
+#'     "Rana catesbeiana",
+#'     "Polystichum tsus-simense J.Smith",
+#'     "Lemnaceae",
+#'     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
+#'     "Begonia x semperflorens hort.",
+#'     "Ferrissia fragilis",
+#'     "Ferrissia fragilis",
+#'     "Rana blanfordii Boulenger",
+#'     "Python reticulatus Fitzinger, 1826",
+#'     "Stenelmis williami Schmude"
+#'   ),
+#'   datasetKey = c(
+#'     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'     "289244ee-e1c1-49aa-b2d7-d379391ce265",
+#'     "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
+#'     "3772da2f-daa1-4f07-a438-15a881a2142c",
+#'     "7ddf754f-d193-4cc9-b351-99906754a03b",
+#'     "9ca92552-f23a-41a8-a140-01abaa31c931"
+#'   ),
+#'   bb_key = c(2427092,
+#'              2651108,
+#'              6723,
+#'              NA,
+#'              NA,
+#'              2291152,
+#'              2291152,
+#'              2430304,
+#'              7587934,
+#'              1033588
+#'   ),
+#'   bb_scientificName = c(
+#'     "Rana catesbeiana Shaw, 1802",
+#'     "Polystichum tsus-tsus-tsus (Hook.) Captain",
+#'     "Lemnaceae",
+#'     NA,
+#'     NA,
+#'     "Ferrissia fragilis (Tryon, 1863)",
+#'     "Ferrissia fragilis (Tryon, 1863)",
+#'     "Rana blanfordii Boulenger, 1882",
+#'     "Python reticulatus Fitzinger, 1826",
+#'     "Stenelmis williami Schmude"
+#'   ),
+#'   bb_kingdom = c("Animalia",
+#'                  "Plantae",
+#'                  "Plantae",
+#'                  NA,
+#'                  NA,
+#'                  "Animalia",
+#'                  "Animalia",
+#'                  "Animalia",
+#'                  "Animalia",
+#'                  "Animalia"
+#'   ),
+#'   bb_rank = c("SPECIES",
+#'               "SPECIES",
+#'               "FAMILY",
+#'               NA,
+#'               NA,
+#'               "SPECIES",
+#'               "SPECIES",
+#'               "SPECIES",
+#'               "SPECIES",
+#'               "SPECIES"
+#'   ),
+#'   bb_taxonomicStatus = c("SYNONYM",
+#'                          "SYNONYM",
+#'                          "SYNONYM",
+#'                          NA,
+#'                          NA,
+#'                          "SYNONYM",
+#'                          "SYNONYM",
+#'                          "SYNONYM",
+#'                          "SYNONYM",
+#'                          "SYNONYM"
+#'   ),
+#'   bb_acceptedName = c(
+#'     "Lithobates dummyus (Batman, 2018)",
+#'     "Polystichum luctuosum (Kunze) Moore.",
+#'     "Araceae",
+#'     NA,
+#'     NA,
+#'     "Ferrissia californica (Rowell, 1863)",
+#'     "Ferrissia californica (Rowell, 1863)",
+#'     "Hylarana chalconota (Schlegel, 1837)",
+#'     "Malayopython reticulatus (Schneider, 1801)",
+#'     "Stenelmis Dufour, 1835"
+#'   ),
+#'   bb_acceptedKey = c(2427091,
+#'                      4046493,
+#'                      6979,
+#'                      NA,
+#'                      NA,
+#'                      9520065,
+#'                      9520065,
+#'                      2427008,
+#'                      9260388,
+#'                      1033553
+#'   ),
+#'   bb_acceptedKingdom = c("Animalia",
+#'                          "Plantae",
+#'                          "Plantae",
+#'                          NA,
+#'                          NA,
+#'                          "Animalia",
+#'                          "Animalia",
+#'                          "Animalia",
+#'                          "Animalia",
+#'                          "Animalia"
+#'   ),
+#'   bb_acceptedRank = c("SPECIES",
+#'                       "SPECIES",
+#'                       "FAMILY",
+#'                       NA,
+#'                       NA,
+#'                       "SPECIES",
+#'                       "SPECIES",
+#'                       "SPECIES",
+#'                       "SPECIES",
+#'                       "GENUS"
+#'   ),
+#'   bb_acceptedTaxonomicStatus = c("ACCEPTED",
+#'                                  "ACCEPTED",
+#'                                  "ACCEPTED",
+#'                                  NA,
+#'                                  NA,
+#'                                  "ACCEPTED",
+#'                                  "ACCEPTED",
+#'                                  "ACCEPTED",
+#'                                  "ACCEPTED",
+#'                                  "ACCEPTED"
+#'   ),
+#'   verificationKey = c(2427091,
+#'                       4046493,
+#'                       6979,
+#'                       "2805420,2805363",
+#'                       NA,
+#'                       NA,
+#'                       NA,
+#'                       NA,
+#'                       9260388,
+#'                       NA
+#'   ),
+#'   remarks = c(
+#'     "dummy example 1: bb_acceptedName should be updated.",
+#'     "dummy example 2: bb_scientificName should be updated.",
+#'     "dummy example 3: not used anymore. Set outdated = TRUE. Add 'Outdated
+#'     taxa.' to remarks.",
+#'     "dummy example 4: multiple keys in verificationKey are allowed.",
+#'     "dummy example 5: nothing should happen.",
+#'     "dummy example 6: datasetKey should not be modified. If new taxa come in
+#'     with same name from other checklsits, they should be added as new rows.
+#'     Report them as duplicates in duplicates_taxa",
+#'     "dummy example 7: datasetKey should not be modified. If new taxa come in
+#'     with same name from other checklsits, they should be added as new rows.
+#'     Report them as duplicates in duplicates_taxa",
+#'     "dummy example 8: outdated synonym. Set outdated = TRUE. Add 'Outdated
+#'     taxa.' to remarks.",
+#'     "dummy example 9: 'Outdated taxa'. outdated is already TRUE. Label
+#'     'Outdated taxa' already in remarks. No actions.",
+#'     "dummy example 10: 'Outdated taxa'. Not outdated anymore. Change outdated
+#'     back to FALSE. Remove label from remarks."
+#'   ),
+#'   dateAdded = as.Date(
+#'     c(
+#'       "2018-07-01",
+#'       "2018-07-01",
+#'       "2018-07-01",
+#'       "2018-07-16",
+#'       "2018-07-16",
+#'       "2018-07-01",
+#'       "2018-11-20",
+#'       "2018-11-29",
+#'       "2018-12-01",
+#'       "2018-12-02"
+#'     )
+#'   ),
+#'   outdated = c(FALSE,
+#'                FALSE,
+#'                FALSE,
+#'                FALSE,
+#'                FALSE,
+#'                FALSE,
+#'                FALSE,
+#'                FALSE,
+#'                TRUE,
+#'                TRUE
+#'   ),
+#'   stringsAsFactors = FALSE
+#' )
+#' 
 #' # output
 #' verify_taxa(taxa = taxa_in, taxa_to_verify = taxa_to_verify_in)
 #' @export
 #' @importFrom assertthat assert_that is.date
-#' @importFrom dplyr filter select distinct mutate rename rename_at
+#' @importFrom dplyr filter filter_at select distinct mutate rename rename_at
 #'   arrange bind_rows inner_join anti_join left_join right_join %>% pull
-#'   group_by count
+#'   group_by count starts_with all_vars any_vars
 #' @importFrom stringr str_remove
 #' @importFrom tidyselect one_of everything ends_with
 #' @importFrom purrr pmap_dfr
@@ -103,6 +473,20 @@ verify_taxa <- function(taxa, taxa_to_verify) {
       nrow() == 0,
     msg = "Taxa which don't need verification must have a backbone key.")
   
+  # unmatched taxa should have no GBIF Backbone information at all
+  assert_that(
+    taxa %>%
+      filter(is.na(bb_key)) %>%
+      filter_at(vars(starts_with("bb_")), all_vars(is.na(.))) %>%
+      nrow ==
+      taxa %>%
+      filter(is.na(bb_key)) %>%
+      filter_at(vars(starts_with("bb_")), any_vars(is.na(.))) %>%
+      nrow,
+    msg = paste("Columns related to GBIF Backbone information should be all", 
+                "empty for unmatched taxa (no backbone key).")
+  )
+  
   # test taxa_to_verify
   name_col_verified <- c("taxonKey", "scientificName", "datasetKey", 
                          "bb_key", "bb_scientificName",
@@ -132,6 +516,10 @@ verify_taxa <- function(taxa, taxa_to_verify) {
   ))
   is.date(taxa_to_verify$dateAdded)
   is.logical(taxa_to_verify$outdated)
+  assert_that(taxa_to_verify %>%
+                filter(is.na(outdated)) %>%
+                         nrow == 0, 
+    msg = "Only logicals(TRUE/FALSE) allowed in 'outdated' of taxa_to_verify.")
   # allowe multiple comma separated verification keys (character)
   class(taxa_to_verify$verificationKey) <- "character"
   # alow remarks (remarks col empty means for R a column logicals)
@@ -171,7 +559,8 @@ verify_taxa <- function(taxa, taxa_to_verify) {
           appendLF = FALSE)
   not_to_verify_taxa <- 
     taxa %>%
-    filter(bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL")) %>%
+    filter(!is.na(bb_key) & 
+             bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL")) %>%
     mutate(
       verificationKey = as.character(bb_key))
   message("DONE.", appendLF = TRUE)
@@ -378,13 +767,15 @@ verify_taxa <- function(taxa, taxa_to_verify) {
     filter(n > 1) %>%
     left_join((taxa_to_verify %>%
                 select(bb_key, bb_acceptedKey, bb_scientificName)),
-              by = c("bb_key", "bb_acceptedKey"))
+              by = c("bb_key", "bb_acceptedKey")) %>%
+    select(bb_key, bb_acceptedKey, bb_scientificName, n) %>%
+    arrange(desc(n))
   message("DONE.", appendLF = TRUE)
   
   # order taxa_to_verify by outdated and dateAdded
   taxa_to_verify <-
     taxa_to_verify %>%
-    arrange(outdated, dateAdded)
+    arrange(outdated, desc(dateAdded))
   
   # add not outdated taxa from taxa_to_verify to not_to_verify_taxa
   taxa <- 

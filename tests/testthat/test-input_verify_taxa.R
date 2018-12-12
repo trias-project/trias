@@ -1,200 +1,221 @@
 context("input_verify_taxa")
-taxa_in <- data.frame(
-  scientificName = c("Aspius aspius", "Rana catesbeiana", 
-                     "Polystichum tsus-simense J.Smith", 
-                     "Apus apus (Linnaeus, 1758)",
-                     "Begonia x semperflorens hort.", 
-                     "Rana catesbeiana", 
-                     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley", 
-                     "Atyaephyra desmaresti", 
-                     "Ferrissia fragilis",
-                     "Ferrissia fragilis",
-                     "Ferrissia fragilis"),
-  datasetKey = c("98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
-                 "e4746398-f7c4-47a1-a474-ae80a4f18e92",
-                 "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-                 "39653f3e-8d6b-4a94-a202-859359c164c5",
-                 "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-                 "b351a324-77c4-41c9-a909-f30f77268bc4",
-                 "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-                 "289244ee-e1c1-49aa-b2d7-d379391ce265",
-                 "289244ee-e1c1-49aa-b2d7-d379391ce265",
-                 "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
-                 "1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2"),
-  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)",
-                        "Rana catesbeiana Shaw, 1802",
-                        "Polystichum tsus-simense (Hook.) J.Sm.",
-                        "Apus apus (Linnaeus, 1758)",
-                        NA,
-                        "Rana catesbeiana Shaw, 1802",
-                        NA,
-                        "Atyaephyra desmarestii (Millet, 1831)",
-                        "Ferrissia fragilis (Tryon, 1863)",
-                        "Ferrissia fragilis (Tryon, 1863)",
-                        "Ferrissia fragilis (Tryon, 1863)"),
-  bb_key = c(2360181, 2427092, 2651108, 5228676, NA, 2427092, NA,
-             4309705, 2291152, 2291152, 2291152),
-  bb_kingdom = c("Animalia", "Animalia", "Plantae",
-                 "Plantae", NA, "Animalia",
-                 NA, "Animalia", "Animalia", "Animalia", "Animalia"),
-  bb_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", "ACCEPTED",
-                         NA, "SYNONYM", NA, "HOMOTYPIC_SYNONYM",
-                         "SYNONYM", "SYNONYM", "SYNONYM"),
-  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)",
-                      "Lithobates catesbeianus (Shaw, 1802)",
-                      "Polystichum luctuosum (Kunze) Moore.",
-                      NA, NA,
-                      "Lithobates catesbeianus (Shaw, 1802)",
-                      NA,
-                      "Hippolyte desmarestii Millet, 1831",
-                      "Ferrissia californica (Rowell, 1863)",
-                      "Ferrissia californica (Rowell, 1863)",
-                      "Ferrissia californica (Rowell, 1863)"),
-  bb_acceptedKey = c(5851603, 2427091, 4046493, NA, NA, 2427091, NA,
-                     6454754, 9520065, 9520065, 9520065),
-  issues = c("ORIGINAL_NAME_DERIVED", NA, "ORIGINAL_NAME_DERIVED", NA,
-             "RANK_INVALID,BACKBONE_MATCH_NONE", NA, NA,
-             "CONFLICTING_BASIONYM_COMBINATION", NA, NA, NA),
-  stringsAsFactors = FALSE)
 
-verified_taxa_in <- data.frame(
-  scientificName = c("Rana catesbeiana",
-                     "Polystichum tsus-simense J.Smith",
-                     "Lemnaceae",
-                     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
-                     "Begonia x semperflorens hort.",
-                     "Ferrissia fragilis"),
-  bb_scientificName = c("Rana catesbeiana Shaw, 1802",
-                        "Polystichum tsus-tsus-tsus (Hook.) Captain",
-                        "Lemnaceae",
-                        NA, NA,
-                        "Ferrissia fragilis (Tryon, 1863)"),
-  bb_key = c(2427092, 2651108, 6723, NA, NA, 2291152),
-  bb_kingdom = c("Animalia", "Plantae", "Plantae", NA, NA, "Animalia"),
-  bb_taxonomicStatus = c("SYNONYM", "SYNONYM", "SYNONYM", NA, NA, "SYNONYM"),
-  bb_acceptedName = c("Lithobates dummyus (Batman, 2018)",
-                      "Polystichum luctuosum (Kunze) Moore.",
-                      "Araceae",
-                      NA, NA, "Ferrissia californica (Rowell, 1863)"),
-  bb_acceptedKey = c(2427091, 4046493, 6979, NA, NA, 9520065),
-  issues = c(NA, NA, NA, NA, NA, "ORIGINAL_NAME_DERIVED"),
-  verification_key = c(2427091,
-                       4046493,
-                       6979,
-                       "2805420,2805363",
-                       NA, NA),
-  date_added = as.Date(c("2018-07-01",
-                         "2018-07-01",
-                         "2018-07-01",
-                         "2018-07-16",
-                         "2018-07-16",
-                         "2018-07-01")),
-  checklists = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
-                 "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-                 "e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5",
-                 "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-                 "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-                 "289244ee-e1c1-49aa-b2d7-d379391ce265"),
-  remarks = c("dummy example 1: bb_acceptedName and checklists should be updated.",
-              "dummy example 2: bb_scientificName and issues should be updated.",
-              "dummy example 3: add 'Unused taxa.' at the end of remarks.",
-              "dummy example 4: multiple keys in verification_key are allowed.",
-              "dummy example 5: issues should be updated.",
-              "dummy example 6: issues and checklists should be updated."),
-  stringsAsFactors = FALSE)
-
+# import correct inputs
+source("input_dfs_tests_verify_taxa.R")
 
 testthat::test_that("taxa is a data frame", {
   expect_error(verify_taxa(taxa = 3, 
-                                    verified_taxa = data.frame(test = c(23))), 
+                                    taxa_to_verify = taxa_to_verify_in), 
                "taxa is not a data frame")
   expect_error(verify_taxa(taxa = c("23"), 
-                                    verified_taxa = data.frame(test = c(23))), 
+                                    taxa_to_verify = taxa_to_verify_in), 
                "taxa is not a data frame")})
 
 
-testthat::test_that("verified_taxa is a data frame", {
+testthat::test_that("taxa_to_verify is a data frame", {
   expect_error(verify_taxa(taxa = taxa_in, 
-                                    verified_taxa = 3),
-               "verified_taxa is not a data frame")
+                                    taxa_to_verify = 3),
+               "taxa_to_verify is not a data frame")
   expect_error(verify_taxa(taxa = taxa_in, 
-                                    verified_taxa = c("3")),
-               "verified_taxa is not a data frame")})
+                                    taxa_to_verify = c("3")),
+               "taxa_to_verify is not a data frame")})
 
-# wrong taxa input
+# wrong taxa inputs
 taxa_test1 <- data.frame(
+  bad_checklist_taxonKey_colname = c(123452),
   bad_checklist_scientificName_colname = c("Aspius aspius"),
-  bad_backbone_scientificName_colname = c("Aspius aspius (Linnaeus, 1758)"),
-  bad_backbone_taxonomicStatus_colname = c("SYNONYM"),
-  bad_backbone_acceptedName_colname = c("Leuciscus aspius (Linnaeus, 1758)"),
-  bad_backbone_taxonKey_colname = c(2360181),
-  bad_backbone_acceptedKey_colname = c(5851603),
-  bad_backbone_kingdom_colname = c("Animalia"),
-  bad_backbone_issues = c(NA_character_),
   bad_checklist_datasetKey_colname = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+  bad_backbone_taxonKey_colname = c(2360181),
+  bad_backbone_scientificName_colname = c("Aspius aspius (Linnaeus, 1758)"),
+  bad_backbone_kingdom_colname = c("Animalia"),
+  bad_backbone_rank_colname = c("SPECIES"),
+  bad_backbone_taxonomicStatus_colname = c("SYNONYM"),
+  bad_backbone_acceptedKey_colname = c(5851603),
+  bad_backbone_acceptedName_colname = c("Leuciscus aspius (Linnaeus, 1758)"),
   stringsAsFactors = FALSE)
 
+# missing column
 taxa_test2 <- data.frame(
+  taxonKey = c(123452),
   scientificName = c("Aspius aspius"),
-  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
-  bb_taxonomicStatus = c("SYNONYM"),
-  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
-  bb_key = c(2360181),
-  # bb_acceptedKey is missing
-  bb_kingdom = c("Animalia"),
-  issues = c(NA_character_),
   datasetKey = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+  bb_key = c(2360181),
+  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
+  bb_kingdom = c("Animalia"),
+  bb_rank = c("SPECIES"),
+  bb_taxonomicStatus = c("SYNONYM"),
+  # bb_acceptedKey is missing
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
   stringsAsFactors = FALSE)
 
 testthat::test_that("taxa column names are correct", {
 expect_error(verify_taxa(taxa = taxa_test1, 
-                                  verified_taxa = verified_taxa_in),
-             "Elements 1, 2, 3, 4, 5, 6, 7, 8, 9 of name_col_taxa %in% names(taxa) are not true", 
+                                  taxa_to_verify = taxa_to_verify_in),
+             paste("Elements 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 of", 
+                   "name_col_taxa %in% names(taxa) are not true"), 
              fixed = TRUE)
 expect_error(verify_taxa(taxa = taxa_test2, 
-                                  verified_taxa = verified_taxa_in),
-             "Elements 6 of name_col_taxa %in% names(taxa) are not true",
+                                  taxa_to_verify = taxa_to_verify_in),
+             "Elements 9 of name_col_taxa %in% names(taxa) are not true",
              fixed = TRUE)})
 
-# wrong verified_taxa input
-verified_taxa_test1 <- data.frame(
-  bad_checklist_scientificName_colname = c("Aspius aspius"),
-  bad_backbone_scientificName_colname = c("Aspius aspius (Linnaeus, 1758)"),
-  bad_backbone_taxonomicStatus_colname = c("SYNONYM"),
-  bad_backbone_acceptedName_colname = c("Leuciscus aspius (Linnaeus, 1758)"),
-  bad_backbone_taxonKey_colname = c(2360181),
-  bad_backbone_acceptedKey_colname = c(5851603),
-  bad_verification_key_colname = c(2427091),
-  bad_backbone_kingdom_colname = c("Animalia"),
-  bad_date_added_colname = c("2018-01-01"),
-  bad_backbone_issues_colname = c(NA),
-  bad_remarks_colname = c("dummy example 1: backbone_accepted should be updated"),
-  bad_checklists_colname = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+# inconsitency about unmatched taxa
+taxa_test3 <- data.frame(
+  taxonKey = c(123452),
+  scientificName = c("Aspius aspius"),
+  datasetKey = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+  bb_key = c(NA_integer_),
+  bb_scientificName = c(NA_character_),
+  bb_kingdom = c("Animalia"),
+  bb_rank = c("SPECIES"),
+  bb_taxonomicStatus = c("SYNONYM"),
+  bb_acceptedKey = c(3483948),
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
   stringsAsFactors = FALSE)
 
-verified_taxa_test2 <- data.frame(
+testthat::test_that("consistency of 'taxa' about GBIF backbone info columns", {
+  expect_error(verify_taxa(taxa = taxa_test3, 
+                           taxa_to_verify = taxa_to_verify_in),
+               paste("Columns related to GBIF Backbone information should be", 
+                     "all empty for unmatched taxa (no backbone key)."), 
+               fixed = TRUE)
+})
+
+# wrong colnames as input for taxa_to_verify
+taxa_to_verify_test1 <- data.frame(
+  bad_checklist_taxonKey = c(12341),
+  bad_checklist_scientificName_colname = c("Aspius aspius"),
+  bad_datasetKey_colname = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+  bad_backbone_taxonKey_colname = c(2360181),
+  bad_backbone_scientificName_colname = c("Aspius aspius (Linnaeus, 1758)"),
+  bad_backbone_kingdom_colname = c("Animalia"),
+  bad_backbone_rank_colname = c("SPECIES"),
+  bad_backbone_taxonomicStatus_colname = c("SYNONYM"),
+  bad_backbone_acceptedKey_colname = c(5851603),
+  bad_backbone_acceptedName_colname = c("Leuciscus aspius (Linnaeus, 1758)"),
+  bad_backbone_acceptedKingdom_colname = c("Animalia"),
+  bad_backbone_acceptedrank_colname = c("SPECIES"),
+  bad_backbone_acceptedTaxonomicStatus_colname = c("ACCEPTED"),
+  bad_verificationKey_colname = c(2427091),
+  bad_remarks_colname = c("dummy example 1: backbone_accepted should be updated"),
+  bad_dateAdded_colname = c(as.Date("2018-01-01")),
+  bad_outdated = c(FALSE),
+  stringsAsFactors = FALSE)
+
+# missing columns
+taxa_to_verify_test2 <- data.frame(
+  taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
-  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
-  bb_taxonomicStatus = c("SYNONYM"),
-  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
+  # datasetKey column missing
   bb_key = c(2360181),
+  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
+  # bb_kingdom column missing
+  bb_rank = c("SPECIES"),
+  bb_taxonomicStatus = c("SYNONYM"),
   bb_acceptedKey = c(5851603),
-  verification_key = c(2427091),
-  # backbone_kingdom column missing
-  # date_added column missing
-  issues = c(NA),
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
+  # bb_acceptedKingdom
+  bb_acceptedRank = c("SPECIES"),
+  bb_acceptedTaxonomicStatus = c("ACCEPTED"),
+  verificationKey = c(2427091),
   remarks = c("dummy example 1: backbone_accepted should be updated"),
-  # checklists column missing
+  # dateAdded column missing
+  outdated = c(FALSE),
+  stringsAsFactors = FALSE)
+
+# inconsistency bb_acceptedName - bb_acceptedKey
+taxa_to_verify_test3 <- data.frame(
+  taxonKey = c(141117238),
+  scientificName = c("Aspius aspius"),
+  datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
+  bb_key = c(2360181),
+  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
+  bb_kingdom = c("Animalia"),
+  bb_rank = c("SPECIES"),
+  bb_taxonomicStatus = c("SYNONYM"),
+  bb_acceptedKey = c(NA_integer_),
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
+  bb_acceptedKingdom = c("Animalia"),
+  bb_acceptedRank = c("SPECIES"),
+  bb_acceptedTaxonomicStatus = c("ACCEPTED"),
+  verificationKey = c(2427091),
+  remarks = c("dummy example 1: backbone_accepted should be updated"),
+  dateAdded = c(as.Date("2010-01-01")),
+  outdated = c(FALSE),
+  stringsAsFactors = FALSE)
+
+# accepted taxa present (only synonyms and unmatched taxa allowed.)
+taxa_to_verify_test4 <- data.frame(
+  taxonKey = c(141117238),
+  scientificName = c("Aspius aspius"),
+  datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
+  bb_key = c(2360181),
+  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
+  bb_kingdom = c("Animalia"),
+  bb_rank = c("SPECIES"),
+  bb_taxonomicStatus = c("ACCEPTED"),
+  bb_acceptedKey = c(5851603),
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
+  bb_acceptedKingdom = c("Animalia"),
+  bb_acceptedRank = c("SPECIES"),
+  bb_acceptedTaxonomicStatus = c("ACCEPTED"),
+  verificationKey = c(2427091),
+  remarks = NA_character_,
+  dateAdded = c(as.Date("2010-01-01")),
+  outdated = c(FALSE),
+  stringsAsFactors = FALSE)
+
+# outdated must to be TRUE or FALSE.
+taxa_to_verify_test5 <- data.frame(
+  taxonKey = c(141117238),
+  scientificName = c("Aspius aspius"),
+  datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
+  bb_key = c(2360181),
+  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
+  bb_kingdom = c("Animalia"),
+  bb_rank = c("SPECIES"),
+  bb_taxonomicStatus = c("SYNONYM"),
+  bb_acceptedKey = c(5851603),
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
+  bb_acceptedKingdom = c("Animalia"),
+  bb_acceptedRank = c("SPECIES"),
+  bb_acceptedTaxonomicStatus = c("ACCEPTED"),
+  verificationKey = c(2427091),
+  remarks = NA_character_,
+  dateAdded = c(as.Date("2010-01-01")),
+  outdated = c(NA),
   stringsAsFactors = FALSE)
 
 testthat::test_that("verify_taxa column names are correct", {
   expect_error(verify_taxa(taxa = taxa_in, 
-                                    verified_taxa = verified_taxa_test1),
+                           taxa_to_verify = taxa_to_verify_test1),
                paste("1, 2, 3, 4, 5, ... of name_col_verified %in%", 
-                     "names(verified_taxa) are not true"), 
+                     "names(taxa_to_verify) are not true"), 
                fixed = TRUE)
   expect_error(verify_taxa(taxa = taxa_in, 
-                                    verified_taxa = verified_taxa_test2),
-               paste("Elements 8, 9, 12 of name_col_verified %in%", 
-                     "names(verified_taxa) are not true"),
-               fixed = TRUE)})
+                           taxa_to_verify = taxa_to_verify_test2),
+               paste("Elements 3, 6, 11, 16 of name_col_verified %in%", 
+                     "names(taxa_to_verify) are not true"),
+               fixed = TRUE)
+  })
+
+testthat::test_that("synonym relations are inconsistent", {
+  expect_error(verify_taxa(taxa = taxa_in,
+                           taxa_to_verify = taxa_to_verify_test3),
+    "bb_acceptedName and bb_acceptedKey should be both NA or both present.",
+    fixed = TRUE)
+  })
+
+testthat::test_that("accepted taxa in taxa_to_verify input", {
+  expect_error(verify_taxa(taxa = taxa_in,
+                           taxa_to_verify = taxa_to_verify_test4),
+               "Only synonyms and unmatched taxa allowed in taxa_to_verify.",
+               fixed = TRUE)
+})
+
+testthat::test_that("restrictions on input columns of taxa_to_verify", {
+  expect_error(verify_taxa(taxa = taxa_in,
+                           taxa_to_verify = taxa_to_verify_test5),
+    "Only logicals(TRUE/FALSE) allowed in 'outdated' of taxa_to_verify.",
+               fixed = TRUE)
+})

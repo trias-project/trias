@@ -1,1 +1,2 @@
-scientificName	bb_scientificName	bb_taxonomicStatus	bb_acceptedName	bb_key	bb_acceptedKey	verification_key	bb_kingdom	date_added	issues	remarks	checklists
+taxonKey	scientificName	datasetKey	bb_key	bb_scientificName	bb_kingdom	bb_rank	bb_taxonomicStatus	bb_acceptedKey	bb_acceptedName	bb_acceptedKingdom	bb_acceptedRank	bb_acceptedTaxonomicStatus	verificationKey	remarks	dateAdded	outdated
+141264849	Pterocarya x rhederiana C.K. Schneider	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	2018-12-12	FALSE
