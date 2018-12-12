@@ -32,10 +32,10 @@
 #'   (\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
 #' @examples
 #' # input is a vector
-#' keys1 = c("12323785387253", # is not a GBIF taxonKey
-#'           "128545334", # is not a taxonKey from Backbone, but Euglenes nitidifrons (Thomson, 1886) in "Checklist of Danish Beetles (Coleoptera)"
-#'           "1000693", # is a synonym: Pterodina calcaris Langer, 1909. Synonym of Testudinella parva (Ternetz, 1892)
-#'           "1000310", # is an accepted taxon: Pyrococcus woesei Zillig, 1988
+#' keys1 = c("12323785387253", # invalid GBIF taxonKey
+#'           "128545334", # valid taxonKey, not a GBIF Backbone key
+#'           "1000693", # a GBIF Backbone key, synonym
+#'           "1000310", # a GBIF Backbone key, accepted
 #'           NA, NA)
 #' # input is a df
 #' keys2 <- data.frame(keys = keys1,
@@ -70,7 +70,9 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   if (is.data.frame(keys)) {
     name_col <- vars_pull(names(keys), !! enquo(col_keys))
     # extract vector of keys from df
-    keys <- keys %>% pull(name_col)
+    keys <- 
+      keys %>% 
+      pull(name_col)
   }
   keys <- keys[!is.na(keys)]
   if (length(keys) == 0) {
@@ -87,33 +89,41 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
                             "."))
   }
   names(keys) <- as.character(keys)
-  gbif_info <- keys %>%
+  gbif_info <- 
+    keys %>%
     map(~ try(name_usage(., return = "data")[1,]))
-  check_keys <- map_df(gbif_info, ~ is.error(.) == FALSE) %>%
+  check_keys <- 
+    map_df(gbif_info, ~ is.error(.) == FALSE) %>%
     gather(key = key, value = is_taxonKey) %>%
     mutate(key = as.numeric(key))
-  valid_keys_df <- check_keys %>%
+  valid_keys_df <- 
+    check_keys %>%
     filter(is_taxonKey == TRUE)
   valid_keys <- gbif_info[which(names(gbif_info) %in% valid_keys_df$key)]
   if (length(valid_keys) > 0) {
-    valid_keys_df <- valid_keys %>% 
+    valid_keys_df <- 
+      valid_keys %>% 
       reduce(bind_rows) %>%
       mutate(is_from_gbif_backbone = ifelse(datasetKey == uuid_backbone,
                                             TRUE, FALSE))
-    check_keys <- check_keys %>%
+    check_keys <- 
+      check_keys %>%
       left_join(valid_keys_df %>% 
                   select(key, is_from_gbif_backbone),
                 by = "key")
-    valid_keys_df <- valid_keys_df %>% 
+    valid_keys_df <- 
+      valid_keys_df %>% 
       filter(is_from_gbif_backbone == TRUE) %>%
       mutate(is_synonym = ifelse(! taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"),
                                  TRUE, FALSE))
-    check_keys <- check_keys %>%
+    check_keys <- 
+      check_keys %>%
       left_join(valid_keys_df %>% 
                   select(key, is_synonym),
                 by = "key")
   } else {
-    check_keys <- check_keys %>%
+    check_keys <- 
+      check_keys %>%
       mutate(is_from_gbif_backbone = NA,
              is_synonym = NA)
   }
