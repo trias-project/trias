@@ -68,6 +68,11 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   assert_that(is.data.frame(keys) | is.vector(keys), 
               msg = "keys should be a vector, a named list or a data.frame.")
   if (is.data.frame(keys)) {
+    assert_that(col_keys %in% names(keys),
+      msg = paste("Column with keys not found.", 
+                  "Did you forget maybe to pass", 
+                  "the right column name to col_keys?")
+    )
     name_col <- vars_pull(names(keys), !! enquo(col_keys))
     # extract vector of keys from df
     keys <- 
