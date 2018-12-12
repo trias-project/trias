@@ -186,6 +186,48 @@ taxa_to_verify_test5 <- data.frame(
   outdated = c(NA),
   stringsAsFactors = FALSE)
 
+# datasetKey should be 36 characters long
+taxa_to_verify_test6 <- data.frame(
+  taxonKey = c(141117238),
+  scientificName = c("Aspius aspius"),
+  datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92,other stuff"),
+  bb_key = c(2360181),
+  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
+  bb_kingdom = c("Animalia"),
+  bb_rank = c("SPECIES"),
+  bb_taxonomicStatus = c("SYNONYM"),
+  bb_acceptedKey = c(5851603),
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
+  bb_acceptedKingdom = c("Animalia"),
+  bb_acceptedRank = c("SPECIES"),
+  bb_acceptedTaxonomicStatus = c("ACCEPTED"),
+  verificationKey = c(2427091),
+  remarks = NA_character_,
+  dateAdded = c(as.Date("2010-01-01")),
+  outdated = c(FALSE),
+  stringsAsFactors = FALSE)
+
+# commas not allowed in datasetKey
+taxa_to_verify_test7 <- data.frame(
+  taxonKey = c(141117238),
+  scientificName = c("Aspius aspius"),
+  datasetKey = c("e4746398-f7c4-47a1-a474,ae80a4f18e92"),
+  bb_key = c(2360181),
+  bb_scientificName = c("Aspius aspius (Linnaeus, 1758)"),
+  bb_kingdom = c("Animalia"),
+  bb_rank = c("SPECIES"),
+  bb_taxonomicStatus = c("SYNONYM"),
+  bb_acceptedKey = c(5851603),
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
+  bb_acceptedKingdom = c("Animalia"),
+  bb_acceptedRank = c("SPECIES"),
+  bb_acceptedTaxonomicStatus = c("ACCEPTED"),
+  verificationKey = c(2427091),
+  remarks = NA_character_,
+  dateAdded = c(as.Date("2010-01-01")),
+  outdated = c(FALSE),
+  stringsAsFactors = FALSE)
+
 testthat::test_that("verify_taxa column names are correct", {
   expect_error(verify_taxa(taxa = taxa_in, 
                            taxa_to_verify = taxa_to_verify_test1),
@@ -218,4 +260,15 @@ testthat::test_that("restrictions on input columns of taxa_to_verify", {
                            taxa_to_verify = taxa_to_verify_test5),
     "Only logicals(TRUE/FALSE) allowed in 'outdated' of taxa_to_verify.",
                fixed = TRUE)
+})
+
+testthat::test_that("valid datsetKey values", {
+  expect_error(verify_taxa(taxa = taxa_in,
+                           taxa_to_verify = taxa_to_verify_test6),
+               paste("DatasetKey contains invalid values.", 
+                     "Number characters must be 36 and no commas allowed."))
+  expect_error(verify_taxa(taxa = taxa_in,
+                           taxa_to_verify = taxa_to_verify_test7),
+               paste("DatasetKey contains invalid values.", 
+                     "Number characters must be 36 and no commas allowed."))
 })

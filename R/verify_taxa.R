@@ -516,6 +516,12 @@ verify_taxa <- function(taxa, taxa_to_verify) {
   ))
   is.date(taxa_to_verify$dateAdded)
   is.logical(taxa_to_verify$outdated)
+  assert_that(
+    all(nchar(taxa_to_verify$datasetKey) == 36) & 
+    isFALSE(any(grepl(pattern = ",", x = taxa_to_verify$datasetKey))),
+    msg = paste("DatasetKey contains invalid values.", 
+                "Number characters must be 36 and no commas allowed.")
+  )
   assert_that(taxa_to_verify %>%
                 filter(is.na(outdated)) %>%
                          nrow == 0, 
