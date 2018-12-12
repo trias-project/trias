@@ -50,7 +50,10 @@ testthat::test_that("test several input types", {
   expect_error(gbif_verify_keys(as.Date("2018-01-01")),
                "keys should be a vector, a named list or a data.frame.")
   expect_error(gbif_verify_keys(data.frame(bad_col_name = 12)),
-               "Columns 'key' not found.")
+               paste("Column with keys not found.", 
+                     "Did you forget maybe to pass", 
+                     "the right column name to col_keys?"),
+               fixed = TRUE)
 })
 
 testthat::test_that("output type", {
