@@ -114,5 +114,6 @@ gbif_has_distribution <- function(taxon_key, ...) {
 }
 
 #' Accepted GBIF distribution terms
+#' @keywords internal
 GBIF_distr_terms <- c("country", 
                       "status","establishmentMeans")
