@@ -757,6 +757,7 @@ verify_taxa <- function(taxa, taxa_to_verify) {
   message("Check verification keys...", appendLF = FALSE)
   verification_keys <- taxa_to_verify %>% 
     filter(!is.na(verificationKey))  %>%
+    filter(nchar(verificationKey) > 0) %>%
     pull(verificationKey)
   verification_keys <- paste(verification_keys, collapse = ",")
   verification_keys <- unlist(stringr::str_split(verification_keys, ","))
