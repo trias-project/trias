@@ -4,7 +4,7 @@
 \alias{verify_taxa}
 \title{Verify and update taxa information.}
 \usage{
-verify_taxa(taxa, taxa_to_verify)
+verify_taxa(taxa, taxa_to_verify = NULL)
 }
 \arguments{
 \item{taxa}{a dataframe with at least the following columns: \itemize{
@@ -445,4 +445,5 @@ taxa_to_verify_in <- data.frame(
 
 # output
 verify_taxa(taxa = taxa_in, taxa_to_verify = taxa_to_verify_in)
+verify_txa(taxa = taxa_in)
 }
