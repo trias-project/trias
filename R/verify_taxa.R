@@ -661,7 +661,7 @@ verify_taxa <- function(taxa, taxa_to_verify) {
     rename("bb_acceptedName" = "bb_acceptedName.x",
            "updated_bb_acceptedName" = "bb_acceptedName.y") %>% 
     filter(bb_acceptedName != updated_bb_acceptedName) %>% 
-    select(which(colnames(taxa_to_verify_in)%in% colnames(.)), 
+    select(which(colnames(taxa_to_verify)%in% colnames(.)), 
            updated_bb_acceptedName,
            ends_with(".x")) %>%
     rename_at(vars(ends_with(".x")), funs(str_remove(., "\\.x")))
