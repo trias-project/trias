@@ -802,8 +802,11 @@ verify_taxa <- function(taxa, taxa_to_verify = NULL) {
     taxa_to_verify <- 
       not_outdated_taxa %>%
       bind_rows(outdated_taxa)
+    if (nrow(outdated_taxa) == 0) {
+      outdated_taxa <- NULL
+    }
   } else {
-    # taxa_to_Verify is an empty df, outdated_taxa is NULL
+    # taxa_to_verify is an empty df, outdated_taxa is NULL
     outdated_taxa <- NULL
   }
   message("DONE.", appendLF = TRUE)
