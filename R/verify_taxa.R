@@ -1,21 +1,31 @@
-#' Verify taxa that the GBIF taxonomic backbone does not recognize or will lump
+#' Verify taxa that the GBIF Backbone Taxonomy does not recognize or will lump
 #'
-#' Verify taxa that the GBIF taxonomic backbone does not recognize or will lump
-#' under another name (i.e. synonyms). This is done by adding a
-#' \code{verificationKey} to the input dataframe, which is populated with:
+#' Verify taxa that the \link[=https://doi.org/10.15468/39omei]{GBIF Backbone
+#' Taxonomy} does not recognize or will lump under another name (i.e. synonyms).
+#' This is done by adding a \code{verificationKey} to the input dataframe, which
+#' is populated with:
 #' \itemize{
-#'   \item{for \code{ACCEPTED} and \code{DOUBTFUL} taxa: the backbone taxon key
-#'   for that taxon.}
-#'   \item{for other taxa: a manually chosen and thus verified backbone taxon
-#'   key. This could either be the suggested accepted taxon key, another
-#'   accepted taxon key, the key of the taxon itself, or a taxon key for
-#'   manually found matching taxon/taxa.}
+#'   \item{For \code{ACCEPTED} and \code{DOUBTFUL} taxa: the backbone taxon key
+#'   for that taxon (taxon is its own unit and won't be lumped).}
+#'   \item{For other taxa: a manually chosen and thus verified backbone taxon
+#'   key. This could either be the taxon key of: \itemize{
+#'      \item{accepted taxon suggested by GBIF: backbone synonymy is accepted
+#'      and taxon will be lumped.}
+#'      \item{another accepted taxon: backbone synonymy is rejected, but taxon
+#'      will be lumped under another name.}
+#'      \item{taxon itself: backbone synonymy is rejected, taxon will be
+#'      considered as separate taxon.}
+#'      \item{other taxon/taxa: automatic backbone match failed, but taxon can
+#'      be considered/lumped with manually found taxon/taxa (e.g. hybrid formula
+#'      considered equal to its hybrid parents).}
+#'   }}
 #' }
-#' Manually chosen backbone taxon keys are provided as a \code{verificationKey}
-#' in \code{verification}: a dataframe (probably read from a file) listing all
-#' taxa that require verification. The function will update a provided
-#' verification based on the input taxa or create a new one if none is provided.
-#' Any changes to the verification are also provided as ancillary information.
+#' The manually chosen \code{verificationKey} should be provided in
+#' \code{verification}: a dataframe (probably read from a file) listing all
+#' checklist taxon/backbone taxon/accepted taxon combinations that require
+#' verification. The function will update a provided verification based on the
+#' input taxa or create a new one if none is provided. Any changes to the
+#' verification are also provided as ancillary information.
 #'
 #' @param taxa df. Dataframe with at least the following columns for each taxon:
 #'   \itemize{
