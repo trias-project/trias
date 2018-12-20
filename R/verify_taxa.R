@@ -487,7 +487,7 @@ verify_taxa <- function(taxa, verification = NULL) {
       filter(is.na(bb_key)) %>%
       filter_at(vars(starts_with("bb_")), any_vars(is.na(.))) %>%
       nrow,
-    msg = paste("Columns related to GBIF Backbone information should be all", 
+    msg = paste("Columns related to GBIF backbone information should be all", 
                 "empty for unmatched taxa (no backbone key).")
   )
   
@@ -544,12 +544,12 @@ verify_taxa <- function(taxa, verification = NULL) {
   is.date(verification$dateAdded)
   is.logical(verification$outdated)
   assert_that(
-    msg = paste("DatasetKey contains invalid values.", 
-                "Number characters must be 36 and no commas allowed.")
     all(nchar(verification$datasetKey) == 36) & 
       isFALSE(any(grepl(pattern = ",", x = verification$datasetKey))),
+    msg = paste("Incorrect datesetKey:", verification$datasetKey, 
+                "Is expected to be 36-character UUID.")
   )
-  assert_that(taxa_to_verify %>%
+  assert_that(verification %>%
                 filter(is.na(outdated)) %>%
                 nrow == 0, 
               msg = "Only logicals (TRUE/FALSE) allowed in 'outdated' of verification.")
@@ -682,7 +682,7 @@ verify_taxa <- function(taxa, verification = NULL) {
   message("DONE.", appendLF = TRUE)
   
   # create df of updated acceptedName
-  message("Update backbone accpeted names...", appendLF = FALSE)
+  message("Update backbone accepted names...", appendLF = FALSE)
   if (nrow(verification) > 0) {
     updated_bb_acceptedName <- 
       verification %>%
@@ -726,7 +726,7 @@ verify_taxa <- function(taxa, verification = NULL) {
       bind_rows(new_unmatched_taxa)
   
   # retrieve backbone information about taxa the synonyms point to
-  message("Retrieve backbone info about taxa the synonyms point to...",
+  message("Retrieve backbone info about accepted taxa for synonyms...",
           appendLF = FALSE)
   if (nrow(verification) > 0) {
     accepted_keys <- 
@@ -745,6 +745,7 @@ verify_taxa <- function(taxa, verification = NULL) {
              bb_acceptedTaxonomicStatus = taxonomicStatus)
     # Update backbone info about accepted taxa in verification
     verification <- 
+      verification %>%
       select(-c(bb_acceptedKingdom, 
                 bb_acceptedRank, 
                 bb_acceptedTaxonomicStatus)) %>%
