@@ -530,7 +530,7 @@ verify_taxa <- function(taxa, verification = NULL) {
   )
 
   # test verification
-  name_col_verified <- c("taxonKey", "scientificName", "datasetKey",
+  name_col_verification <- c("taxonKey", "scientificName", "datasetKey",
                          "bb_key", "bb_scientificName",
                          "bb_kingdom", "bb_rank", "bb_taxonomicStatus",
                          "bb_acceptedKey", "bb_acceptedName",
@@ -563,7 +563,7 @@ verify_taxa <- function(taxa, verification = NULL) {
     class(verification$dateAdded) <- "Date"
   }
   assert_that(is.data.frame(verification))
-  assert_that(all(name_col_verified %in% names(verification)))
+  assert_that(all(name_col_verification %in% names(verification)))
   is.character(c(verification$scientificName,
                  verification$datasetKey,
                  verification$bb_scientificName,
@@ -662,7 +662,7 @@ verify_taxa <- function(taxa, verification = NULL) {
       bb_acceptedTaxonomicStatus = NA_character_,
       outdated = FALSE
       ) %>%
-    select(one_of(name_col_verified), everything())
+    select(one_of(name_col_verification), everything())
   message("DONE.", appendLF = TRUE)
 
   # find new taxa not matched to GBIF backbone
@@ -683,7 +683,7 @@ verify_taxa <- function(taxa, verification = NULL) {
            bb_acceptedRank = NA_character_,
            bb_acceptedTaxonomicStatus = NA_character_,
            outdated = FALSE) %>%
-    select(one_of(name_col_verified), everything())
+    select(one_of(name_col_verification), everything())
   message("DONE.", appendLF = TRUE)
 
   # create df of updated bb_scientificName
@@ -789,6 +789,7 @@ verify_taxa <- function(taxa, verification = NULL) {
                 bb_acceptedRank,
                 bb_acceptedTaxonomicStatus)) %>%
       left_join(accepted_info, by = "bb_acceptedKey") %>%
+      select(name_col_verification)
     # add backbone info to new_synonys too
     new_synonyms <-
       new_synonyms %>%
@@ -838,7 +839,7 @@ verify_taxa <- function(taxa, verification = NULL) {
       mutate(remarks = paste(remarks, "Outdated taxa."),
              outdated = TRUE)
     outdated_taxa <- bind_rows(old_outdated_taxa, new_outdated_taxa)
-    # compose verified_taxa back together
+    # compose verification back together
     verification <-
       not_outdated_taxa %>%
       bind_rows(outdated_taxa)

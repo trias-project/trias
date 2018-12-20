@@ -4,7 +4,7 @@ context("output_verify_taxa")
 source("input_dfs_tests_verify_taxa.R")
 
 # output
-output1 <- verify_taxa(taxa = taxa_in, taxa_to_verify = taxa_to_verify_in)
+output1 <- verify_taxa(taxa = taxa_in, verification = verification_in)
 output2 <- verify_taxa(taxa = taxa_in)
 
 testthat::test_that("output structure", {
@@ -18,8 +18,8 @@ testthat::test_that("output structure", {
   expect_true(length(output2$info) == 7)
   expect_true(is.data.frame(output1$taxa))
   expect_true(is.data.frame(output2$taxa))
-  expect_true(is.data.frame(output1$taxa_to_verify))
-  expect_true(is.data.frame(output2$taxa_to_verify))
+  expect_true(is.data.frame(output1$verification))
+  expect_true(is.data.frame(output2$verification))
   expect_true(is.data.frame(output1$info$new_synonyms))
   expect_true(is.data.frame(output2$info$new_synonyms))
   expect_true(is.data.frame(output1$info$new_unmatched_taxa))
@@ -44,17 +44,17 @@ testthat::test_that("consitency input - output", {
   expect_true(all(output1$taxa$taxonKey == taxa_in$taxonKey))
   expect_true(all(output2$taxa$taxonKey == taxa_in$taxonKey))
   expect_true(
-    nrow(output1$taxa_to_verify) == 
-      nrow(taxa_to_verify_in) + 
+    nrow(output1$verification) == 
+      nrow(verification_in) + 
       nrow(output1$info$new_synonyms) + 
       nrow(output1$info$new_unmatched_taxa)
     )
   expect_true(
-    nrow(output2$taxa_to_verify) == 
+    nrow(output2$verification) == 
       nrow(output2$info$new_synonyms) + 
       nrow(output2$info$new_unmatched_taxa)
   )
-  expect_true(nrow(taxa_to_verify_in %>%
+  expect_true(nrow(verification_in %>%
                      filter(!is.na(verificationKey))) <= 
                 nrow(output1$info$check_verificationKey))
   expect_true(
@@ -66,10 +66,10 @@ testthat::test_that("consitency input - output", {
   expect_true(all(output2$info$new_synonyms$outdated == FALSE))
   expect_true(all(output1$info$new_unmatched_taxa$outdated == FALSE))
   expect_true(all(output2$info$new_unmatched_taxa$outdated == FALSE))
-  expect_true(all(output2$taxa_to_verify$outdated == FALSE))
+  expect_true(all(output2$verification$outdated == FALSE))
 })
 
-col_types_taxa_to_verify <- readr::cols(
+col_types_verification <- readr::cols(
   taxonKey = readr::col_double(),
   scientificName = readr::col_character(),
   datasetKey = readr::col_character(),
@@ -112,37 +112,37 @@ output2_taxa <-
                                 "output2_taxa.tsv"),
                   col_types = col_types_output_taxa)
 
-output1_taxa_to_verify <-
+output1_verification <-
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
-                                "output1_taxa_to_verify.tsv"),
-                  col_types = col_types_taxa_to_verify)
-output2_taxa_to_verify <-
+                                "output1_verification.tsv"),
+                  col_types = col_types_verification)
+output2_verification <-
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
-                                "output2_taxa_to_verify.tsv"),
-                  col_types = col_types_taxa_to_verify)
+                                "output2_verification.tsv"),
+                  col_types = col_types_verification)
 
 output1_new_synonyms <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
                                 "output1_new_synonyms.tsv"),
-                  col_types = col_types_taxa_to_verify)
+                  col_types = col_types_verification)
 output2_new_synonyms <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
                                 "output2_new_synonyms.tsv"),
-                  col_types = col_types_taxa_to_verify)
+                  col_types = col_types_verification)
 
 output1_new_unmatched_taxa <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
                                 "output1_new_unmatched_taxa.tsv"),
-                  col_types = col_types_taxa_to_verify)
+                  col_types = col_types_verification)
 output2_new_unmatched_taxa <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
                                 "output2_new_unmatched_taxa.tsv"),
-                  col_types = col_types_taxa_to_verify)
+                  col_types = col_types_verification)
 
 output1_outdated_taxa <- 
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
                                 "output1_outdated_taxa.tsv"),
-                  col_types = col_types_taxa_to_verify)
+                  col_types = col_types_verification)
 
 output1_updated_bb_scientificName <-
   readr::read_tsv(file = paste0("./data_test_output_verify_taxa/",
@@ -164,16 +164,16 @@ output2_duplicates <-
 testthat::test_that("output data.frames are correct", {
   expect_equivalent(output1$taxa, output1_taxa)
   expect_equivalent(output2$taxa, output2_taxa)
-  expect_equivalent(output1$taxa_to_verify %>%
+  expect_equivalent(output1$verification %>%
                       # new synonyms and unmatched get date of today
                       dplyr::select(-dateAdded),
-               output1_taxa_to_verify %>%
+               output1_verification %>%
                  # new synonyms and unmatched got paste date
                  dplyr::select(-dateAdded))
-  expect_equivalent(output2$taxa_to_verify %>%
+  expect_equivalent(output2$verification %>%
                       # new synonyms and unmatched get date of today
                       dplyr::select(-dateAdded),
-                    output2_taxa_to_verify %>%
+                    output2_verification %>%
                       # new synonyms and unmatched got paste date
                       dplyr::select(-dateAdded))
   expect_equivalent(output1$info$new_synonyms %>%
