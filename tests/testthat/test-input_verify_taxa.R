@@ -231,12 +231,12 @@ verification_test7 <- data.frame(
 testthat::test_that("verify_taxa column names are correct", {
   expect_error(verify_taxa(taxa = taxa_in, 
                            verification = verification_test1),
-               paste("1, 2, 3, 4, 5, ... of name_col_verified %in%", 
+               paste("1, 2, 3, 4, 5, ... of name_col_verification %in%", 
                      "names(verification) are not true"), 
                fixed = TRUE)
   expect_error(verify_taxa(taxa = taxa_in, 
                            verification = verification_test2),
-               paste("Elements 3, 6, 11, 16 of name_col_verified %in%", 
+               paste("Elements 3, 6, 11, 16 of name_col_verification %in%", 
                      "names(verification) are not true"),
                fixed = TRUE)
   })
