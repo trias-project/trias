@@ -2,7 +2,7 @@
 % Please edit documentation in R/verify_taxa.R
 \name{verify_taxa}
 \alias{verify_taxa}
-\title{Verify taxa that the GBIF taxonomic backbone does not recognize or will lump}
+\title{Verify taxa that the GBIF Backbone Taxonomy does not recognize or will lump}
 \usage{
 verify_taxa(taxa, verification = NULL)
 }
@@ -90,22 +90,32 @@ list. List with three objects: \itemize{
 }
 }
 \description{
-Verify taxa that the GBIF taxonomic backbone does not recognize or will lump
-under another name (i.e. synonyms). This is done by adding a
-\code{verificationKey} to the input dataframe, which is populated with:
+Verify taxa that the \href{https://doi.org/10.15468/39omei}{GBIF Backbone
+Taxonomy} does not recognize or will lump under another name (i.e. synonyms).
+This is done by adding a \code{verificationKey} to the input dataframe, which
+is populated with:
 \itemize{
-  \item{for \code{ACCEPTED} and \code{DOUBTFUL} taxa: the backbone taxon key
-  for that taxon.}
-  \item{for other taxa: a manually chosen and thus verified backbone taxon
-  key. This could either be the suggested accepted taxon key, another
-  accepted taxon key, the key of the taxon itself, or a taxon key for
-  manually found matching taxon/taxa.}
+  \item{For \code{ACCEPTED} and \code{DOUBTFUL} taxa: the backbone taxon key
+  for that taxon (taxon is its own unit and won't be lumped).}
+  \item{For other taxa: a manually chosen and thus verified backbone taxon
+  key. This could either be the taxon key of: \itemize{
+     \item{accepted taxon suggested by GBIF: backbone synonymy is accepted
+     and taxon will be lumped.}
+     \item{another accepted taxon: backbone synonymy is rejected, but taxon
+     will be lumped under another name.}
+     \item{taxon itself: backbone synonymy is rejected, taxon will be
+     considered as separate taxon.}
+     \item{other taxon/taxa: automatic backbone match failed, but taxon can
+     be considered/lumped with manually found taxon/taxa (e.g. hybrid formula
+     considered equal to its hybrid parents).}
+  }}
 }
-Manually chosen backbone taxon keys are provided as a \code{verificationKey}
-in \code{verification}: a dataframe (probably read from a file) listing all
-taxa that require verification. The function will update a provided
-verification based on the input taxa or create a new one if none is provided.
-Any changes to the verification are also provided as ancillary information.
+The manually chosen \code{verificationKey} should be provided in
+\code{verification}: a dataframe (probably read from a file) listing all
+checklist taxon/backbone taxon/accepted taxon combinations that require
+verification. The function will update a provided verification based on the
+input taxa or create a new one if none is provided. Any changes to the
+verification are also provided as ancillary information.
 }
 \examples{
 my_taxa <- data.frame(
@@ -205,20 +215,21 @@ my_taxa <- data.frame(
     NA,
     "Animalia"
   ),
-  bb_rank = c("SPECIES",
-              "SPECIES",
-              "SPECIES",
-              "SPECIES",
-              NA,
-              "SPECIES",
-              NA,
-              "SPECIES",
-              "SPECIES",
-              "SPECIES",
-              "SPECIES",
-              "SPECIES",
-              NA,
-              "SPECIES"
+  bb_rank = c(
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    NA,
+    "SPECIES",
+    NA,
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    NA,
+    "SPECIES"
   ),
   bb_taxonomicStatus = c(
     "SYNONYM",
@@ -324,16 +335,17 @@ my_verification <- data.frame(
     "7ddf754f-d193-4cc9-b351-99906754a03b",
     "9ca92552-f23a-41a8-a140-01abaa31c931"
   ),
-  bb_key = c(2427092,
-             2651108,
-             6723,
-             NA,
-             NA,
-             2291152,
-             2291152,
-             2430304,
-             7587934,
-             1033588
+  bb_key = c(
+    2427092,
+    2651108,
+    6723,
+    NA,
+    NA,
+    2291152,
+    2291152,
+    2430304,
+    7587934,
+    1033588
   ),
   bb_scientificName = c(
     "Rana catesbeiana Shaw, 1802",
@@ -347,38 +359,41 @@ my_verification <- data.frame(
     "Python reticulatus Fitzinger, 1826",
     "Stenelmis williami Schmude"
   ),
-  bb_kingdom = c("Animalia",
-                 "Plantae",
-                 "Plantae",
-                 NA,
-                 NA,
-                 "Animalia",
-                 "Animalia",
-                 "Animalia",
-                 "Animalia",
-                 "Animalia"
+  bb_kingdom = c(
+    "Animalia",
+    "Plantae",
+    "Plantae",
+    NA,
+    NA,
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    "Animalia"
   ),
-  bb_rank = c("SPECIES",
-              "SPECIES",
-              "FAMILY",
-              NA,
-              NA,
-              "SPECIES",
-              "SPECIES",
-              "SPECIES",
-              "SPECIES",
-              "SPECIES"
+  bb_rank = c(
+    "SPECIES",
+    "SPECIES",
+    "FAMILY",
+    NA,
+    NA,
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "SPECIES"
   ),
-  bb_taxonomicStatus = c("SYNONYM",
-                         "SYNONYM",
-                         "SYNONYM",
-                         NA,
-                         NA,
-                         "SYNONYM",
-                         "SYNONYM",
-                         "SYNONYM",
-                         "SYNONYM",
-                         "SYNONYM"
+  bb_taxonomicStatus = c(
+    "SYNONYM",
+    "SYNONYM",
+    "SYNONYM",
+    NA,
+    NA,
+    "SYNONYM",
+    "SYNONYM",
+    "SYNONYM",
+    "SYNONYM",
+    "SYNONYM"
   ),
   bb_acceptedName = c(
     "Lithobates dummyus (Batman, 2018)",
@@ -392,60 +407,65 @@ my_verification <- data.frame(
     "Malayopython reticulatus (Schneider, 1801)",
     "Stenelmis Dufour, 1835"
   ),
-  bb_acceptedKey = c(2427091,
-                     4046493,
-                     6979,
-                     NA,
-                     NA,
-                     9520065,
-                     9520065,
-                     2427008,
-                     9260388,
-                     1033553
+  bb_acceptedKey = c(
+    2427091,
+    4046493,
+    6979,
+    NA,
+    NA,
+    9520065,
+    9520065,
+    2427008,
+    9260388,
+    1033553
   ),
-  bb_acceptedKingdom = c("Animalia",
-                         "Plantae",
-                         "Plantae",
-                         NA,
-                         NA,
-                         "Animalia",
-                         "Animalia",
-                         "Animalia",
-                         "Animalia",
-                         "Animalia"
+  bb_acceptedKingdom = c(
+    "Animalia",
+    "Plantae",
+    "Plantae",
+    NA,
+    NA,
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    "Animalia"
   ),
-  bb_acceptedRank = c("SPECIES",
-                      "SPECIES",
-                      "FAMILY",
-                      NA,
-                      NA,
-                      "SPECIES",
-                      "SPECIES",
-                      "SPECIES",
-                      "SPECIES",
-                      "GENUS"
+  bb_acceptedRank = c(
+    "SPECIES",
+    "SPECIES",
+    "FAMILY",
+    NA,
+    NA,
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "GENUS"
   ),
-  bb_acceptedTaxonomicStatus = c("ACCEPTED",
-                                 "ACCEPTED",
-                                 "ACCEPTED",
-                                 NA,
-                                 NA,
-                                 "ACCEPTED",
-                                 "ACCEPTED",
-                                 "ACCEPTED",
-                                 "ACCEPTED",
-                                 "ACCEPTED"
+  bb_acceptedTaxonomicStatus = c(
+    "ACCEPTED",
+    "ACCEPTED",
+    "ACCEPTED",
+    NA,
+    NA,
+    "ACCEPTED",
+    "ACCEPTED",
+    "ACCEPTED",
+    "ACCEPTED",
+    "ACCEPTED"
   ),
-  verificationKey = c(2427091,
-                      4046493,
-                      6979,
-                      "2805420,2805363",
-                      NA,
-                      NA,
-                      NA,
-                      NA,
-                      9260388,
-                      NA
+  verificationKey = c(
+    2427091,
+    4046493,
+    6979,
+    "2805420,2805363",
+    NA,
+    NA,
+    NA,
+    NA,
+    9260388,
+    NA
   ),
   remarks = c(
     "dummy example 1: bb_acceptedName should be updated.",
@@ -481,21 +501,22 @@ my_verification <- data.frame(
       "2018-12-02"
     )
   ),
-  outdated = c(FALSE,
-               FALSE,
-               FALSE,
-               FALSE,
-               FALSE,
-               FALSE,
-               FALSE,
-               FALSE,
-               TRUE,
-               TRUE
+  outdated = c(
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    TRUE,
+    TRUE
   ),
   stringsAsFactors = FALSE
 )
 
 # output
 verify_taxa(taxa = my_taxa, verification = my_verification)
-verify_txa(taxa = my_taxa)
+verify_taxa(taxa = my_taxa)
 }
