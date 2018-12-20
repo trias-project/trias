@@ -795,7 +795,7 @@ verify_taxa <- function(taxa, verification = NULL) {
       select(-c(bb_acceptedKingdom,
                 bb_acceptedRank,
                 bb_acceptedTaxonomicStatus)) %>%
-      left_join(taxa_to_verify %>%
+      left_join(verification %>%
                   select(taxonKey, bb_key, bb_acceptedKey,
                          bb_acceptedKingdom, bb_acceptedRank,
                          bb_acceptedTaxonomicStatus),
