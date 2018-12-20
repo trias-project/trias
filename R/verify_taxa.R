@@ -788,7 +788,6 @@ verify_taxa <- function(taxa, verification = NULL) {
                 bb_acceptedRank,
                 bb_acceptedTaxonomicStatus)) %>%
       left_join(accepted_info, by = "bb_acceptedKey") %>%
-      select(name_col_verified)
     # add backbone info to new_synonys too
     new_synonyms <-
       new_synonyms %>%
@@ -895,7 +894,9 @@ verify_taxa <- function(taxa, verification = NULL) {
     taxa <-
       verification %>%
       filter(outdated == FALSE) %>%
-      select(names(taxa), verificationKey) %>%
+      select(name_col_taxa, verificationKey) %>%
+      left_join(taxa_input, 
+                by = name_col_taxa) %>%
       bind_rows(not_to_verify_taxa) %>%
       right_join(ordered_taxon_keys, by = "taxonKey")
 
