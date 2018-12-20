@@ -1,6 +1,6 @@
 #' Check keys against GBIF Backbone Taxonomy
 #'
-#' This function performs three checks: 
+#' This function performs three checks:
 #' \itemize{
 #'   \item{\code{keys} are valid GBIF taxon keys. That means that adding a key
 #'   at the end of the URL https://www.gbif.org/species/ returns a GBIF page
@@ -17,16 +17,16 @@
 #' @param col_keys (character) name of column containing keys in case
 #'   \code{keys} is a data.frame.
 #'
-#' @return a data.frame with the following columns: 
+#' @return a data.frame with the following columns:
 #'   \itemize{
-#'     \item{\code{key}}{:(numeric) keys as input keys.} 
+#'     \item{\code{key}}{:(numeric) keys as input keys.}
 #'     \item{\code{is_taxonKey}} {: (logical) is the key a valid GBIF taxon
 #'     key?}
 #'   \item{\code{is_from_gbif_backbone}} {:(logical) is the key a valid taxon
 #'   key from GBIF Backbone Taxonomy checklist?}
 #'   \item{\code{is_synonym}} {: (logical) is the key related to a synonym (not
 #'   \code{ACCEPTED} or \code{DOUBTFUL})?}
-#'   } 
+#'   }
 #'   If a key didn't pass the first check (\code{is_taxonKey = FALSE}) then
 #'   \code{NA} for other two columns. If a key didn't pass the second check
 #'   (\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
@@ -65,18 +65,21 @@
 #' @importFrom tidyr gather
 #' @importFrom tidyselect vars_pull enquo
 gbif_verify_keys <- function(keys, col_keys = "key") {
-  assert_that(is.data.frame(keys) | is.vector(keys), 
-              msg = "keys should be a vector, a named list or a data.frame.")
+  assert_that(is.data.frame(keys) | is.vector(keys),
+    msg = "keys should be a vector, a named list or a data.frame."
+  )
   if (is.data.frame(keys)) {
     assert_that(col_keys %in% names(keys),
-      msg = paste("Column with keys not found.", 
-                  "Did you forget maybe to pass", 
-                  "the right column name to col_keys?")
+      msg = paste(
+        "Column with keys not found.",
+        "Did you forget maybe to pass",
+        "the right column name to col_keys?"
+      )
     )
-    name_col <- vars_pull(names(keys), !! enquo(col_keys))
+    name_col <- vars_pull(names(keys), !!enquo(col_keys))
     # extract vector of keys from df
-    keys <- 
-      keys %>% 
+    keys <-
+      keys %>%
       pull(name_col)
   }
   keys <- keys[!is.na(keys)]
@@ -84,56 +87,70 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
     return(NULL)
   } else {
     assert_that(all(keys != "") == TRUE,
-                msg = paste("Invalid keys:", 
-                            paste(rep("\"\"\"\"", length(keys[which(keys == "")])), 
-                                  collapse = ","), "."))
-    assert_that(all(!grepl("\\D", keys)) == TRUE, 
-                msg = paste("Invalid keys:",
-                            paste(keys[which(!grepl("\\D", keys) == FALSE)],
-                                  collapse = ","),
-                            "."))
+      msg = paste(
+        "Invalid keys:",
+        paste(rep("\"\"\"\"", length(keys[which(keys == "")])),
+          collapse = ","
+        ), "."
+      )
+    )
+    assert_that(all(!grepl("\\D", keys)) == TRUE,
+      msg = paste(
+        "Invalid keys:",
+        paste(keys[which(!grepl("\\D", keys) == FALSE)],
+          collapse = ","
+        ),
+        "."
+      )
+    )
   }
   names(keys) <- as.character(keys)
-  gbif_info <- 
+  gbif_info <-
     keys %>%
-    map(~ try(name_usage(., return = "data")[1,]))
-  check_keys <- 
-    map_df(gbif_info, ~ is.error(.) == FALSE) %>%
+    map(~try(name_usage(., return = "data")[1, ]))
+  check_keys <-
+    map_df(gbif_info, ~is.error(.) == FALSE) %>%
     gather(key = key, value = is_taxonKey) %>%
     mutate(key = as.numeric(key))
-  valid_keys_df <- 
+  valid_keys_df <-
     check_keys %>%
     filter(is_taxonKey == TRUE)
   valid_keys <- gbif_info[which(names(gbif_info) %in% valid_keys_df$key)]
   if (length(valid_keys) > 0) {
-    valid_keys_df <- 
-      valid_keys %>% 
+    valid_keys_df <-
+      valid_keys %>%
       reduce(bind_rows) %>%
       mutate(is_from_gbif_backbone = ifelse(datasetKey == uuid_backbone,
-                                            TRUE, FALSE))
-    check_keys <- 
+        TRUE, FALSE
+      ))
+    check_keys <-
       check_keys %>%
-      left_join(valid_keys_df %>% 
-                  select(key, is_from_gbif_backbone),
-                by = "key")
-    valid_keys_df <- 
-      valid_keys_df %>% 
+      left_join(valid_keys_df %>%
+        select(key, is_from_gbif_backbone),
+      by = "key"
+      )
+    valid_keys_df <-
+      valid_keys_df %>%
       filter(is_from_gbif_backbone == TRUE) %>%
-      mutate(is_synonym = ifelse(! taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"),
-                                 TRUE, FALSE))
-    check_keys <- 
+      mutate(is_synonym = ifelse(!taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"),
+        TRUE, FALSE
+      ))
+    check_keys <-
       check_keys %>%
-      left_join(valid_keys_df %>% 
-                  select(key, is_synonym),
-                by = "key")
+      left_join(valid_keys_df %>%
+        select(key, is_synonym),
+      by = "key"
+      )
   } else {
-    check_keys <- 
+    check_keys <-
       check_keys %>%
-      mutate(is_from_gbif_backbone = NA,
-             is_synonym = NA)
+      mutate(
+        is_from_gbif_backbone = NA,
+        is_synonym = NA
+      )
   }
   return(check_keys)
 }
 
 is.error <- function(x) inherits(x, "try-error")
-uuid_backbone = "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c"
+uuid_backbone <- "d7dddbf4-2cf0-4f39-9b2a-bb099caae36c"

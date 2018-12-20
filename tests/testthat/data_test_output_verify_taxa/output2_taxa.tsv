@@ -1,15 +1,15 @@
-taxonKey	scientificName	datasetKey	bb_key	bb_scientificName	bb_kingdom	bb_rank	bb_taxonomicStatus	bb_acceptedName	bb_acceptedKey	verificationKey
-141117238	Aspius aspius	98940a79-2bf1-46e6-afd6-ba2e85a26f9f	2360181	Aspius aspius (Linnaeus, 1758)	Animalia	SPECIES	SYNONYM	Leuciscus aspius (Linnaeus, 1758)	5851603	NA
-113794952	Rana catesbeiana	e4746398-f7c4-47a1-a474-ae80a4f18e92	2427092	Rana catesbeiana Shaw, 1802	Animalia	SPECIES	SYNONYM	Lithobates catesbeianus (Shaw, 1802)	2427091	NA
-141264857	Polystichum tsus-simense J.Smith	9ff7d317-609b-4c08-bd86-3bc404b77c42	2651108	Polystichum tsus-simense (Hook.) J.Sm.	Plantae	SPECIES	SYNONYM	Polystichum luctuosum (Kunze) Moore.	4046493	NA
-100480872	Apus apus (Linnaeus, 1758)	39653f3e-8d6b-4a94-a202-859359c164c5	5228676	Apus apus (Linnaeus, 1758)	Animalia	SPECIES	ACCEPTED	NA	NA	5228676
-141264614	Begonia x semperflorens hort.	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA
-100220432	Rana catesbeiana	b351a324-77c4-41c9-a909-f30f77268bc4	2427092	Rana catesbeiana Shaw, 1802	Animalia	SPECIES	SYNONYM	Lithobates catesbeianus (Shaw, 1802)	2427091	NA
-141264835	Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA
-140563014	Atyaephyra desmaresti	289244ee-e1c1-49aa-b2d7-d379391ce265	4309705	Atyaephyra desmarestii (Millet, 1831)	Animalia	SPECIES	HOMOTYPIC_SYNONYM	Hippolyte desmarestii Millet, 1831	6454754	NA
-140562956	Ferrissia fragilis	289244ee-e1c1-49aa-b2d7-d379391ce265	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	Ferrissia californica (Rowell, 1863)	9520065	NA
-145953989	Ferrissia fragilis	3f5e930b-52a5-461d-87ec-26ecd66f14a3	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	Ferrissia californica (Rowell, 1863)	9520065	NA
-148437916	Ferrissia fragilis	1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	Ferrissia californica (Rowell, 1863)	9520065	NA
-114445583	Rana blanfordii Boulenger	3772da2f-daa1-4f07-a438-15a881a2142c	2430304	Rana blanfordii Boulenger, 1882	Animalia	SPECIES	SYNONYM	Nanorana blanfordii (Boulenger, 1882)	2430301	NA
-141264849	Pterocarya x rhederiana C.K. Schneider	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA
-101790530	Stenelmis williami Schmude	9ca92552-f23a-41a8-a140-01abaa31c931	1033588	Stenelmis williami Schmude	Animalia	SPECIES	SYNONYM	Stenelmis Dufour, 1835	1033553	NA
+taxonKey	scientificName	datasetKey	bb_key	bb_scientificName	bb_kingdom	bb_rank	bb_taxonomicStatus	bb_acceptedKey	bb_acceptedName	verificationKey	taxonID
+141117238	Aspius aspius	98940a79-2bf1-46e6-afd6-ba2e85a26f9f	2360181	Aspius aspius (Linnaeus, 1758)	Animalia	SPECIES	SYNONYM	5851603	Leuciscus aspius (Linnaeus, 1758)	NA	alien-fishes-checklist:taxon:c937610f85ea8a74f105724c8f198049
+113794952	Rana catesbeiana	e4746398-f7c4-47a1-a474-ae80a4f18e92	2427092	Rana catesbeiana Shaw, 1802	Animalia	SPECIES	SYNONYM	2427091	Lithobates catesbeianus (Shaw, 1802)	NA	88
+141264857	Polystichum tsus-simense J.Smith	9ff7d317-609b-4c08-bd86-3bc404b77c42	2651108	Polystichum tsus-simense (Hook.) J.Sm.	Plantae	SPECIES	SYNONYM	4046493	Polystichum luctuosum (Kunze) Moore.	NA	alien-plants-belgium:taxon:57c1d111f14fd5f3271b0da53c05c745
+100480872	Apus apus (Linnaeus, 1758)	39653f3e-8d6b-4a94-a202-859359c164c5	5228676	Apus apus (Linnaeus, 1758)	Animalia	SPECIES	ACCEPTED	NA	NA	5228676	4512
+141264614	Begonia x semperflorens hort.	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	alien-plants-belgium:taxon:9a6c5ed8907ff169433fe44fcbff0705
+100220432	Rana catesbeiana	b351a324-77c4-41c9-a909-f30f77268bc4	2427092	Rana catesbeiana Shaw, 1802	Animalia	SPECIES	SYNONYM	2427091	Lithobates catesbeianus (Shaw, 1802)	NA	80-syn
+141264835	Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	alien-plants-belgium:taxon:29409d1e1adc88d6357dd0be13350d6c
+140563014	Atyaephyra desmaresti	289244ee-e1c1-49aa-b2d7-d379391ce265	4309705	Atyaephyra desmarestii (Millet, 1831)	Animalia	SPECIES	HOMOTYPIC_SYNONYM	6454754	Hippolyte desmarestii Millet, 1831	NA	alien-macroinvertebrates-checklist:taxon:54cca150e1e0b7c0b3f5b152ae64d62b
+140562956	Ferrissia fragilis	289244ee-e1c1-49aa-b2d7-d379391ce265	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	9520065	Ferrissia californica (Rowell, 1863)	NA	alien-macroinvertebrates-checklist:taxon:73f271d93128a4e566e841ea6e3abff0
+145953989	Ferrissia fragilis	3f5e930b-52a5-461d-87ec-26ecd66f14a3	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	9520065	Ferrissia californica (Rowell, 1863)	NA	rinse-checklist:taxon:7afe7b1fbdd06cbdfe97272567825c09
+148437916	Ferrissia fragilis	1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	9520065	Ferrissia californica (Rowell, 1863)	NA	ad-hoc-checklist:taxon:32dc2e18733fffa92ba4e1b35d03c4e2
+114445583	Rana blanfordii Boulenger	3772da2f-daa1-4f07-a438-15a881a2142c	2430304	Rana blanfordii Boulenger, 1882	Animalia	SPECIES	SYNONYM	2430301	Nanorana blanfordii (Boulenger, 1882)	NA	a80caa33-da9d-48ed-80e3-f76b0b3810f9
+141264849	Pterocarya x rhederiana C.K. Schneider	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	alien-plants-belgium:taxon:56d6564f59d9092401c454849213366f
+101790530	Stenelmis williami Schmude	9ca92552-f23a-41a8-a140-01abaa31c931	1033588	Stenelmis williami Schmude	Animalia	SPECIES	SYNONYM	1033553	Stenelmis Dufour, 1835	NA	193729

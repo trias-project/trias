@@ -14,22 +14,22 @@ containing the keys to verify.}
 \code{keys} is a data.frame.}
 }
 \value{
-a data.frame with the following columns: 
+a data.frame with the following columns:
   \itemize{
-    \item{\code{key}}{:(numeric) keys as input keys.} 
+    \item{\code{key}}{:(numeric) keys as input keys.}
     \item{\code{is_taxonKey}} {: (logical) is the key a valid GBIF taxon
     key?}
   \item{\code{is_from_gbif_backbone}} {:(logical) is the key a valid taxon
   key from GBIF Backbone Taxonomy checklist?}
   \item{\code{is_synonym}} {: (logical) is the key related to a synonym (not
   \code{ACCEPTED} or \code{DOUBTFUL})?}
-  } 
+  }
   If a key didn't pass the first check (\code{is_taxonKey = FALSE}) then
   \code{NA} for other two columns. If a key didn't pass the second check
   (\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
 }
 \description{
-This function performs three checks: 
+This function performs three checks:
 \itemize{
   \item{\code{keys} are valid GBIF taxon keys. That means that adding a key
   at the end of the URL https://www.gbif.org/species/ returns a GBIF page

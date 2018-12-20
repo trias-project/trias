@@ -4,21 +4,39 @@ context("input_verify_taxa")
 source("input_dfs_tests_verify_taxa.R")
 
 testthat::test_that("taxa is a data frame", {
-  expect_error(verify_taxa(taxa = 3, 
-                                    verification = verification_in), 
-               "taxa is not a data frame")
-  expect_error(verify_taxa(taxa = c("23"), 
-                                    verification = verification_in), 
-               "taxa is not a data frame")})
+  expect_error(
+    verify_taxa(
+      taxa = 3,
+      verification = verification_in
+    ),
+    "taxa is not a data frame"
+  )
+  expect_error(
+    verify_taxa(
+      taxa = c("23"),
+      verification = verification_in
+    ),
+    "taxa is not a data frame"
+  )
+})
 
 
 testthat::test_that("verification is a data frame", {
-  expect_error(verify_taxa(taxa = taxa_in, 
-                                    verification = 3),
-               "verification is not a data frame")
-  expect_error(verify_taxa(taxa = taxa_in, 
-                                    verification = c("3")),
-               "verification is not a data frame")})
+  expect_error(
+    verify_taxa(
+      taxa = taxa_in,
+      verification = 3
+    ),
+    "verification is not a data frame"
+  )
+  expect_error(
+    verify_taxa(
+      taxa = taxa_in,
+      verification = c("3")
+    ),
+    "verification is not a data frame"
+  )
+})
 
 # wrong taxa inputs
 taxa_test1 <- data.frame(
@@ -32,7 +50,8 @@ taxa_test1 <- data.frame(
   bad_backbone_taxonomicStatus_colname = c("SYNONYM"),
   bad_backbone_acceptedKey_colname = c(5851603),
   bad_backbone_acceptedName_colname = c("Leuciscus aspius (Linnaeus, 1758)"),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 # missing column
 taxa_test2 <- data.frame(
@@ -46,18 +65,28 @@ taxa_test2 <- data.frame(
   bb_taxonomicStatus = c("SYNONYM"),
   # bb_acceptedKey is missing
   bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 testthat::test_that("taxa column names are correct", {
-expect_error(verify_taxa(taxa = taxa_test1, 
-                                  verification = verification_in),
-             paste("Elements 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 of", 
-                   "name_col_taxa %in% names(taxa) are not true"), 
-             fixed = TRUE)
-expect_error(verify_taxa(taxa = taxa_test2, 
-                                  verification = verification_in),
-             "Elements 9 of name_col_taxa %in% names(taxa) are not true",
-             fixed = TRUE)})
+  expect_error(verify_taxa(
+    taxa = taxa_test1,
+    verification = verification_in
+  ),
+  paste(
+    "Elements 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 of",
+    "name_col_taxa %in% names(taxa) are not true"
+  ),
+  fixed = TRUE
+  )
+  expect_error(verify_taxa(
+    taxa = taxa_test2,
+    verification = verification_in
+  ),
+  "Elements 9 of name_col_taxa %in% names(taxa) are not true",
+  fixed = TRUE
+  )
+})
 
 # inconsitency about unmatched taxa
 taxa_test3 <- data.frame(
@@ -71,14 +100,18 @@ taxa_test3 <- data.frame(
   bb_taxonomicStatus = c("SYNONYM"),
   bb_acceptedKey = c(3483948),
   bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 testthat::test_that("consistency of 'taxa' about GBIF backbone info columns", {
   expect_error(
-    verify_taxa(taxa = taxa_test3, 
-                verification = verification_in),
-    "Columns with GBIF Backbone info should be empty for unmatched taxa.", 
-    fixed = TRUE)
+    verify_taxa(
+      taxa = taxa_test3,
+      verification = verification_in
+    ),
+    "Columns with GBIF Backbone info should be empty for unmatched taxa.",
+    fixed = TRUE
+  )
 })
 
 # wrong colnames as input for verification
@@ -100,7 +133,8 @@ verification_test1 <- data.frame(
   bad_remarks_colname = c("dummy example 1: backbone_accepted should be updated"),
   bad_dateAdded_colname = c(as.Date("2018-01-01")),
   bad_outdated = c(FALSE),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 # missing columns
 verification_test2 <- data.frame(
@@ -121,7 +155,8 @@ verification_test2 <- data.frame(
   remarks = c("dummy example 1: backbone_accepted should be updated"),
   # dateAdded column missing
   outdated = c(FALSE),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 # inconsistency bb_acceptedName - bb_acceptedKey
 verification_test3 <- data.frame(
@@ -142,7 +177,8 @@ verification_test3 <- data.frame(
   remarks = c("dummy example 1: backbone_accepted should be updated"),
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(FALSE),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 # accepted taxa present (only synonyms and unmatched taxa allowed.)
 verification_test4 <- data.frame(
@@ -163,7 +199,8 @@ verification_test4 <- data.frame(
   remarks = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(FALSE),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 # outdated must to be TRUE or FALSE.
 verification_test5 <- data.frame(
@@ -184,7 +221,8 @@ verification_test5 <- data.frame(
   remarks = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(NA),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 # datasetKey should be 36 characters long
 verification_test6 <- data.frame(
@@ -205,7 +243,8 @@ verification_test6 <- data.frame(
   remarks = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(FALSE),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 # commas not allowed in datasetKey
 verification_test7 <- data.frame(
@@ -226,49 +265,81 @@ verification_test7 <- data.frame(
   remarks = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(FALSE),
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE
+)
 
 testthat::test_that("verify_taxa column names are correct", {
-  expect_error(verify_taxa(taxa = taxa_in, 
-                           verification = verification_test1),
-               paste("1, 2, 3, 4, 5, ... of name_col_verification %in%", 
-                     "names(verification) are not true"), 
-               fixed = TRUE)
-  expect_error(verify_taxa(taxa = taxa_in, 
-                           verification = verification_test2),
-               paste("Elements 3, 6, 11, 16 of name_col_verification %in%", 
-                     "names(verification) are not true"),
-               fixed = TRUE)
-  })
+  expect_error(verify_taxa(
+    taxa = taxa_in,
+    verification = verification_test1
+  ),
+  paste(
+    "1, 2, 3, 4, 5, ... of name_col_verification %in%",
+    "names(verification) are not true"
+  ),
+  fixed = TRUE
+  )
+  expect_error(verify_taxa(
+    taxa = taxa_in,
+    verification = verification_test2
+  ),
+  paste(
+    "Elements 3, 6, 11, 16 of name_col_verification %in%",
+    "names(verification) are not true"
+  ),
+  fixed = TRUE
+  )
+})
 
 testthat::test_that("synonym relations are inconsistent", {
-  expect_error(verify_taxa(taxa = taxa_in,
-                           verification = verification_test3),
-    "bb_acceptedName and bb_acceptedKey should be both NA or both present.",
-    fixed = TRUE)
-  })
+  expect_error(verify_taxa(
+    taxa = taxa_in,
+    verification = verification_test3
+  ),
+  "bb_acceptedName and bb_acceptedKey should be both NA or both present.",
+  fixed = TRUE
+  )
+})
 
 testthat::test_that("accepted taxa in verification input", {
-  expect_error(verify_taxa(taxa = taxa_in,
-                           verification = verification_test4),
-               "Only synonyms and unmatched taxa allowed in verification.",
-               fixed = TRUE)
+  expect_error(verify_taxa(
+    taxa = taxa_in,
+    verification = verification_test4
+  ),
+  "Only synonyms and unmatched taxa allowed in verification.",
+  fixed = TRUE
+  )
 })
 
 testthat::test_that("restrictions on input columns of verification", {
-  expect_error(verify_taxa(taxa = taxa_in,
-                           verification = verification_test5),
-    "Only logicals (TRUE/FALSE) allowed in 'outdated' of verification.",
-               fixed = TRUE)
+  expect_error(verify_taxa(
+    taxa = taxa_in,
+    verification = verification_test5
+  ),
+  "Only logicals (TRUE/FALSE) allowed in 'outdated' of verification.",
+  fixed = TRUE
+  )
 })
 
 testthat::test_that("valid datsetKey values", {
-  expect_error(verify_taxa(taxa = taxa_in,
-                           verification = verification_test6),
-               paste("Incorrect datesetKey:", verification_test6$datasetKey,
-                     "Is expected to be 36-character UUID."))
-  expect_error(verify_taxa(taxa = taxa_in,
-                           verification = verification_test7),
-               paste("Incorrect datesetKey:", verification_test7$datasetKey,
-                     "Is expected to be 36-character UUID."))
+  expect_error(
+    verify_taxa(
+      taxa = taxa_in,
+      verification = verification_test6
+    ),
+    paste(
+      "Incorrect datesetKey:", verification_test6$datasetKey,
+      "Is expected to be 36-character UUID."
+    )
+  )
+  expect_error(
+    verify_taxa(
+      taxa = taxa_in,
+      verification = verification_test7
+    ),
+    paste(
+      "Incorrect datesetKey:", verification_test7$datasetKey,
+      "Is expected to be 36-character UUID."
+    )
+  )
 })
