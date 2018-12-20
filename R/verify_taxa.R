@@ -1,6 +1,6 @@
 #' Verify taxa that the GBIF Backbone Taxonomy does not recognize or will lump
 #'
-#' Verify taxa that the \link[=https://doi.org/10.15468/39omei]{GBIF Backbone
+#' Verify taxa that the \href{https://doi.org/10.15468/39omei}{GBIF Backbone
 #' Taxonomy} does not recognize or will lump under another name (i.e. synonyms).
 #' This is done by adding a \code{verificationKey} to the input dataframe, which
 #' is populated with:
@@ -519,7 +519,7 @@
 #'
 #' # output
 #' verify_taxa(taxa = my_taxa, verification = my_verification)
-#' verify_txa(taxa = my_taxa)
+#' verify_taxa(taxa = my_taxa)
 verify_taxa <- function(taxa, verification = NULL) {
   # start checks input
   message("Check input dataframes...", appendLF = FALSE)
