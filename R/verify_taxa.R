@@ -1,9 +1,9 @@
 #' Verify taxa that the GBIF Backbone Taxonomy does not recognize or will lump
 #'
 #' Verify taxa that the \href{https://doi.org/10.15468/39omei}{GBIF Backbone
-#' Taxonomy} does not recognize or will lump under another name (i.e. synonyms).
-#' This is done by adding a \code{verificationKey} to the input dataframe, which
-#' is populated with:
+#' Taxonomy} does not recognize (no backbone match) or will lump under another
+#' name (synonyms). This is done by adding a \code{verificationKey} to the input
+#' dataframe, populated with:
 #' \itemize{
 #'   \item{For \code{ACCEPTED} and \code{DOUBTFUL} taxa: the backbone taxon key
 #'   for that taxon (taxon is its own unit and won't be lumped).}
