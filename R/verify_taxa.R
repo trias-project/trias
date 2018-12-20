@@ -525,8 +525,7 @@ verify_taxa <- function(taxa, verification = NULL) {
       filter(is.na(bb_key)) %>%
       filter_at(vars(starts_with("bb_")), any_vars(is.na(.))) %>%
       nrow,
-    msg = paste("Columns related to GBIF backbone information should be all",
-                "empty for unmatched taxa (no backbone key).")
+    msg = "Columns with GBIF Backbone info should be empty for unmatched taxa."
   )
 
   # test verification
