@@ -749,6 +749,17 @@ verify_taxa <- function(taxa, taxa_to_verify = NULL) {
                 bb_acceptedTaxonomicStatus)) %>%
       left_join(accepted_info, by = "bb_acceptedKey") %>%
       select(name_col_verified)
+    # add backbone info to new_synonys too
+    new_synonyms <- 
+      new_synonyms %>%
+      select(-c(bb_acceptedKingdom, 
+                bb_acceptedRank, 
+                bb_acceptedTaxonomicStatus)) %>%
+      left_join(taxa_to_verify %>%
+                  select(taxonKey, bb_key, bb_acceptedKey,
+                         bb_acceptedKingdom, bb_acceptedRank, 
+                         bb_acceptedTaxonomicStatus),
+                by = c("taxonKey", "bb_key", "bb_acceptedKey"))
   } else {
     taxa_to_verify <- 
       taxa_to_verify %>%
