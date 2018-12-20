@@ -269,7 +269,23 @@
 #'     NA,
 #'     1033553
 #'   ),
-#' stringsAsFactors = FALSE
+#'   taxonID = c(
+#'     "alien-fishes-checklist:taxon:c937610f85ea8a74f105724c8f198049",
+#'     "88",
+#'     "alien-plants-belgium:taxon:57c1d111f14fd5f3271b0da53c05c745",
+#'     "4512",
+#'     "alien-plants-belgium:taxon:9a6c5ed8907ff169433fe44fcbff0705",
+#'     "80-syn",
+#'     "alien-plants-belgium:taxon:29409d1e1adc88d6357dd0be13350d6c",
+#'     "alien-macroinvertebrates-checklist:taxon:54cca150e1e0b7c0b3f5b152ae64d62b",
+#'     "alien-macroinvertebrates-checklist:taxon:73f271d93128a4e566e841ea6e3abff0",
+#'     "rinse-checklist:taxon:7afe7b1fbdd06cbdfe97272567825c09",
+#'     "ad-hoc-checklist:taxon:32dc2e18733fffa92ba4e1b35d03c4e2",
+#'     "a80caa33-da9d-48ed-80e3-f76b0b3810f9",
+#'     "alien-plants-belgium:taxon:56d6564f59d9092401c454849213366f",
+#'     "193729"
+#'   ),
+#'   stringsAsFactors = FALSE
 #' )
 #'
 #' my_verification <- data.frame(
