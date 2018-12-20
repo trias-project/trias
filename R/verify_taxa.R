@@ -637,6 +637,7 @@ verify_taxa <- function(taxa, verification = NULL) {
   message("DONE.", appendLF = TRUE)
 
   # go further with taxa which need verification
+  taxa_input <- taxa
   taxa <-
     taxa %>%
     anti_join(not_to_verify_taxa,
