@@ -2,77 +2,113 @@
 % Please edit documentation in R/verify_taxa.R
 \name{verify_taxa}
 \alias{verify_taxa}
-\title{Verify and update taxa information.}
+\title{Verify taxa that the GBIF taxonomic backbone does not recognize or will lump}
 \usage{
-verify_taxa(taxa, taxa_to_verify = NULL)
+verify_taxa(taxa, verification = NULL)
 }
 \arguments{
-\item{taxa}{a dataframe with at least the following columns: \itemize{
-\item{taxonKey} {: taxon keys as mentioned in checklist.}
-\item{scientificName} {: scientific name as provided by GBIF.}
-\item{datasetKey} {: dataset key (a UUID) of the checklist the taxon comes
-from.} \item{bb_key} {: GBIF backbone key.} \item{bb_scientificName}
-{:scientific name as provided by GBIF backbone.} \item{bb_kingdom} {:
-kingdom as returned by GBIF Backbone.} \item{bb_rank} {: rank as provided
-by GBIF Backbone.} \item{bb_taxonomicStatus} {: taxonomic status as
-provided by GBIF Backbone.} \item{bb_acceptedKey} {: accepted key (of
-synonym) as provided by GBIF Backbone.} \item{bb_acceptedName} {: accepted
-name (ofsynonym) as provided by GBIF Backbone.} }}
+\item{taxa}{df. Dataframe with at least the following columns for each taxon:
+\itemize{
+\item{\code{taxonKey}: numeric. Non-backbone checklist taxon key assigned
+by GBIF.}
+\item{\code{scientificName}: character. Scientific name as interpreted by
+GBIF.}
+\item{\code{datasetKey}: character. Dataset key (UUID) assigned by GBIF of
+originating checklist.}
+\item{\code{bb_key}: numeric. Taxon key of matching backbone taxon (if
+any).}
+\item{\code{bb_scientificName}: character. Scientific name of matching
+backbone taxon.}
+\item{\code{bb_kingdom}: character. Kingdom of matching backbone taxon.}
+\item{\code{bb_rank}: character. Rank of matching backbone taxon.}
+\item{\code{bb_taxonomicStatus}: character. Taxonomic status of matching
+backbone taxon.}
+\item{\code{bb_acceptedKey}: numeric. Accepted key of taxon for which
+matching backbone taxon is considered a synonym.}
+\item{\code{bb_acceptedName}: character. Accepted name of taxon for which
+matching backbone taxon is considered a synonym.}
+}}
 
-\item{taxa_to_verify}{a dataframe with at least the following columns:
-\itemize{ \item{taxonKey} {: taxon keys as mentioned in checklist.}
-\item{scientificName: scientific name as provided by GBIF.}
-\item{datasetKey} {: dataset key (UUID) of the checklist the taxon comes
-from.} \item{bb_key:} {: a GBIF backbone key.} \item{bb_scientificName} {:
-scientific name as provided by GBIF backbone.} \item{bb_kingdom} {: kingdom
-as returned by GBIF Backbone.} \item{bb_rank} {: rank as provided by GBIF
-Backbone.} \item{bb_taxonomicStatus} {: taxonomic status as provided by
-GBIF Backbone.} \item{bb_acceptedKey} {: accepted key (of synonym) as
-provided by GBIF Backbone.} \item{bb_acceptedName} {: accepted name (of
-synonym) as provided by GBIF Backbone.} \item{bb_acceptedKingdom} {:
-kingdom of \code{bb_acceptedName} as provided by GBIF backbone. Expected to
-be equal to \code{bb_kingdom}.} \item{bb_acceptedRank} {: rank of
-\code{bb_acceptedName} as provided by GBIF Backbone.}
-\item{bb_acceptedTaxonomicStatus} {: taxonomic status of
-\code{bb_acceptedName} as provided by GBIF Backbone.}
-\item{verificationKey}{: to be populated manually by expert.}
-\item{remarks} {: remarks as provided by the expert (optional).}
-\item{dateAdded}{: (date) for new taxa will be populated by function.}
-\item{outdated}{: (logical) taxon is not in use (not in \code{taxa}).} }}
+\item{verification}{df. Dataframe with at least the following columns for
+each checklist taxon/backbone taxon/accepted taxon combination: \itemize{
+\item{\code{taxonKey}: numeric. Non-backbone checklist taxon key assigned
+by GBIF.}
+\item{\code{scientificName}: character. Scientific name as interpreted by
+GBIF.}
+\item{\code{datasetKey}: character. Dataset key (UUID) assigned by GBIF of
+originating checklist.}
+\item{\code{bb_key}: numeric. Taxon key of matching backbone taxon (if
+any).}
+\item{\code{bb_scientificName}: character. Scientific name of matching
+backbone taxon.}
+\item{\code{bb_kingdom}: character. Kingdom of matching backbone taxon.}
+\item{\code{bb_rank}: character. Rank of matching backbone taxon.}
+\item{\code{bb_taxonomicStatus}: character. Taxonomic status of matching
+backbone taxon.}
+\item{\code{bb_acceptedKey}: numeric. Taxon key of accepted backbone taxon
+in case matching backbone taxon is considered a synonym.}
+\item{\code{bb_acceptedName}: character. Scientific name of accepted
+backbone taxon in case matching backbone taxon is considered a synonym.}
+\item{\code{bb_acceptedKingdom}: character. Kingdom of accepted taxon.
+Expected to be equal to \code{bb_kingdom}.}
+\item{\code{bb_acceptedRank}: character. Rank of accepted taxon.}
+\item{\code{bb_acceptedTaxonomicStatus}: character. Taxonomic status of
+accepted taxon. Expected to be \code{ACCEPTED}.}
+\item{\code{verificationKey}: character. Taxon key(s) of backbone taxon
+manually set by expert.}
+\item{\code{remarks}: character. Remarks provided by the expert.}
+\item{\code{dateAdded}: date. Date on which new combinations were added.}
+\item{\code{outdated}: logical. \code{TRUE} when combination was not used
+for input taxa.}
+}}
 }
 \value{
-a list of three objects: \itemize{ \item{taxa}{: same dataframe as
-  input taxa with column \code{verificationKey} added. This key is equal to
-  \code{bb_key} for taxa with \code{bb_taxonomicStatus} one of 'ACCEPTED' or
-  'DOUBTFUL'. In all other cases (synonym or unmatched taxa) the key provided
-  by experts in taxa_to_verify, if present, is used.} \item{taxa_to_verify}{:
-  same dataframe as input taxa_to_verify, but now with updated info. New
-  synonyms and new unmatched taxa in input taxa are added. Backbone names
-  (\code{bb_scientificName} and \code{bb_acceptedName}) are updated if
-  needed.} \item{info}{: a list of dataframes with ancillary informations
-  related to taxa_to_verify.} } Dataframes contained in info: \itemize{
-  \item{new_synonyms}{: a subset of taxa_to_verify (same columns) with added
-  synonym relations (found in taxa, but not in taxa_to_verify).}
-  \item{new_unmatched_taxa}{: a subset of taxa_to_verify (same columns). New
-  taxa without match to GBIF backbone.} \item{outdated_taxa}{: a subset of
-  taxa_to_verify (same columns) with unused taxa (found in taxa_to_verify, but
-  not in taxa).} \item{updated_bb_scientificName}{: a dataframe with
-  bb_scientificName + updated_bb_scientificName.}
-  \item{updated_bb_acceptedName}{: a dataframe with bb_acceptedName +
-  updated_bb_acceptedName.} \item{duplicates}{: a dataframe with all
-  taxa present in more than one checklist.} \item{check_verificationKey} {: a
-  dataframe with results of checking all \code{verificationKey} against GBIF
-  Backbone.} }
+list. List with three objects: \itemize{
+  \item{\code{taxa}: df. Provided dataframe with additional column
+  \code{verificationKey}.}
+  \item{\code{verification}: df. New or updated dataframe with verification
+  information.}
+  \item{\code{info}: list. Dataframes with ancillary information regarding
+  changes to the verification. \itemize{
+    \item{\code{new_synonyms}: df. Subset of \code{verification} with synonym
+    taxa found in \code{taxa} but not in provided \code{verification}).}
+    \item{\code{new_unmatched_taxa}: df. Subset of \code{verification} with
+    unmatched taxa found in \code{taxa} but not in provided
+    \code{verification}).}
+    \item{\code{outdated_taxa}: df. Subset of \code{verification} with taxa
+    found in provided \code{verification} but not in \code{taxa}.}
+    \item{\code{updated_bb_scientificName}: df. \code{bb_scientificName}s in
+    provided \code{verification} that were updated
+    \code{updated_bb_scientificName} in the backbone since.}
+    \item{\code{updated_bb_acceptedName}: df. \code{bb_acceptedName}s in
+    provided \code{verification} that were updated
+    \code{updated_bb_acceptedName} in the backbone since.}
+    \item{\code{duplicates}: df. Taxa present in more than one checklist.}
+    \item{\code{check_verificationKey}: df. Check if provided
+    \code{verificationKey}s can be found in backbone.}
+  }}
+}
 }
 \description{
-This function checks all input taxa by adding automatically a verification
-key where possible (taxa with taxonomic status equal to \code{accepted} or
-\code{doubful}). The function also update a dataframe related to taxa which
-need expert's verification. Ancillary information are also given to explore
-the changes.
+Verify taxa that the GBIF taxonomic backbone does not recognize or will lump
+under another name (i.e. synonyms). This is done by adding a
+\code{verificationKey} to the input dataframe, which is populated with:
+\itemize{
+  \item{for \code{ACCEPTED} and \code{DOUBTFUL} taxa: the backbone taxon key
+  for that taxon.}
+  \item{for other taxa: a manually chosen and thus verified backbone taxon
+  key. This could either be the suggested accepted taxon key, another
+  accepted taxon key, the key of the taxon itself, or a taxon key for
+  manually found matching taxon/taxa.}
+}
+Manually chosen backbone taxon keys are provided as a \code{verificationKey}
+in \code{verification}: a dataframe (probably read from a file) listing all
+taxa that require verification. The function will update a provided
+verification based on the input taxa or create a new one if none is provided.
+Any changes to the verification are also provided as ancillary information.
 }
 \examples{
-taxa_in <- data.frame(
+my_taxa <- data.frame(
   taxonKey = c(
     141117238,
     113794952,
@@ -235,7 +271,7 @@ taxa_in <- data.frame(
 stringsAsFactors = FALSE
 )
 
-taxa_to_verify_in <- data.frame(
+my_verification <- data.frame(
   taxonKey = c(
     113794952,
     141264857,
@@ -444,6 +480,6 @@ taxa_to_verify_in <- data.frame(
 )
 
 # output
-verify_taxa(taxa = taxa_in, taxa_to_verify = taxa_to_verify_in)
-verify_txa(taxa = taxa_in)
+verify_taxa(taxa = my_taxa, verification = my_verification)
+verify_txa(taxa = my_taxa)
 }
