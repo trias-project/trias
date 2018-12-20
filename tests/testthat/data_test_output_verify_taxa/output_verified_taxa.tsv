@@ -1,8 +1,0 @@
-checklist_scientificName	backbone_scientificName	backbone_taxonomicStatus	backbone_acceptedName	backbone_taxonKey	backbone_acceptedKey	backbone_kingdom	backbone_issues	verification_key	date_added	checklists	remarks
-Rana catesbeiana	Rana catesbeiana Shaw, 1802	SYNONYM	Lithobates catesbeianus (Shaw, 1802)	2427092	2427091	Animalia		2427091	2018-07-01	e4746398-f7c4-47a1-a474-ae80a4f18e92,b351a324-77c4-41c9-a909-f30f77268bc4	dummy example 1: backbone_acceptedName and checklists should be updated.
-Polystichum tsus-simense J.Smith	Polystichum tsus-simense (Hook.) J.Sm.	SYNONYM	Polystichum luctuosum (Kunze) Moore.	2651108	4046493	Plantae	ORIGINAL_NAME_DERIVED	4046493	2018-07-01	9ff7d317-609b-4c08-bd86-3bc404b77c42	dummy example 2: backbone_scientificName and backbone_issues should be updated.
-Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley								2805420,2805363	2018-07-16	9ff7d317-609b-4c08-bd86-3bc404b77c42	dummy example 4: multiple keys in verification_key are allowed.
-Aspius aspius	Aspius aspius (Linnaeus, 1758)	SYNONYM	Leuciscus aspius (Linnaeus, 1758)	2360181	5851603	Animalia	ORIGINAL_NAME_DERIVED		2018-07-31	98940a79-2bf1-46e6-afd6-ba2e85a26f9f	
-Atyaephyra desmaresti	Atyaephyra desmarestii (Millet, 1831)	HOMOTYPIC_SYNONYM	Hippolyte desmarestii Millet, 1831	4309705	6454754	Animalia	CONFLICTING_BASIONYM_COMBINATION		2018-07-31	289244ee-e1c1-49aa-b2d7-d379391ce265	
-Begonia x semperflorens hort.									2018-07-31	9ff7d317-609b-4c08-bd86-3bc404b77c42	
-Lemnaceae	Lemnaceae	SYNONYM	Araceae	6723	6979	Plantae		6979	2018-07-01	e4746398-f7c4-47a1-a474-ae80a4f18e92,39653f3e-8d6b-4a94-a202-859359c164c5	dummy example 3: add 'Unused taxa.' at the end of remarks. Unused taxa.

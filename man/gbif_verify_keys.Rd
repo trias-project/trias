@@ -4,42 +4,53 @@
 \alias{gbif_verify_keys}
 \title{Check keys against GBIF Backbone Taxonomy}
 \usage{
-gbif_verify_keys(keys)
+gbif_verify_keys(keys, col_keys = "key")
 }
 \arguments{
-\item{keys}{(character or numeric) a vector, a list, or a data.frame with
-column \code{key}.}
+\item{keys}{(character or numeric) a vector, a list, or a data.frame
+containing the keys to verify.}
+
+\item{col_keys}{(character) name of column containing keys in case
+\code{keys} is a data.frame.}
 }
 \value{
-a dataframe with the following columns: \itemize{\item{\code{key}}{:
-  (numeric) keys as input keys.} \item{\code{is_taxonKey}} {: (logical) is
-  the key a valid GBIF taxon key?} \item{\code{is_from_gbif_backbone}} {:
-  (logical) is the key a valid taxon key from GBIF Backbone Taxonomy
-  checklist?} \item{\code{is_synonym}} {: (logical) is the key related to a
-  synonym (not \code{ACCEPTED} or \code{DOUBTFUL})?}} If a key didn't pass
-  the first check (\code{is_taxonKey = FALSE}) then \code{NA} for other two
-  columns. If a key didn't pass the second check (\code{is_from_gbif_backbone
-  = FALSE}) then \code{is_synonym} = \code{NA}.
+a data.frame with the following columns:
+  \itemize{
+    \item{\code{key}}{:(numeric) keys as input keys.}
+    \item{\code{is_taxonKey}} {: (logical) is the key a valid GBIF taxon
+    key?}
+  \item{\code{is_from_gbif_backbone}} {:(logical) is the key a valid taxon
+  key from GBIF Backbone Taxonomy checklist?}
+  \item{\code{is_synonym}} {: (logical) is the key related to a synonym (not
+  \code{ACCEPTED} or \code{DOUBTFUL})?}
+  }
+  If a key didn't pass the first check (\code{is_taxonKey = FALSE}) then
+  \code{NA} for other two columns. If a key didn't pass the second check
+  (\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
 }
 \description{
-This function performs three checks: \itemize{\item{\code{keys} are valid
-GBIF taxon keys. That means that adding a key at the end of the URL
-https://www.gbif.org/species/ returns a GBIF page related to a taxa.}
-\item{\code{keys} are taxon keys of the GBIF Backbone Taxonomy checklist.
-That means that adding a key at the end of the URL
-https://www.gbif.org/species/ returns a GBIF page related to a taxa of the
-GBIF Backbone.)} \item{\code{keys} are synonyms of other taxa
-(taxonomicStauts neither \code{ACCEPTED} nor \code{DOUBTFUL}).}}.
+This function performs three checks:
+\itemize{
+  \item{\code{keys} are valid GBIF taxon keys. That means that adding a key
+  at the end of the URL https://www.gbif.org/species/ returns a GBIF page
+  related to a taxa.}
+  \item{\code{keys} are taxon keys of the GBIF Backbone Taxonomy checklist.
+  That means that adding a key at the end of the URL
+  https://www.gbif.org/species/ returns a GBIF page related to a taxa of the
+  GBIF Backbone.)}
+  \item{\code{keys} are synonyms of other taxa (taxonomicStauts neither
+  \code{ACCEPTED} nor \code{DOUBTFUL}).}
+  }.
 }
 \examples{
 # input is a vector
-keys1 = c("12323785387253", # is not a GBIF taxonKey
-          "128545334", # is not a taxonKey from Backbone, but Euglenes nitidifrons (Thomson, 1886) in "Checklist of Danish Beetles (Coleoptera)"
-          "1000693", # is a synonym: Pterodina calcaris Langer, 1909. Synonym of Testudinella parva (Ternetz, 1892)
-          "1000310", # is an accepted taxon: Pyrococcus woesei Zillig, 1988
+keys1 = c("12323785387253", # invalid GBIF taxonKey
+          "128545334", # valid taxonKey, not a GBIF Backbone key
+          "1000693", # a GBIF Backbone key, synonym
+          "1000310", # a GBIF Backbone key, accepted
           NA, NA)
 # input is a df
-keys2 <- data.frame(key = keys1,
+keys2 <- data.frame(keys = keys1,
                     other_col = sample.int(40, size = length(keys1)),
                     stringsAsFactors = FALSE)
 # input is a named list
@@ -52,5 +63,8 @@ names(keys3) <- purrr::map_chr(c(1:length(keys3)),
 keys4 <- as.numeric(keys1)
 
 gbif_verify_keys(keys1)
+gbif_verify_keys(keys2, col_keys = "keys")
+gbif_verify_keys(keys3)
+gbif_verify_keys(keys4)
 
 }

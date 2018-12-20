@@ -11,4 +11,4 @@ GBIF_distr_terms
 \description{
 Accepted GBIF distribution terms
 }
-\keyword{datasets}
+\keyword{internal}
