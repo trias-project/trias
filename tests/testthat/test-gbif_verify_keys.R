@@ -2,11 +2,12 @@
 context("test_gbif_verify_keys")
 
 # input contains nothing
-key_null1 <- list()
+keys_null1 <- list()
+keys_null2 <- c("", "")
 
 # input contains invalid taxon keys (they contain letters)
 keys_err1 <- c("1", "128", "120391203", "AE", "12k")
-keys_err2 <- c("", "")
+keys_err2 <- c("", "", "1")
 
 # input is a vector
 keys1 <- c(
@@ -53,7 +54,8 @@ output3 <- gbif_verify_keys(keys3)
 output4 <- gbif_verify_keys(keys4)
 
 testthat::test_that("test several input types", {
-  expect_null(gbif_verify_keys(key_null1))
+  expect_null(gbif_verify_keys(keys_null1))
+  expect_null(gbif_verify_keys(keys_null2))
   expect_error(
     gbif_verify_keys(keys_err1),
     "Invalid keys: AE,12k ."
