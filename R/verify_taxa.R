@@ -976,7 +976,8 @@ verify_taxa <- function(taxa, verification = NULL) {
       by = c("bb_key", "bb_acceptedKey")
       ) %>%
       select(bb_key, bb_acceptedKey, bb_scientificName, n) %>%
-      arrange(desc(n))
+      arrange(desc(n)) %>%
+      ungroup()
   } else {
     duplicates <- NULL
   }
