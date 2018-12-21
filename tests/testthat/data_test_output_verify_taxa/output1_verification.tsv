@@ -1,27 +1,27 @@
-taxonKey	scientificName	datasetKey	bb_key	bb_scientificName	bb_kingdom	bb_rank	bb_taxonomicStatus	bb_acceptedKey	bb_acceptedName	bb_acceptedKingdom	bb_acceptedRank	bb_acceptedTaxonomicStatus	verificationKey	remarks	dateAdded	outdated
-141117238	Aspius aspius	98940a79-2bf1-46e6-afd6-ba2e85a26f9f	2360181	Aspius aspius (Linnaeus, 1758)	Animalia	SPECIES	SYNONYM	5851603	Leuciscus aspius (Linnaeus, 1758)	Animalia	SPECIES	ACCEPTED	NA	NA	2018-12-21	FALSE
-100220432	Rana catesbeiana	b351a324-77c4-41c9-a909-f30f77268bc4	2427092	Rana catesbeiana Shaw, 1802	Animalia	SPECIES	SYNONYM	2427091	Lithobates catesbeianus (Shaw, 1802)	Animalia	SPECIES	ACCEPTED	NA	NA	2018-12-21	FALSE
-140563014	Atyaephyra desmaresti	289244ee-e1c1-49aa-b2d7-d379391ce265	4309705	Atyaephyra desmarestii (Millet, 1831)	Animalia	SPECIES	HOMOTYPIC_SYNONYM	6454754	Hippolyte desmarestii Millet, 1831	Animalia	SPECIES	ACCEPTED	NA	NA	2018-12-21	FALSE
-148437916	Ferrissia fragilis	1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	9520065	Ferrissia californica (Rowell, 1863)	Animalia	SPECIES	ACCEPTED	NA	NA	2018-12-21	FALSE
-114445583	Rana blanfordii Boulenger	3772da2f-daa1-4f07-a438-15a881a2142c	2430304	Rana blanfordii Boulenger, 1882	Animalia	SPECIES	SYNONYM	2430301	Nanorana blanfordii (Boulenger, 1882)	Animalia	SPECIES	ACCEPTED	NA	NA	2018-12-21	FALSE
-141264849	Pterocarya x rhederiana C.K. Schneider	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	2018-12-21	FALSE
+taxonKey	scientificName	datasetKey	bb_key	bb_scientificName	bb_kingdom	bb_rank	bb_taxonomicStatus	bb_acceptedKey	bb_acceptedName	bb_acceptedKingdom	bb_acceptedRank	bb_acceptedTaxonomicStatus	verificationKey	remarks	verifiedBy	dateAdded	outdated
+141117238	Aspius aspius	98940a79-2bf1-46e6-afd6-ba2e85a26f9f	2360181	Aspius aspius (Linnaeus, 1758)	Animalia	SPECIES	SYNONYM	5851603	Leuciscus aspius (Linnaeus, 1758)	Animalia	SPECIES	ACCEPTED	NA	NA	NA	2018-12-21	FALSE
+100220432	Rana catesbeiana	b351a324-77c4-41c9-a909-f30f77268bc4	2427092	Rana catesbeiana Shaw, 1802	Animalia	SPECIES	SYNONYM	2427091	Lithobates catesbeianus (Shaw, 1802)	Animalia	SPECIES	ACCEPTED	NA	NA	NA	2018-12-21	FALSE
+140563014	Atyaephyra desmaresti	289244ee-e1c1-49aa-b2d7-d379391ce265	4309705	Atyaephyra desmarestii (Millet, 1831)	Animalia	SPECIES	HOMOTYPIC_SYNONYM	6454754	Hippolyte desmarestii Millet, 1831	Animalia	SPECIES	ACCEPTED	NA	NA	NA	2018-12-21	FALSE
+148437916	Ferrissia fragilis	1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	9520065	Ferrissia californica (Rowell, 1863)	Animalia	SPECIES	ACCEPTED	NA	NA	NA	2018-12-21	FALSE
+114445583	Rana blanfordii Boulenger	3772da2f-daa1-4f07-a438-15a881a2142c	2430304	Rana blanfordii Boulenger, 1882	Animalia	SPECIES	SYNONYM	2430301	Nanorana blanfordii (Boulenger, 1882)	Animalia	SPECIES	ACCEPTED	NA	NA	NA	2018-12-21	FALSE
+141264849	Pterocarya x rhederiana C.K. Schneider	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	2018-12-21	FALSE
 101790530	Stenelmis williami Schmude	9ca92552-f23a-41a8-a140-01abaa31c931	1033588	Stenelmis williami Schmude	Animalia	SPECIES	SYNONYM	1033553	Stenelmis Dufour, 1835	Animalia	GENUS	ACCEPTED	NA	"dummy example 10: '. Not outdated anymore. Change outdated
-   back to FALSE. Remove label from remarks."	2018-12-02	FALSE
+   back to FALSE. Remove label from remarks."	NA	2018-12-02	FALSE
 145953989	Ferrissia fragilis	3f5e930b-52a5-461d-87ec-26ecd66f14a3	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	9520065	Ferrissia californica (Rowell, 1863)	Animalia	SPECIES	ACCEPTED	NA	"dummy example 7: datasetKey should not be modified. If new taxa come in
    with same name from other checklsits, they should be added as new rows.
-   Report them as duplicates in duplicates_taxa"	2018-11-20	FALSE
-141264835	Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	2805420,2805363	dummy example 4: multiple keys in verificationKey are allowed.	2018-07-16	FALSE
-141264614	Begonia x semperflorens hort.	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	dummy example 5: nothing should happen.	2018-07-16	FALSE
+   Report them as duplicates in duplicates_taxa"	NA	2018-11-20	FALSE
+141264835	Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	2805420,2805363	dummy example 4: multiple keys in verificationKey are allowed.	Tanja Milotic	2018-07-16	FALSE
+141264614	Begonia x semperflorens hort.	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	dummy example 5: nothing should happen.	NA	2018-07-16	FALSE
 140562956	Ferrissia fragilis	289244ee-e1c1-49aa-b2d7-d379391ce265	2291152	Ferrissia fragilis (Tryon, 1863)	Animalia	SPECIES	SYNONYM	9520065	Ferrissia californica (Rowell, 1863)	Animalia	SPECIES	ACCEPTED	NA	"dummy example 6: datasetKey should not be modified. If new taxa come in
    with same name from other checklsits, they should be added as new rows.
-   Report them as duplicates in duplicates_taxa"	2018-07-01	FALSE
-141264857	Polystichum tsus-simense J.Smith	9ff7d317-609b-4c08-bd86-3bc404b77c42	2651108	Polystichum tsus-simense (Hook.) J.Sm.	Plantae	SPECIES	SYNONYM	4046493	Polystichum luctuosum (Kunze) Moore.	Plantae	SPECIES	ACCEPTED	4046493	dummy example 2: bb_scientificName should be updated.	2018-07-01	FALSE
-113794952	Rana catesbeiana	e4746398-f7c4-47a1-a474-ae80a4f18e92	2427092	Rana catesbeiana Shaw, 1802	Animalia	SPECIES	SYNONYM	2427091	Lithobates catesbeianus (Shaw, 1802)	Animalia	SPECIES	ACCEPTED	2427091	dummy example 1: bb_acceptedName should be updated.	2018-07-01	FALSE
+   Report them as duplicates in duplicates_taxa"	NA	2018-07-01	FALSE
+141264857	Polystichum tsus-simense J.Smith	9ff7d317-609b-4c08-bd86-3bc404b77c42	2651108	Polystichum tsus-simense (Hook.) J.Sm.	Plantae	SPECIES	SYNONYM	4046493	Polystichum luctuosum (Kunze) Moore.	Plantae	SPECIES	ACCEPTED	4046493	dummy example 2: bb_scientificName should be updated.	Peter Desmet	2018-07-01	FALSE
+113794952	Rana catesbeiana	e4746398-f7c4-47a1-a474-ae80a4f18e92	2427092	Rana catesbeiana Shaw, 1802	Animalia	SPECIES	SYNONYM	2427091	Lithobates catesbeianus (Shaw, 1802)	Animalia	SPECIES	ACCEPTED	2427091	dummy example 1: bb_acceptedName should be updated.	Damiano Oldoni	2018-07-01	FALSE
 141265523	Veronica austriaca Jacq.	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	3172099	"dummy example 11: outdated unmatched taxa. Set outdated = TRUE. Add
-   'Outdated taxa' to remarks. Outdated taxa."	2018-12-03	TRUE
+   'Outdated taxa' to remarks. Outdated taxa."	Dimitri Brosens	2018-12-03	TRUE
 128897752	Python reticulatus Fitzinger, 1826	7ddf754f-d193-4cc9-b351-99906754a03b	7587934	Python reticulatus Fitzinger, 1826	Animalia	SPECIES	SYNONYM	9260388	Malayopython reticulatus (Schneider, 1801)	Animalia	SPECIES	ACCEPTED	9260388	"dummy example 9: 'Outdated taxa'. outdated is already TRUE. Label
-   'Outdated taxa' already in remarks. No actions."	2018-12-01	TRUE
+   'Outdated taxa' already in remarks. No actions."	Lien Reyserhove	2018-12-01	TRUE
 114445583	Rana blanfordii Boulenger	3772da2f-daa1-4f07-a438-15a881a2142c	2430304	Rana blanfordii Boulenger, 1882	Animalia	SPECIES	SYNONYM	2427008	Hylarana chalconota (Schlegel, 1837)	Animalia	SPECIES	ACCEPTED	NA	"dummy example 8: outdated synonym. Set outdated = TRUE. Add 'Outdated
-   taxa.' to remarks. Outdated taxa."	2018-11-29	TRUE
+   taxa.' to remarks. Outdated taxa."	NA	2018-11-29	TRUE
 143920280	Lemnaceae	e4746398-f7c4-47a1-a474-ae80a4f18e92	6723	Lemnaceae	Plantae	FAMILY	SYNONYM	6979	Araceae	Plantae	FAMILY	ACCEPTED	6979	"dummy example 3: not used anymore. Set outdated = TRUE. Add 'Outdated
-   taxa.' to remarks. Outdated taxa."	2018-07-01	TRUE
+   taxa.' to remarks. Outdated taxa."	Stijn Van Hoey	2018-07-01	TRUE

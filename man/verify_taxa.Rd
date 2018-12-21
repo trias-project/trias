@@ -44,7 +44,9 @@ taxon. Expected to be equal to \code{bb_kingdom}.}
 accepted taxon. Expected to be \code{ACCEPTED}.}
 \item{\code{verificationKey}: character. Taxon key(s) of backbone taxon
 manually set by expert.} \item{\code{remarks}: character. Remarks provided
-by the expert.} \item{\code{dateAdded}: date. Date on which new
+by the expert.} \item{\code{verifiedBy}: character. Name of the person who
+assigned \code{verificationKey}.} \item{\code{dateAdded}: date. Date on
+which new
 combinations were added.} \item{\code{outdated}: logical. \code{TRUE} when
 combination was not used for input taxa.} }}
 }
@@ -480,6 +482,19 @@ my_verification <- data.frame(
     "dummy example 11: outdated unmatched taxa. Set outdated = TRUE. Add
     'Outdated taxa' to remarks."
   ),
+  verifiedBy = c(
+    "Damiano Oldoni",
+    "Peter Desmet",
+    "Stijn Van Hoey",
+    "Tanja Milotic",
+    NA,
+    NA,
+    NA,
+    NA,
+    "Lien Reyserhove",
+    NA,
+    "Dimitri Brosens"
+  ),
   dateAdded = as.Date(
     c(
       "2018-07-01",
@@ -509,7 +524,7 @@ my_verification <- data.frame(
     FALSE
   ),
   stringsAsFactors = FALSE
-)
+  )
 
 # output
 verify_taxa(taxa = my_taxa, verification = my_verification)

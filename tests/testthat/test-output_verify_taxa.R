@@ -27,26 +27,11 @@ testthat::test_that("output structure", {
   expect_true(is.data.frame(output1$verification))
   expect_true(is.data.frame(output2$verification))
   expect_equivalent(output1$verification, output3$verification)
-  expect_equivalent(output1$info, output3$info)
-  expect_true(is.data.frame(output1$info$new_synonyms))
-  expect_true(is.data.frame(output2$info$new_synonyms))
-  expect_true(is.data.frame(output1$info$new_unmatched_taxa))
-  expect_true(is.data.frame(output2$info$new_unmatched_taxa))
-  expect_true(is.data.frame(output1$info$outdated_unmatched_taxa))
-  expect_true(is.data.frame(output2$info$outdated_unmatched_taxa))
-  expect_true(is.data.frame(output1$info$outdated_synonyms))
-  expect_true(is.data.frame(output2$info$outdated_synonyms))
-  expect_true(is.data.frame(output1$info$updated_bb_scientificName))
-  expect_true(is.data.frame(output2$info$updated_bb_scientificName))
-  expect_true(is.data.frame(output1$info$updated_bb_acceptedName))
-  expect_true(is.data.frame(output2$info$updated_bb_acceptedName))
-  expect_true(is.data.frame(output1$info$duplicates))
-  expect_true(is.data.frame(output2$info$duplicates))
-  expect_true(is.data.frame(output1$info$check_verificationKey))
-  expect_true(is.data.frame(output2$info$check_verificationKey))
+  expect_true(all(purrr::map_lgl(output1$info, ~is.data.frame(.))))
+  expect_true(all(purrr::map_lgl(output2$info, ~is.data.frame(.))))
   expect_true(all(purrr::map_lgl(output1$info, ~(!"grouped_df" %in% class(.)))))
   expect_true(all(purrr::map_lgl(output2$info, ~(!"grouped_df" %in% class(.)))))
-  expect_true(all(purrr::map_lgl(output3$info, ~(!"grouped_df" %in% class(.)))))
+  expect_equivalent(output1$info, output3$info)
 })
 
 testthat::test_that("consitency input - output", {
@@ -95,6 +80,16 @@ testthat::test_that("consitency input - output", {
       nrow(output2$info$outdated_unmatched_taxa) ==
       nrow(dplyr::filter(output2$verification, outdated == TRUE))
   )
+  expect_warning(
+    verify_taxa(my_taxa, my_verification_vk_vby),
+    paste(
+      "verifiedBy must be empty if no verificationKey is present.",
+      "Taxa with suspect verifiedBy values will be removed.",
+      "140562956: Calvin",
+      "145953989: Hobbes",
+      sep = "\n"
+    )
+  )
 })
 
 col_types_verification <- readr::cols(
@@ -113,6 +108,7 @@ col_types_verification <- readr::cols(
   bb_acceptedTaxonomicStatus = readr::col_character(),
   verificationKey = readr::col_character(),
   remarks = readr::col_character(),
+  verifiedBy = readr::col_character(),
   dateAdded = readr::col_date(format = "%Y-%m-%d"),
   outdated = readr::col_logical()
 )

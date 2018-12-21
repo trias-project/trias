@@ -57,7 +57,9 @@
 #'   accepted taxon. Expected to be \code{ACCEPTED}.}
 #'   \item{\code{verificationKey}: character. Taxon key(s) of backbone taxon
 #'   manually set by expert.} \item{\code{remarks}: character. Remarks provided
-#'   by the expert.} \item{\code{dateAdded}: date. Date on which new
+#'   by the expert.} \item{\code{verifiedBy}: character. Name of the person who
+#'   assigned \code{verificationKey}.} \item{\code{dateAdded}: date. Date on
+#'   which new
 #'   combinations were added.} \item{\code{outdated}: logical. \code{TRUE} when
 #'   combination was not used for input taxa.} }
 #'
@@ -92,7 +94,7 @@
 #' @importFrom stringr str_remove str_split
 #' @importFrom tidyselect one_of everything ends_with
 #' @importFrom tibble tibble
-#' @importFrom purrr pmap_dfr
+#' @importFrom purrr pmap_dfr map2_chr
 #' @importFrom rgbif name_usage
 #'
 #' @examples
@@ -481,6 +483,19 @@
 #'     "dummy example 11: outdated unmatched taxa. Set outdated = TRUE. Add
 #'     'Outdated taxa' to remarks."
 #'   ),
+#'   verifiedBy = c(
+#'     "Damiano Oldoni",
+#'     "Peter Desmet",
+#'     "Stijn Van Hoey",
+#'     "Tanja Milotic",
+#'     NA,
+#'     NA,
+#'     NA,
+#'     NA,
+#'     "Lien Reyserhove",
+#'     NA,
+#'     "Dimitri Brosens"
+#'   ),
 #'   dateAdded = as.Date(
 #'     c(
 #'       "2018-07-01",
@@ -510,7 +525,7 @@
 #'     FALSE
 #'   ),
 #'   stringsAsFactors = FALSE
-#' )
+#'   )
 #'
 #' # output
 #' verify_taxa(taxa = my_taxa, verification = my_verification)
@@ -585,7 +600,7 @@ verify_taxa <- function(taxa, verification = NULL) {
     "bb_acceptedKingdom", "bb_acceptedRank",
     "bb_acceptedTaxonomicStatus",
     "verificationKey", "remarks",
-    "dateAdded", "outdated"
+    "verifiedBy","dateAdded", "outdated"
   )
   # make empty tibble df if not exist
   if (is.null(verification)) {
@@ -605,6 +620,7 @@ verify_taxa <- function(taxa, verification = NULL) {
       bb_acceptedTaxonomicStatus = character(),
       verificationKey = character(),
       remarks = character(),
+      verifiedBy = character(),
       dateAdded = numeric(),
       outdated = logical()
     )
@@ -622,7 +638,10 @@ verify_taxa <- function(taxa, verification = NULL) {
     verification$bb_acceptedName,
     verification$bb_acceptedKingdom,
     verification$bb_acceptedRank,
-    verification$bb_acceptedTaxonomicStatus
+    verification$bb_acceptedTaxonomicStatus,
+    verification$verificationKey,
+    verification$remarks,
+    verification$verifiedBy
   ))
   is.numeric(c(
     verification$taxonKey,
@@ -675,8 +694,38 @@ verify_taxa <- function(taxa, verification = NULL) {
   assert_that(all(!taxonomic_status %in% not_allowed_taxonomicStatus),
     msg = "Only synonyms and unmatched taxa allowed in verification."
   )
+  
+  verifiedBy_anomalies <- 
+    verification %>%
+    filter(is.na(verificationKey) & !is.na(verifiedBy))
+  if (nrow(verifiedBy_anomalies) > 0) {
+    warning(
+      paste("verifiedBy must be empty if no verificationKey is present.",
+            "Taxa with suspect verifiedBy values will be removed.",
+            paste(map2_chr(verifiedBy_anomalies$taxonKey, 
+                     verifiedBy_anomalies$verifiedBy, 
+                     ~paste(.x,.y, sep = ": ")), collapse = "\n"),
+            sep = "\n"
+      )
+    )
+    # get order taxa in verification
+    ordered_taxon_keys_verification <-
+      verification %>%
+      select(taxonKey)
+    
+    verifiedBy_anomalies <- 
+      verifiedBy_anomalies %>%
+      mutate(verifiedBy = NA_character_)
+    verification <-
+      verification %>%
+      anti_join(verifiedBy_anomalies, by = names(verification)) %>%
+      bind_rows(verifiedBy_anomalies) %>%
+      right_join(ordered_taxon_keys_verification,
+                 by = "taxonKey")
+  }
   message("DONE.", appendLF = TRUE)
-
+  
+  # get order taxon keys
   ordered_taxon_keys <-
     taxa %>%
     select(taxonKey)
@@ -713,12 +762,13 @@ verify_taxa <- function(taxa, verification = NULL) {
       by = c("taxonKey", "bb_key", "bb_acceptedKey")
     ) %>%
     mutate(
-      dateAdded = Sys.Date(),
-      verificationKey = NA_character_,
-      remarks = NA_character_,
       bb_acceptedKingdom = NA_character_,
       bb_acceptedRank = NA_character_,
       bb_acceptedTaxonomicStatus = NA_character_,
+      verificationKey = NA_character_,
+      remarks = NA_character_,
+      verifiedBy = NA_character_,
+      dateAdded = Sys.Date(),
       outdated = FALSE
     ) %>%
     select(one_of(name_col_verification), everything())
@@ -736,12 +786,13 @@ verify_taxa <- function(taxa, verification = NULL) {
     filter(is.na(bb_key)) %>%
     filter(!taxonKey %in% unmatched_taxa) %>%
     mutate(
-      dateAdded = Sys.Date(),
-      verificationKey = NA_character_,
-      remarks = NA_character_,
       bb_acceptedKingdom = NA_character_,
       bb_acceptedRank = NA_character_,
       bb_acceptedTaxonomicStatus = NA_character_,
+      verificationKey = NA_character_,
+      remarks = NA_character_,
+      verifiedBy = NA_character_,
+      dateAdded = Sys.Date(),
       outdated = FALSE
     ) %>%
     select(one_of(name_col_verification), everything())

@@ -385,6 +385,19 @@ my_verification <- data.frame(
     "dummy example 11: outdated unmatched taxa. Set outdated = TRUE. Add
    'Outdated taxa' to remarks."
   ),
+  verifiedBy = c(
+    "Damiano Oldoni",
+    "Peter Desmet",
+    "Stijn Van Hoey",
+    "Tanja Milotic",
+    NA,
+    NA,
+    NA,
+    NA,
+    "Lien Reyserhove",
+    NA,
+    "Dimitri Brosens"
+  ),
   dateAdded = as.Date(
     c(
       "2018-07-01",
@@ -415,3 +428,8 @@ my_verification <- data.frame(
   ),
   stringsAsFactors = FALSE
 )
+
+my_verification_vk_vby <- my_verification
+my_verification_vk_vby$verifiedBy[6] <- "Calvin"
+my_verification_vk_vby$verifiedBy[7] <- "Hobbes"
+         
