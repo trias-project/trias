@@ -979,7 +979,12 @@ verify_taxa <- function(taxa, verification = NULL) {
       arrange(desc(n)) %>%
       ungroup()
   } else {
-    duplicates <- NULL
+    duplicates <- tibble(
+      bb_key = double(),
+      bb_acceptedKey = double(),
+      bb_scientificName = character(),
+      n = double()
+    )
   }
   message("DONE.", appendLF = TRUE)
 
