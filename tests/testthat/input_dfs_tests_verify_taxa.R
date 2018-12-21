@@ -178,6 +178,8 @@ my_taxa <- data.frame(
   stringsAsFactors = FALSE
 )
 
+my_taxa_vk <- dplyr::mutate(my_taxa, verificationKey = 1)
+
 my_verification <- data.frame(
  taxonKey = c(
    113794952,

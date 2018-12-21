@@ -564,6 +564,16 @@ verify_taxa <- function(taxa, verification = NULL) {
     msg = "Columns with GBIF Backbone info should be empty for unmatched taxa."
   )
 
+  # throw a message if a column called verificationKey already exists
+  if ("verificationKey" %in% names(taxa)) {
+    message(paste(
+      "\nColumn verificationKey already exists. It will be overwritten."),
+      appendLF = TRUE)
+    taxa <- 
+      taxa %>%
+      select(-verificationKey)
+  }
+  
   # test verification
   name_col_verification <- c(
     "taxonKey", "scientificName", "datasetKey",
