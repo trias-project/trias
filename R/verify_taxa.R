@@ -1018,10 +1018,10 @@ verify_taxa <- function(taxa, verification = NULL) {
     info = list(
       new_synonyms = as_tibble(new_synonyms),
       new_unmatched_taxa = as_tibble(new_unmatched_taxa),
-      outdated_unmatched_taxa = outdated_unmatched_taxa,
-      outdated_synonyms = outdated_synonyms,
-      updated_bb_scientificName = updated_bb_scientificName_short,
-      updated_bb_acceptedName = updated_bb_acceptedName_short,
+      outdated_unmatched_taxa = as_tibble(outdated_unmatched_taxa),
+      outdated_synonyms = as_tibble(outdated_synonyms),
+      updated_bb_scientificName = as_tibble(updated_bb_scientificName_short),
+      updated_bb_acceptedName = as_tibble(updated_bb_acceptedName_short),
       duplicates = duplicates,
       check_verificationKey = check_verificationKey
     )
