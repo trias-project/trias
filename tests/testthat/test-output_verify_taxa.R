@@ -84,7 +84,7 @@ testthat::test_that("consitency input - output", {
     verify_taxa(my_taxa, my_verification_vk_vby),
     paste(
       "verifiedBy must be empty if no verificationKey is present.",
-      "Taxa with suspect verifiedBy values will be removed.",
+      "Suspect verifiedBy values will be removed.",
       "140562956: Calvin",
       "145953989: Hobbes",
       sep = "\n"

@@ -701,7 +701,7 @@ verify_taxa <- function(taxa, verification = NULL) {
   if (nrow(verifiedBy_anomalies) > 0) {
     warning(
       paste("verifiedBy must be empty if no verificationKey is present.",
-            "Taxa with suspect verifiedBy values will be removed.",
+            "Suspect verifiedBy values will be removed.",
             paste(map2_chr(verifiedBy_anomalies$taxonKey, 
                      verifiedBy_anomalies$verifiedBy, 
                      ~paste(.x,.y, sep = ": ")), collapse = "\n"),
