@@ -567,13 +567,15 @@ verify_taxa <- function(taxa, verification = NULL) {
   # throw a message if a column called verificationKey already exists
   if ("verificationKey" %in% names(taxa)) {
     message(paste(
-      "\nColumn verificationKey already exists. It will be overwritten."),
-      appendLF = TRUE)
-    taxa <- 
+      "\nColumn verificationKey already exists. It will be overwritten."
+    ),
+    appendLF = TRUE
+    )
+    taxa <-
       taxa %>%
       select(-verificationKey)
   }
-  
+
   # test verification
   name_col_verification <- c(
     "taxonKey", "scientificName", "datasetKey",
@@ -785,9 +787,9 @@ verify_taxa <- function(taxa, verification = NULL) {
   else {
     updated_bb_scientificName_short <- tibble(
       taxonKey = double(),
-      bb_key = double(), 
+      bb_key = double(),
       bb_acceptedKey = double(),
-      bb_scientificName = character(), 
+      bb_scientificName = character(),
       updated_bb_scientificName = character()
     )
   }
@@ -833,9 +835,9 @@ verify_taxa <- function(taxa, verification = NULL) {
   else {
     updated_bb_acceptedName_short <- tibble(
       taxonKey = double(),
-      bb_key = double(), 
+      bb_key = double(),
       bb_acceptedKey = double(),
-      bb_acceptedName = character(), 
+      bb_acceptedName = character(),
       updated_bb_acceptedName = character()
     )
   }
@@ -959,17 +961,17 @@ verify_taxa <- function(taxa, verification = NULL) {
     filter(!is.na(verificationKey)) %>%
     filter(nchar(verificationKey) > 0) %>%
     pull(verificationKey)
-    verification_keys <- paste(verification_keys, collapse = ",")
-    verification_keys <- unlist(str_split(verification_keys, ","))
-    check_verificationKey <- gbif_verify_keys(verification_keys)
-    if (is.null(check_verificationKey)) {
-      check_verificationKey <- tibble(
-        key = double(),
-        is_taxonKey = logical(),
-        is_from_gbif_backbone = logical(),
-        is_synonym = logical()
-      )
-    }
+  verification_keys <- paste(verification_keys, collapse = ",")
+  verification_keys <- unlist(str_split(verification_keys, ","))
+  check_verificationKey <- gbif_verify_keys(verification_keys)
+  if (is.null(check_verificationKey)) {
+    check_verificationKey <- tibble(
+      key = double(),
+      is_taxonKey = logical(),
+      is_from_gbif_backbone = logical(),
+      is_synonym = logical()
+    )
+  }
   message("DONE.", appendLF = TRUE)
 
   # find taxa duplicates
@@ -1013,15 +1015,15 @@ verify_taxa <- function(taxa, verification = NULL) {
     ) %>%
     bind_rows(not_to_verify_taxa) %>%
     right_join(ordered_taxon_keys, by = "taxonKey")
-  
+
   # split outdated_taxa in outdated_unmatched_taxa and outdated_synonyms
-  outdated_unmatched_taxa <- 
+  outdated_unmatched_taxa <-
     outdated_taxa %>%
     filter(is.na(bb_key))
-  outdated_synonyms <- 
+  outdated_synonyms <-
     outdated_taxa %>%
     filter(!is.na(bb_acceptedKey))
-  
+
   return(list(
     taxa = taxa,
     verification = verification,

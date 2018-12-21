@@ -108,9 +108,10 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   gbif_info <-
     keys %>%
     map(~tryCatch(name_usage(., return = "data")[1, ],
-                  error = function(e) {
-                    print(paste("Key", ., "is an invalid GBIF taxon key."))
-                  }))
+      error = function(e) {
+        print(paste("Key", ., "is an invalid GBIF taxon key."))
+      }
+    ))
   check_keys <-
     map_df(gbif_info, ~is.character(.) == FALSE) %>%
     gather(key = key, value = is_taxonKey) %>%

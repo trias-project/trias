@@ -181,237 +181,237 @@ my_taxa <- data.frame(
 my_taxa_vk <- dplyr::mutate(my_taxa, verificationKey = 1)
 
 my_verification <- data.frame(
- taxonKey = c(
-   113794952,
-   141264857,
-   143920280,
-   141264835,
-   141264614,
-   140562956,
-   145953989,
-   114445583,
-   128897752,
-   101790530,
-   141265523
- ),
- scientificName = c(
-   "Rana catesbeiana",
-   "Polystichum tsus-simense J.Smith",
-   "Lemnaceae",
-   "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
-   "Begonia x semperflorens hort.",
-   "Ferrissia fragilis",
-   "Ferrissia fragilis",
-   "Rana blanfordii Boulenger",
-   "Python reticulatus Fitzinger, 1826",
-   "Stenelmis williami Schmude",
-   "Veronica austriaca Jacq."
- ),
- datasetKey = c(
-   "e4746398-f7c4-47a1-a474-ae80a4f18e92",
-   "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-   "e4746398-f7c4-47a1-a474-ae80a4f18e92",
-   "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-   "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-   "289244ee-e1c1-49aa-b2d7-d379391ce265",
-   "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
-   "3772da2f-daa1-4f07-a438-15a881a2142c",
-   "7ddf754f-d193-4cc9-b351-99906754a03b",
-   "9ca92552-f23a-41a8-a140-01abaa31c931",
-   "9ff7d317-609b-4c08-bd86-3bc404b77c42"
- ),
- bb_key = c(
-   2427092,
-   2651108,
-   6723,
-   NA,
-   NA,
-   2291152,
-   2291152,
-   2430304,
-   7587934,
-   1033588,
-   NA
- ),
- bb_scientificName = c(
-   "Rana catesbeiana Shaw, 1802",
-   "Polystichum tsus-tsus-tsus (Hook.) Captain",
-   "Lemnaceae",
-   NA,
-   NA,
-   "Ferrissia fragilis (Tryon, 1863)",
-   "Ferrissia fragilis (Tryon, 1863)",
-   "Rana blanfordii Boulenger, 1882",
-   "Python reticulatus Fitzinger, 1826",
-   "Stenelmis williami Schmude",
-   NA
- ),
- bb_kingdom = c(
-   "Animalia",
-   "Plantae",
-   "Plantae",
-   NA,
-   NA,
-   "Animalia",
-   "Animalia",
-   "Animalia",
-   "Animalia",
-   "Animalia",
-   NA
- ),
- bb_rank = c(
-   "SPECIES",
-   "SPECIES",
-   "FAMILY",
-   NA,
-   NA,
-   "SPECIES",
-   "SPECIES",
-   "SPECIES",
-   "SPECIES",
-   "SPECIES",
-   NA
- ),
- bb_taxonomicStatus = c(
-   "SYNONYM",
-   "SYNONYM",
-   "SYNONYM",
-   NA,
-   NA,
-   "SYNONYM",
-   "SYNONYM",
-   "SYNONYM",
-   "SYNONYM",
-   "SYNONYM",
-   NA
- ),
- bb_acceptedName = c(
-   "Lithobates dummyus (Batman, 2018)",
-   "Polystichum luctuosum (Kunze) Moore.",
-   "Araceae",
-   NA,
-   NA,
-   "Ferrissia californica (Rowell, 1863)",
-   "Ferrissia californica (Rowell, 1863)",
-   "Hylarana chalconota (Schlegel, 1837)",
-   "Malayopython reticulatus (Schneider, 1801)",
-   "Stenelmis Dufour, 1835",
-   NA
- ),
- bb_acceptedKey = c(
-   2427091,
-   4046493,
-   6979,
-   NA,
-   NA,
-   9520065,
-   9520065,
-   2427008,
-   9260388,
-   1033553,
-   NA
- ),
- bb_acceptedKingdom = c(
-   "Animalia",
-   "Plantae",
-   "Plantae",
-   NA,
-   NA,
-   "Animalia",
-   "Animalia",
-   "Animalia",
-   "Animalia",
-   "Animalia",
-   NA
- ),
- bb_acceptedRank = c(
-   "SPECIES",
-   "SPECIES",
-   "FAMILY",
-   NA,
-   NA,
-   "SPECIES",
-   "SPECIES",
-   "SPECIES",
-   "SPECIES",
-   "GENUS",
-   NA
- ),
- bb_acceptedTaxonomicStatus = c(
-   "ACCEPTED",
-   "ACCEPTED",
-   "ACCEPTED",
-   NA,
-   NA,
-   "ACCEPTED",
-   "ACCEPTED",
-   "ACCEPTED",
-   "ACCEPTED",
-   "ACCEPTED",
-   NA
- ),
- verificationKey = c(
-   2427091,
-   4046493,
-   6979,
-   "2805420,2805363",
-   NA,
-   NA,
-   NA,
-   NA,
-   9260388,
-   NA,
-   3172099
- ),
- remarks = c(
-   "dummy example 1: bb_acceptedName should be updated.",
-   "dummy example 2: bb_scientificName should be updated.",
-   "dummy example 3: not used anymore. Set outdated = TRUE. Add 'Outdated
+  taxonKey = c(
+    113794952,
+    141264857,
+    143920280,
+    141264835,
+    141264614,
+    140562956,
+    145953989,
+    114445583,
+    128897752,
+    101790530,
+    141265523
+  ),
+  scientificName = c(
+    "Rana catesbeiana",
+    "Polystichum tsus-simense J.Smith",
+    "Lemnaceae",
+    "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
+    "Begonia x semperflorens hort.",
+    "Ferrissia fragilis",
+    "Ferrissia fragilis",
+    "Rana blanfordii Boulenger",
+    "Python reticulatus Fitzinger, 1826",
+    "Stenelmis williami Schmude",
+    "Veronica austriaca Jacq."
+  ),
+  datasetKey = c(
+    "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+    "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+    "289244ee-e1c1-49aa-b2d7-d379391ce265",
+    "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
+    "3772da2f-daa1-4f07-a438-15a881a2142c",
+    "7ddf754f-d193-4cc9-b351-99906754a03b",
+    "9ca92552-f23a-41a8-a140-01abaa31c931",
+    "9ff7d317-609b-4c08-bd86-3bc404b77c42"
+  ),
+  bb_key = c(
+    2427092,
+    2651108,
+    6723,
+    NA,
+    NA,
+    2291152,
+    2291152,
+    2430304,
+    7587934,
+    1033588,
+    NA
+  ),
+  bb_scientificName = c(
+    "Rana catesbeiana Shaw, 1802",
+    "Polystichum tsus-tsus-tsus (Hook.) Captain",
+    "Lemnaceae",
+    NA,
+    NA,
+    "Ferrissia fragilis (Tryon, 1863)",
+    "Ferrissia fragilis (Tryon, 1863)",
+    "Rana blanfordii Boulenger, 1882",
+    "Python reticulatus Fitzinger, 1826",
+    "Stenelmis williami Schmude",
+    NA
+  ),
+  bb_kingdom = c(
+    "Animalia",
+    "Plantae",
+    "Plantae",
+    NA,
+    NA,
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    NA
+  ),
+  bb_rank = c(
+    "SPECIES",
+    "SPECIES",
+    "FAMILY",
+    NA,
+    NA,
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    NA
+  ),
+  bb_taxonomicStatus = c(
+    "SYNONYM",
+    "SYNONYM",
+    "SYNONYM",
+    NA,
+    NA,
+    "SYNONYM",
+    "SYNONYM",
+    "SYNONYM",
+    "SYNONYM",
+    "SYNONYM",
+    NA
+  ),
+  bb_acceptedName = c(
+    "Lithobates dummyus (Batman, 2018)",
+    "Polystichum luctuosum (Kunze) Moore.",
+    "Araceae",
+    NA,
+    NA,
+    "Ferrissia californica (Rowell, 1863)",
+    "Ferrissia californica (Rowell, 1863)",
+    "Hylarana chalconota (Schlegel, 1837)",
+    "Malayopython reticulatus (Schneider, 1801)",
+    "Stenelmis Dufour, 1835",
+    NA
+  ),
+  bb_acceptedKey = c(
+    2427091,
+    4046493,
+    6979,
+    NA,
+    NA,
+    9520065,
+    9520065,
+    2427008,
+    9260388,
+    1033553,
+    NA
+  ),
+  bb_acceptedKingdom = c(
+    "Animalia",
+    "Plantae",
+    "Plantae",
+    NA,
+    NA,
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    "Animalia",
+    NA
+  ),
+  bb_acceptedRank = c(
+    "SPECIES",
+    "SPECIES",
+    "FAMILY",
+    NA,
+    NA,
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "SPECIES",
+    "GENUS",
+    NA
+  ),
+  bb_acceptedTaxonomicStatus = c(
+    "ACCEPTED",
+    "ACCEPTED",
+    "ACCEPTED",
+    NA,
+    NA,
+    "ACCEPTED",
+    "ACCEPTED",
+    "ACCEPTED",
+    "ACCEPTED",
+    "ACCEPTED",
+    NA
+  ),
+  verificationKey = c(
+    2427091,
+    4046493,
+    6979,
+    "2805420,2805363",
+    NA,
+    NA,
+    NA,
+    NA,
+    9260388,
+    NA,
+    3172099
+  ),
+  remarks = c(
+    "dummy example 1: bb_acceptedName should be updated.",
+    "dummy example 2: bb_scientificName should be updated.",
+    "dummy example 3: not used anymore. Set outdated = TRUE. Add 'Outdated
    taxa.' to remarks.",
-   "dummy example 4: multiple keys in verificationKey are allowed.",
-   "dummy example 5: nothing should happen.",
-   "dummy example 6: datasetKey should not be modified. If new taxa come in
+    "dummy example 4: multiple keys in verificationKey are allowed.",
+    "dummy example 5: nothing should happen.",
+    "dummy example 6: datasetKey should not be modified. If new taxa come in
    with same name from other checklsits, they should be added as new rows.
    Report them as duplicates in duplicates_taxa",
-   "dummy example 7: datasetKey should not be modified. If new taxa come in
+    "dummy example 7: datasetKey should not be modified. If new taxa come in
    with same name from other checklsits, they should be added as new rows.
    Report them as duplicates in duplicates_taxa",
-   "dummy example 8: outdated synonym. Set outdated = TRUE. Add 'Outdated
+    "dummy example 8: outdated synonym. Set outdated = TRUE. Add 'Outdated
    taxa.' to remarks.",
-   "dummy example 9: 'Outdated taxa'. outdated is already TRUE. Label
+    "dummy example 9: 'Outdated taxa'. outdated is already TRUE. Label
    'Outdated taxa' already in remarks. No actions.",
-   "dummy example 10: 'Outdated taxa'. Not outdated anymore. Change outdated
+    "dummy example 10: 'Outdated taxa'. Not outdated anymore. Change outdated
    back to FALSE. Remove label from remarks.",
-   "dummy example 11: outdated unmatched taxa. Set outdated = TRUE. Add
+    "dummy example 11: outdated unmatched taxa. Set outdated = TRUE. Add
    'Outdated taxa' to remarks."
- ),
- dateAdded = as.Date(
-   c(
-     "2018-07-01",
-     "2018-07-01",
-     "2018-07-01",
-     "2018-07-16",
-     "2018-07-16",
-     "2018-07-01",
-     "2018-11-20",
-     "2018-11-29",
-     "2018-12-01",
-     "2018-12-02",
-     "2018-12-03"
-   )
- ),
- outdated = c(
-   FALSE,
-   FALSE,
-   FALSE,
-   FALSE,
-   FALSE,
-   FALSE,
-   FALSE,
-   FALSE,
-   TRUE,
-   TRUE,
-   FALSE
- ),
- stringsAsFactors = FALSE
+  ),
+  dateAdded = as.Date(
+    c(
+      "2018-07-01",
+      "2018-07-01",
+      "2018-07-01",
+      "2018-07-16",
+      "2018-07-16",
+      "2018-07-01",
+      "2018-11-20",
+      "2018-11-29",
+      "2018-12-01",
+      "2018-12-02",
+      "2018-12-03"
+    )
+  ),
+  outdated = c(
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    FALSE,
+    TRUE,
+    TRUE,
+    FALSE
+  ),
+  stringsAsFactors = FALSE
 )

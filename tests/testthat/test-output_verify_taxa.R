@@ -86,13 +86,13 @@ testthat::test_that("consitency input - output", {
   expect_true(all(output1$info$outdated_synonyms$outdated == TRUE))
   expect_true(all(output2$info$outdated_synonyms$outdated == TRUE))
   expect_true(
-    nrow(output1$info$outdated_synonyms) + 
-      nrow(output1$info$outdated_unmatched_taxa) == 
+    nrow(output1$info$outdated_synonyms) +
+      nrow(output1$info$outdated_unmatched_taxa) ==
       nrow(dplyr::filter(output1$verification, outdated == TRUE))
   )
   expect_true(
-    nrow(output2$info$outdated_synonyms) + 
-      nrow(output2$info$outdated_unmatched_taxa) == 
+    nrow(output2$info$outdated_synonyms) +
+      nrow(output2$info$outdated_unmatched_taxa) ==
       nrow(dplyr::filter(output2$verification, outdated == TRUE))
   )
 })
@@ -254,8 +254,8 @@ output1_updated_bb_scientificName <-
 output2_updated_bb_scientificName <-
   readr::read_tsv(
     file = paste0(
-    "./data_test_output_verify_taxa/",
-    "output2_updated_bb_scientificName.tsv"
+      "./data_test_output_verify_taxa/",
+      "output2_updated_bb_scientificName.tsv"
     ),
     col_types = col_types_updated_names
   )
@@ -298,7 +298,7 @@ output2_duplicates <-
 testthat::test_that("output data.frames are correct", {
   expect_equivalent(output1$taxa, output1_taxa)
   expect_equivalent(output2$taxa, output2_taxa)
-  
+
   expect_equivalent(
     output1$verification %>%
       # new synonyms and unmatched get date of today
@@ -315,7 +315,7 @@ testthat::test_that("output data.frames are correct", {
       # new synonyms and unmatched got paste date
       dplyr::select(-dateAdded)
   )
-  
+
   expect_equivalent(
     output1$info$new_synonyms %>%
       # new synonyms get date of today
@@ -332,7 +332,7 @@ testthat::test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-  
+
   expect_equivalent(
     output1$info$new_unmatched_taxa %>%
       # unmatched get date of today
@@ -349,25 +349,25 @@ testthat::test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-  
+
   expect_equivalent(
-    output1$info$outdated_unmatched_taxa, 
+    output1$info$outdated_unmatched_taxa,
     output1_outdated_unmatched_taxa
   )
   expect_equivalent(
-    output2$info$outdated_unmatched_taxa, 
+    output2$info$outdated_unmatched_taxa,
     output2_outdated_unmatched_taxa
   )
-  
+
   expect_equivalent(
-    output1$info$outdated_synonyms, 
+    output1$info$outdated_synonyms,
     output1_outdated_synonyms
   )
   expect_equivalent(
-    output2$info$outdated_synonyms, 
+    output2$info$outdated_synonyms,
     output2_outdated_synonyms
   )
-  
+
   expect_equivalent(
     output1$info$updated_bb_scientificName,
     output1_updated_bb_scientificName
@@ -376,7 +376,7 @@ testthat::test_that("output data.frames are correct", {
     output2$info$updated_bb_scientificName,
     output2_updated_bb_scientificName
   )
-  
+
   expect_equivalent(
     output1$info$updated_bb_acceptedName,
     output1_updated_bb_acceptedName
@@ -385,7 +385,7 @@ testthat::test_that("output data.frames are correct", {
     output2$info$updated_bb_acceptedName,
     output2_updated_bb_acceptedName
   )
-  
+
   expect_equivalent(output1$info$duplicates, output1_duplicates)
   expect_equivalent(output2$info$duplicates, output2_duplicates)
   # check_verification_key df no tested here: output of another TrIAS function
