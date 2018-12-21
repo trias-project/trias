@@ -600,7 +600,7 @@ verify_taxa <- function(taxa, verification = NULL) {
     "bb_acceptedKingdom", "bb_acceptedRank",
     "bb_acceptedTaxonomicStatus",
     "verificationKey", "remarks",
-    "verifiedBy","dateAdded", "outdated"
+    "verifiedBy", "dateAdded", "outdated"
   )
   # make empty tibble df if not exist
   if (is.null(verification)) {
@@ -694,26 +694,28 @@ verify_taxa <- function(taxa, verification = NULL) {
   assert_that(all(!taxonomic_status %in% not_allowed_taxonomicStatus),
     msg = "Only synonyms and unmatched taxa allowed in verification."
   )
-  
-  verifiedBy_anomalies <- 
+
+  verifiedBy_anomalies <-
     verification %>%
     filter(is.na(verificationKey) & !is.na(verifiedBy))
   if (nrow(verifiedBy_anomalies) > 0) {
     warning(
       paste("verifiedBy must be empty if no verificationKey is present.",
-            "Suspect verifiedBy values will be removed.",
-            paste(map2_chr(verifiedBy_anomalies$taxonKey, 
-                     verifiedBy_anomalies$verifiedBy, 
-                     ~paste(.x,.y, sep = ": ")), collapse = "\n"),
-            sep = "\n"
+        "Suspect verifiedBy values will be removed.",
+        paste(map2_chr(
+          verifiedBy_anomalies$taxonKey,
+          verifiedBy_anomalies$verifiedBy,
+          ~paste(.x, .y, sep = ": ")
+        ), collapse = "\n"),
+        sep = "\n"
       )
     )
     # get order taxa in verification
     ordered_taxon_keys_verification <-
       verification %>%
       select(taxonKey)
-    
-    verifiedBy_anomalies <- 
+
+    verifiedBy_anomalies <-
       verifiedBy_anomalies %>%
       mutate(verifiedBy = NA_character_)
     verification <-
@@ -721,10 +723,11 @@ verify_taxa <- function(taxa, verification = NULL) {
       anti_join(verifiedBy_anomalies, by = names(verification)) %>%
       bind_rows(verifiedBy_anomalies) %>%
       right_join(ordered_taxon_keys_verification,
-                 by = "taxonKey")
+        by = "taxonKey"
+      )
   }
   message("DONE.", appendLF = TRUE)
-  
+
   # get order taxon keys
   ordered_taxon_keys <-
     taxa %>%

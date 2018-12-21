@@ -432,4 +432,3 @@ my_verification <- data.frame(
 my_verification_vk_vby <- my_verification
 my_verification_vk_vby$verifiedBy[6] <- "Calvin"
 my_verification_vk_vby$verifiedBy[7] <- "Hobbes"
-         
