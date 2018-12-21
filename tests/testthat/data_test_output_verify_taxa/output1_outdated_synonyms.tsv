@@ -1,0 +1,7 @@
+taxonKey	scientificName	datasetKey	bb_key	bb_scientificName	bb_kingdom	bb_rank	bb_taxonomicStatus	bb_acceptedKey	bb_acceptedName	bb_acceptedKingdom	bb_acceptedRank	bb_acceptedTaxonomicStatus	verificationKey	remarks	dateAdded	outdated
+128897752	Python reticulatus Fitzinger, 1826	7ddf754f-d193-4cc9-b351-99906754a03b	7587934	Python reticulatus Fitzinger, 1826	Animalia	SPECIES	SYNONYM	9260388	Malayopython reticulatus (Schneider, 1801)	Animalia	SPECIES	ACCEPTED	9260388	"dummy example 9: 'Outdated taxa'. outdated is already TRUE. Label
+   'Outdated taxa' already in remarks. No actions."	2018-12-01	TRUE
+143920280	Lemnaceae	e4746398-f7c4-47a1-a474-ae80a4f18e92	6723	Lemnaceae	Plantae	FAMILY	SYNONYM	6979	Araceae	Plantae	FAMILY	ACCEPTED	6979	"dummy example 3: not used anymore. Set outdated = TRUE. Add 'Outdated
+   taxa.' to remarks. Outdated taxa."	2018-07-01	TRUE
+114445583	Rana blanfordii Boulenger	3772da2f-daa1-4f07-a438-15a881a2142c	2430304	Rana blanfordii Boulenger, 1882	Animalia	SPECIES	SYNONYM	2427008	Hylarana chalconota (Schlegel, 1837)	Animalia	SPECIES	ACCEPTED	NA	"dummy example 8: outdated synonym. Set outdated = TRUE. Add 'Outdated
+   taxa.' to remarks. Outdated taxa."	2018-11-29	TRUE

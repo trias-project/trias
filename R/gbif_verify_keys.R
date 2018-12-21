@@ -83,7 +83,7 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
       pull(name_col)
   }
   keys <- keys[!is.na(keys)]
-  if (length(keys) == 0) {
+  if (length(keys) == 0 | isTRUE(all(keys == ""))) {
     return(NULL)
   } else {
     assert_that(all(keys != "") == TRUE,
