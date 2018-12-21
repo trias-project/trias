@@ -36,6 +36,8 @@ testthat::test_that("output structure", {
   expect_true(is.data.frame(output2$info$duplicates))
   expect_true(is.data.frame(output1$info$check_verificationKey))
   expect_true(is.data.frame(output2$info$check_verificationKey))
+  expect_true(all(purrr::map_lgl(output1$info, ~(!"grouped_df" %in% class(.)))))
+  expect_true(all(purrr::map_lgl(output2$info, ~(!"grouped_df" %in% class(.)))))
 })
 
 testthat::test_that("consitency input - output", {
