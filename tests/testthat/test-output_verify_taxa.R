@@ -80,16 +80,6 @@ testthat::test_that("consitency input - output", {
       nrow(output2$info$outdated_unmatched_taxa) ==
       nrow(dplyr::filter(output2$verification, outdated == TRUE))
   )
-  expect_warning(
-    verify_taxa(my_taxa, my_verification_vk_vby),
-    paste(
-      "verifiedBy must be empty if no verificationKey is present.",
-      "Suspect verifiedBy values will be removed.",
-      "140562956: Calvin",
-      "145953989: Hobbes",
-      sep = "\n"
-    )
-  )
 })
 
 col_types_verification <- readr::cols(

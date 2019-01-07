@@ -1,3 +1,2 @@
 taxonKey	scientificName	datasetKey	bb_key	bb_scientificName	bb_kingdom	bb_rank	bb_taxonomicStatus	bb_acceptedKey	bb_acceptedName	bb_acceptedKingdom	bb_acceptedRank	bb_acceptedTaxonomicStatus	verificationKey	remarks	verifiedBy	dateAdded	outdated
-141265523	Veronica austriaca Jacq.	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	3172099	"dummy example 11: outdated unmatched taxa. Set outdated = TRUE. Add
-   'Outdated taxa' to remarks. Outdated taxa."	Dimitri Brosens	2018-12-03	TRUE
+141265523	Veronica austriaca Jacq.	9ff7d317-609b-4c08-bd86-3bc404b77c42	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	3172099	"dummy example 11: outdated unmatched taxa. Set outdated = TRUE."	Dimitri Brosens	2018-12-03	TRUE

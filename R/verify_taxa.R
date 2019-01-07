@@ -464,8 +464,7 @@
 #'   remarks = c(
 #'     "dummy example 1: bb_acceptedName should be updated.",
 #'     "dummy example 2: bb_scientificName should be updated.",
-#'     "dummy example 3: not used anymore. Set outdated = TRUE. Add 'Outdated
-#'     taxa.' to remarks.",
+#'     "dummy example 3: not used anymore. Set outdated = TRUE.",
 #'     "dummy example 4: multiple keys in verificationKey are allowed.",
 #'     "dummy example 5: nothing should happen.",
 #'     "dummy example 6: datasetKey should not be modified. If new taxa come in
@@ -474,14 +473,11 @@
 #'     "dummy example 7: datasetKey should not be modified. If new taxa come in
 #'     with same name from other checklsits, they should be added as new rows.
 #'     Report them as duplicates in duplicates_taxa",
-#'     "dummy example 8: outdated synonym. Set outdated = TRUE. Add 'Outdated
-#'     taxa.' to remarks.",
-#'     "dummy example 9: 'Outdated taxa'. outdated is already TRUE. Label
-#'     'Outdated taxa' already in remarks. No actions.",
-#'     "dummy example 10: 'Outdated taxa'. Not outdated anymore. Change outdated
-#'     back to FALSE. Remove label from remarks.",
-#'     "dummy example 11: outdated unmatched taxa. Set outdated = TRUE. Add
-#'     'Outdated taxa' to remarks."
+#'     "dummy example 8: outdated synonym. Set outdated = TRUE.",
+#'     "dummy example 9: outdated synonym. outdated is already TRUE. No actions.",
+#'     "dummy example 10: outdated synonym. Not outdated anymore. Change outdated
+#'     back to FALSE.",
+#'     "dummy example 11: outdated unmatched taxa. Set outdated = TRUE."
 #'   ),
 #'   verifiedBy = c(
 #'     "Damiano Oldoni",
@@ -694,38 +690,6 @@ verify_taxa <- function(taxa, verification = NULL) {
   assert_that(all(!taxonomic_status %in% not_allowed_taxonomicStatus),
     msg = "Only synonyms and unmatched taxa allowed in verification."
   )
-
-  verifiedBy_anomalies <-
-    verification %>%
-    filter(is.na(verificationKey) & !is.na(verifiedBy))
-  if (nrow(verifiedBy_anomalies) > 0) {
-    warning(
-      paste("verifiedBy must be empty if no verificationKey is present.",
-        "Suspect verifiedBy values will be removed.",
-        paste(map2_chr(
-          verifiedBy_anomalies$taxonKey,
-          verifiedBy_anomalies$verifiedBy,
-          ~paste(.x, .y, sep = ": ")
-        ), collapse = "\n"),
-        sep = "\n"
-      )
-    )
-    # get order taxa in verification
-    ordered_taxon_keys_verification <-
-      verification %>%
-      select(taxonKey)
-
-    verifiedBy_anomalies <-
-      verifiedBy_anomalies %>%
-      mutate(verifiedBy = NA_character_)
-    verification <-
-      verification %>%
-      anti_join(verifiedBy_anomalies, by = names(verification)) %>%
-      bind_rows(verifiedBy_anomalies) %>%
-      right_join(ordered_taxon_keys_verification,
-        by = "taxonKey"
-      )
-  }
   message("DONE.", appendLF = TRUE)
 
   # get order taxon keys
@@ -988,19 +952,10 @@ verify_taxa <- function(taxa, verification = NULL) {
       verification %>%
       anti_join(taxa, by = c("taxonKey", "bb_key", "bb_acceptedKey"))
 
-    # not add 'Outdated taxa' in remarks to already outdated taxa
-    old_outdated_taxa <-
+    # set outdated = TRUE to all outdated taxa
+    outdated_taxa <-
       outdated_taxa %>%
-      filter(outdated == TRUE)
-    # set outdated = TRUE, add 'Outdated taxa.' to remarks for new outdated taxa
-    new_outdated_taxa <-
-      outdated_taxa %>%
-      filter(outdated == FALSE) %>%
-      mutate(
-        remarks = paste(remarks, "Outdated taxa."),
-        outdated = TRUE
-      )
-    outdated_taxa <- bind_rows(old_outdated_taxa, new_outdated_taxa)
+      mutate(outdated = TRUE)
     # compose verification back together
     verification <-
       not_outdated_taxa %>%
