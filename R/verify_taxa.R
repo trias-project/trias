@@ -576,12 +576,10 @@ verify_taxa <- function(taxa, verification = NULL) {
   )
 
   # Throw a message if a column called verificationKey already exists
+  message_existence_verificationKey <- NULL
   if ("verificationKey" %in% names(taxa)) {
-    message(paste(
-      "\nColumn verificationKey already exists. It will be overwritten."
-    ),
-    appendLF = TRUE
-    )
+    message_existence_verificationKey <- 
+      "Column verificationKey already exists. It will be overwritten."
     taxa <-
       taxa %>%
       select(-verificationKey)
@@ -691,6 +689,9 @@ verify_taxa <- function(taxa, verification = NULL) {
     msg = "Only synonyms and unmatched taxa allowed in verification."
   )
   message("DONE.", appendLF = TRUE)
+  if (!is.null(message_existence_verificationKey)) {
+    message(message_existence_verificationKey, appendLF = TRUE)
+  }
 
   # Get order taxon keys
   ordered_taxon_keys <-
