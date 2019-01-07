@@ -538,20 +538,16 @@ verify_taxa <- function(taxa, verification = NULL) {
   )
   assertthat::assert_that(is.data.frame(taxa))
   assertthat::assert_that(all(name_col_taxa %in% names(taxa)))
-  is.character(c(
-    taxa$scientificName,
-    taxa$datasetKey,
-    taxa$bb_scientificName,
-    taxa$bb_kingdom,
-    taxa$bb_rank,
-    taxa$bb_taxonomicStatus,
-    taxa$bb_acceptedName
-  ))
-  is.numeric(c(
-    taxa$taxonKey,
-    taxa$bb_key,
-    taxa$bb_acceptedKey
-  ))
+  taxa$scientificName <- as.character(taxa$scientificName)
+  taxa$datasetKey <- as.character(taxa$datasetKey)
+  taxa$bb_scientificName <- as.character(taxa$bb_scientificName)
+  taxa$bb_kingdom <- as.character(taxa$bb_kingdom)
+  taxa$bb_rank <- as.character(taxa$bb_rank)
+  taxa$bb_taxonomicStatus <- as.character(taxa$bb_taxonomicStatus)
+  taxa$bb_acceptedName <- as.character(taxa$bb_acceptedName)
+  taxa$taxonKey <- as.numeric(taxa$taxonKey)
+  taxa$bb_key <- as.numeric(taxa$bb_key)
+  taxa$bb_acceptedKey <- as.numeric(taxa$bb_acceptedKey)
 
   # Check that accepted or doubtful taxa have a backbone key
   assert_that(
@@ -622,28 +618,27 @@ verify_taxa <- function(taxa, verification = NULL) {
   }
   assert_that(is.data.frame(verification))
   assert_that(all(name_col_verification %in% names(verification)))
-  is.character(c(
-    verification$scientificName,
-    verification$datasetKey,
-    verification$bb_scientificName,
-    verification$bb_kingdom,
-    verification$bb_rank,
-    verification$bb_taxonomicStatus,
-    verification$bb_acceptedName,
-    verification$bb_acceptedKingdom,
-    verification$bb_acceptedRank,
-    verification$bb_acceptedTaxonomicStatus,
-    verification$verificationKey,
-    verification$remarks,
-    verification$verifiedBy
-  ))
-  is.numeric(c(
-    verification$taxonKey,
-    verification$bb_key,
-    verification$bb_acceptedKey
-  ))
-  is.date(verification$dateAdded)
-  is.logical(verification$outdated)
+  verification$scientificName <- as.character(verification$scientificName)
+  verification$datasetKey <- as.character(verification$datasetKey)
+  verification$bb_scientificName <- as.character(verification$bb_scientificName)
+  verification$bb_kingdom <- as.character(verification$bb_kingdom)
+  verification$bb_rank <- as.character(verification$bb_rank)
+  verification$bb_taxonomicStatus <- 
+    as.character(verification$bb_taxonomicStatus)
+  verification$bb_acceptedName <- as.character(verification$bb_acceptedName)
+  verification$bb_acceptedKingdom <- 
+    as.character(verification$bb_acceptedKingdom)
+  verification$bb_acceptedRank <- as.character(verification$bb_acceptedRank)
+  verification$bb_acceptedTaxonomicStatus <- 
+    as.character(verification$bb_acceptedTaxonomicStatus)
+  verification$verificationKey <- as.character(verification$verificationKey)
+  verification$remarks <- as.character(verification$remarks)
+  verification$verifiedBy <- as.character(verification$verifiedBy)
+  verification$taxonKey <- as.numeric(verification$taxonKey)
+  verification$bb_key <- as.numeric(verification$bb_key)
+  verification$bb_acceptedKey <- as.numeric(verification$bb_acceptedKey)
+  verification$dateAdded <- as.Date(verification$dateAdded)
+  verification$outdated <- as.logical(verification$outdated)
   assert_that(
     all(nchar(verification$datasetKey) == 36) &
       isFALSE(any(grepl(pattern = ",", x = verification$datasetKey))),
