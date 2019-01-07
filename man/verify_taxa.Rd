@@ -463,8 +463,7 @@ my_verification <- data.frame(
   remarks = c(
     "dummy example 1: bb_acceptedName should be updated.",
     "dummy example 2: bb_scientificName should be updated.",
-    "dummy example 3: not used anymore. Set outdated = TRUE. Add 'Outdated
-    taxa.' to remarks.",
+    "dummy example 3: not used anymore. Set outdated = TRUE.",
     "dummy example 4: multiple keys in verificationKey are allowed.",
     "dummy example 5: nothing should happen.",
     "dummy example 6: datasetKey should not be modified. If new taxa come in
@@ -473,14 +472,11 @@ my_verification <- data.frame(
     "dummy example 7: datasetKey should not be modified. If new taxa come in
     with same name from other checklsits, they should be added as new rows.
     Report them as duplicates in duplicates_taxa",
-    "dummy example 8: outdated synonym. Set outdated = TRUE. Add 'Outdated
-    taxa.' to remarks.",
-    "dummy example 9: 'Outdated taxa'. outdated is already TRUE. Label
-    'Outdated taxa' already in remarks. No actions.",
-    "dummy example 10: 'Outdated taxa'. Not outdated anymore. Change outdated
-    back to FALSE. Remove label from remarks.",
-    "dummy example 11: outdated unmatched taxa. Set outdated = TRUE. Add
-    'Outdated taxa' to remarks."
+    "dummy example 8: outdated synonym. Set outdated = TRUE.",
+    "dummy example 9: outdated synonym. outdated is already TRUE. No actions.",
+    "dummy example 10: outdated synonym. Not outdated anymore. Change outdated
+    back to FALSE.",
+    "dummy example 11: outdated unmatched taxa. Set outdated = TRUE."
   ),
   verifiedBy = c(
     "Damiano Oldoni",
