@@ -8,114 +8,93 @@ verify_taxa(taxa, verification = NULL)
 }
 \arguments{
 \item{taxa}{df. Dataframe with at least the following columns for each taxon:
-\itemize{
-\item{\code{taxonKey}: numeric. Non-backbone checklist taxon key assigned
-by GBIF.}
-\item{\code{scientificName}: character. Scientific name as interpreted by
-GBIF.}
-\item{\code{datasetKey}: character. Dataset key (UUID) assigned by GBIF of
-originating checklist.}
-\item{\code{bb_key}: numeric. Taxon key of matching backbone taxon (if
-any).}
+\itemize{ \item{\code{taxonKey}: numeric. Non-backbone checklist taxon key
+assigned by GBIF.} \item{\code{scientificName}: character. Scientific name
+as interpreted by GBIF.} \item{\code{datasetKey}: character. Dataset key
+(UUID) assigned by GBIF of originating checklist.} \item{\code{bb_key}:
+numeric. Taxon key of matching backbone taxon (if any).}
 \item{\code{bb_scientificName}: character. Scientific name of matching
-backbone taxon.}
-\item{\code{bb_kingdom}: character. Kingdom of matching backbone taxon.}
-\item{\code{bb_rank}: character. Rank of matching backbone taxon.}
-\item{\code{bb_taxonomicStatus}: character. Taxonomic status of matching
-backbone taxon.}
-\item{\code{bb_acceptedKey}: numeric. Accepted key of taxon for which
-matching backbone taxon is considered a synonym.}
+backbone taxon.} \item{\code{bb_kingdom}: character. Kingdom of matching
+backbone taxon.} \item{\code{bb_rank}: character. Rank of matching backbone
+taxon.} \item{\code{bb_taxonomicStatus}: character. Taxonomic status of
+matching backbone taxon.} \item{\code{bb_acceptedKey}: numeric. Accepted
+key of taxon for which matching backbone taxon is considered a synonym.}
 \item{\code{bb_acceptedName}: character. Accepted name of taxon for which
-matching backbone taxon is considered a synonym.}
-}}
+matching backbone taxon is considered a synonym.} }}
 
 \item{verification}{df. Dataframe with at least the following columns for
 each checklist taxon/backbone taxon/accepted taxon combination: \itemize{
 \item{\code{taxonKey}: numeric. Non-backbone checklist taxon key assigned
-by GBIF.}
-\item{\code{scientificName}: character. Scientific name as interpreted by
-GBIF.}
-\item{\code{datasetKey}: character. Dataset key (UUID) assigned by GBIF of
-originating checklist.}
-\item{\code{bb_key}: numeric. Taxon key of matching backbone taxon (if
-any).}
+by GBIF.} \item{\code{scientificName}: character. Scientific name as
+interpreted by GBIF.} \item{\code{datasetKey}: character. Dataset key
+(UUID) assigned by GBIF of originating checklist.} \item{\code{bb_key}:
+numeric. Taxon key of matching backbone taxon (if any).}
 \item{\code{bb_scientificName}: character. Scientific name of matching
-backbone taxon.}
-\item{\code{bb_kingdom}: character. Kingdom of matching backbone taxon.}
-\item{\code{bb_rank}: character. Rank of matching backbone taxon.}
-\item{\code{bb_taxonomicStatus}: character. Taxonomic status of matching
-backbone taxon.}
-\item{\code{bb_acceptedKey}: numeric. Taxon key of accepted backbone taxon
-in case matching backbone taxon is considered a synonym.}
-\item{\code{bb_acceptedName}: character. Scientific name of accepted
-backbone taxon in case matching backbone taxon is considered a synonym.}
-\item{\code{bb_acceptedKingdom}: character. Kingdom of accepted taxon.
-Expected to be equal to \code{bb_kingdom}.}
+backbone taxon.} \item{\code{bb_kingdom}: character. Kingdom of matching
+backbone taxon.} \item{\code{bb_rank}: character. Rank of matching backbone
+taxon.} \item{\code{bb_taxonomicStatus}: character. Taxonomic status of
+matching backbone taxon.} \item{\code{bb_acceptedKey}: numeric. Taxon key
+of accepted backbone taxon in case matching backbone taxon is considered a
+synonym.} \item{\code{bb_acceptedName}: character. Scientific name of
+accepted backbone taxon in case matching backbone taxon is considered a
+synonym.} \item{\code{bb_acceptedKingdom}: character. Kingdom of accepted
+taxon. Expected to be equal to \code{bb_kingdom}.}
 \item{\code{bb_acceptedRank}: character. Rank of accepted taxon.}
 \item{\code{bb_acceptedTaxonomicStatus}: character. Taxonomic status of
 accepted taxon. Expected to be \code{ACCEPTED}.}
 \item{\code{verificationKey}: character. Taxon key(s) of backbone taxon
-manually set by expert.}
-\item{\code{remarks}: character. Remarks provided by the expert.}
-\item{\code{dateAdded}: date. Date on which new combinations were added.}
-\item{\code{outdated}: logical. \code{TRUE} when combination was not used
-for input taxa.}
-}}
+manually set by expert.} \item{\code{remarks}: character. Remarks provided
+by the expert.} \item{\code{verifiedBy}: character. Name of the person who
+assigned \code{verificationKey}.} \item{\code{dateAdded}: date. Date on
+which new
+combinations were added.} \item{\code{outdated}: logical. \code{TRUE} when
+combination was not used for input taxa.} }}
 }
 \value{
-list. List with three objects: \itemize{
-  \item{\code{taxa}: df. Provided dataframe with additional column
-  \code{verificationKey}.}
+list. List with three objects: \itemize{ \item{\code{taxa}: df.
+  Provided dataframe with additional column \code{verificationKey}.}
   \item{\code{verification}: df. New or updated dataframe with verification
-  information.}
-  \item{\code{info}: list. Dataframes with ancillary information regarding
-  changes to the verification. \itemize{
-    \item{\code{new_synonyms}: df. Subset of \code{verification} with synonym
-    taxa found in \code{taxa} but not in provided \code{verification}).}
-    \item{\code{new_unmatched_taxa}: df. Subset of \code{verification} with
-    unmatched taxa found in \code{taxa} but not in provided
-    \code{verification}).}
-    \item{\code{outdated_taxa}: df. Subset of \code{verification} with taxa
-    found in provided \code{verification} but not in \code{taxa}.}
-    \item{\code{updated_bb_scientificName}: df. \code{bb_scientificName}s in
-    provided \code{verification} that were updated
-    \code{updated_bb_scientificName} in the backbone since.}
-    \item{\code{updated_bb_acceptedName}: df. \code{bb_acceptedName}s in
-    provided \code{verification} that were updated
-    \code{updated_bb_acceptedName} in the backbone since.}
-    \item{\code{duplicates}: df. Taxa present in more than one checklist.}
-    \item{\code{check_verificationKey}: df. Check if provided
-    \code{verificationKey}s can be found in backbone.}
-  }}
-}
+  information.} \item{\code{info}: list. Dataframes with ancillary
+  information regarding changes to the verification. \itemize{
+  \item{\code{new_synonyms}: df. Subset of \code{verification} with synonym
+  taxa found in \code{taxa} but not in provided \code{verification}).}
+  \item{\code{new_unmatched_taxa}: df. Subset of \code{verification} with
+  unmatched taxa found in \code{taxa} but not in provided
+  \code{verification}).} \item{\code{outdated_synonyms}: df. Subset of
+  \code{verification} with synonyms found in provided \code{verification} but not
+  in \code{taxa}.} \item{\code{outdated_unmatched_taxa}: df. Subset of
+  \code{verification} with unmatched taxa found in provided \code{verification} but not
+  in \code{taxa}.} \item{\code{updated_bb_scientificName}: df.
+  \code{bb_scientificName}s in provided \code{verification} that were updated
+  \code{updated_bb_scientificName} in the backbone since.}
+  \item{\code{updated_bb_acceptedName}: df. \code{bb_acceptedName}s in
+  provided \code{verification} that were updated
+  \code{updated_bb_acceptedName} in the backbone since.}
+  \item{\code{duplicates}: df. Taxa present in more than one checklist.}
+  \item{\code{check_verificationKey}: df. Check if provided
+  \code{verificationKey}s can be found in backbone.} }} }
 }
 \description{
 Verify taxa that the \href{https://doi.org/10.15468/39omei}{GBIF Backbone
 Taxonomy} does not recognize (no backbone match) or will lump under another
 name (synonyms). This is done by adding a \code{verificationKey} to the input
-dataframe, populated with:
-\itemize{
-  \item{For \code{ACCEPTED} and \code{DOUBTFUL} taxa: the backbone taxon key
-  for that taxon (taxon is its own unit and won't be lumped).}
-  \item{For other taxa: a manually chosen and thus verified backbone taxon
-  key. This could either be the taxon key of: \itemize{
-     \item{accepted taxon suggested by GBIF: backbone synonymy is accepted
-     and taxon will be lumped.}
-     \item{another accepted taxon: backbone synonymy is rejected, but taxon
-     will be lumped under another name.}
-     \item{taxon itself: backbone synonymy is rejected, taxon will be
-     considered as separate taxon.}
-     \item{other taxon/taxa: automatic backbone match failed, but taxon can
-     be considered/lumped with manually found taxon/taxa (e.g. hybrid formula
-     considered equal to its hybrid parents).}
-  }}
-}
-The manually chosen \code{verificationKey} should be provided in
-\code{verification}: a dataframe (probably read from a file) listing all
-checklist taxon/backbone taxon/accepted taxon combinations that require
-verification. The function will update a provided verification based on the
-input taxa or create a new one if none is provided. Any changes to the
-verification are also provided as ancillary information.
+dataframe, populated with: \itemize{ \item{For \code{ACCEPTED} and
+\code{DOUBTFUL} taxa: the backbone taxon key for that taxon (taxon is its own
+unit and won't be lumped).} \item{For other taxa: a manually chosen and thus
+verified backbone taxon key. This could either be the taxon key of: \itemize{
+\item{accepted taxon suggested by GBIF: backbone synonymy is accepted and
+taxon will be lumped.} \item{another accepted taxon: backbone synonymy is
+rejected, but taxon will be lumped under another name.} \item{taxon itself:
+backbone synonymy is rejected, taxon will be considered as separate taxon.}
+\item{other taxon/taxa: automatic backbone match failed, but taxon can be
+considered/lumped with manually found taxon/taxa (e.g. hybrid formula
+considered equal to its hybrid parents).} }} } The manually chosen
+\code{verificationKey} should be provided in \code{verification}: a dataframe
+(probably read from a file) listing all checklist taxon/backbone
+taxon/accepted taxon combinations that require verification. The function
+will update a provided verification based on the input taxa or create a new
+one if none is provided. Any changes to the verification are also provided as
+ancillary information.
 }
 \examples{
 my_taxa <- data.frame(
@@ -309,7 +288,8 @@ my_verification <- data.frame(
     145953989,
     114445583,
     128897752,
-    101790530
+    101790530,
+    141265523
   ),
   scientificName = c(
     "Rana catesbeiana",
@@ -321,7 +301,8 @@ my_verification <- data.frame(
     "Ferrissia fragilis",
     "Rana blanfordii Boulenger",
     "Python reticulatus Fitzinger, 1826",
-    "Stenelmis williami Schmude"
+    "Stenelmis williami Schmude",
+    "Veronica austriaca Jacq."
   ),
   datasetKey = c(
     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -333,7 +314,8 @@ my_verification <- data.frame(
     "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
     "3772da2f-daa1-4f07-a438-15a881a2142c",
     "7ddf754f-d193-4cc9-b351-99906754a03b",
-    "9ca92552-f23a-41a8-a140-01abaa31c931"
+    "9ca92552-f23a-41a8-a140-01abaa31c931",
+    "9ff7d317-609b-4c08-bd86-3bc404b77c42"
   ),
   bb_key = c(
     2427092,
@@ -345,7 +327,8 @@ my_verification <- data.frame(
     2291152,
     2430304,
     7587934,
-    1033588
+    1033588,
+    NA
   ),
   bb_scientificName = c(
     "Rana catesbeiana Shaw, 1802",
@@ -357,7 +340,8 @@ my_verification <- data.frame(
     "Ferrissia fragilis (Tryon, 1863)",
     "Rana blanfordii Boulenger, 1882",
     "Python reticulatus Fitzinger, 1826",
-    "Stenelmis williami Schmude"
+    "Stenelmis williami Schmude",
+    NA
   ),
   bb_kingdom = c(
     "Animalia",
@@ -369,7 +353,8 @@ my_verification <- data.frame(
     "Animalia",
     "Animalia",
     "Animalia",
-    "Animalia"
+    "Animalia",
+    NA
   ),
   bb_rank = c(
     "SPECIES",
@@ -381,7 +366,8 @@ my_verification <- data.frame(
     "SPECIES",
     "SPECIES",
     "SPECIES",
-    "SPECIES"
+    "SPECIES",
+    NA
   ),
   bb_taxonomicStatus = c(
     "SYNONYM",
@@ -393,7 +379,8 @@ my_verification <- data.frame(
     "SYNONYM",
     "SYNONYM",
     "SYNONYM",
-    "SYNONYM"
+    "SYNONYM",
+    NA
   ),
   bb_acceptedName = c(
     "Lithobates dummyus (Batman, 2018)",
@@ -405,7 +392,8 @@ my_verification <- data.frame(
     "Ferrissia californica (Rowell, 1863)",
     "Hylarana chalconota (Schlegel, 1837)",
     "Malayopython reticulatus (Schneider, 1801)",
-    "Stenelmis Dufour, 1835"
+    "Stenelmis Dufour, 1835",
+    NA
   ),
   bb_acceptedKey = c(
     2427091,
@@ -417,7 +405,8 @@ my_verification <- data.frame(
     9520065,
     2427008,
     9260388,
-    1033553
+    1033553,
+    NA
   ),
   bb_acceptedKingdom = c(
     "Animalia",
@@ -429,7 +418,8 @@ my_verification <- data.frame(
     "Animalia",
     "Animalia",
     "Animalia",
-    "Animalia"
+    "Animalia",
+    NA
   ),
   bb_acceptedRank = c(
     "SPECIES",
@@ -441,7 +431,8 @@ my_verification <- data.frame(
     "SPECIES",
     "SPECIES",
     "SPECIES",
-    "GENUS"
+    "GENUS",
+    NA
   ),
   bb_acceptedTaxonomicStatus = c(
     "ACCEPTED",
@@ -453,7 +444,8 @@ my_verification <- data.frame(
     "ACCEPTED",
     "ACCEPTED",
     "ACCEPTED",
-    "ACCEPTED"
+    "ACCEPTED",
+    NA
   ),
   verificationKey = c(
     2427091,
@@ -465,13 +457,13 @@ my_verification <- data.frame(
     NA,
     NA,
     9260388,
-    NA
+    NA,
+    3172099
   ),
   remarks = c(
     "dummy example 1: bb_acceptedName should be updated.",
     "dummy example 2: bb_scientificName should be updated.",
-    "dummy example 3: not used anymore. Set outdated = TRUE. Add 'Outdated
-    taxa.' to remarks.",
+    "dummy example 3: not used anymore. Set outdated = TRUE.",
     "dummy example 4: multiple keys in verificationKey are allowed.",
     "dummy example 5: nothing should happen.",
     "dummy example 6: datasetKey should not be modified. If new taxa come in
@@ -480,12 +472,24 @@ my_verification <- data.frame(
     "dummy example 7: datasetKey should not be modified. If new taxa come in
     with same name from other checklsits, they should be added as new rows.
     Report them as duplicates in duplicates_taxa",
-    "dummy example 8: outdated synonym. Set outdated = TRUE. Add 'Outdated
-    taxa.' to remarks.",
-    "dummy example 9: 'Outdated taxa'. outdated is already TRUE. Label
-    'Outdated taxa' already in remarks. No actions.",
-    "dummy example 10: 'Outdated taxa'. Not outdated anymore. Change outdated
-    back to FALSE. Remove label from remarks."
+    "dummy example 8: outdated synonym. Set outdated = TRUE.",
+    "dummy example 9: outdated synonym. outdated is already TRUE. No actions.",
+    "dummy example 10: outdated synonym. Not outdated anymore. Change outdated
+    back to FALSE.",
+    "dummy example 11: outdated unmatched taxa. Set outdated = TRUE."
+  ),
+  verifiedBy = c(
+    "Damiano Oldoni",
+    "Peter Desmet",
+    "Stijn Van Hoey",
+    "Tanja Milotic",
+    NA,
+    NA,
+    NA,
+    NA,
+    "Lien Reyserhove",
+    NA,
+    "Dimitri Brosens"
   ),
   dateAdded = as.Date(
     c(
@@ -498,7 +502,8 @@ my_verification <- data.frame(
       "2018-11-20",
       "2018-11-29",
       "2018-12-01",
-      "2018-12-02"
+      "2018-12-02",
+      "2018-12-03"
     )
   ),
   outdated = c(
@@ -511,10 +516,11 @@ my_verification <- data.frame(
     FALSE,
     FALSE,
     TRUE,
-    TRUE
+    TRUE,
+    FALSE
   ),
   stringsAsFactors = FALSE
-)
+  )
 
 # output
 verify_taxa(taxa = my_taxa, verification = my_verification)

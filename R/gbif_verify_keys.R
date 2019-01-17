@@ -83,7 +83,7 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
       pull(name_col)
   }
   keys <- keys[!is.na(keys)]
-  if (length(keys) == 0) {
+  if (length(keys) == 0 | isTRUE(all(keys == ""))) {
     return(NULL)
   } else {
     assert_that(all(keys != "") == TRUE,
@@ -107,9 +107,13 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   names(keys) <- as.character(keys)
   gbif_info <-
     keys %>%
-    map(~try(name_usage(., return = "data")[1, ]))
+    map(~tryCatch(name_usage(., return = "data")[1, ],
+      error = function(e) {
+        print(paste("Key", ., "is an invalid GBIF taxon key."))
+      }
+    ))
   check_keys <-
-    map_df(gbif_info, ~is.error(.) == FALSE) %>%
+    map_df(gbif_info, ~is.character(.) == FALSE) %>%
     gather(key = key, value = is_taxonKey) %>%
     mutate(key = as.numeric(key))
   valid_keys_df <-

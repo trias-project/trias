@@ -7,14 +7,14 @@ testthat::test_that("taxa is a data frame", {
   expect_error(
     verify_taxa(
       taxa = 3,
-      verification = verification_in
+      verification = my_verification
     ),
     "taxa is not a data frame"
   )
   expect_error(
     verify_taxa(
       taxa = c("23"),
-      verification = verification_in
+      verification = my_verification
     ),
     "taxa is not a data frame"
   )
@@ -24,14 +24,14 @@ testthat::test_that("taxa is a data frame", {
 testthat::test_that("verification is a data frame", {
   expect_error(
     verify_taxa(
-      taxa = taxa_in,
+      taxa = my_taxa,
       verification = 3
     ),
     "verification is not a data frame"
   )
   expect_error(
     verify_taxa(
-      taxa = taxa_in,
+      taxa = my_taxa,
       verification = c("3")
     ),
     "verification is not a data frame"
@@ -71,7 +71,7 @@ taxa_test2 <- data.frame(
 testthat::test_that("taxa column names are correct", {
   expect_error(verify_taxa(
     taxa = taxa_test1,
-    verification = verification_in
+    verification = my_verification
   ),
   paste(
     "Elements 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 of",
@@ -81,7 +81,7 @@ testthat::test_that("taxa column names are correct", {
   )
   expect_error(verify_taxa(
     taxa = taxa_test2,
-    verification = verification_in
+    verification = my_verification
   ),
   "Elements 9 of name_col_taxa %in% names(taxa) are not true",
   fixed = TRUE
@@ -107,7 +107,7 @@ testthat::test_that("consistency of 'taxa' about GBIF backbone info columns", {
   expect_error(
     verify_taxa(
       taxa = taxa_test3,
-      verification = verification_in
+      verification = my_verification
     ),
     "Columns with GBIF Backbone info should be empty for unmatched taxa.",
     fixed = TRUE
@@ -131,6 +131,7 @@ verification_test1 <- data.frame(
   bad_backbone_acceptedTaxonomicStatus_colname = c("ACCEPTED"),
   bad_verificationKey_colname = c(2427091),
   bad_remarks_colname = c("dummy example 1: backbone_accepted should be updated"),
+  bad_verifiedBy_colname = c("Damiano Oldoni"),
   bad_dateAdded_colname = c(as.Date("2018-01-01")),
   bad_outdated = c(FALSE),
   stringsAsFactors = FALSE
@@ -153,6 +154,7 @@ verification_test2 <- data.frame(
   bb_acceptedTaxonomicStatus = c("ACCEPTED"),
   verificationKey = c(2427091),
   remarks = c("dummy example 1: backbone_accepted should be updated"),
+  verifiedBy = c("Dami Oldi"),
   # dateAdded column missing
   outdated = c(FALSE),
   stringsAsFactors = FALSE
@@ -175,6 +177,7 @@ verification_test3 <- data.frame(
   bb_acceptedTaxonomicStatus = c("ACCEPTED"),
   verificationKey = c(2427091),
   remarks = c("dummy example 1: backbone_accepted should be updated"),
+  verifiedBy = c("Damiano Oldoni"),
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(FALSE),
   stringsAsFactors = FALSE
@@ -197,6 +200,7 @@ verification_test4 <- data.frame(
   bb_acceptedTaxonomicStatus = c("ACCEPTED"),
   verificationKey = c(2427091),
   remarks = NA_character_,
+  verifiedBy = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(FALSE),
   stringsAsFactors = FALSE
@@ -219,6 +223,7 @@ verification_test5 <- data.frame(
   bb_acceptedTaxonomicStatus = c("ACCEPTED"),
   verificationKey = c(2427091),
   remarks = NA_character_,
+  verifiedBy = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(NA),
   stringsAsFactors = FALSE
@@ -241,6 +246,7 @@ verification_test6 <- data.frame(
   bb_acceptedTaxonomicStatus = c("ACCEPTED"),
   verificationKey = c(2427091),
   remarks = NA_character_,
+  verifiedBy = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(FALSE),
   stringsAsFactors = FALSE
@@ -263,6 +269,7 @@ verification_test7 <- data.frame(
   bb_acceptedTaxonomicStatus = c("ACCEPTED"),
   verificationKey = c(2427091),
   remarks = NA_character_,
+  verifiedBy = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
   outdated = c(FALSE),
   stringsAsFactors = FALSE
@@ -270,7 +277,7 @@ verification_test7 <- data.frame(
 
 testthat::test_that("verify_taxa column names are correct", {
   expect_error(verify_taxa(
-    taxa = taxa_in,
+    taxa = my_taxa,
     verification = verification_test1
   ),
   paste(
@@ -280,11 +287,11 @@ testthat::test_that("verify_taxa column names are correct", {
   fixed = TRUE
   )
   expect_error(verify_taxa(
-    taxa = taxa_in,
+    taxa = my_taxa,
     verification = verification_test2
   ),
   paste(
-    "Elements 3, 6, 11, 16 of name_col_verification %in%",
+    "Elements 3, 6, 11, 17 of name_col_verification %in%",
     "names(verification) are not true"
   ),
   fixed = TRUE
@@ -293,7 +300,7 @@ testthat::test_that("verify_taxa column names are correct", {
 
 testthat::test_that("synonym relations are inconsistent", {
   expect_error(verify_taxa(
-    taxa = taxa_in,
+    taxa = my_taxa,
     verification = verification_test3
   ),
   "bb_acceptedName and bb_acceptedKey should be both NA or both present.",
@@ -303,7 +310,7 @@ testthat::test_that("synonym relations are inconsistent", {
 
 testthat::test_that("accepted taxa in verification input", {
   expect_error(verify_taxa(
-    taxa = taxa_in,
+    taxa = my_taxa,
     verification = verification_test4
   ),
   "Only synonyms and unmatched taxa allowed in verification.",
@@ -313,7 +320,7 @@ testthat::test_that("accepted taxa in verification input", {
 
 testthat::test_that("restrictions on input columns of verification", {
   expect_error(verify_taxa(
-    taxa = taxa_in,
+    taxa = my_taxa,
     verification = verification_test5
   ),
   "Only logicals (TRUE/FALSE) allowed in 'outdated' of verification.",
@@ -324,7 +331,7 @@ testthat::test_that("restrictions on input columns of verification", {
 testthat::test_that("valid datsetKey values", {
   expect_error(
     verify_taxa(
-      taxa = taxa_in,
+      taxa = my_taxa,
       verification = verification_test6
     ),
     paste(
@@ -334,7 +341,7 @@ testthat::test_that("valid datsetKey values", {
   )
   expect_error(
     verify_taxa(
-      taxa = taxa_in,
+      taxa = my_taxa,
       verification = verification_test7
     ),
     paste(
