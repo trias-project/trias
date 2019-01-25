@@ -130,6 +130,7 @@ one if none is provided. Any changes to the verification are also provided as
 ancillary information.
 }
 \examples{
+\dontrun{
 my_taxa <- data.frame(
   taxonKey = c(
     141117238,
@@ -558,4 +559,29 @@ my_verification <- data.frame(
 # output
 verify_taxa(taxa = my_taxa, verification = my_verification)
 verify_taxa(taxa = my_taxa)
+
+# you can also provide your own column names for one or more required columns:
+library(dplyr)
+my_taxa_other_colnames <- 
+  rename(
+    my_taxa,
+    checklist = datasetKey,
+    scientific_names = scientificName
+)
+
+my_verification_other_colnames <-
+  rename(
+    my_verification,
+    backbone_scientific_names = bb_scientificName,
+    backbone_accepted_names = bb_acceptedName,
+    is_outdated = outdated,
+    author_verification = verifiedBy
+)
+
+# output
+verify_taxa(
+  taxa = my_taxa_other_colnames, 
+  verification = my_verification_other_colnames
+)
+}
 }
