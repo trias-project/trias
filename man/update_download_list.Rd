@@ -15,7 +15,7 @@ update_download_list(file, download_to_add, input_checklist,
 \item{input_checklist}{file with taxon keys used for that download}
 
 \item{url_doi_base}{(character) doi base URL; `url_doi_base` + doi form a link to a
-page with download information; 
+page with download information;
 default: "https://doi.org/"}
 }
 \value{
