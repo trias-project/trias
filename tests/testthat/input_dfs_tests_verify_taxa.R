@@ -127,22 +127,6 @@ my_taxa <- data.frame(
     NA,
     "SYNONYM"
   ),
-  bb_acceptedName = c(
-    "Leuciscus aspius (Linnaeus, 1758)",
-    "Lithobates catesbeianus (Shaw, 1802)",
-    "Polystichum luctuosum (Kunze) Moore.",
-    NA,
-    NA,
-    "Lithobates catesbeianus (Shaw, 1802)",
-    NA,
-    "Hippolyte desmarestii Millet, 1831",
-    "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)",
-    "Nanorana blanfordii (Boulenger, 1882)",
-    NA,
-    "Stenelmis Dufour, 1835"
-  ),
   bb_acceptedKey = c(
     5851603,
     2427091,
@@ -158,6 +142,22 @@ my_taxa <- data.frame(
     2430301,
     NA,
     1033553
+  ),
+  bb_acceptedName = c(
+    "Leuciscus aspius (Linnaeus, 1758)",
+    "Lithobates catesbeianus (Shaw, 1802)",
+    "Polystichum luctuosum (Kunze) Moore.",
+    NA,
+    NA,
+    "Lithobates catesbeianus (Shaw, 1802)",
+    NA,
+    "Hippolyte desmarestii Millet, 1831",
+    "Ferrissia californica (Rowell, 1863)",
+    "Ferrissia californica (Rowell, 1863)",
+    "Ferrissia californica (Rowell, 1863)",
+    "Nanorana blanfordii (Boulenger, 1882)",
+    NA,
+    "Stenelmis Dufour, 1835"
   ),
   taxonID = c(
     "alien-fishes-checklist:taxon:c937610f85ea8a74f105724c8f198049",
@@ -178,6 +178,7 @@ my_taxa <- data.frame(
   stringsAsFactors = FALSE
 )
 
+# Add column verificationKey which will be overwritten by verify_taxa
 my_taxa_vk <- dplyr::mutate(my_taxa, verificationKey = 1)
 
 my_verification <- data.frame(
@@ -285,19 +286,6 @@ my_verification <- data.frame(
     "SYNONYM",
     NA
   ),
-  bb_acceptedName = c(
-    "Lithobates dummyus (Batman, 2018)",
-    "Polystichum luctuosum (Kunze) Moore.",
-    "Araceae",
-    NA,
-    NA,
-    "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)",
-    "Hylarana chalconota (Schlegel, 1837)",
-    "Malayopython reticulatus (Schneider, 1801)",
-    "Stenelmis Dufour, 1835",
-    NA
-  ),
   bb_acceptedKey = c(
     2427091,
     4046493,
@@ -309,6 +297,19 @@ my_verification <- data.frame(
     2427008,
     9260388,
     1033553,
+    NA
+  ),
+  bb_acceptedName = c(
+    "Lithobates dummyus (Batman, 2018)",
+    "Polystichum luctuosum (Kunze) Moore.",
+    "Araceae",
+    NA,
+    NA,
+    "Ferrissia californica (Rowell, 1863)",
+    "Ferrissia californica (Rowell, 1863)",
+    "Hylarana chalconota (Schlegel, 1837)",
+    "Malayopython reticulatus (Schneider, 1801)",
+    "Stenelmis Dufour, 1835",
     NA
   ),
   bb_acceptedKingdom = c(
@@ -424,3 +425,19 @@ my_verification <- data.frame(
   ),
   stringsAsFactors = FALSE
 )
+
+my_taxa_other_colnames <- 
+  dplyr::rename(
+    my_taxa,
+    checklist = datasetKey,
+    scientific_names = scientificName
+  )
+
+my_verification_other_colnames <-
+  dplyr::rename(
+    my_verification,
+    backbone_scientific_names = bb_scientificName,
+    backbone_accepted_names = bb_acceptedName,
+    is_outdated = outdated,
+    author_verification = verifiedBy
+  )
