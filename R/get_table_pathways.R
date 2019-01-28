@@ -50,6 +50,7 @@ get_table_pathways <- function(df, category = NULL, n_species = 5, kingdom = "ki
   # initial input checks
   assert_that(is.data.frame(df))
   if (!is.null(category)) {
+    assert_that(is.character(category))
     assert_that(category %in% categories)
   }
   assert_colnames(df, kingdom, only_colnames = FALSE)
