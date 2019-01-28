@@ -173,15 +173,17 @@ testthat::test_that("check single origin", {
 })
 
 testthat::test_that("check multiple origins", {
-  aa_origin <- gbif_get_taxa(
-    checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    origin = c("denormed_classification", "source"),
-    limit = 3000
+  expect_warning(
+    aa_origin <- gbif_get_taxa(
+      checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+      origin = c("denormed_classification", "source"),
+      limit = 3000)
   )
 
-  aa <- gbif_get_taxa(
-    checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    limit = 3000
+  expect_warning(
+    aa <- gbif_get_taxa(
+      checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+      limit = 3000)
   )
 
   expect_true(nrow(aa) == nrow(aa_origin))
