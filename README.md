@@ -1,4 +1,4 @@
-# trias
+# trias <img src="man/figures/trias-logo-300dpi.png" align="right" alt="" width="120">
 
 R package with functions for TrIAS (Tracking Invasive Alien Species) project. 
 
