@@ -1,7 +1,9 @@
 authors:
-  Scott Chamberlain:
-  href: "https://twitter.com/damianozingaro"
+  Damiano Oldoni:
+    href: "https://twitter.com/damianozingaro"
+  Peter Desmet:
+    href: "https://twitter.com/peterdesmet"
 
 template:
   params:
-  bootswatch: yeti
+    bootswatch: yeti
