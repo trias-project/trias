@@ -1,7 +1,8 @@
 #' Update the list with all downloads
 #'
-#' This function opens a (tab-separated) text file containing all occurrence downloads from GBIF.
-#' It updates the status of all downloads with status RUNNING.
+#' This function opens a (tab-separated) text file containing all occurrence
+#' downloads from GBIF and updates the status of all downloads with status
+#' \code{RUNNING} or \code{PREPARING}. If the specifid download is not present it will be add.
 #'
 #' If a download key is passed which is not present in the file it will be added
 #' as a new line.
@@ -10,7 +11,7 @@
 #' @param download_to_add character. A GBIF download key to be added to file.
 #' @param input_checklist text file with taxon keys whose occurrences you want
 #'   to download.
-#' @param url_doi_base (character) doi base URL; `url_doi_base` + doi form a
+#' @param url_doi_base character. doi base URL; \code{url_doi_base} + doi form a
 #'   link to a page with download information. Default: "https://doi.org/".
 #' @return message with the performed updates
 #' 
