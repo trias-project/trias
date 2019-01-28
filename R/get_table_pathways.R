@@ -1,34 +1,84 @@
 #' Pathway count indicator figure
 #'
-#' @param data data.frame According to the specification of the Trias pipeline
-#' @param category character One of the kingdoms as given in GBIF: \itemize{
-#'   \item{"Plantae"} \item{Animalia} \item{} \item{"Fungi"} \item{"Chromista"}
-#'   \item{"Archaea"} \item{Bacteria} \item{Protozoa} \item{Viruses}
-#'   \item{incertae sedis} } It can also be one of the following not kingdoms:
-#'   #'\itemize{\item{Chordata} \item{Not Chordata} }
+#' Function to get number of taxa introduced by different pathways. Possible
+#' breakpoint: kingdom.
+#' @param df df.
+#' @param category NULL or character. One of the kingdoms as given in GBIF: \itemize{
+#'   \item{"Plantae"} \item{"Animalia"} \item{} \item{"Fungi"} \item{"Chromista"}
+#'   \item{"Archaea"} \item{"Bacteria"} \item{"Protozoa"} \item{"Viruses"}
+#'   \item{"incertae sedis"} } It can also be one of the following not kingdoms:
+#'   #'\itemize{\item{Chordata} \item{Not Chordata}. Default: NULL.}
 #' @param n_species integer The maximum number of species to return as examples
 #'   per pathway. For groups with less species than \code{n_species}, all
 #'   species are given. Default: 5.
+#' @param kingdom character. Name of the column of \code{df} containing
+#'   information about kingdom. Default: \code{"kingdom"}.
 #'
 #' @return a data.frame
-#' @export
+#' @export 
+#' @importFrom dplyr %>% filter distinct mutate group_by count ungroup rowwise
+#'   sample_n pull select rename_at
+#' @importFrom assertthat assert_that
+#' @importFrom assertable assert_colnames
+#' @importFrom stringr str_c
+#' @importFrom purrr pmap_dfr
+#' @importFrom tibble as_tibble
 #'
 #' @examples
-#' indicator_pathway(data, "Plantae", n_species = 8)
-get_table_pathways <- function(data, category, n_species = 5) {
+#' library(readr)
+#' data <- read_tsv("https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv")
+#' get_table_pathways(data)
+#' # Specify kingdom
+#' get_table_pathways(data, "Plantae")
+#' # Sepcify number of species to include in examples
+#' get_table_pathways(data, "Plantae", n_species = 8)
+get_table_pathways <- function(df, 
+                               category = NULL, 
+                               n_species = 5, 
+                               kingdom = "kingdom") {
+  
+  categories <- c(
+    "Plantae", 
+    "Animalia", 
+    "Fungi", 
+    "Chromista", 
+    "Archaea", 
+    "Bacteria",
+    "Protozoa",
+    "Viruses",
+    "incertae sedis",
+    "Chordata", 
+    "Not Chordata"
+  )
+  # initial input checks
+  assert_that(is.data.frame(df))
+  if (!is.null(category)) {
+    assert_that(is.character(category))
+    assert_that(category %in% categories)
+  }
+  assert_colnames(df, kingdom, only_colnames = FALSE)
+  # rename to default column name
+  df <- 
+    df %>%
+    rename_at(vars(kingdom), ~ "kingdom")
   
   # handle asymmetric category system (Chordata, Not Chordta are not kingdoms) 
-  if (!category %in% c("Chordata", "Not Chordata")) {
-    filtered_data <- data %>% filter(kingdom == category)
-  } else {
-    if (category == "Chordata") {
-      filtered_data <- data %>% filter(phylum == category)
+  if (!is.null(category)) {
+    if (!category %in% c("Chordata", "Not Chordata")) {
+      filtered_data <- df %>% filter(kingdom == category)
     } else {
-      filtered_data <- data %>% 
-        filter(kingdom == "Animalia") %>%
-        filter(phylum != category)
-    }
+      if (category == "Chordata") {
+        filtered_data <- df %>% filter(phylum == category)
+      } else {
+        filtered_data <- df %>% 
+          filter(kingdom == "Animalia") %>%
+          filter(phylum != category)
+      }
+    }  
+  } else {
+    filtered_data <- df
   }
+  
   
   # Create groups basd on pathway level1 and level2
   preprocess_data <- filtered_data %>% 

@@ -1,21 +1,25 @@
 #' Update the list with all downloads
 #'
-#' This function opens a csv file containing all occurrence downloads from GBIF.
-#' It updates the status of all downloads with status RUNNING.
+#' This function opens a (tab-separated) text file containing all occurrence
+#' downloads from GBIF and updates the status of all downloads with status
+#' \code{RUNNING} or \code{PREPARING}. If the specifid download is not present it will be add.
 #'
-#' If a download key is passed which is not present in the file it will be added as a new line.
+#' If a download key is passed which is not present in the file it will be added
+#' as a new line.
 #'
-#' @param file file containing all occurrence downloads from GBIF
-#' @param download_to_add GBIF download key to be added to file
-#' @param input_checklist file with taxon keys used for that download
-#' @param url_doi_base (character) doi base URL; `url_doi_base` + doi form a link to a
-#' page with download information;
-#' default: "https://doi.org/"
+#' @param file text file containing all occurrence downloads from GBIF.
+#' @param download_to_add character. A GBIF download key to be added to file.
+#' @param input_checklist text file with taxon keys whose occurrences you want
+#'   to download.
+#' @param url_doi_base character. doi base URL; \code{url_doi_base} + doi form a
+#'   link to a page with download information. Default: "https://doi.org/".
 #' @return message with the performed updates
+#' 
 #' @export
 #' @importFrom rgbif occ_download_meta
 #' @importFrom readr read_delim
 #' @importFrom stringr str_c
+#' @importFrom utils read.table write.table
 update_download_list <- function(file, download_to_add, input_checklist,
                                  url_doi_base = "https://doi.org/") {
   downloads <- readr::read_delim(file, "\t",

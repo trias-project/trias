@@ -1,36 +1,39 @@
 #' Create total invasive species indicator plot (TrIAS)
 #'
-#' @param df data.frame Contains the data as produced by the Trias pipeline,
+#' @param df df. Contains the data as produced by the Trias pipeline,
 #'   with minimal columns.
-#' @param start_year_plot int Limit to use as start year of the plot. For
+#' @param start_year_plot integer. Limit to use as start year of the plot. For
 #'   scientific usage, the entire period could be relevant, but for policy
 #'   purpose, focusing on a more recent period could be required.
-#' @param x_major_scale_stepsize int On which year interval labels are placed on
+#' @param x_major_scale_stepsize integer. On which year interval labels are placed on
 #'   the x axis.
-#' @param x_minor_scale_stepsize int On which year interval minor breaks are
+#' @param x_minor_scale_stepsize integer. On which year interval minor breaks are
 #'   placed on the x axis.
-#' @param facet_column NULL | char The column to use to create additional facet
+#' @param facet_column NULL or character. The column to use to create additional facet
 #'   wrap plots underneath the main graph. When NULL, no facet graph is
 #'   included. It is typically one of the highest taxonomic ranks:
 #'   \code{kingdom}, \code{phylum}, \code{class}, \code{order}, \code{family}.
-#'
+#' @param first_observed Name of the column of \code{df} containing
+#'   information about year of introduction. Default: \code{"first_observed"}.
+#' @param last_observed Name of the column of \code{df} containing information
+#'   about last year alien species were observed. Default:
+#'   \code{"last_observed"}.
+#'   
 #' @return ggplot2 object
 #'
 #' @export
-#'
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
 #' @importFrom dplyr distinct_ %>% filter rowwise do bind_cols group_by_ count
-#'   ungroup
-#' @importFrom tidyr replace_na unnest
-#' @importFrom lubridate year now
-#' @importFrom ggplot2 geom_line aes xlab ylab scale_x_continuous facet_wrap
+#'   ungroup rename_at
+#' @importFrom tidyr unnest
+#' @importFrom ggplot2 ggplot geom_line aes xlab ylab scale_x_continuous
+#'   facet_wrap
 #' @importFrom INBOtheme theme_inbo
 #' @importFrom egg ggarrange
 #'
 #' @examples
-#' #' \dontrun{
-#' # Load data
+#' \dontrun{
 #' library(readr)
 #' data <- read_tsv("https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv")
 #' start_year_plot <- 1900
@@ -39,19 +42,31 @@
 #' # without facets
 #' indicator_total_year(data, start_year_plot, x_major_scale_stepsize)
 #' # with facets
-#' indicator_total_year(data, start_year_plot, x_major_scale_stepsize,
-#'   x_minor_scale_stepsize, facet_column = "phylum")
-#'   }
+#' indicator_total_year(data, start_year_plot, facet_column = "phylum")
+#' # specify name of column containing year of first observed and last observed
+#' indicator_total_year(data, 
+#'   first_observed = "first_observed",
+#'   last_observed = "last_observed"
+#' )
+#' }
 indicator_total_year <- function(df, start_year_plot = 1940, 
                                  x_major_scale_stepsize = 10,
                                  x_minor_scale_stepsize = 5,
-                                 facet_column = NULL) {
+                                 facet_column = NULL,
+                                 first_observed = "first_observed",
+                                 last_observed = "last_observed") {
   
   # initial input checks
   assert_that(is.data.frame(df))
   assert_that(x_major_scale_stepsize >= x_minor_scale_stepsize)
-  assert_colnames(df, c("key", "first_observed", "last_observed"), 
-                  only_colnames = FALSE)
+  assert_colnames(df, c(first_observed, first_observed), only_colnames = FALSE)
+  
+  # rename to default column name
+  df <- 
+    df %>%
+    rename_at(vars(first_observed), ~ "first_observed",
+              vars(last_observed), ~ "last_observed"
+    )
   
   if (is.null(facet_column)) {
     df_cleaned <- df %>%

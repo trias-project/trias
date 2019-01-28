@@ -4,21 +4,46 @@
 \alias{verify_taxa}
 \title{Verify taxa that the GBIF Backbone Taxonomy does not recognize or will lump}
 \usage{
-verify_taxa(taxa, verification = NULL)
+verify_taxa(taxa, verification = NULL, taxonKey = "taxonKey",
+  scientificName = "scientificName", datasetKey = "datasetKey",
+  bb_key = "bb_key", bb_scientificName = "bb_scientificName",
+  bb_kingdom = "bb_kingdom", bb_rank = "bb_rank",
+  bb_taxonomicStatus = "bb_taxonomicStatus",
+  bb_acceptedKey = "bb_acceptedKey",
+  bb_acceptedName = "bb_acceptedName",
+  verification_taxonKey = "taxonKey",
+  verification_scientificName = "scientificName",
+  verification_datasetKey = "datasetKey",
+  verification_bb_key = "bb_key",
+  verification_bb_scientificName = "bb_scientificName",
+  verification_bb_kingdom = "bb_kingdom",
+  verification_bb_rank = "bb_rank",
+  verification_bb_taxonomicStatus = "bb_taxonomicStatus",
+  verification_bb_acceptedKey = "bb_acceptedKey",
+  verification_bb_acceptedName = "bb_acceptedName",
+  verification_bb_acceptedKingdom = "bb_acceptedKingdom",
+  verification_bb_acceptedRank = "bb_acceptedRank",
+  verification_bb_acceptedTaxonomicStatus = "bb_acceptedTaxonomicStatus",
+  verification_verificationKey = "verificationKey",
+  verification_remarks = "remarks",
+  verification_verifiedBy = "verifiedBy",
+  verification_dateAdded = "dateAdded",
+  verification_outdated = "outdated")
 }
 \arguments{
-\item{taxa}{df. Dataframe with at least the following columns for each taxon:
-\itemize{ \item{\code{taxonKey}: numeric. Non-backbone checklist taxon key
-assigned by GBIF.} \item{\code{scientificName}: character. Scientific name
-as interpreted by GBIF.} \item{\code{datasetKey}: character. Dataset key
-(UUID) assigned by GBIF of originating checklist.} \item{\code{bb_key}:
-numeric. Taxon key of matching backbone taxon (if any).}
-\item{\code{bb_scientificName}: character. Scientific name of matching
-backbone taxon.} \item{\code{bb_kingdom}: character. Kingdom of matching
-backbone taxon.} \item{\code{bb_rank}: character. Rank of matching backbone
-taxon.} \item{\code{bb_taxonomicStatus}: character. Taxonomic status of
-matching backbone taxon.} \item{\code{bb_acceptedKey}: numeric. Accepted
-key of taxon for which matching backbone taxon is considered a synonym.}
+\item{taxa}{df. Dataframe with at least the following (default) columns for
+each taxon: \itemize{ \item{\code{taxonKey}: numeric. Non-backbone
+checklist taxon key assigned by GBIF.} \item{\code{scientificName}:
+character. Scientific name as interpreted by GBIF.}
+\item{\code{datasetKey}: character. Dataset key (UUID) assigned by GBIF of
+originating checklist.} \item{\code{bb_key}: numeric. Taxon key of matching
+backbone taxon (if any).} \item{\code{bb_scientificName}: character.
+Scientific name of matching backbone taxon.} \item{\code{bb_kingdom}:
+character. Kingdom of matching backbone taxon.} \item{\code{bb_rank}:
+character. Rank of matching backbone taxon.}
+\item{\code{bb_taxonomicStatus}: character. Taxonomic status of matching
+backbone taxon.} \item{\code{bb_acceptedKey}: numeric. Accepted key of
+taxon for which matching backbone taxon is considered a synonym.}
 \item{\code{bb_acceptedName}: character. Accepted name of taxon for which
 matching backbone taxon is considered a synonym.} }}
 
@@ -46,9 +71,16 @@ accepted taxon. Expected to be \code{ACCEPTED}.}
 manually set by expert.} \item{\code{remarks}: character. Remarks provided
 by the expert.} \item{\code{verifiedBy}: character. Name of the person who
 assigned \code{verificationKey}.} \item{\code{dateAdded}: date. Date on
-which new
-combinations were added.} \item{\code{outdated}: logical. \code{TRUE} when
-combination was not used for input taxa.} }}
+which new combinations were added.} \item{\code{outdated}: logical.
+\code{TRUE} when combination was not used for input taxa.} }}
+
+\item{taxonKey, scientificName, datasetKey, bb_key, bb_scientificName, bb_kingdom, bb_rank, bb_taxonomicStatus, bb_acceptedKey, bb_acceptedName}{Column names of required columns of \code{taxa}. They have to be passed as
+strings, e.g. \code{"taxon_keys"}. Default: column names as specified above
+in \code{taxa}.}
+
+\item{verification_taxonKey, verification_scientificName, verification_datasetKey, verification_bb_key, verification_bb_scientificName, verification_bb_kingdom, verification_bb_rank, verification_bb_taxonomicStatus, verification_bb_acceptedKey, verification_bb_acceptedName, verification_bb_acceptedKingdom, verification_bb_acceptedRank, verification_bb_acceptedTaxonomicStatus, verification_verificationKey, verification_remarks, verification_verifiedBy, verification_dateAdded, verification_outdated}{Column names of required columns of \code{verification}. They have to be
+passed as strings, e.g. \code{"verification_taxon_keys"}. Default: column
+names as specified above in \code{verification}.}
 }
 \value{
 list. List with three objects: \itemize{ \item{\code{taxa}: df.
@@ -61,11 +93,12 @@ list. List with three objects: \itemize{ \item{\code{taxa}: df.
   \item{\code{new_unmatched_taxa}: df. Subset of \code{verification} with
   unmatched taxa found in \code{taxa} but not in provided
   \code{verification}).} \item{\code{outdated_synonyms}: df. Subset of
-  \code{verification} with synonyms found in provided \code{verification} but not
-  in \code{taxa}.} \item{\code{outdated_unmatched_taxa}: df. Subset of
-  \code{verification} with unmatched taxa found in provided \code{verification} but not
-  in \code{taxa}.} \item{\code{updated_bb_scientificName}: df.
-  \code{bb_scientificName}s in provided \code{verification} that were updated
+  \code{verification} with synonyms found in provided \code{verification} but
+  not in \code{taxa}.} \item{\code{outdated_unmatched_taxa}: df. Subset of
+  \code{verification} with unmatched taxa found in provided
+  \code{verification} but not in \code{taxa}.}
+  \item{\code{updated_bb_scientificName}: df. \code{bb_scientificName}s in
+  provided \code{verification} that were updated
   \code{updated_bb_scientificName} in the backbone since.}
   \item{\code{updated_bb_acceptedName}: df. \code{bb_acceptedName}s in
   provided \code{verification} that were updated
@@ -97,6 +130,7 @@ one if none is provided. Any changes to the verification are also provided as
 ancillary information.
 }
 \examples{
+\dontrun{
 my_taxa <- data.frame(
   taxonKey = c(
     141117238,
@@ -226,22 +260,6 @@ my_taxa <- data.frame(
     NA,
     "SYNONYM"
   ),
-  bb_acceptedName = c(
-    "Leuciscus aspius (Linnaeus, 1758)",
-    "Lithobates catesbeianus (Shaw, 1802)",
-    "Polystichum luctuosum (Kunze) Moore.",
-    NA,
-    NA,
-    "Lithobates catesbeianus (Shaw, 1802)",
-    NA,
-    "Hippolyte desmarestii Millet, 1831",
-    "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)",
-    "Nanorana blanfordii (Boulenger, 1882)",
-    NA,
-    "Stenelmis Dufour, 1835"
-  ),
   bb_acceptedKey = c(
     5851603,
     2427091,
@@ -257,6 +275,22 @@ my_taxa <- data.frame(
     2430301,
     NA,
     1033553
+  ),
+  bb_acceptedName = c(
+    "Leuciscus aspius (Linnaeus, 1758)",
+    "Lithobates catesbeianus (Shaw, 1802)",
+    "Polystichum luctuosum (Kunze) Moore.",
+    NA,
+    NA,
+    "Lithobates catesbeianus (Shaw, 1802)",
+    NA,
+    "Hippolyte desmarestii Millet, 1831",
+    "Ferrissia californica (Rowell, 1863)",
+    "Ferrissia californica (Rowell, 1863)",
+    "Ferrissia californica (Rowell, 1863)",
+    "Nanorana blanfordii (Boulenger, 1882)",
+    NA,
+    "Stenelmis Dufour, 1835"
   ),
   taxonID = c(
     "alien-fishes-checklist:taxon:c937610f85ea8a74f105724c8f198049",
@@ -382,19 +416,6 @@ my_verification <- data.frame(
     "SYNONYM",
     NA
   ),
-  bb_acceptedName = c(
-    "Lithobates dummyus (Batman, 2018)",
-    "Polystichum luctuosum (Kunze) Moore.",
-    "Araceae",
-    NA,
-    NA,
-    "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)",
-    "Hylarana chalconota (Schlegel, 1837)",
-    "Malayopython reticulatus (Schneider, 1801)",
-    "Stenelmis Dufour, 1835",
-    NA
-  ),
   bb_acceptedKey = c(
     2427091,
     4046493,
@@ -406,6 +427,19 @@ my_verification <- data.frame(
     2427008,
     9260388,
     1033553,
+    NA
+  ),
+  bb_acceptedName = c(
+    "Lithobates dummyus (Batman, 2018)",
+    "Polystichum luctuosum (Kunze) Moore.",
+    "Araceae",
+    NA,
+    NA,
+    "Ferrissia californica (Rowell, 1863)",
+    "Ferrissia californica (Rowell, 1863)",
+    "Hylarana chalconota (Schlegel, 1837)",
+    "Malayopython reticulatus (Schneider, 1801)",
+    "Stenelmis Dufour, 1835",
     NA
   ),
   bb_acceptedKingdom = c(
@@ -525,4 +559,29 @@ my_verification <- data.frame(
 # output
 verify_taxa(taxa = my_taxa, verification = my_verification)
 verify_taxa(taxa = my_taxa)
+
+# you can also provide your own column names for one or more required columns:
+library(dplyr)
+my_taxa_other_colnames <- 
+  rename(
+    my_taxa,
+    checklist = datasetKey,
+    scientific_names = scientificName
+)
+
+my_verification_other_colnames <-
+  rename(
+    my_verification,
+    backbone_scientific_names = bb_scientificName,
+    backbone_accepted_names = bb_acceptedName,
+    is_outdated = outdated,
+    author_verification = verifiedBy
+)
+
+# output
+verify_taxa(
+  taxa = my_taxa_other_colnames, 
+  verification = my_verification_other_colnames
+)
+}
 }

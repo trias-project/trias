@@ -7,25 +7,17 @@ Authors@R: c(
     person("Peter", "Desmet", role = "aut", email = "peter.desmet@inbo.be", comment = c(ORCID = "0000-0002-8442-8025"))
     )
 License: MIT + file LICENSE
-LazyData: true
-RoxygenNote: 6.1.0
-Imports:
-        readr,
-        rgbif,
-        dplyr,
-        magrittr,
-        lazyeval,
-        purrr,
-        stringr,
-        assertthat
-Remotes: ropensci/rgbif
 URL: https://github.com/trias-project/trias
 BugReports: https://github.com/trias-project/trias/issues
 Depends:
     R (>= 2.10)
 Imports:
     assertthat,
+    assertable,
     dplyr,
+    egg,
+    ggplot2,
+    INBOtheme,
     lazyeval,
     magrittr,
     purrr,

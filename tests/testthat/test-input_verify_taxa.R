@@ -38,7 +38,7 @@ testthat::test_that("verification is a data frame", {
   )
 })
 
-# wrong taxa inputs
+# different taxa column names
 taxa_test1 <- data.frame(
   bad_checklist_taxonKey_colname = c(123452),
   bad_checklist_scientificName_colname = c("Aspius aspius"),
@@ -74,8 +74,11 @@ testthat::test_that("taxa column names are correct", {
     verification = my_verification
   ),
   paste(
-    "Elements 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 of",
-    "name_col_taxa %in% names(taxa) are not true"
+    "The following columns of taxa are not present:",
+    "taxonKey, scientificName, datasetKey, bb_key, bb_scientificName,", 
+    "bb_kingdom, bb_rank, bb_taxonomicStatus, bb_acceptedKey, bb_acceptedName.", 
+    "Did you maybe forget to provide the mapping of columns named differently", 
+    "than the default names?"
   ),
   fixed = TRUE
   )
@@ -83,12 +86,16 @@ testthat::test_that("taxa column names are correct", {
     taxa = taxa_test2,
     verification = my_verification
   ),
-  "Elements 9 of name_col_taxa %in% names(taxa) are not true",
+  paste(
+    "The following columns of taxa are not present:", 
+    "bb_acceptedKey. Did you maybe forget to provide the mapping of columns", 
+    "named differently than the default names?"
+  ),
   fixed = TRUE
   )
 })
 
-# inconsitency about unmatched taxa
+# inconsistency about unmatched taxa
 taxa_test3 <- data.frame(
   taxonKey = c(123452),
   scientificName = c("Aspius aspius"),
@@ -114,7 +121,7 @@ testthat::test_that("consistency of 'taxa' about GBIF backbone info columns", {
   )
 })
 
-# wrong colnames as input for verification
+# different verification column names
 verification_test1 <- data.frame(
   bad_checklist_taxonKey = c(12341),
   bad_checklist_scientificName_colname = c("Aspius aspius"),
@@ -281,8 +288,13 @@ testthat::test_that("verify_taxa column names are correct", {
     verification = verification_test1
   ),
   paste(
-    "1, 2, 3, 4, 5, ... of name_col_verification %in%",
-    "names(verification) are not true"
+    "The following columns of verification are not present:", 
+    "taxonKey, scientificName, datasetKey, bb_key, bb_scientificName,", 
+    "bb_kingdom, bb_rank, bb_taxonomicStatus,", 
+    "bb_acceptedKey, bb_acceptedName, bb_acceptedKingdom, bb_acceptedRank,", 
+    "bb_acceptedTaxonomicStatus, verificationKey, remarks, verifiedBy,", 
+    "dateAdded, outdated. Did you maybe forget to provide the mapping of", 
+    "columns named differently than the default names?"
   ),
   fixed = TRUE
   )
@@ -291,8 +303,10 @@ testthat::test_that("verify_taxa column names are correct", {
     verification = verification_test2
   ),
   paste(
-    "Elements 3, 6, 11, 17 of name_col_verification %in%",
-    "names(verification) are not true"
+    "The following columns of verification are not present:", 
+    "datasetKey, bb_kingdom, bb_acceptedKingdom, dateAdded.", 
+    "Did you maybe forget to provide the mapping of columns named differently", 
+    "than the default names?"
   ),
   fixed = TRUE
   )
