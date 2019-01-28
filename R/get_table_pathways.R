@@ -12,7 +12,7 @@
 #'   per pathway. For groups with less species than \code{n_species}, all
 #'   species are given. Default: 5.
 #' @param kingdom character. Name of the column of \code{df} containing
-#'   information about kingdom. Default: \code("kingdom").
+#'   information about kingdom. Default: \code{"kingdom"}.
 #'
 #' @return a data.frame
 #' @export 
