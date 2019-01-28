@@ -6,26 +6,34 @@
 \usage{
 indicator_total_year(df, start_year_plot = 1940,
   x_major_scale_stepsize = 10, x_minor_scale_stepsize = 5,
-  facet_column = NULL)
+  facet_column = NULL, first_observed = "first_observed",
+  last_observed = "last_observed")
 }
 \arguments{
-\item{df}{data.frame Contains the data as produced by the Trias pipeline,
+\item{df}{df. Contains the data as produced by the Trias pipeline,
 with minimal columns.}
 
-\item{start_year_plot}{int Limit to use as start year of the plot. For
+\item{start_year_plot}{integer. Limit to use as start year of the plot. For
 scientific usage, the entire period could be relevant, but for policy
 purpose, focusing on a more recent period could be required.}
 
-\item{x_major_scale_stepsize}{int On which year interval labels are placed on
+\item{x_major_scale_stepsize}{integer. On which year interval labels are placed on
 the x axis.}
 
-\item{x_minor_scale_stepsize}{int On which year interval minor breaks are
+\item{x_minor_scale_stepsize}{integer. On which year interval minor breaks are
 placed on the x axis.}
 
-\item{facet_column}{NULL | char The column to use to create additional facet
+\item{facet_column}{NULL or character. The column to use to create additional facet
 wrap plots underneath the main graph. When NULL, no facet graph is
 included. It is typically one of the highest taxonomic ranks:
 \code{kingdom}, \code{phylum}, \code{class}, \code{order}, \code{family}.}
+
+\item{first_observed}{Name of the column of \code{df} containing
+information about year of introduction. Default: \code{"first_observed"}.}
+
+\item{last_observed}{Name of the column of \code{df} containing information
+about last year alien species were observed. Default:
+\code{"last_observed"}.}
 }
 \value{
 ggplot2 object
@@ -34,8 +42,7 @@ ggplot2 object
 Create total invasive species indicator plot (TrIAS)
 }
 \examples{
-#' \dontrun{
-# Load data
+\dontrun{
 library(readr)
 data <- read_tsv("https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv")
 start_year_plot <- 1900
@@ -44,7 +51,11 @@ x_minor_scale_stepsize <- 5
 # without facets
 indicator_total_year(data, start_year_plot, x_major_scale_stepsize)
 # with facets
-indicator_total_year(data, start_year_plot, x_major_scale_stepsize,
-  x_minor_scale_stepsize, facet_column = "phylum")
-  }
+indicator_total_year(data, start_year_plot, facet_column = "phylum")
+# specify name of column containing year of first observed and last observed
+indicator_total_year(data, 
+  first_observed = "first_observed",
+  last_observed = "last_observed"
+)
+}
 }

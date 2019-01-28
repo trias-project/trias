@@ -97,7 +97,7 @@
 #'
 #' @export
 #' @importFrom assertthat assert_that is.date
-#' @importFrom dplyr filter filter_at select distinct mutate rename rename_at
+#' @importFrom dplyr desc filter filter_at select distinct mutate rename rename_at
 #'   arrange bind_rows inner_join anti_join left_join right_join %>% pull vars
 #'   as_tibble group_by count starts_with all_vars any_vars
 #' @importFrom stringr str_remove str_split

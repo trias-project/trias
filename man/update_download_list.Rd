@@ -8,23 +8,25 @@ update_download_list(file, download_to_add, input_checklist,
   url_doi_base = "https://doi.org/")
 }
 \arguments{
-\item{file}{file containing all occurrence downloads from GBIF}
+\item{file}{text file containing all occurrence downloads from GBIF.}
 
-\item{download_to_add}{GBIF download key to be added to file}
+\item{download_to_add}{character. A GBIF download key to be added to file.}
 
-\item{input_checklist}{file with taxon keys used for that download}
+\item{input_checklist}{text file with taxon keys whose occurrences you want
+to download.}
 
-\item{url_doi_base}{(character) doi base URL; `url_doi_base` + doi form a link to a
-page with download information;
-default: "https://doi.org/"}
+\item{url_doi_base}{character. doi base URL; \code{url_doi_base} + doi form a
+link to a page with download information. Default: "https://doi.org/".}
 }
 \value{
 message with the performed updates
 }
 \description{
-This function opens a csv file containing all occurrence downloads from GBIF.
-It updates the status of all downloads with status RUNNING.
+This function opens a (tab-separated) text file containing all occurrence
+downloads from GBIF and updates the status of all downloads with status
+\code{RUNNING} or \code{PREPARING}. If the specifid download is not present it will be add.
 }
 \details{
-If a download key is passed which is not present in the file it will be added as a new line.
+If a download key is passed which is not present in the file it will be added
+as a new line.
 }

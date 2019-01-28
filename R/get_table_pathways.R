@@ -32,7 +32,10 @@
 #' get_table_pathways(data, "Plantae")
 #' # Sepcify number of species to include in examples
 #' get_table_pathways(data, "Plantae", n_species = 8)
-get_table_pathways <- function(df, category = NULL, n_species = 5, kingdom = "kingdom") {
+get_table_pathways <- function(df, 
+                               category = NULL, 
+                               n_species = 5, 
+                               kingdom = "kingdom") {
   
   categories <- c(
     "Plantae", 
