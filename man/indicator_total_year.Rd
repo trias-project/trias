@@ -2,12 +2,11 @@
 % Please edit documentation in R/indicator_total_year.R
 \name{indicator_total_year}
 \alias{indicator_total_year}
-\title{Create total invasive species indicator plot (TrIAS)}
+\title{Create cumulative number of alien species indicator plot.}
 \usage{
 indicator_total_year(df, start_year_plot = 1940,
   x_major_scale_stepsize = 10, x_minor_scale_stepsize = 5,
-  facet_column = NULL, first_observed = "first_observed",
-  last_observed = "last_observed")
+  facet_column = NULL, first_observed = "first_observed")
 }
 \arguments{
 \item{df}{df. Contains the data as produced by the Trias pipeline,
@@ -17,29 +16,30 @@ with minimal columns.}
 scientific usage, the entire period could be relevant, but for policy
 purpose, focusing on a more recent period could be required.}
 
-\item{x_major_scale_stepsize}{integer. On which year interval labels are placed on
-the x axis.}
-
-\item{x_minor_scale_stepsize}{integer. On which year interval minor breaks are
+\item{x_major_scale_stepsize}{integer. On which year interval labels are
 placed on the x axis.}
 
-\item{facet_column}{NULL or character. The column to use to create additional facet
-wrap plots underneath the main graph. When NULL, no facet graph is
-included. It is typically one of the highest taxonomic ranks:
-\code{kingdom}, \code{phylum}, \code{class}, \code{order}, \code{family}.}
+\item{x_minor_scale_stepsize}{integer. On which year interval minor breaks
+are placed on the x axis.}
 
-\item{first_observed}{Name of the column of \code{df} containing
+\item{facet_column}{NULL or character. Name of the column to use to create
+additional facet wrap plots underneath the main graph. When NULL, no facet
+graph is included. It is typically one of the highest taxonomic ranks, e.g.
+\code{"kingdom"}, \code{"phylum"}, \code{"class"}, \code{"order"},
+\code{"family"}. Other typical breakwdowns could be geographically related,
+e.g. \code{"country"}, \code{"locality"}, or \code{"pathway"} of
+introduction.}
+
+\item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{"first_observed"}.}
-
-\item{last_observed}{Name of the column of \code{df} containing information
-about last year alien species were observed. Default:
-\code{"last_observed"}.}
 }
 \value{
 ggplot2 object
 }
 \description{
-Create total invasive species indicator plot (TrIAS)
+This function calculates the cumulative number of species introduced per
+year. To do this, a column of input dataframe containing temporal information
+about year of introduction is required.
 }
 \examples{
 \dontrun{
@@ -52,10 +52,7 @@ x_minor_scale_stepsize <- 5
 indicator_total_year(data, start_year_plot, x_major_scale_stepsize)
 # with facets
 indicator_total_year(data, start_year_plot, facet_column = "phylum")
-# specify name of column containing year of first observed and last observed
-indicator_total_year(data, 
-  first_observed = "first_observed",
-  last_observed = "last_observed"
-)
+# specify name of column containing year of introduction (first_observed)
+indicator_total_year(data, first_observed = "first_observed")
 }
 }
