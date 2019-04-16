@@ -33,6 +33,7 @@ Suggests:
     knitr,
     testthat
 Remotes:
+    inbo/INBOtheme
     ropensci/rgbif
 LazyData: true
 Encoding: UTF-8
