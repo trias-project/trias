@@ -1,2 +1,14 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+.Rhistory
+
+.gitignore
+.github
+
+^README\.Rmd$
+^README-.*\.png$
+
+^_pkgdown\.yml$
+^docs$
+
+^\.travis\.yml$
