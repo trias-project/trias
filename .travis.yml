@@ -5,7 +5,7 @@ before_script:
   - Rscript -e "install.packages('devtools')"
   - Rscript -e "devtools::install_github('hadley/pkgdown')"
 
-after_script:
+after_success:
   - Rscript -e "pkgdown::build_site(preview = FALSE)"
 
 deploy:
