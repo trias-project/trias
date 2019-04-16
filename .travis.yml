@@ -1,9 +1,8 @@
 language: r
 cache: packages
 
-before_script:
-  - Rscript -e "install.packages('devtools')"
-  - Rscript -e "devtools::install_github('hadley/pkgdown')"
+r_github_packages:
+  - r-lib/pkgdown
 
 after_success:
   - Rscript -e "pkgdown::build_site(preview = FALSE)"
