@@ -1,2 +1,18 @@
 language: r
 cache: packages
+
+before_script:
+  - Rscript -e "install.packages('devtools')"
+  - Rscript -e "devtools::install_github('hadley/pkgdown')"
+
+after_script:
+  - Rscript -e "pkgdown::build_site(preview = FALSE)"
+
+deploy:
+  provider: pages
+  local_dir: _book
+  skip_cleanup: true
+  keep_history: true
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: master
