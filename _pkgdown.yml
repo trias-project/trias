@@ -1,9 +1,9 @@
+template:
+  params:
+    bootswatch: yeti
+
 authors:
   Damiano Oldoni:
     href: "https://twitter.com/damianozingaro"
   Peter Desmet:
     href: "https://twitter.com/peterdesmet"
-
-template:
-  params:
-    bootswatch: yeti
