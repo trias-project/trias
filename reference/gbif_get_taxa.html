@@ -169,7 +169,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt; #   origin &lt;chr&gt;, taxonomicStatus &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
 #&gt; #   remarks &lt;chr&gt;, numDescendants &lt;int&gt;, lastCrawled &lt;chr&gt;,
 #&gt; #   lastInterpreted &lt;chr&gt;, issues &lt;chr&gt;, synonym &lt;lgl&gt;</div><div class='input'><span class='co'># Multiple numeric taxon_keys (vector)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>))</div><div class='output co'>#&gt; [1] "All 6 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 6 x 23
+<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>))</div><div class='output co'>#&gt; [1] "All 6 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 6 x 23
 #&gt;     key scientificName nubKey nameKey taxonID sourceTaxonKey kingdom kingdomKey
 #&gt;   &lt;int&gt; &lt;chr&gt;           &lt;int&gt;   &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;        &lt;int&gt;
 #&gt; 1     1 Animalia            1  1.85e7 gbif:1       144299179 Animal…          1
@@ -183,7 +183,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt; #   origin &lt;chr&gt;, taxonomicStatus &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
 #&gt; #   remarks &lt;chr&gt;, numDescendants &lt;int&gt;, lastCrawled &lt;chr&gt;,
 #&gt; #   lastInterpreted &lt;chr&gt;, issues &lt;chr&gt;, synonym &lt;lgl&gt;</div><div class='input'><span class='co'># Multiple character taxon_keys (vector)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1"</span>,<span class='st'>"2"</span>,<span class='st'>"3"</span>,<span class='st'>"4"</span>,<span class='st'>"5"</span>,<span class='st'>"6"</span>))</div><div class='output co'>#&gt; [1] "All 6 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 6 x 23
+<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>,<span class='st'>"2"</span>,<span class='st'>"3"</span>,<span class='st'>"4"</span>,<span class='st'>"5"</span>,<span class='st'>"6"</span>))</div><div class='output co'>#&gt; [1] "All 6 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 6 x 23
 #&gt;     key scientificName nubKey nameKey taxonID sourceTaxonKey kingdom kingdomKey
 #&gt;   &lt;int&gt; &lt;chr&gt;           &lt;int&gt;   &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;        &lt;int&gt;
 #&gt; 1     1 Animalia            1  1.85e7 gbif:1       144299179 Animal…          1
@@ -197,7 +197,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt; #   origin &lt;chr&gt;, taxonomicStatus &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
 #&gt; #   remarks &lt;chr&gt;, numDescendants &lt;int&gt;, lastCrawled &lt;chr&gt;,
 #&gt; #   lastInterpreted &lt;chr&gt;, issues &lt;chr&gt;, synonym &lt;lgl&gt;</div><div class='input'><span class='co'># Limit number of taxa (coupled with taxon_keys)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>), <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "All 3 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 3 x 23
+<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>), <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "All 3 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 3 x 23
 #&gt;     key scientificName nubKey nameKey taxonID sourceTaxonKey kingdom kingdomKey
 #&gt;   &lt;int&gt; &lt;chr&gt;           &lt;int&gt;   &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;        &lt;int&gt;
 #&gt; 1     1 Animalia            1  1.85e7 gbif:1       144299179 Animal…          1
@@ -228,7 +228,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt; #   synonym &lt;lgl&gt;, species &lt;chr&gt;, speciesKey &lt;int&gt;, authorship &lt;chr&gt;,
 #&gt; #   phylum &lt;chr&gt;, order &lt;chr&gt;, family &lt;chr&gt;, phylumKey &lt;int&gt;, classKey &lt;int&gt;,
 #&gt; #   orderKey &lt;int&gt;, familyKey &lt;int&gt;, class &lt;chr&gt;</div><div class='input'><span class='co'># Multiple checklist_keys (vector)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"e4746398-f7c4-47a1-a474-ae80a4f18e92"</span>,
+<span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"e4746398-f7c4-47a1-a474-ae80a4f18e92"</span>,
                             <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>))</div><div class='output co'>#&gt; [1] "245 taxa found of which 9 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 245 x 33
 #&gt;       key scientificName datasetKey  nubKey parentKey parent family familyKey
 #&gt;     &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;        &lt;int&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;int&gt;
@@ -249,7 +249,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt; #   kingdom &lt;chr&gt;, genus &lt;chr&gt;, kingdomKey &lt;int&gt;, genusKey &lt;int&gt;,
 #&gt; #   taxonID &lt;chr&gt;, species &lt;chr&gt;, speciesKey &lt;int&gt;, phylum &lt;chr&gt;, order &lt;chr&gt;,
 #&gt; #   phylumKey &lt;int&gt;, classKey &lt;int&gt;, orderKey &lt;int&gt;, class &lt;chr&gt;</div><div class='input'><span class='co'># Limit number of taxa (coupled with checklist_keys)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"e4746398-f7c4-47a1-a474-ae80a4f18e92"</span>,
+<span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"e4746398-f7c4-47a1-a474-ae80a4f18e92"</span>,
                             <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>),
          <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>30</span>)</div><div class='output co'>#&gt; [1] "60 taxa found of which 5 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 60 x 33
 #&gt;       key scientificName datasetKey  nubKey parentKey parent family familyKey
@@ -291,7 +291,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt; #   numOccurrences &lt;int&gt;, taxonID &lt;chr&gt;, habitats &lt;chr&gt;,
 #&gt; #   nomenclaturalStatus &lt;lgl&gt;, threatStatuses &lt;lgl&gt;, synonym &lt;lgl&gt;,
 #&gt; #   species &lt;chr&gt;, speciesKey &lt;int&gt;, rank &lt;chr&gt;, genus &lt;chr&gt;, genusKey &lt;int&gt;</div><div class='input'><span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='st'>"9ff7d317-609b-4c08-bd86-3bc404b77c42"</span>,
-         <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"source"</span> ,<span class='st'>"denormed_classification"</span>), <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3000</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Dataset contains less records than limit.</span></div><div class='output co'>#&gt; [1] "2685 taxa found of which 75 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 2,685 x 26
+         <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"source"</span> ,<span class='st'>"denormed_classification"</span>), <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3000</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Dataset contains less records than limit.</span></div><div class='output co'>#&gt; [1] "2685 taxa found of which 75 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 2,685 x 26
 #&gt;       key scientificName datasetKey nubKey parentKey parent kingdom family
 #&gt;     &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;       &lt;int&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt; 
 #&gt;  1 1.41e8 Nymphaea x ma… 9ff7d317-… 7.80e6 154434692 Nymph… Plantae Nymph…
