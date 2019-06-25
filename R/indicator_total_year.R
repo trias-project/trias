@@ -17,8 +17,8 @@
 #'   graph is included. It is typically one of the highest taxonomic ranks, e.g.
 #'   \code{"kingdom"}, \code{"phylum"}, \code{"class"}, \code{"order"},
 #'   \code{"family"}. Other typical breakwdowns could be geographically related,
-#'   e.g. \code{"country"}, \code{"locality"}, or \code{"pathway"} of
-#'   introduction.
+#'   e.g. \code{"country"}, \code{"locality"}, \code{"pathway"} of
+#'   introduction or \code{"habitat"}.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{"first_observed"}.
 #'   
