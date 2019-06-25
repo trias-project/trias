@@ -110,6 +110,11 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   if (is.null(facet_column)) {
     return(top_graph)
   } else {
+    # check for valid facet options
+    valid_facet_options <- c("family", "order", "class", "phylum", 
+                             "kingdom", "pathway_level1", "locality", 
+                             "native_range", "habitat")
+    facet_column <- match.arg(facet_column, valid_facet_options)
     # calculate numbers
     counts_ias_grouped <- 
       df_extended %>%

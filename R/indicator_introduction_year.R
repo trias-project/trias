@@ -93,7 +93,7 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
     # check for valid facet options
     valid_facet_options <- c("family", "order", "class", "phylum", 
                              "kingdom", "pathway_level1", "locality", 
-                             "native_range")
+                             "native_range", "habitat")
     facet_column <- match.arg(facet_column, valid_facet_options)        
     
     data_facet_graph <- data %>% 
