@@ -44,7 +44,11 @@ about year of introduction is required.
 \examples{
 \dontrun{
 library(readr)
-data <- read_tsv("https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv")
+datafile <- paste0(
+  "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
+  "interim/test_data_output_checklist_indicators.tsv"
+)
+data <- read_tsv(datafile)
 start_year_plot <- 1900
 x_major_scale_stepsize <- 25
 x_minor_scale_stepsize <- 5

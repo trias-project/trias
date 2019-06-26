@@ -43,7 +43,10 @@ Calculate how many new species has been introduced in a year.
 \examples{
 \dontrun{
 library(readr)
-datafile <- "https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv"
+datafile <- paste0(
+  "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
+  "interim/test_data_output_checklist_indicators.tsv"
+)
 data <- read_tsv(datafile)
 # without facets
 indicator_introduction_year(data)
