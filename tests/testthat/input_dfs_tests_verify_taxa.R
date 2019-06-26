@@ -426,7 +426,7 @@ my_verification <- data.frame(
   stringsAsFactors = FALSE
 )
 
-my_taxa_other_colnames <- 
+my_taxa_other_colnames <-
   dplyr::rename(
     my_taxa,
     checklist = datasetKey,

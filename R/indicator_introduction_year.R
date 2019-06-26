@@ -19,7 +19,7 @@
 #'   NULL.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{first_observed}.
-#'   
+#'
 #' @return A ggplot2 object.
 #'
 #' @export
@@ -44,7 +44,7 @@
 #' # with facets
 #' indicator_introduction_year(data, facet_column = "kingdom")
 #' # specifiy columns with year of first observed
-#' indicator_introduction_year(data, 
+#' indicator_introduction_year(data,
 #'                             first_observed = "first_oberved")
 #' }
 indicator_introduction_year <- function(df, start_year_plot = 1920,
@@ -56,74 +56,92 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
   # initial input checks
   assert_that(is.data.frame(df))
   assert_colnames(df, c(first_observed), only_colnames = FALSE)
-  
+
   # rename to default column name
-  df <- 
+  df <-
     df %>%
-    rename_at(vars(first_observed), ~ "first_observed")
-  
+    rename_at(vars(first_observed), ~"first_observed")
+
   # first filtering of the incoming data
   data <- df %>%
     filter(!is.na(.data$first_observed)) %>%
     filter(.data$first_observed > start_year_plot)
-  
-  data_top_graph <- data %>% 
+
+  data_top_graph <- data %>%
     group_by(.data$first_observed) %>%
     count() %>%
     ungroup()
-  
+
   maxDate <- max(data_top_graph$first_observed)
   # top graph with all counts
   top_graph <- ggplot(data_top_graph, aes(x = first_observed, y = n)) +
-    geom_point(stat = 'identity') +
+    geom_point(stat = "identity") +
     geom_smooth(span = smooth_span) +
     xlab("Year") +
-    ylab("Number of introduced alien species") +         
-    scale_x_continuous(breaks = seq(start_year_plot, 
-                                    maxDate, 
-                                    x_major_scale_stepsize), 
-                       minor_breaks = seq(start_year_plot,
-                                          maxDate, 
-                                          x_minor_scale_stepsize),
-                       limits = c(start_year_plot, 
-                                  maxDate)) +
+    ylab("Number of introduced alien species") +
+    scale_x_continuous(
+      breaks = seq(
+        start_year_plot,
+        maxDate,
+        x_major_scale_stepsize
+      ),
+      minor_breaks = seq(
+        start_year_plot,
+        maxDate,
+        x_minor_scale_stepsize
+      ),
+      limits = c(
+        start_year_plot,
+        maxDate
+      )
+    ) +
     theme_inbo()
-  
+
   if (is.null(facet_column)) {
     return(top_graph)
   } else {
     # check for valid facet options
-    valid_facet_options <- c("family", "order", "class", "phylum", 
-                             "kingdom", "pathway_level1", "locality", 
-                             "native_range", "habitat")
-    facet_column <- match.arg(facet_column, valid_facet_options)        
-    
-    data_facet_graph <- data %>% 
+    valid_facet_options <- c(
+      "family", "order", "class", "phylum",
+      "kingdom", "pathway_level1", "locality",
+      "native_range", "habitat"
+    )
+    facet_column <- match.arg(facet_column, valid_facet_options)
+
+    data_facet_graph <- data %>%
       group_by_("first_observed", facet_column) %>%
       count() %>%
       ungroup()
-    
+
     maxDate <- max(data_facet_graph$first_observed)
     facet_graph <- ggplot(data_facet_graph, aes(x = first_observed, y = n)) +
-      geom_point(stat = 'identity') +
+      geom_point(stat = "identity") +
       geom_smooth(span = smooth_span) +
       facet_wrap(facet_column) +
       xlab("Year") +
-      ylab("Number of introduced alien species") + 
-      scale_x_continuous(breaks = seq(start_year_plot, 
-                                      maxDate, 
-                                      x_major_scale_stepsize),
-                         minor_breaks = seq(start_year_plot,
-                                            maxDate, 
-                                            x_minor_scale_stepsize),
-                         limits = c(start_year_plot, 
-                                    maxDate)) +
+      ylab("Number of introduced alien species") +
+      scale_x_continuous(
+        breaks = seq(
+          start_year_plot,
+          maxDate,
+          x_major_scale_stepsize
+        ),
+        minor_breaks = seq(
+          start_year_plot,
+          maxDate,
+          x_minor_scale_stepsize
+        ),
+        limits = c(
+          start_year_plot,
+          maxDate
+        )
+      ) +
       theme_inbo()
-    
+
     ggarrange(top_graph, facet_graph)
   }
   # rename to original column name
-  df <- 
+  df <-
     df %>%
-    rename_at(vars("first_observed"), ~ first_observed)
+    rename_at(vars("first_observed"), ~first_observed)
 }

@@ -53,7 +53,7 @@ indicator_introduction_year(data, start_year_plot = 1940,
 # with facets
 indicator_introduction_year(data, facet_column = "kingdom")
 # specifiy columns with year of first observed
-indicator_introduction_year(data, 
+indicator_introduction_year(data,
                             first_observed = "first_oberved")
 }
 }

@@ -75,9 +75,9 @@ testthat::test_that("taxa column names are correct", {
   ),
   paste(
     "The following columns of taxa are not present:",
-    "taxonKey, scientificName, datasetKey, bb_key, bb_scientificName,", 
-    "bb_kingdom, bb_rank, bb_taxonomicStatus, bb_acceptedKey, bb_acceptedName.", 
-    "Did you maybe forget to provide the mapping of columns named differently", 
+    "taxonKey, scientificName, datasetKey, bb_key, bb_scientificName,",
+    "bb_kingdom, bb_rank, bb_taxonomicStatus, bb_acceptedKey, bb_acceptedName.",
+    "Did you maybe forget to provide the mapping of columns named differently",
     "than the default names?"
   ),
   fixed = TRUE
@@ -87,8 +87,8 @@ testthat::test_that("taxa column names are correct", {
     verification = my_verification
   ),
   paste(
-    "The following columns of taxa are not present:", 
-    "bb_acceptedKey. Did you maybe forget to provide the mapping of columns", 
+    "The following columns of taxa are not present:",
+    "bb_acceptedKey. Did you maybe forget to provide the mapping of columns",
     "named differently than the default names?"
   ),
   fixed = TRUE
@@ -288,12 +288,12 @@ testthat::test_that("verify_taxa column names are correct", {
     verification = verification_test1
   ),
   paste(
-    "The following columns of verification are not present:", 
-    "taxonKey, scientificName, datasetKey, bb_key, bb_scientificName,", 
-    "bb_kingdom, bb_rank, bb_taxonomicStatus,", 
-    "bb_acceptedKey, bb_acceptedName, bb_acceptedKingdom, bb_acceptedRank,", 
-    "bb_acceptedTaxonomicStatus, verificationKey, remarks, verifiedBy,", 
-    "dateAdded, outdated. Did you maybe forget to provide the mapping of", 
+    "The following columns of verification are not present:",
+    "taxonKey, scientificName, datasetKey, bb_key, bb_scientificName,",
+    "bb_kingdom, bb_rank, bb_taxonomicStatus,",
+    "bb_acceptedKey, bb_acceptedName, bb_acceptedKingdom, bb_acceptedRank,",
+    "bb_acceptedTaxonomicStatus, verificationKey, remarks, verifiedBy,",
+    "dateAdded, outdated. Did you maybe forget to provide the mapping of",
     "columns named differently than the default names?"
   ),
   fixed = TRUE
@@ -303,9 +303,9 @@ testthat::test_that("verify_taxa column names are correct", {
     verification = verification_test2
   ),
   paste(
-    "The following columns of verification are not present:", 
-    "datasetKey, bb_kingdom, bb_acceptedKingdom, dateAdded.", 
-    "Did you maybe forget to provide the mapping of columns named differently", 
+    "The following columns of verification are not present:",
+    "datasetKey, bb_kingdom, bb_acceptedKingdom, dateAdded.",
+    "Did you maybe forget to provide the mapping of columns named differently",
     "than the default names?"
   ),
   fixed = TRUE
