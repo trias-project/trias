@@ -14,7 +14,7 @@
 #' @param url_doi_base character. doi base URL; \code{url_doi_base} + doi form a
 #'   link to a page with download information. Default: "https://doi.org/".
 #' @return message with the performed updates
-#' 
+#'
 #' @export
 #' @importFrom rgbif occ_download_meta
 #' @importFrom readr read_delim

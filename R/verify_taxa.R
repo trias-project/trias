@@ -70,7 +70,7 @@
 #'   Column names of required columns of \code{verification}. They have to be
 #'   passed as strings, e.g. \code{"verification_taxon_keys"}. Default: column
 #'   names as specified above in \code{verification}.
-#' 
+#'
 #' @return list. List with three objects: \itemize{ \item{\code{taxa}: df.
 #'   Provided dataframe with additional column \code{verificationKey}.}
 #'   \item{\code{verification}: df. New or updated dataframe with verification
@@ -536,16 +536,16 @@
 #' # output
 #' verify_taxa(taxa = my_taxa, verification = my_verification)
 #' verify_taxa(taxa = my_taxa)
-#' 
+#'
 #' # you can also provide your own column names for one or more required columns:
 #' library(dplyr)
-#' my_taxa_other_colnames <- 
+#' my_taxa_other_colnames <-
 #'   rename(
 #'     my_taxa,
 #'     checklist = datasetKey,
 #'     scientific_names = scientificName
 #' )
-#' 
+#'
 #' my_verification_other_colnames <-
 #'   rename(
 #'     my_verification,
@@ -554,14 +554,14 @@
 #'     is_outdated = outdated,
 #'     author_verification = verifiedBy
 #' )
-#' 
+#'
 #' # output
 #' verify_taxa(
-#'   taxa = my_taxa_other_colnames, 
+#'   taxa = my_taxa_other_colnames,
 #'   verification = my_verification_other_colnames
 #' )
 #' }
-verify_taxa <- function(taxa, 
+verify_taxa <- function(taxa,
                         verification = NULL,
                         taxonKey = "taxonKey",
                         scientificName = "scientificName",
@@ -590,42 +590,43 @@ verify_taxa <- function(taxa,
                         verification_remarks = "remarks",
                         verification_verifiedBy = "verifiedBy",
                         verification_dateAdded = "dateAdded",
-                        verification_outdated = "outdated"
-                        ) {
+                        verification_outdated = "outdated") {
   # Start tests input
   message("Check input dataframes...", appendLF = FALSE)
-  
+
   # Test taxa
   # Retrieve names of needed columns of taxa
   name_col_taxa_original <- c(
     taxonKey, scientificName, datasetKey, bb_key, bb_scientificName,
     bb_kingdom, bb_rank, bb_taxonomicStatus, bb_acceptedKey, bb_acceptedName
   )
-  
+
   # Define vector of column names of taxa we will use later
-  name_col_taxa = c(
-    "taxonKey", "scientificName", "datasetKey", "bb_key", 
-    "bb_scientificName", "bb_kingdom", "bb_rank", "bb_taxonomicStatus", 
+  name_col_taxa <- c(
+    "taxonKey", "scientificName", "datasetKey", "bb_key",
+    "bb_scientificName", "bb_kingdom", "bb_rank", "bb_taxonomicStatus",
     "bb_acceptedKey", "bb_acceptedName"
   )
   # Check taxa is a dataframe
   assertthat::assert_that(is.data.frame(taxa))
-  
+
   # Check presence needed columns
-  col_not_present <- 
+  col_not_present <-
     name_col_taxa_original[which(!name_col_taxa_original %in% names(taxa))]
   assertthat::assert_that(
     all(name_col_taxa_original %in% names(taxa)),
-    msg = paste("The following columns of taxa are not present:", 
-                paste0(paste(col_not_present, collapse = ", "),"."),
-                "Did you maybe forget to provide the mapping of", 
-                "columns named differently than the default names?")
+    msg = paste(
+      "The following columns of taxa are not present:",
+      paste0(paste(col_not_present, collapse = ", "), "."),
+      "Did you maybe forget to provide the mapping of",
+      "columns named differently than the default names?"
+    )
   )
-  
+
   # Convert to default column names
-  taxa <- 
-    taxa %>% 
-    rename_at(vars(name_col_taxa_original), ~ name_col_taxa)
+  taxa <-
+    taxa %>%
+    rename_at(vars(name_col_taxa_original), ~name_col_taxa)
   # Check class columns
   taxa$scientificName <- as.character(taxa$scientificName)
   taxa$datasetKey <- as.character(taxa$datasetKey)
@@ -663,7 +664,7 @@ verify_taxa <- function(taxa,
   # Throw a message if a column called verificationKey already exists
   message_existence_verificationKey <- NULL
   if ("verificationKey" %in% names(taxa)) {
-    message_existence_verificationKey <- 
+    message_existence_verificationKey <-
       "Column verificationKey already exists. It will be overwritten."
     taxa <-
       taxa %>%
@@ -678,12 +679,12 @@ verify_taxa <- function(taxa,
     verification_bb_scientificName, verification_bb_kingdom,
     verification_bb_rank, verification_bb_taxonomicStatus,
     verification_bb_acceptedKey, verification_bb_acceptedName,
-    verification_bb_acceptedKingdom, verification_bb_acceptedRank, 
-    verification_bb_acceptedTaxonomicStatus, verification_verificationKey, 
-    verification_remarks, verification_verifiedBy, 
+    verification_bb_acceptedKingdom, verification_bb_acceptedRank,
+    verification_bb_acceptedTaxonomicStatus, verification_verificationKey,
+    verification_remarks, verification_verifiedBy,
     verification_dateAdded, verification_outdated
   )
-  
+
   # Define vector of names of required columns of verification we will use later
   name_col_verification <- c(
     "taxonKey", "scientificName", "datasetKey",
@@ -695,10 +696,10 @@ verify_taxa <- function(taxa,
     "verificationKey", "remarks",
     "verifiedBy", "dateAdded", "outdated"
   )
-  name_col_verification_extra <- 
-    names(verification)[!names(verification) %in% 
-                          name_col_verification_original]
-  
+  name_col_verification_extra <-
+    names(verification)[!names(verification) %in%
+      name_col_verification_original]
+
   # Make empty tibble df if not exists
   if (is.null(verification)) {
     verification <- tibble(
@@ -725,38 +726,41 @@ verify_taxa <- function(taxa,
   } else {
     # Check verification is a dataframe
     assert_that(is.data.frame(verification))
-    
+
     # Check presence needed columns
-    col_not_present <- 
+    col_not_present <-
       name_col_verification_original[
-        which(!name_col_verification_original %in% names(verification))]
+        which(!name_col_verification_original %in% names(verification))
+      ]
     assertthat::assert_that(
       all(name_col_verification_original %in% names(verification)),
-      msg = paste("The following columns of verification are not present:", 
-                  paste0(paste(col_not_present, collapse = ", "),"."),
-                  "Did you maybe forget to provide the mapping of", 
-                  "columns named differently than the default names?")
+      msg = paste(
+        "The following columns of verification are not present:",
+        paste0(paste(col_not_present, collapse = ", "), "."),
+        "Did you maybe forget to provide the mapping of",
+        "columns named differently than the default names?"
+      )
     )
-    
+
     # Convert to standard column names
-    verification <- 
-      verification %>% 
-      rename_at(vars(name_col_verification_original), ~ name_col_verification)
+    verification <-
+      verification %>%
+      rename_at(vars(name_col_verification_original), ~name_col_verification)
   }
-  
+
   # Check class columns
   verification$scientificName <- as.character(verification$scientificName)
   verification$datasetKey <- as.character(verification$datasetKey)
   verification$bb_scientificName <- as.character(verification$bb_scientificName)
   verification$bb_kingdom <- as.character(verification$bb_kingdom)
   verification$bb_rank <- as.character(verification$bb_rank)
-  verification$bb_taxonomicStatus <- 
+  verification$bb_taxonomicStatus <-
     as.character(verification$bb_taxonomicStatus)
   verification$bb_acceptedName <- as.character(verification$bb_acceptedName)
-  verification$bb_acceptedKingdom <- 
+  verification$bb_acceptedKingdom <-
     as.character(verification$bb_acceptedKingdom)
   verification$bb_acceptedRank <- as.character(verification$bb_acceptedRank)
-  verification$bb_acceptedTaxonomicStatus <- 
+  verification$bb_acceptedTaxonomicStatus <-
     as.character(verification$bb_acceptedTaxonomicStatus)
   verification$verificationKey <- as.character(verification$verificationKey)
   verification$remarks <- as.character(verification$remarks)
@@ -779,13 +783,13 @@ verify_taxa <- function(taxa,
     nrow() == 0,
   msg = "Only logicals (TRUE/FALSE) allowed in 'outdated' of verification."
   )
-  
+
   # Allow multiple comma separated verification keys (character)
   class(verification$verificationKey) <- "character"
-  
+
   # Allow remarks (remarks col empty means for R a column logicals)
   class(verification$remarks) <- "character"
-  
+
   # Check for integrity synonym relations
   assert_that(
     verification %>%
@@ -832,7 +836,7 @@ verify_taxa <- function(taxa,
       bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL")) %>%
     mutate(
       verificationKey = as.character(bb_key)
-  )
+    )
   message("DONE.", appendLF = TRUE)
 
   # Go further with taxa which need verification
@@ -863,7 +867,7 @@ verify_taxa <- function(taxa,
       dateAdded = Sys.Date(),
       outdated = FALSE
     ) %>%
-    select(one_of(name_col_verification), name_col_verification_extra)    
+    select(one_of(name_col_verification), name_col_verification_extra)
   message("DONE.", appendLF = TRUE)
 
   # Find new taxa not matched to GBIF backbone
@@ -917,9 +921,8 @@ verify_taxa <- function(taxa,
         by = colnames(verification)
       ) %>%
       bind_rows(updated_bb_scientificName %>%
-                  mutate(bb_scientificName = updated_bb_scientificName) %>%
-                  select(-updated_bb_scientificName)
-      ) %>%
+        mutate(bb_scientificName = updated_bb_scientificName) %>%
+        select(-updated_bb_scientificName)) %>%
       select(one_of(name_col_verification), name_col_verification_extra)
     # Version for info
     updated_bb_scientificName_short <-
@@ -939,10 +942,11 @@ verify_taxa <- function(taxa,
     )
   }
   # Retrieve present column names and original ones for later renaming
-  name_col_updated_bb_scientificName_short <- 
+  name_col_updated_bb_scientificName_short <-
     names(updated_bb_scientificName_short)
   name_col_updated_bb_scientificName_short_original <-
-    c(verification_taxonKey,
+    c(
+      verification_taxonKey,
       verification_bb_key,
       verification_bb_acceptedKey,
       verification_bb_scientificName,
@@ -978,7 +982,7 @@ verify_taxa <- function(taxa,
       ) %>%
       bind_rows(updated_bb_acceptedName %>%
         mutate(bb_acceptedName = updated_bb_acceptedName) %>%
-          select(-updated_bb_acceptedName)) %>%
+        select(-updated_bb_acceptedName)) %>%
       select(one_of(name_col_verification), name_col_verification_extra)
     # Version for info
     updated_bb_acceptedName_short <-
@@ -998,16 +1002,17 @@ verify_taxa <- function(taxa,
     )
   }
   # Retrieve present column names and original ones for later renaming
-  name_col_updated_bb_acceptedName_short <- 
+  name_col_updated_bb_acceptedName_short <-
     names(updated_bb_acceptedName_short)
   name_col_updated_bb_acceptedName_short_original <-
-    c(verification_taxonKey,
+    c(
+      verification_taxonKey,
       verification_bb_key,
       verification_bb_acceptedKey,
       verification_bb_acceptedName,
       paste0("updated_", verification_bb_acceptedName)
     )
-  
+
   message("DONE.", appendLF = TRUE)
 
   # Add new synonyms to verification
@@ -1162,13 +1167,15 @@ verify_taxa <- function(taxa,
     )
   }
   # Retrieve present column names and original ones for later renaming
-  name_col_duplicates <- 
+  name_col_duplicates <-
     names(duplicates)
-  name_col_duplicates_original <- 
-    c(verification_bb_key, 
+  name_col_duplicates_original <-
+    c(
+      verification_bb_key,
       verification_bb_acceptedKey,
       verification_bb_scientificName,
-      "n")
+      "n"
+    )
   message("DONE.", appendLF = TRUE)
 
   # Order verification by outdated and dateAdded
@@ -1198,37 +1205,35 @@ verify_taxa <- function(taxa,
     select(one_of(name_col_verification), name_col_verification_extra)
 
   # Convert to original column names
-  taxa <- 
-    taxa %>% 
-    rename_at(vars(name_col_taxa), ~ name_col_taxa_original)
-  verification <- 
+  taxa <-
+    taxa %>%
+    rename_at(vars(name_col_taxa), ~name_col_taxa_original)
+  verification <-
     verification %>%
-    rename_at(vars(name_col_verification), ~ name_col_verification_original)
-  new_synonyms <- 
+    rename_at(vars(name_col_verification), ~name_col_verification_original)
+  new_synonyms <-
     new_synonyms %>%
-    rename_at(vars(name_col_verification), ~ name_col_verification_original)
+    rename_at(vars(name_col_verification), ~name_col_verification_original)
   new_unmatched_taxa <-
     new_unmatched_taxa %>%
-    rename_at(vars(name_col_verification), ~ name_col_verification_original)
-  outdated_unmatched_taxa <- 
+    rename_at(vars(name_col_verification), ~name_col_verification_original)
+  outdated_unmatched_taxa <-
     outdated_unmatched_taxa %>%
-    rename_at(vars(name_col_verification), ~ name_col_verification_original)
-  outdated_synonyms <- 
+    rename_at(vars(name_col_verification), ~name_col_verification_original)
+  outdated_synonyms <-
     outdated_synonyms %>%
-    rename_at(vars(name_col_verification), ~ name_col_verification_original)
+    rename_at(vars(name_col_verification), ~name_col_verification_original)
   updated_bb_scientificName_short <-
     updated_bb_scientificName_short %>%
-    rename_at(vars(name_col_updated_bb_scientificName_short), ~ 
-                name_col_updated_bb_scientificName_short_original
-    )
+    rename_at(vars(name_col_updated_bb_scientificName_short), ~
+    name_col_updated_bb_scientificName_short_original)
   updated_bb_acceptedName_short <-
     updated_bb_acceptedName_short %>%
-    rename_at(vars(name_col_updated_bb_acceptedName_short), ~ 
-                name_col_updated_bb_acceptedName_short_original
-    )
-  duplicates <- 
+    rename_at(vars(name_col_updated_bb_acceptedName_short), ~
+    name_col_updated_bb_acceptedName_short_original)
+  duplicates <-
     duplicates %>%
-    rename_at(vars(name_col_duplicates), ~ name_col_duplicates_original)
+    rename_at(vars(name_col_duplicates), ~name_col_duplicates_original)
 
   return(list(
     taxa = taxa,

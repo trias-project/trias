@@ -18,7 +18,6 @@ Imports:
     dplyr,
     egg,
     ggplot2,
-    INBOtheme,
     lazyeval,
     magrittr,
     purrr,

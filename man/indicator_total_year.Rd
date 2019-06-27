@@ -27,8 +27,8 @@ additional facet wrap plots underneath the main graph. When NULL, no facet
 graph is included. It is typically one of the highest taxonomic ranks, e.g.
 \code{"kingdom"}, \code{"phylum"}, \code{"class"}, \code{"order"},
 \code{"family"}. Other typical breakwdowns could be geographically related,
-e.g. \code{"country"}, \code{"locality"}, or \code{"pathway"} of
-introduction.}
+e.g. \code{"country"}, \code{"locality"}, \code{"pathway"} of
+introduction or \code{"habitat"}.}
 
 \item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{"first_observed"}.}
@@ -44,7 +44,11 @@ about year of introduction is required.
 \examples{
 \dontrun{
 library(readr)
-data <- read_tsv("https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv")
+datafile <- paste0(
+  "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
+  "interim/test_data_output_checklist_indicators.tsv"
+)
+data <- read_tsv(datafile)
 start_year_plot <- 1900
 x_major_scale_stepsize <- 25
 x_minor_scale_stepsize <- 5

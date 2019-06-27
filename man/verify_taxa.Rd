@@ -562,7 +562,7 @@ verify_taxa(taxa = my_taxa)
 
 # you can also provide your own column names for one or more required columns:
 library(dplyr)
-my_taxa_other_colnames <- 
+my_taxa_other_colnames <-
   rename(
     my_taxa,
     checklist = datasetKey,
@@ -580,7 +580,7 @@ my_verification_other_colnames <-
 
 # output
 verify_taxa(
-  taxa = my_taxa_other_colnames, 
+  taxa = my_taxa_other_colnames,
   verification = my_verification_other_colnames
 )
 }

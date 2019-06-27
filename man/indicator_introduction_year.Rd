@@ -26,8 +26,10 @@ breaks of the x axis. Default: 5.}
 
 \item{facet_column}{NULL or character. The column to use to create additional
 facet wrap plots underneath the main graph. When NULL, no facet graph are
-created. Valid facet options: "family", "order", "class", "phylum",
-"kingdom", "pathway_level1", "locality", "native_range". Default: NULL.}
+created. Valid facet options: \code{"family"}, \code{"order"},
+\code{"class"}, \code{"phylum"}, \code{"kingdom"}, \code{"pathway_level1"},
+\code{"locality"}, \code{"native_range"} or  \code{"habitat"}. Default:
+NULL.}
 
 \item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{first_observed}.}
@@ -41,7 +43,10 @@ Calculate how many new species has been introduced in a year.
 \examples{
 \dontrun{
 library(readr)
-datafile <- "https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv"
+datafile <- paste0(
+  "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
+  "interim/test_data_output_checklist_indicators.tsv"
+)
 data <- read_tsv(datafile)
 # without facets
 indicator_introduction_year(data)
@@ -51,7 +56,7 @@ indicator_introduction_year(data, start_year_plot = 1940,
 # with facets
 indicator_introduction_year(data, facet_column = "kingdom")
 # specifiy columns with year of first observed
-indicator_introduction_year(data, 
+indicator_introduction_year(data,
                             first_observed = "first_oberved")
 }
 }

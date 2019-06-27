@@ -32,7 +32,11 @@ breakpoint: kingdom.
 }
 \examples{
 library(readr)
-data <- read_tsv("https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv")
+datafile <- paste0(
+  "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
+  "interim/test_data_output_checklist_indicators.tsv"
+)
+data <- read_tsv(datafile)
 get_table_pathways(data)
 # Specify kingdom
 get_table_pathways(data, "Plantae")
