@@ -28,7 +28,6 @@
 #' @importFrom dplyr %>% filter group_by group_by_ count ungroup rename_at
 #' @importFrom ggplot2 geom_point aes xlab ylab scale_x_continuous facet_wrap
 #'   geom_smooth
-#' @importFrom INBOtheme theme_inbo
 #' @importFrom egg ggarrange
 #'
 #' @examples
@@ -97,8 +96,7 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
         start_year_plot,
         maxDate
       )
-    ) +
-    theme_inbo()
+    )
 
   if (is.null(facet_column)) {
     return(top_graph)
@@ -138,8 +136,7 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
           start_year_plot,
           maxDate
         )
-      ) +
-      theme_inbo()
+      )
 
     ggarrange(top_graph, facet_graph)
   }

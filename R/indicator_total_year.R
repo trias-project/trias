@@ -32,7 +32,6 @@
 #' @importFrom tidyr unnest
 #' @importFrom ggplot2 ggplot geom_line aes xlab ylab scale_x_continuous
 #'   facet_wrap
-#' @importFrom INBOtheme theme_inbo
 #' @importFrom egg ggarrange
 #'
 #' @examples
@@ -113,8 +112,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
         x_major_scale_stepsize
       ),
       limits = c(start_year_plot, maxDate)
-    ) +
-    theme_inbo()
+    )
 
   if (is.null(facet_column)) {
     return(top_graph)
@@ -145,8 +143,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
         breaks = seq(start_year_plot, maxDate, x_major_scale_stepsize),
         minor_breaks = seq(start_year_plot, maxDate, x_minor_scale_stepsize),
         limits = c(start_year_plot, maxDate)
-      ) +
-      theme_inbo()
+      )
 
     ggarrange(top_graph, facet_graph)
   }
