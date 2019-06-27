@@ -140,8 +140,4 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
 
     ggarrange(top_graph, facet_graph)
   }
-  # rename to original column name
-  df <-
-    df %>%
-    rename_at(vars("first_observed"), ~first_observed)
 }
