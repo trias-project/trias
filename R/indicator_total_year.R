@@ -22,7 +22,7 @@
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{"first_observed"}.
 #'
-#' @return ggplot2 object
+#' @return ggplot2 object (or egg object if facets are used).
 #'
 #' @export
 #' @importFrom assertthat assert_that
