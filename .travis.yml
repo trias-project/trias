@@ -4,9 +4,6 @@ cache: packages
 r_github_packages:
   - r-lib/pkgdown
 
-after_success:
-  - Rscript "pkgdown::build_site(preview = FALSE)"
-
 deploy:
   provider: pages
   local_dir: docs
