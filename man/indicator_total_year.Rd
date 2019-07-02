@@ -34,7 +34,7 @@ introduction or \code{"habitat"}.}
 information about year of introduction. Default: \code{"first_observed"}.}
 }
 \value{
-ggplot2 object
+ggplot2 object (or egg object if facets are used).
 }
 \description{
 This function calculates the cumulative number of species introduced per

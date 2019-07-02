@@ -11,7 +11,7 @@ get_table_pathways(df, category = NULL, n_species = 5,
 \item{df}{df.}
 
 \item{category}{NULL or character. One of the kingdoms as given in GBIF: \itemize{
-\item{"Plantae"} \item{"Animalia"} \item{} \item{"Fungi"} \item{"Chromista"}
+\item{"Plantae"} \item{"Animalia"} \item{"Fungi"} \item{"Chromista"}
 \item{"Archaea"} \item{"Bacteria"} \item{"Protozoa"} \item{"Viruses"}
 \item{"incertae sedis"} } It can also be one of the following not kingdoms:
 #'\itemize{\item{Chordata} \item{Not Chordata}. Default: NULL.}}
@@ -33,13 +33,16 @@ breakpoint: kingdom.
 \examples{
 library(readr)
 datafile <- paste0(
-  "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
-  "interim/test_data_output_checklist_indicators.tsv"
+  "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
+  "output/data_input_checklist_indicators.tsv"
 )
 data <- read_tsv(datafile)
 get_table_pathways(data)
 # Specify kingdom
 get_table_pathways(data, "Plantae")
-# Sepcify number of species to include in examples
+# with no kingdom
+get_table_pathways(data, "Chordata")
+get_table_pathways(data, "Not Chordata")
+# Specify number of species to include in examples
 get_table_pathways(data, "Plantae", n_species = 8)
 }
