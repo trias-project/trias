@@ -83,90 +83,85 @@ get_table_pathways <- function(df,
   }
 
 
-  # Create groups basd on pathway level1 and level2
-  preprocess_data <- filtered_data %>%
+  
+  # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
+  preprocess_data <- 
+    filtered_data %>%
+    # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
+    mutate(pathway_level1 = ifelse(!is.na(pathway_level1), 
+                                   pathway_level1, 
+                                   "unknown")) %>%
+    mutate(pathway_level2 = ifelse(pathway_level1 != "unknown"  &  
+                                     !is.na(pathway_level2), 
+                                   pathway_level2, 
+                                   ""))
+  # Create groups based on pathway level1 and level2
+  preprocess_data <-
+    preprocess_data %>%
     distinct(
-      scientificName, species, genus, family, order,
-      class, phylum, kingdom, speciesKey, country,
-      pathway_level1, pathway_level2
-    ) %>%
-    mutate(pathway_level1 = ifelse(is.na(pathway_level2),
-      NA, .$pathway_level1
-    )) %>%
+      scientificName, pathway_level1, pathway_level2) %>%
     group_by(pathway_level1, pathway_level2)
-
+  
   # Assess size of sample per group
-  pathway_data <- preprocess_data %>%
+  pathway_data <- 
+    preprocess_data %>%
     count() %>%
     rowwise() %>%
     mutate(size_sample = ifelse(n > n_species,
       n_species, n
     ))
   # Make df with sample species
-  samples <- pmap_dfr(
-    list(
-      pathway_data$pathway_level1,
-      pathway_data$pathway_level2,
-      pathway_data$size_sample
-    ),
-    function(p1, p2, s) {
-      set_species <- if (!is.na(p1)) {
-        preprocess_data %>%
-          filter(pathway_level1 == p1) %>%
-          filter(pathway_level2 == p2)
-      } else {
-        preprocess_data %>%
-          filter(is.na(pathway_level1))
+  samples <- 
+    pmap_dfr(
+      list(
+        pathway_data$pathway_level1,
+        pathway_data$pathway_level2,
+        pathway_data$size_sample
+      ),
+      function(p1, p2, s) {
+        set_species <- 
+          preprocess_data %>%
+            filter(pathway_level1 == p1) %>%
+            filter(pathway_level2 == p2)
+        if (s < nrow(preprocess_data)) {
+          examples <- sample_n(set_species,s)
+        } else {
+          examples <- set_species
+        }
+        examples <- 
+          examples %>% 
+          pull(scientificName)
+        
+        tibble(examples = str_c(examples, collapse = ", ")) %>%
+          mutate(pathway_level1 = p1,
+                 pathway_level2 = p2
+          )
       }
-      examples <- sample_n(
-        set_species,
-        s
-      ) %>% pull(species)
-      data.frame(
-        examples = str_c(examples, collapse = ", "),
-        stringsAsFactors = FALSE
-      ) %>%
-        as_tibble() %>%
-        mutate(
-          pathway_level1 = p1,
-          pathway_level2 = p2
-        )
-    }
-  )
-
+    )
+  
   # Join pathways and samples together
-  pathway_data <- left_join(pathway_data, samples,
-    by = c("pathway_level1", "pathway_level2")
-  ) %>%
+  pathway_data <- 
+    pathway_data %>%
+    left_join(samples, 
+              by = c("pathway_level1", "pathway_level2")) %>%
     select(-size_sample)
 
   # Create output table (untidy)
-  pathway_data <- pathway_data %>%
-    mutate(
-      pathway_level1 = ifelse(!is.na(pathway_level1),
-        pathway_level1, "unknown"
-      ),
-      pathway_level2 = ifelse(pathway_level1 == "unknown",
-        "",
-        pathway_level2
-      )
-    ) %>%
-    mutate(examples = ifelse(!is.na(examples),
-      examples,
-      str_c(sample_n(
-        preprocess_data %>%
-          filter(is.na(pathway_level1) |
-            is.na(pathway_level1)),
-        n
-      )$species,
-      collapse = ", "
-      )
-    )) %>%
+  pathway_data <- 
+    pathway_data %>%
+    # mutate(examples = ifelse(!is.na(examples), 
+    #                          examples, 
+    #                          str_c(sample_n(preprocess_data %>%
+    #                                           filter(is.na(pathway_level1) |
+    #                                                    is.na(pathway_level1)),
+    #                                         n)$species,
+    #                                collapse = ", ")
+    #                          )) %>%
     ungroup()
 
-  pathway_data$pathway_level1[
-    duplicated(pathway_data$pathway_level1) == TRUE
-  ] <- ""
+  # pathway_data$pathway_level1[
+  #   duplicated(pathway_data$pathway_level1) == TRUE
+  # ] <- ""
 
-  return(pathway_data)
+  pathway_data
 }
