@@ -166,7 +166,7 @@ get_table_pathways <- function(df,
   if (!is.null(from)) {
     filtered_data <-
       filtered_data %>%
-      filter(firstObserved >= from)
+      filter(first_observed >= from)
   }
   # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
   preprocess_data <-
