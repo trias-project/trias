@@ -41,17 +41,18 @@ input_test_df_phylum <-
   input_test_df %>%
   rename(phylum_species = phylum)
 
+# Output basic usage : default values for all params
+output_test_df_basic <- data.frame(
+  pathway_level1 = c("contaminant", "unknown"),
+  pathway_level2 = c("animal_parasite", ""),
+  n = as.integer(c(2, 3)),
+  examples = c(
+    "Aphanomyces astaci, Gyrodactylus proterorhini",
+    "Thecaphora oxalidis, Tricellaria inopinata, Scutigera coleoptrata"),
+  stringsAsFactors = FALSE
+)
+
 testthat::test_that("Basic usage: default values", {
-  # Output basic usage : default values for all params
-  output_test_df_basic <- data.frame(
-    pathway_level1 = c("contaminant", "unknown"),
-    pathway_level2 = c("animal_parasite", ""),
-    n = as.integer(c(2, 3)),
-    examples = c(
-      "Aphanomyces astaci, Gyrodactylus proterorhini",
-      "Thecaphora oxalidis, Tricellaria inopinata, Scutigera coleoptrata"),
-    stringsAsFactors = FALSE
-  )
   pathways_default <- get_table_pathways(input_test_df)
   # same cols
   expect_true(all(names(pathways_default) == names(output_test_df_basic)))
@@ -65,7 +66,7 @@ testthat::test_that("Basic usage: default values", {
   )
 })
 
-testthat::test_that("Use with category", {
+testthat::test_that("Use with 'category'", {
   output_test_df_animals <- data.frame(
     pathway_level1 = c("contaminant", "unknown"),
     pathway_level2 = c("animal_parasite", ""),
@@ -116,3 +117,34 @@ testthat::test_that("Use with category", {
     pathways_not_chordata_2 %>% select(-examples))
 })
 
+testthat::test_that("Use with 'from'", {
+  output_test_df_2012 <- data.frame(
+    pathway_level1 = c("contaminant", "unknown"),
+    pathway_level2 = c("animal_parasite", ""),
+    n = as.integer(c(1, 1)),
+    examples = c("Aphanomyces astaci", "Thecaphora oxalidis"),
+    stringsAsFactors = FALSE
+  )
+  output_test_df_2018 <- data.frame(
+    pathway_level1 = "contaminant",
+    pathway_level2 = "animal_parasite",
+    n = as.integer(1),
+    examples = "Aphanomyces astaci",
+    stringsAsFactors = FALSE
+  )
+  pathways_1000 <- get_table_pathways(input_test_df, from = 1000)
+  pathways_2012 <- get_table_pathways(input_test_df, from = 2012)
+  pathways_2018 <- get_table_pathways(input_test_df, from = 2018)
+  # from is earlier than any first_observed value
+  expect_equal(pathways_1000 %>%
+                select(-examples),
+              output_test_df_basic %>%
+                select(-examples))
+  expect_true(sum(pathways_1000$n) > sum(pathways_2012$n))
+  expect_true(sum(pathways_2012$n) > sum(pathways_2018$n))
+  expect_true(nrow(pathways_2012) == 2)
+  expect_equal(pathways_2012, output_test_df_2012)
+  expect_true(nrow(pathways_2018) == 1)
+  expect_equal(pathways_2018, output_test_df_2018)
+  expect_equal(pathways_2018, pathways_2012[1,])
+})
