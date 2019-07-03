@@ -40,6 +40,16 @@ input_test_df_kingdom <-
 input_test_df_phylum <- 
   input_test_df %>%
   rename(phylum_species = phylum)
+# year_of_introduction column is not the default value
+input_test_df_year <- 
+  input_test_df %>%
+  rename(first_obs = first_observed)
+# test on large input
+input_test_df_large <- readr::read_tsv(
+  paste0("./data_test_output_get_table_pathways/",
+         "input1_get_table_pathways.tsv",
+         na = "")
+)
 
 # Output basic usage : default values for all params
 output_test_df_basic <- data.frame(
@@ -54,10 +64,23 @@ output_test_df_basic <- data.frame(
 
 testthat::test_that("Basic usage: default values", {
   pathways_default <- get_table_pathways(input_test_df)
+  pathways_default_large <- get_table_pathways(input_test_df_large)
   # same cols
   expect_true(all(names(pathways_default) == names(output_test_df_basic)))
+  expect_true(all(names(pathways_default) == names(pathways_default_large)))
   # same number of rows (pathways combinations)
   expect_true(nrow(pathways_default) == nrow(output_test_df_basic))
+  # large input, more pathways, more rows
+  expect_true(nrow(pathways_default_large) > nrow(pathways_default))
+  # large input, more taxa sharing same pathways, higher n value
+  expect_true(pathways_default_large %>%
+                filter(pathway_level1 == "contaminant" & 
+                         pathway_level2 == "animal_parasite") %>% 
+                pull(n) > (output_test_df_basic %>%
+                             filter(pathway_level1 == "contaminant" & 
+                                      pathway_level2 == "animal_parasite") %>% 
+                             pull(n))
+  )
   # same content of dfs. No examples take into account as they are randomly
   # selected
   expect_equal(
@@ -147,4 +170,28 @@ testthat::test_that("Use with 'from'", {
   expect_true(nrow(pathways_2018) == 1)
   expect_equal(pathways_2018, output_test_df_2018)
   expect_equal(pathways_2018, pathways_2012[1,])
+  expect_equal(pathways_2018,
+               get_table_pathways(input_test_df_year, 
+                                  from = 2018, 
+                                  year_introduction = "first_obs"))
+})
+
+testthat::test_that("Use with 'n_species'", {
+  pathways_n_species_10 <- get_table_pathways(input_test_df, n_species = 10)
+  pathways_n_species_1 <- get_table_pathways(input_test_df, n_species = 1)
+  pathways_n_species_3_large_df <- get_table_pathways(input_test_df_large, 
+                                                      n_species = 3)
+  expect_equal(pathways_n_species_10 %>%
+                 select(-examples),
+               get_table_pathways(input_test_df) %>%
+                 select(-examples))
+  expect_true(all(purrr::map_lgl(pathways_n_species_10$examples, 
+                         ~length(str_split(., ",")) <=10))
+  )
+  expect_true(all(purrr::map_lgl(pathways_n_species_1$examples, 
+                                 ~length(str_split(., ",")) == 1))
+  )
+  expect_true(all(purrr::map_lgl(pathways_n_species_3_large_df$examples, 
+                                 ~length(str_split(., ",")) <= 3))
+  )
 })
