@@ -4,24 +4,41 @@
 \alias{get_table_pathways}
 \title{Pathway count indicator figure}
 \usage{
-get_table_pathways(df, category = NULL, n_species = 5,
-  kingdom = "kingdom")
+get_table_pathways(df, category = NULL, from = NULL, n_species = 5,
+  kingdom = "kingdom", phylum = "phylum",
+  year_introduction = "first_observed", species = "canonicalName")
 }
 \arguments{
 \item{df}{df.}
 
-\item{category}{NULL or character. One of the kingdoms as given in GBIF: \itemize{
-\item{"Plantae"} \item{"Animalia"} \item{"Fungi"} \item{"Chromista"}
-\item{"Archaea"} \item{"Bacteria"} \item{"Protozoa"} \item{"Viruses"}
-\item{"incertae sedis"} } It can also be one of the following not kingdoms:
-#'\itemize{\item{Chordata} \item{Not Chordata}. Default: NULL.}}
+\item{category}{NULL or character. One of the kingdoms as given in GBIF:
+\itemize{ \item{"Plantae"} \item{"Animalia"} \item{"Fungi"}
+\item{"Chromista"} \item{"Archaea"} \item{"Bacteria"} \item{"Protozoa"}
+\item{"Viruses"} \item{"incertae sedis"} } It can also be one of the
+following not kingdoms: #'\itemize{\item{Chordata} \item{Not Chordata}.
+Default: NULL.}}
 
-\item{n_species}{integer The maximum number of species to return as examples
+\item{from}{NULL or numeric. Year trade-off: if not \code{NULL} select only
+pathways related to taxa introduced during or after this year. Default:
+\code{NULL}.}
+
+\item{n_species}{numeric. The maximum number of species to return as examples
 per pathway. For groups with less species than \code{n_species}, all
 species are given. Default: 5.}
 
 \item{kingdom}{character. Name of the column of \code{df} containing
 information about kingdom. Default: \code{"kingdom"}.}
+
+\item{phylum}{character. Name of the column of \code{df} containing
+information about phylum. This parameter is used only if \code{category} is
+one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default: \code{"phylum"}.}
+
+\item{year_introduction}{character. Name of the column of \code{df}
+containing information about year of introduction. Default:
+\code{"first_observed"}.}
+
+\item{species}{character. Name of the column of \code{df} containing
+information about species names. Default: \code{"canonicalName"}.}
 }
 \value{
 a data.frame
@@ -31,6 +48,7 @@ Function to get number of taxa introduced by different pathways. Possible
 breakpoint: kingdom.
 }
 \examples{
+\dontrun{
 library(readr)
 datafile <- paste0(
   "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
@@ -40,9 +58,17 @@ data <- read_tsv(datafile)
 get_table_pathways(data)
 # Specify kingdom
 get_table_pathways(data, "Plantae")
-# with no kingdom
+# with special categoeries, `Chordata` or `not Chordata`
 get_table_pathways(data, "Chordata")
 get_table_pathways(data, "Not Chordata")
+# From 2000
+get_table_pathways(data, from = 2000, year_introduction = "first_observed")
 # Specify number of species to include in examples
 get_table_pathways(data, "Plantae", n_species = 8)
+# Specify columns containing kingdom and species info
+get_table_pathways(data,
+  "Plantae", n_species = 8,
+  kingdom = "kingdom",
+  species = "canonicalName")
+}
 }
