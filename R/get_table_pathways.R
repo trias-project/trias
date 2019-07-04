@@ -97,10 +97,10 @@ get_table_pathways <- function(df,
                              ".")
   )
   }
-  assert_colnames(df, kingdom, only_colnames = FALSE)
-  assert_colnames(df, species, only_colnames = FALSE)
-  assert_that(is.character(kingdodm_names),
-              msg = "Parameter 'kingdodm_names' should be a character.")
+  assert_colnames(df, kingdom_names, only_colnames = FALSE)
+  assert_colnames(df, species_names, only_colnames = FALSE)
+  assert_that(is.character(kingdom_names),
+              msg = "Parameter 'kingdom_names' should be a character.")
   assert_that(is.numeric(n_species), 
               msg = "Parameter 'n_species' should be a number."
   )
@@ -130,13 +130,13 @@ get_table_pathways <- function(df,
     assert_colnames(df, year_introduction, only_colnames = FALSE)
   }
   
-  assert_colnames(df, species, only_colnames = FALSE)
+  assert_colnames(df, species_names, only_colnames = FALSE)
   assert_that(is.character(species_names),
               msg = "Parameter 'species_names' should be a character.")
   # rename to default column name
   df <-
     df %>%
-    rename_at(vars(kingdodm_names), ~"group") %>%
+    rename_at(vars(kingdom_names), ~"group") %>%
     rename_at(vars(species_names), ~"taxa_names")
   if (!is.null(from)) {
     df <- 
@@ -152,11 +152,10 @@ get_table_pathways <- function(df,
       assert_that(is.character(phylum_names),
                   msg = "Parameter 'phylum_names' should be a character."
       )
-      )
-      assert_colnames(df, phylum, only_colnames = FALSE)
+      assert_colnames(df, phylum_names, only_colnames = FALSE)
       df <- 
         df %>%
-        rename_at(vars(phylum_names) = phylum_group)
+        rename_at(vars(phylum_names), ~"phylum_group")
       if (category == "Chordata") {
         filtered_data <- df %>% filter(phylum_group == category)
       } else {

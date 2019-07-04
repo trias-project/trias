@@ -56,17 +56,6 @@ testthat::test_that("Param: category", {
   )
 })
 
-testthat::test_that("Param: kingdom", {
-  expect_error(
-    get_table_pathways(input_test_df, kingdom = "bad_kingdom"),
-    paste0("These columns exist in colnames but not in your dataframe: ",
-           "bad_kingdom and these exist in your dataframe ", 
-           "but not in colnames: ",
-           paste(names(input_test_df), collapse = " ")), 
-    fixed = TRUE
-  )
-})
-
 testthat::test_that("Param: from", {
   expect_error(
     get_table_pathways(input_test_df, from = "1980"),
@@ -103,24 +92,26 @@ testthat::test_that("Param: n_species", {
 
 testthat::test_that("Param: kingdom", {
   expect_error(
-    get_table_pathways(input_test_df, kingdom = 4),
-    msg = "Parameter 'kingdom' should be a character."
+    get_table_pathways(input_test_df, kingdom_names = 4),
+    msg = "Parameter 'kingdom_names' should be a character."
   )
   expect_error(
-    get_table_pathways(input_test_df, kingdom = "not_a_column"),
+    get_table_pathways(input_test_df, kingdom_names = "not_a_column"),
     msg = paste0("These columns exist in colnames but not in your dataframe: ", 
                  "not_a_column and these exist in your dataframe but not in ",
                  "colnames: ", paste(names(input_test_df), collapse = " "))
   )
 })
 
-testthat::test_that("Param: phylum", {
+testthat::test_that("Param: phylum_names", {
   expect_error(
-    get_table_pathways(input_test_df, category = "Chordata", phylum = 4),
-    msg = "Parameter 'phylum' should be a character."
+    get_table_pathways(input_test_df, category = "Chordata", phylum_names = 4),
+    msg = "Parameter 'phylum_names' should be a character."
   )
   expect_error(
-    get_table_pathways(input_test_df, category = "Chordata", phylum = "phy"),
+    get_table_pathways(input_test_df, 
+                       category = "Chordata", 
+                       phylum_names = "phy"),
     msg = paste0("These columns exist in colnames but not in your dataframe: ", 
                  "phy and these exist in your dataframe but not in ",
                  "colnames: ", paste(names(input_test_df), collapse = " "))
