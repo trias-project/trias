@@ -5,6 +5,18 @@ input_test_df <- data.frame(
                     "Scutigera coleoptrata",
                     "Thecaphora oxalidis", 
                     "Tricellaria inopinata"),
+  scientificName = c(
+    "Gyrodactylus proterorhini Ergens, 1967",
+    "Aphanomyces astaci Schikora",
+    "Scutigera coleoptrata Linnaeus, 1758",
+    "Thecaphora oxalidis (Ellis & Tracy) M.Lutz, R.Bauer & Piatek",
+    "Tricellaria inopinata d'Hondt & Occhipinti Ambrogi, 1985"
+  ),
+  species = c("Gyrodactylus proterorhini", 
+              "Aphanomyces astaci",
+              "Scutigera coleoptrata",
+              "Thecaphora oxalidis",
+              "Tricellaria inopinata"),
   kingdom = c("Animalia",
               "Chromista", 
               "Animalia", 
@@ -44,6 +56,10 @@ input_test_df_phylum <-
 input_test_df_year <- 
   input_test_df %>%
   rename(first_obs = first_observed)
+# species_names column is not the default value
+input_test_df_other_name <- 
+  input_test_df %>%
+  rename(other_name = species)
 # test on large input
 input_test_df_large <- readr::read_tsv(
   paste0("./data_test_output_get_table_pathways/",
@@ -194,4 +210,22 @@ testthat::test_that("Use with 'n_species'", {
   expect_true(all(purrr::map_lgl(pathways_n_species_3_large_df$examples, 
                                  ~length(str_split(., ",")) <= 3))
   )
+})
+
+testthat::test_that("Use with 'species_names'", {
+  pathways_scientificName <- get_table_pathways(input_test_df,
+                                                n_species = 1,
+                                                species_names = "scientificName")
+  pathways_species <- get_table_pathways(input_test_df,
+                                         from = 2018,
+                                         n_species = 1,
+                                         species_names = "species")
+  pathways_other <- get_table_pathways(input_test_df_other_name,
+                                       from = 2018,
+                                       n_species = 1, 
+                                       species_names = "other_name")
+  scientific_names <- pathways_scientificName %>% pull(examples)
+  expect_true(all(purrr::map_lgl(scientific_names,
+                                ~. %in%input_test_df$scientificName)))
+  expect_equal(pathways_species, pathways_other)
 })

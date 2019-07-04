@@ -140,13 +140,13 @@ testthat::test_that("Param: year_of_introduction", {
   )
 })
 
-testthat::test_that("Param: species", {
+testthat::test_that("Param: species_names", {
   expect_error(
-    get_table_pathways(input_test_df, species = 4),
-    msg = "Parameter 'species' should be a character."
+    get_table_pathways(input_test_df, species_names = 4),
+    msg = "Parameter 'species_names' should be a character."
   )
   expect_error(
-    get_table_pathways(input_test_df, species = "sp"),
+    get_table_pathways(input_test_df, species_names = "sp"),
     msg = paste0("These columns exist in colnames but not in your dataframe: ", 
                  "sp and these exist in your dataframe but not in ",
                  "colnames: ", paste(names(input_test_df), collapse = " "))

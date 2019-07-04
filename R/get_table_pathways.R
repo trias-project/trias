@@ -1,7 +1,8 @@
-#' Pathway count indicator figure
+#' Pathway count indicator table
 #'
 #' Function to get number of taxa introduced by different pathways. Possible
-#' breakpoint: kingdom.
+#' breakpoints: taxonomic (kingdom + vertebrates/invertebrates), temporal (lower
+#' limit year).
 #' @param df df.
 #' @param category NULL or character. One of the kingdoms as given in GBIF:
 #'   \itemize{ \item{"Plantae"} \item{"Animalia"} \item{"Fungi"}
@@ -15,15 +16,15 @@
 #' @param n_species numeric. The maximum number of species to return as examples
 #'   per pathway. For groups with less species than \code{n_species}, all
 #'   species are given. Default: 5.
-#' @param kingdom character. Name of the column of \code{df} containing
+#' @param kingdom_names character. Name of the column of \code{df} containing
 #'   information about kingdom. Default: \code{"kingdom"}.
-#' @param phylum character. Name of the column of \code{df} containing
+#' @param phylum_names character. Name of the column of \code{df} containing
 #'   information about phylum. This parameter is used only if \code{category} is
 #'   one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default: \code{"phylum"}.
 #' @param year_introduction character. Name of the column of \code{df}
 #'   containing information about year of introduction. Default:
 #'   \code{"first_observed"}.
-#' @param species character. Name of the column of \code{df} containing
+#' @param species_names character. Name of the column of \code{df} containing
 #'   information about species names. Default: \code{"canonicalName"}.
 #'
 #' @return a data.frame
@@ -54,20 +55,21 @@
 #' get_table_pathways(data, from = 2000, year_introduction = "first_observed")
 #' # Specify number of species to include in examples
 #' get_table_pathways(data, "Plantae", n_species = 8)
-#' # Specify columns containing kingdom and species info
+#' # Specify columns containing kingdom and species names
 #' get_table_pathways(data,
-#'   "Plantae", n_species = 8,
-#'   kingdom = "kingdom",
-#'   species = "canonicalName")
+#'   "Plantae", 
+#'   n_species = 8,
+#'   kingdom_names = "kingdom",
+#'   species_names = "canonicalName")
 #' }
 get_table_pathways <- function(df,
                                category = NULL,
                                from = NULL,
                                n_species = 5,
-                               kingdom = "kingdom",
-                               phylum = "phylum",
+                               kingdom_names = "kingdom",
+                               phylum_names = "phylum",
                                year_introduction = "first_observed",
-                               species = "canonicalName") {
+                               species_names = "canonicalName") {
   categories <- c(
     "Plantae",
     "Animalia",
@@ -95,10 +97,10 @@ get_table_pathways <- function(df,
                              ".")
   )
   }
-  assert_that(is.character(kingdom),
-              msg = "Parameter 'kingdom' should be a character.")
   assert_colnames(df, kingdom, only_colnames = FALSE)
   assert_colnames(df, species, only_colnames = FALSE)
+  assert_that(is.character(kingdodm_names),
+              msg = "Parameter 'kingdodm_names' should be a character.")
   assert_that(is.numeric(n_species), 
               msg = "Parameter 'n_species' should be a number."
   )
@@ -128,14 +130,14 @@ get_table_pathways <- function(df,
     assert_colnames(df, year_introduction, only_colnames = FALSE)
   }
   
-  assert_that(is.character(species),
-              msg = "Parameter 'species' should be a character.")
   assert_colnames(df, species, only_colnames = FALSE)
+  assert_that(is.character(species_names),
+              msg = "Parameter 'species_names' should be a character.")
   # rename to default column name
   df <-
     df %>%
-    rename_at(vars(kingdom), ~"kingdom",
-              vars(species), ~"canonicalName")
+    rename_at(vars(kingdodm_names), ~"group") %>%
+    rename_at(vars(species_names), ~"taxa_names")
   if (!is.null(from)) {
     df <- 
       df %>%
@@ -144,19 +146,23 @@ get_table_pathways <- function(df,
   # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {
     if (!category %in% c("Chordata", "Not Chordata")) {
-      filtered_data <- df %>% filter(kingdom == category)
+      filtered_data <- df %>% filter(group == category)
     } else {
       # check parameter phylum
-      assert_that(is.character(phylum),
-                  msg = "Parameter 'phylum' should be a character."
+      assert_that(is.character(phylum_names),
+                  msg = "Parameter 'phylum_names' should be a character."
+      )
       )
       assert_colnames(df, phylum, only_colnames = FALSE)
+      df <- 
+        df %>%
+        rename_at(vars(phylum_names) = phylum_group)
       if (category == "Chordata") {
-        filtered_data <- df %>% filter(phylum == category)
+        filtered_data <- df %>% filter(phylum_group == category)
       } else {
         filtered_data <- df %>%
-          filter(kingdom == "Animalia") %>%
-          filter(phylum != category)
+          filter(group == "Animalia") %>%
+          filter(phylum_group != category)
       }
     }
   } else {
@@ -185,7 +191,7 @@ get_table_pathways <- function(df,
   preprocess_data <-
     preprocess_data %>%
     distinct(
-      canonicalName, pathway_level1, pathway_level2
+      taxa_names, pathway_level1, pathway_level2
     ) %>%
     group_by(pathway_level1, pathway_level2)
 
@@ -217,7 +223,7 @@ get_table_pathways <- function(df,
         }
         examples <-
           examples %>%
-          pull(canonicalName)
+          pull(taxa_names)
 
         tibble(examples = str_c(examples, collapse = ", ")) %>%
           mutate(

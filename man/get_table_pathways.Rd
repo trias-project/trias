@@ -6,7 +6,8 @@
 \usage{
 get_table_pathways(df, category = NULL, from = NULL, n_species = 5,
   kingdom = "kingdom", phylum = "phylum",
-  year_introduction = "first_observed", species = "canonicalName")
+  year_introduction = "first_observed",
+  species_names = "canonicalName")
 }
 \arguments{
 \item{df}{df.}
@@ -37,7 +38,7 @@ one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default: \code{"phylum"}.}
 containing information about year of introduction. Default:
 \code{"first_observed"}.}
 
-\item{species}{character. Name of the column of \code{df} containing
+\item{species_names}{character. Name of the column of \code{df} containing
 information about species names. Default: \code{"canonicalName"}.}
 }
 \value{
@@ -65,10 +66,11 @@ get_table_pathways(data, "Not Chordata")
 get_table_pathways(data, from = 2000, year_introduction = "first_observed")
 # Specify number of species to include in examples
 get_table_pathways(data, "Plantae", n_species = 8)
-# Specify columns containing kingdom and species info
+# Specify columns containing kingdom and species names
 get_table_pathways(data,
-  "Plantae", n_species = 8,
+  "Plantae", 
+  n_species = 8,
   kingdom = "kingdom",
-  species = "canonicalName")
+  species_names = "canonicalName")
 }
 }
