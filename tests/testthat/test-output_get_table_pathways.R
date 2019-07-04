@@ -33,7 +33,7 @@ input_test_df <- data.frame(
     "Oomycota",
     "Arthropoda",
     "Basidiomycota",
-    "Bryozoa"
+    "Chordata" # actually not true: real one is Bryozoa. Just to add Chordata
   ),
   first_observed = c(
     2011,
@@ -131,7 +131,23 @@ testthat::test_that("Use with 'category'", {
     ),
     stringsAsFactors = FALSE
   )
-
+  output_test_df_chordata <- data.frame(
+    pathway_level1 = "unknown",
+    pathway_level2 = "",
+    n = as.integer(1),
+    examples = "Scutigera coleoptrata, Tricellaria inopinata",
+    stringsAsFactors = FALSE
+  )
+  output_test_df_not_chordata <- data.frame(
+    pathway_level1 = c("contaminant", "unknown"),
+    pathway_level2 = c("animal_parasite", ""),
+    n = as.integer(c(1, 1)),
+    examples = c(
+      "Gyrodactylus proterorhini",
+      "Scutigera coleoptrata"
+    ),
+    stringsAsFactors = FALSE
+  )
   pathways_plants <- get_table_pathways(input_test_df, category = "Plantae")
   pathways_animals <- get_table_pathways(input_test_df, category = "Animalia")
   pathways_animals_2 <- get_table_pathways(input_test_df_kingdom,
@@ -158,13 +174,14 @@ testthat::test_that("Use with 'category'", {
     pathways_animals %>% select(-examples),
     output_test_df_animals %>% select(-examples)
   )
-  # All animals are Not Chordata
+  expect_equal(
+    pathways_chordata %>% select(-examples),
+    output_test_df_chordata %>% select(-examples)
+  )
   expect_equal(
     pathways_not_chordata %>% select(-examples),
-    pathways_animals %>% select(-examples)
+    output_test_df_not_chordata %>% select(-examples)
   )
-  # pathway Chordata is empty as well
-  expect_equal(pathways_chordata, pathways_plants)
   # same result if kingdom col has different name than default
   expect_equal(
     pathways_animals %>% select(-examples),
