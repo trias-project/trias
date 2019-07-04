@@ -69,7 +69,7 @@ get_table_pathways(data, from = 2000, year_introduction = "first_observed")
 get_table_pathways(data, "Plantae", n_species = 8)
 # Specify columns containing kingdom and species names
 get_table_pathways(data,
-  "Plantae", 
+  "Plantae",
   n_species = 8,
   kingdom_names = "kingdom",
   species_names = "canonicalName")

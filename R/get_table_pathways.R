@@ -57,7 +57,7 @@
 #' get_table_pathways(data, "Plantae", n_species = 8)
 #' # Specify columns containing kingdom and species names
 #' get_table_pathways(data,
-#'   "Plantae", 
+#'   "Plantae",
 #'   n_species = 8,
 #'   kingdom_names = "kingdom",
 #'   species_names = "canonicalName")
@@ -87,61 +87,70 @@ get_table_pathways <- function(df,
   assert_that(is.data.frame(df), msg = "df is not a data frame.")
   if (!is.null(category)) {
     assert_that(is.character(category),
-                msg = paste0("Category has to be a character. One of: ",
-                             paste(categories, collapse = ", "),
-                             ".")
-                )
+      msg = paste0(
+        "Category has to be a character. One of: ",
+        paste(categories, collapse = ", "),
+        "."
+      )
+    )
     assert_that(category %in% categories,
-                msg = paste0("Category not correct. Choose one of: ",
-                             paste(categories, collapse = ", "),
-                             ".")
-  )
+      msg = paste0(
+        "Category not correct. Choose one of: ",
+        paste(categories, collapse = ", "),
+        "."
+      )
+    )
   }
   assert_colnames(df, kingdom_names, only_colnames = FALSE)
   assert_colnames(df, species_names, only_colnames = FALSE)
   assert_that(is.character(kingdom_names),
-              msg = "Parameter 'kingdom_names' should be a character.")
-  assert_that(is.numeric(n_species), 
-              msg = "Parameter 'n_species' should be a number."
+    msg = "Parameter 'kingdom_names' should be a character."
   )
-  assert_that(n_species > 0, 
-              msg = "Parameter 'n_species' should be a positive number."
+  assert_that(is.numeric(n_species),
+    msg = "Parameter 'n_species' should be a number."
+  )
+  assert_that(n_species > 0,
+    msg = "Parameter 'n_species' should be a positive number."
   )
   assert_that(n_species == as.integer(n_species),
-              msg = "Parameter 'n_species' should be an integer."
+    msg = "Parameter 'n_species' should be an integer."
   )
   if (!is.null(from)) {
-    assert_that(is.numeric(from), 
-                msg = "Parameter 'from' should be a number (year)."
+    assert_that(is.numeric(from),
+      msg = "Parameter 'from' should be a number (year)."
     )
-    assert_that(from > 0, 
-                msg = "Parameter 'from' should be a positive number."
+    assert_that(from > 0,
+      msg = "Parameter 'from' should be a positive number."
     )
-    assert_that(from == as.integer(from), 
-                msg = "Parameter 'from' should be an integer."
+    assert_that(from == as.integer(from),
+      msg = "Parameter 'from' should be an integer."
     )
     assert_that(from <= as.numeric(substr(Sys.Date(), start = 1, stop = 4)),
-                msg = paste0("Invalid year in 'from'. ",
-                             "Choose a year smaller than ",
-                             substr(Sys.Date(), start = 1, stop = 4))
+      msg = paste0(
+        "Invalid year in 'from'. ",
+        "Choose a year smaller than ",
+        substr(Sys.Date(), start = 1, stop = 4)
+      )
     )
     assert_that(is.character(year_introduction),
-                msg = "Column 'year_of_introduction' should be a character.")
+      msg = "Column 'year_of_introduction' should be a character."
+    )
     assert_colnames(df, year_introduction, only_colnames = FALSE)
   }
-  
+
   assert_colnames(df, species_names, only_colnames = FALSE)
   assert_that(is.character(species_names),
-              msg = "Parameter 'species_names' should be a character.")
+    msg = "Parameter 'species_names' should be a character."
+  )
   # rename to default column name
   df <-
     df %>%
     rename_at(vars(kingdom_names), ~"group") %>%
     rename_at(vars(species_names), ~"taxa_names")
   if (!is.null(from)) {
-    df <- 
+    df <-
       df %>%
-      rename_at(vars(year_introduction), ~ "first_observed")
+      rename_at(vars(year_introduction), ~"first_observed")
   }
   # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {
@@ -150,10 +159,10 @@ get_table_pathways <- function(df,
     } else {
       # check parameter phylum
       assert_that(is.character(phylum_names),
-                  msg = "Parameter 'phylum_names' should be a character."
+        msg = "Parameter 'phylum_names' should be a character."
       )
       assert_colnames(df, phylum_names, only_colnames = FALSE)
-      df <- 
+      df <-
         df %>%
         rename_at(vars(phylum_names), ~"phylum_group")
       if (category == "Chordata") {
@@ -231,7 +240,7 @@ get_table_pathways <- function(df,
           )
       }
     )
-  # No samples 
+  # No samples
   if (length(names(samples)) == 0) {
     samples <- tibble(
       examples = character(),
