@@ -170,7 +170,7 @@ get_table_pathways <- function(df,
       } else {
         filtered_data <- df %>%
           filter(group == "Animalia") %>%
-          filter(phylum_group != category)
+          filter(phylum_group != "Chordata")
       }
     }
   } else {
