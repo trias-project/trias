@@ -35,7 +35,7 @@ NULL.}
 information about year of introduction. Default: \code{first_observed}.}
 }
 \value{
-A ggplot2 object.
+A ggplot2 object (or egg object if facets are used).
 }
 \description{
 Calculate how many new species has been introduced in a year.
