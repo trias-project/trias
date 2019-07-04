@@ -2,10 +2,10 @@
 % Please edit documentation in R/get_table_pathways.R
 \name{get_table_pathways}
 \alias{get_table_pathways}
-\title{Pathway count indicator figure}
+\title{Pathway count indicator table}
 \usage{
 get_table_pathways(df, category = NULL, from = NULL, n_species = 5,
-  kingdom = "kingdom", phylum = "phylum",
+  kingdom_names = "kingdom", phylum_names = "phylum",
   year_introduction = "first_observed",
   species_names = "canonicalName")
 }
@@ -27,10 +27,10 @@ pathways related to taxa introduced during or after this year. Default:
 per pathway. For groups with less species than \code{n_species}, all
 species are given. Default: 5.}
 
-\item{kingdom}{character. Name of the column of \code{df} containing
+\item{kingdom_names}{character. Name of the column of \code{df} containing
 information about kingdom. Default: \code{"kingdom"}.}
 
-\item{phylum}{character. Name of the column of \code{df} containing
+\item{phylum_names}{character. Name of the column of \code{df} containing
 information about phylum. This parameter is used only if \code{category} is
 one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default: \code{"phylum"}.}
 
@@ -46,7 +46,8 @@ a data.frame
 }
 \description{
 Function to get number of taxa introduced by different pathways. Possible
-breakpoint: kingdom.
+breakpoints: taxonomic (kingdom + vertebrates/invertebrates), temporal (lower
+limit year).
 }
 \examples{
 \dontrun{
@@ -70,7 +71,7 @@ get_table_pathways(data, "Plantae", n_species = 8)
 get_table_pathways(data,
   "Plantae", 
   n_species = 8,
-  kingdom = "kingdom",
+  kingdom_names = "kingdom",
   species_names = "canonicalName")
 }
 }
