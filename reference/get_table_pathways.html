@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pathway count indicator figure — get_table_pathways • trias</title>
+<title>Pathway count indicator table — get_table_pathways • trias</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,10 +32,11 @@
 
 
 
-<meta property="og:title" content="Pathway count indicator figure — get_table_pathways" />
+<meta property="og:title" content="Pathway count indicator table — get_table_pathways" />
 
 <meta property="og:description" content="Function to get number of taxa introduced by different pathways. Possible
-breakpoint: kingdom." />
+breakpoints: taxonomic (kingdom + vertebrates/invertebrates), temporal (lower
+limit year)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -104,7 +105,7 @@ breakpoint: kingdom." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pathway count indicator figure</h1>
+    <h1>Pathway count indicator table</h1>
     <small class="dont-index">Source: <a href='https://github.com/trias-project/trias/blob/master/R/get_table_pathways.R'><code>R/get_table_pathways.R</code></a></small>
     <div class="hidden name"><code>get_table_pathways.Rd</code></div>
     </div>
@@ -112,12 +113,15 @@ breakpoint: kingdom." />
     <div class="ref-description">
     
     <p>Function to get number of taxa introduced by different pathways. Possible
-breakpoint: kingdom.</p>
+breakpoints: taxonomic (kingdom + vertebrates/invertebrates), temporal (lower
+limit year).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_table_pathways</span>(<span class='no'>df</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_species</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>kingdom</span> <span class='kw'>=</span> <span class='st'>"kingdom"</span>)</pre>
+    <pre class="usage"><span class='fu'>get_table_pathways</span>(<span class='no'>df</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_species</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>kingdom_names</span> <span class='kw'>=</span> <span class='st'>"kingdom"</span>, <span class='kw'>phylum_names</span> <span class='kw'>=</span> <span class='st'>"phylum"</span>,
+  <span class='kw'>year_introduction</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>,
+  <span class='kw'>species_names</span> <span class='kw'>=</span> <span class='st'>"canonicalName"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -131,7 +135,6 @@ breakpoint: kingdom.</p>
       <td><p>NULL or character. One of the kingdoms as given in GBIF:</p><ul>
 <li><p>"Plantae"</p></li>
 <li><p>"Animalia"</p></li>
-<li><p></p></li>
 <li><p>"Fungi"</p></li>
 <li><p>"Chromista"</p></li>
 <li><p>"Archaea"</p></li>
@@ -139,21 +142,45 @@ breakpoint: kingdom.</p>
 <li><p>"Protozoa"</p></li>
 <li><p>"Viruses"</p></li>
 <li><p>"incertae sedis"</p></li>
-</ul><p>It can also be one of the following not kingdoms:
-#'</p><ul>
-<li><p>Not Chordata. Default: NULL.</p></li>
+</ul><p>It can also be one of the
+following not kingdoms: #'</p><ul>
+<li><p>Not Chordata.
+Default: NULL.</p></li>
 </ul></td>
     </tr>
     <tr>
+      <th>from</th>
+      <td><p>NULL or numeric. Year trade-off: if not <code>NULL</code> select only
+pathways related to taxa introduced during or after this year. Default:
+<code>NULL</code>.</p></td>
+    </tr>
+    <tr>
       <th>n_species</th>
-      <td><p>integer The maximum number of species to return as examples
+      <td><p>numeric. The maximum number of species to return as examples
 per pathway. For groups with less species than <code>n_species</code>, all
 species are given. Default: 5.</p></td>
     </tr>
     <tr>
-      <th>kingdom</th>
+      <th>kingdom_names</th>
       <td><p>character. Name of the column of <code>df</code> containing
 information about kingdom. Default: <code>"kingdom"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>phylum_names</th>
+      <td><p>character. Name of the column of <code>df</code> containing
+information about phylum. This parameter is used only if <code>category</code> is
+one of:  <code>"Chordata"</code>, <code>"Not Chordata"</code>.  Default: <code>"phylum"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>year_introduction</th>
+      <td><p>character. Name of the column of <code>df</code>
+containing information about year of introduction. Default:
+<code>"first_observed"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>species_names</th>
+      <td><p>character. Name of the column of <code>df</code> containing
+information about species names. Default: <code>"canonicalName"</code>.</p></td>
     </tr>
     </table>
     
@@ -163,81 +190,30 @@ information about kingdom. Default: <code>"kingdom"</code>.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>readr</span>)
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>readr</span>)
 <span class='no'>datafile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(
-  <span class='st'>"https://raw.githubusercontent.com/trias-project/pipeline/master/data/"</span>,
-  <span class='st'>"interim/test_data_output_checklist_indicators.tsv"</span>
+  <span class='st'>"https://raw.githubusercontent.com/trias-project/indicators/master/data/"</span>,
+  <span class='st'>"output/data_input_checklist_indicators.tsv"</span>
 )
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='no'>datafile</span>)</div><div class='output co'>#&gt; <span class='message'>Parsed with column specification:</span>
-#&gt; <span class='message'>cols(</span>
-#&gt; <span class='message'>  .default = col_character(),</span>
-#&gt; <span class='message'>  key = col_double(),</span>
-#&gt; <span class='message'>  nubKey = col_double(),</span>
-#&gt; <span class='message'>  speciesKey = col_double(),</span>
-#&gt; <span class='message'>  acceptedKey = col_double(),</span>
-#&gt; <span class='message'>  first_observed = col_double(),</span>
-#&gt; <span class='message'>  last_observed = col_double()</span>
-#&gt; <span class='message'>)</span></div><div class='output co'>#&gt; <span class='message'>See spec(...) for full column specifications.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 22 parsing failures.</span>
-#&gt; <span class='warning'>  row            col               expected actual                                                                                                                     file</span>
-#&gt; <span class='warning'>12634 first_observed no trailing characters -06-08 'https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv'</span>
-#&gt; <span class='warning'>12634 last_observed  no trailing characters -06-12 'https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv'</span>
-#&gt; <span class='warning'>12635 first_observed no trailing characters -09-18 'https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv'</span>
-#&gt; <span class='warning'>12635 last_observed  no trailing characters -09-18 'https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv'</span>
-#&gt; <span class='warning'>12636 first_observed no trailing characters -10-13 'https://raw.githubusercontent.com/trias-project/pipeline/master/data/interim/test_data_output_checklist_indicators.tsv'</span>
-#&gt; <span class='warning'>..... .............. ...................... ...... ........................................................................................................................</span>
-#&gt; <span class='warning'>See problems(...) for more details.</span></div><div class='input'><span class='fu'>get_table_pathways</span>(<span class='no'>data</span>)</div><div class='output co'>#&gt; [1] "All column names present"</div><div class='output co'>#&gt; # A tibble: 20 x 4
-#&gt;    pathway_level1 pathway_level2       n examples                               
-#&gt;    &lt;chr&gt;          &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;                                  
-#&gt;  1 unknown        ""                3579 Contarinia pisi, Hedera colchica, Bora…
-#&gt;  2 contaminant    habitat_material    91 Ambrosia psilostachya, Centaurea asper…
-#&gt;  3 ""             nursery             21 Cardamine corymbosa, Acalypha indica, …
-#&gt;  4 ""             on_animals         570 Eragrostis curvula, Tribulus terrestri…
-#&gt;  5 ""             on_plants            4 Orthilia secunda, Goodyera repens, Bot…
-#&gt;  6 ""             seed               618 Silene conoidea, Isatis tinctoria, Lag…
-#&gt;  7 ""             timber              10 Euphorbia vermiculata, Ononis natrix, …
-#&gt;  8 corridor       water               22 Lithoglyphus naticoides, Limnomysis be…
-#&gt;  9 escape         agriculture         85 Triticum monococcum, Phacelia tanaceti…
-#&gt; 10 ""             aquaculture         19 Orconectes limosus, Pontastacus leptod…
-#&gt; 11 ""             food_bait           29 Allium ramosum, Cucurbita maxima, Pass…
-#&gt; 12 ""             horticulture      1066 Corynabutilon suntense, Thalictrum spe…
-#&gt; 13 ""             ornamental           7 Carassius auratus, Acipenser gueldenst…
-#&gt; 14 ""             pet                  5 Hippolyte desmarestii, Orconectes limo…
-#&gt; 15 natural        dispersal           65 Mercenaria mercenaria, Dreissena polym…
-#&gt; 16 release        biological_cont…     3 Hypophthalmichthys molitrix, Ctenophar…
-#&gt; 17 stowaway       ballast_water       34 Mercenaria mercenaria, Melita nitida, …
-#&gt; 18 ""             hull_fouling        20 Ficopomatus enigmaticus, Proasellus me…
-#&gt; 19 ""             other               11 Girardia tigrina, Proasellus coxalis, …
-#&gt; 20 ""             people_luggage      10 Cotula australis, Poa infirma, Trifoli…</div><div class='input'><span class='co'># Specify kingdom</span>
-<span class='fu'>get_table_pathways</span>(<span class='no'>data</span>, <span class='st'>"Plantae"</span>)</div><div class='output co'>#&gt; [1] "All column names present"</div><div class='output co'>#&gt; # A tibble: 12 x 4
-#&gt;    pathway_level1 pathway_level2      n examples                                
-#&gt;    &lt;chr&gt;          &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;                                   
-#&gt;  1 unknown        ""               2407 Melampodium montanum, Chorispora tenell…
-#&gt;  2 contaminant    habitat_materi…    91 Erigeron canadensis, Verbascum virgatum…
-#&gt;  3 ""             nursery            21 Gamochaeta pensylvanica, Pilea microphy…
-#&gt;  4 ""             on_animals        565 Eragrostis alveiformis, Medicago lacini…
-#&gt;  5 ""             on_plants           4 Orthilia secunda, Moneses uniflora, Bot…
-#&gt;  6 ""             seed              618 Lotus maritimus, Ranunculus marginatus,…
-#&gt;  7 ""             timber             10 Euphorbia vermiculata, Carex loliacea, …
-#&gt;  8 escape         agriculture        85 Phaseolus coccineus, Allium schoenopras…
-#&gt;  9 ""             food_bait          22 Capsicum annuum, Passiflora edulis, Phy…
-#&gt; 10 ""             horticulture     1066 Santolina chamaecyparissus, Catalpa eru…
-#&gt; 11 natural        dispersal          36 Echinocystis lobata, Bunias orientalis,…
-#&gt; 12 stowaway       people_luggage     10 Soliva sessilis, Cotula australis, Pare…</div><div class='input'><span class='co'># Sepcify number of species to include in examples</span>
-<span class='fu'>get_table_pathways</span>(<span class='no'>data</span>, <span class='st'>"Plantae"</span>, <span class='kw'>n_species</span> <span class='kw'>=</span> <span class='fl'>8</span>)</div><div class='output co'>#&gt; [1] "All column names present"</div><div class='output co'>#&gt; # A tibble: 12 x 4
-#&gt;    pathway_level1 pathway_level2      n examples                                
-#&gt;    &lt;chr&gt;          &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;                                   
-#&gt;  1 unknown        ""               2407 Cyperus longus, Veronica cymbalaria, Pi…
-#&gt;  2 contaminant    habitat_materi…    91 Sagina alexandrae, Oenothera cambrica, …
-#&gt;  3 ""             nursery            21 Portulaca nitida, Gamochaeta pensylvani…
-#&gt;  4 ""             on_animals        565 Ambrosia trifida, Cenchrus longispinus,…
-#&gt;  5 ""             on_plants           4 Orthilia secunda, Moneses uniflora, Bot…
-#&gt;  6 ""             seed              618 Neslia paniculata, Festuca valesiaca, L…
-#&gt;  7 ""             timber             10 Symphyotrichum pilosum, Carex muricata,…
-#&gt;  8 escape         agriculture        85 Allium cepa, Triticum turgidum, Avena s…
-#&gt;  9 ""             food_bait          22 Physalis peruviana, Persea americana, P…
-#&gt; 10 ""             horticulture     1066 Gypsophila scorzonerifolia, Lathyrus ni…
-#&gt; 11 natural        dispersal          36 Berberis aquifolium, Sporobolus anglicu…
-#&gt; 12 stowaway       people_luggage     10 Soliva sessilis, Trifolium suffocatum, …</div></pre>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='no'>datafile</span>)
+<span class='fu'>get_table_pathways</span>(<span class='no'>data</span>)
+<span class='co'># Specify kingdom</span>
+<span class='fu'>get_table_pathways</span>(<span class='no'>data</span>, <span class='st'>"Plantae"</span>)
+<span class='co'># with special categoeries, `Chordata` or `not Chordata`</span>
+<span class='fu'>get_table_pathways</span>(<span class='no'>data</span>, <span class='st'>"Chordata"</span>)
+<span class='fu'>get_table_pathways</span>(<span class='no'>data</span>, <span class='st'>"Not Chordata"</span>)
+<span class='co'># From 2000</span>
+<span class='fu'>get_table_pathways</span>(<span class='no'>data</span>, <span class='kw'>from</span> <span class='kw'>=</span> <span class='fl'>2000</span>, <span class='kw'>year_introduction</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>)
+<span class='co'># Specify number of species to include in examples</span>
+<span class='fu'>get_table_pathways</span>(<span class='no'>data</span>, <span class='st'>"Plantae"</span>, <span class='kw'>n_species</span> <span class='kw'>=</span> <span class='fl'>8</span>)
+<span class='co'># Specify columns containing kingdom and species names</span>
+<span class='fu'>get_table_pathways</span>(<span class='no'>data</span>,
+  <span class='st'>"Plantae"</span>,
+  <span class='kw'>n_species</span> <span class='kw'>=</span> <span class='fl'>8</span>,
+  <span class='kw'>kingdom_names</span> <span class='kw'>=</span> <span class='st'>"kingdom"</span>,
+  <span class='kw'>species_names</span> <span class='kw'>=</span> <span class='st'>"canonicalName"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
