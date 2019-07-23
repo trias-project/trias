@@ -1,4 +1,4 @@
-# trias <img src="man/figures/trias-logo-300dpi.png" align="right" alt="" width="120">
+# trias <img src="man/figures/logo.png" align="right" alt="" width="120">
 
 [![Build Status](https://travis-ci.org/trias-project/trias.svg?branch=master)](https://travis-ci.org/trias-project/trias)
 
