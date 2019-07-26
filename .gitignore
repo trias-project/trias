@@ -33,7 +33,7 @@ vignettes/*.pdf
 *.knit.md
 .Rproj.user
 
-# pkgdown
+# pkgdown is build by travis on gh-pages
 /docs/
 
 # Mac OS X
