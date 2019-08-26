@@ -21,6 +21,8 @@
 #'   introduction or \code{"habitat"}.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{"first_observed"}.
+#' @param x_lab NULL or character. to set or remove the x-axis label.
+#' @param y_lab NULL or character. to set or remove the y-axis label.
 #'
 #' @return ggplot2 object (or egg object if facets are used).
 #'
@@ -56,7 +58,9 @@ indicator_total_year <- function(df, start_year_plot = 1940,
                                  x_major_scale_stepsize = 10,
                                  x_minor_scale_stepsize = 5,
                                  facet_column = NULL,
-                                 first_observed = "first_observed") {
+                                 first_observed = "first_observed",
+                                 x_lab = "Year",
+                                 y_lab = "Cumulative number of alien species") {
 
   # initial input checks
   assert_that(is.data.frame(df))
@@ -104,8 +108,8 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   maxDate <- max(df_extended$year)
   top_graph <- ggplot(df_extended, aes(x = year)) +
     geom_line(stat = "count") +
-    xlab("Year") +
-    ylab("Cumulative number of alien species") +
+    xlab(x_lab) +
+    ylab(y_lab) +
     scale_x_continuous(
       breaks = seq(
         start_year_plot, maxDate,
@@ -136,8 +140,8 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       aes(x = year, y = n)
     ) +
       geom_line(stat = "identity") +
-      xlab("Year") +
-      ylab("Cumulative number of alien species") +
+      xlab(x_lab) +
+      ylab(y_lab) +
       facet_wrap(facet_column) +
       scale_x_continuous(
         breaks = seq(start_year_plot, maxDate, x_major_scale_stepsize),
