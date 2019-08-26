@@ -54,7 +54,9 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
                                         x_major_scale_stepsize = 10,
                                         x_minor_scale_stepsize = 5,
                                         facet_column = NULL,
-                                        first_observed = "first_observed") {
+                                        first_observed = "first_observed",
+                                        x_lab = "Year",
+                                        y_lab = "Number of introduced alien species") {
   # initial input checks
   assert_that(is.data.frame(df))
   assert_colnames(df, c(first_observed), only_colnames = FALSE)
