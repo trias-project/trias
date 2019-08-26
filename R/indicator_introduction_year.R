@@ -19,6 +19,8 @@
 #'   NULL.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{first_observed}.
+#' @param x_lab NULL or character. to set or remove the x-axis label.
+#' @param y_lab NULL or character. to set or remove the y-axis label.
 #'
 #' @return A ggplot2 object (or egg object if facets are used).
 #'
@@ -81,8 +83,8 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
   top_graph <- ggplot(data_top_graph, aes(x = first_observed, y = n)) +
     geom_point(stat = "identity") +
     geom_smooth(span = smooth_span) +
-    xlab("Year") +
-    ylab("Number of introduced alien species") +
+    xlab(x_lab) +
+    ylab(y_lab) +
     scale_x_continuous(
       breaks = seq(
         start_year_plot,
@@ -121,8 +123,8 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
       geom_point(stat = "identity") +
       geom_smooth(span = smooth_span) +
       facet_wrap(facet_column) +
-      xlab("Year") +
-      ylab("Number of introduced alien species") +
+      xlab(x_lab) +
+      ylab(y_lab) +
       scale_x_continuous(
         breaks = seq(
           start_year_plot,
