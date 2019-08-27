@@ -6,7 +6,8 @@
 \usage{
 indicator_total_year(df, start_year_plot = 1940,
   x_major_scale_stepsize = 10, x_minor_scale_stepsize = 5,
-  facet_column = NULL, first_observed = "first_observed")
+  facet_column = NULL, first_observed = "first_observed",
+  x_lab = "Year", y_lab = "Cumulative number of alien species")
 }
 \arguments{
 \item{df}{df. Contains the data as produced by the Trias pipeline,
@@ -32,6 +33,10 @@ introduction or \code{"habitat"}.}
 
 \item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{"first_observed"}.}
+
+\item{x_lab}{NULL or character. to set or remove the x-axis label.}
+
+\item{y_lab}{NULL or character. to set or remove the y-axis label.}
 }
 \value{
 ggplot2 object (or egg object if facets are used).
@@ -48,7 +53,17 @@ datafile <- paste0(
   "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
   "interim/test_data_output_checklist_indicators.tsv"
 )
-data <- read_tsv(datafile)
+data <- read_tsv(datafile, 
+                 na = "NA", 
+                 col_types = cols(
+                   .default = col_character(),
+                   key = col_double(),
+                   nubKey = col_double(),
+                   speciesKey = col_double(),
+                   acceptedKey = col_double(),
+                   first_observed = col_double(),
+                   last_observed = col_double()
+                 ))
 start_year_plot <- 1900
 x_major_scale_stepsize <- 25
 x_minor_scale_stepsize <- 5
@@ -58,5 +73,7 @@ indicator_total_year(data, start_year_plot, x_major_scale_stepsize)
 indicator_total_year(data, start_year_plot, facet_column = "phylum")
 # specify name of column containing year of introduction (first_observed)
 indicator_total_year(data, first_observed = "first_observed")
+# specify axis labels
+indicator_total_year(data, x_lab = "YEAR", y_lab = NULL)
 }
 }

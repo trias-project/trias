@@ -21,6 +21,8 @@
 #'   introduction or \code{"habitat"}.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{"first_observed"}.
+#' @param x_lab NULL or character. to set or remove the x-axis label.
+#' @param y_lab NULL or character. to set or remove the y-axis label.
 #'
 #' @return ggplot2 object (or egg object if facets are used).
 #'
@@ -41,7 +43,17 @@
 #'   "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
 #'   "interim/test_data_output_checklist_indicators.tsv"
 #' )
-#' data <- read_tsv(datafile)
+#' data <- read_tsv(datafile, 
+#'                  na = "NA", 
+#'                  col_types = cols(
+#'                    .default = col_character(),
+#'                    key = col_double(),
+#'                    nubKey = col_double(),
+#'                    speciesKey = col_double(),
+#'                    acceptedKey = col_double(),
+#'                    first_observed = col_double(),
+#'                    last_observed = col_double()
+#'                  ))
 #' start_year_plot <- 1900
 #' x_major_scale_stepsize <- 25
 #' x_minor_scale_stepsize <- 5
@@ -51,12 +63,16 @@
 #' indicator_total_year(data, start_year_plot, facet_column = "phylum")
 #' # specify name of column containing year of introduction (first_observed)
 #' indicator_total_year(data, first_observed = "first_observed")
+#' # specify axis labels
+#' indicator_total_year(data, x_lab = "YEAR", y_lab = NULL)
 #' }
 indicator_total_year <- function(df, start_year_plot = 1940,
                                  x_major_scale_stepsize = 10,
                                  x_minor_scale_stepsize = 5,
                                  facet_column = NULL,
-                                 first_observed = "first_observed") {
+                                 first_observed = "first_observed",
+                                 x_lab = "Year",
+                                 y_lab = "Cumulative number of alien species") {
 
   # initial input checks
   assert_that(is.data.frame(df))
@@ -104,8 +120,8 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   maxDate <- max(df_extended$year)
   top_graph <- ggplot(df_extended, aes(x = year)) +
     geom_line(stat = "count") +
-    xlab("Year") +
-    ylab("Cumulative number of alien species") +
+    xlab(x_lab) +
+    ylab(y_lab) +
     scale_x_continuous(
       breaks = seq(
         start_year_plot, maxDate,
@@ -136,8 +152,8 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       aes(x = year, y = n)
     ) +
       geom_line(stat = "identity") +
-      xlab("Year") +
-      ylab("Cumulative number of alien species") +
+      xlab(x_lab) +
+      ylab(y_lab) +
       facet_wrap(facet_column) +
       scale_x_continuous(
         breaks = seq(start_year_plot, maxDate, x_major_scale_stepsize),
