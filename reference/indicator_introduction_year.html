@@ -126,7 +126,8 @@
     <pre class="usage"><span class='fu'>indicator_introduction_year</span>(<span class='no'>df</span>, <span class='kw'>start_year_plot</span> <span class='kw'>=</span> <span class='fl'>1920</span>,
   <span class='kw'>smooth_span</span> <span class='kw'>=</span> <span class='fl'>0.85</span>, <span class='kw'>x_major_scale_stepsize</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>x_minor_scale_stepsize</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>facet_column</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>)</pre>
+  <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>, <span class='kw'>x_lab</span> <span class='kw'>=</span> <span class='st'>"Year"</span>,
+  <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='st'>"Number of introduced alien species"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,6 +170,14 @@ NULL.</p></td>
       <td><p>character. Name of the column of <code>df</code> containing
 information about year of introduction. Default: <code>first_observed</code>.</p></td>
     </tr>
+    <tr>
+      <th>x_lab</th>
+      <td><p>NULL or character. to set or remove the x-axis label.</p></td>
+    </tr>
+    <tr>
+      <th>y_lab</th>
+      <td><p>NULL or character. to set or remove the y-axis label.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -183,7 +192,17 @@ information about year of introduction. Default: <code>first_observed</code>.</p
   <span class='st'>"https://raw.githubusercontent.com/trias-project/pipeline/master/data/"</span>,
   <span class='st'>"interim/test_data_output_checklist_indicators.tsv"</span>
 )
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='no'>datafile</span>)
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='no'>datafile</span>,
+                 <span class='kw'>na</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
+                 <span class='kw'>col_types</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/cols.html'>cols</a></span>(
+                   <span class='kw'>.default</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span>(),
+                   <span class='kw'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+                   <span class='kw'>nubKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+                   <span class='kw'>speciesKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+                   <span class='kw'>acceptedKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+                   <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+                   <span class='kw'>last_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>()
+                 ))
 <span class='co'># without facets</span>
 <span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>)
 <span class='co'># specify start year and smoother parameter</span>
@@ -193,7 +212,9 @@ information about year of introduction. Default: <code>first_observed</code>.</p
 <span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>, <span class='kw'>facet_column</span> <span class='kw'>=</span> <span class='st'>"kingdom"</span>)
 <span class='co'># specifiy columns with year of first observed</span>
 <span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>,
-                            <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='st'>"first_oberved"</span>)
+                            <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>)
+<span class='co'># specify axis labels</span>
+<span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>, <span class='kw'>x_lab</span> <span class='kw'>=</span> <span class='st'>"YEAR"</span>, <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
