@@ -39,7 +39,17 @@
 #'   "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
 #'   "interim/test_data_output_checklist_indicators.tsv"
 #' )
-#' data <- read_tsv(datafile)
+#' data <- read_tsv(datafile, 
+#'                  na = "NA", 
+#'                  col_types = cols(
+#'                    .default = col_character(),
+#'                    key = col_double(),
+#'                    nubKey = col_double(),
+#'                    speciesKey = col_double(),
+#'                    acceptedKey = col_double(),
+#'                    first_observed = col_double(),
+#'                    last_observed = col_double()
+#'                  ))
 #' # without facets
 #' indicator_introduction_year(data)
 #' # specify start year and smoother parameter
@@ -49,7 +59,9 @@
 #' indicator_introduction_year(data, facet_column = "kingdom")
 #' # specifiy columns with year of first observed
 #' indicator_introduction_year(data,
-#'                             first_observed = "first_oberved")
+#'                             first_observed = "first_observed")
+#' # specify axis labels
+#' indicator_introduction_year(data, x_lab = "YEAR", y_lab = NULL)
 #' }
 indicator_introduction_year <- function(df, start_year_plot = 1920,
                                         smooth_span = .85,
