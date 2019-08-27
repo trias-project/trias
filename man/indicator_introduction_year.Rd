@@ -7,7 +7,8 @@
 indicator_introduction_year(df, start_year_plot = 1920,
   smooth_span = 0.85, x_major_scale_stepsize = 10,
   x_minor_scale_stepsize = 5, facet_column = NULL,
-  first_observed = "first_observed")
+  first_observed = "first_observed", x_lab = "Year",
+  y_lab = "Number of introduced alien species")
 }
 \arguments{
 \item{df}{A data frame.}
@@ -33,6 +34,10 @@ NULL.}
 
 \item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{first_observed}.}
+
+\item{x_lab}{NULL or character. to set or remove the x-axis label.}
+
+\item{y_lab}{NULL or character. to set or remove the y-axis label.}
 }
 \value{
 A ggplot2 object (or egg object if facets are used).
