@@ -42,7 +42,8 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage name_lookup
-#' @importFrom dplyr filter mutate rowwise do_ ungroup %>%
+#' @importFrom dplyr filter mutate ungroup %>%
+#' @importFrom purrr map_dfr
 #' @importFrom tibble tibble
 #' @importFrom lazyeval interp
 #' @importFrom stringr str_to_lower
@@ -121,12 +122,9 @@ gbif_get_taxa <- function(
     }
     taxon_keys <- as.integer(taxon_keys[1:maxlimit])
     taxon_keys_df <- as.data.frame(taxon_keys)
-    taxon_taxa <- taxon_keys_df %>%
-      rowwise() %>%
-      do_(interp(~as.data.frame(name_usage(
-        key = .$taxon_keys,
-        return = "data"
-      ))))
+    taxon_taxa <- map_dfr(
+      taxon_keys_df$taxon_keys, ~name_usage(key = ., return = "data")
+    )
     taxon_taxa <- taxon_taxa %>%
       ungroup() %>%
       mutate(origin = str_to_lower(origin))
@@ -147,29 +145,28 @@ gbif_get_taxa <- function(
     } else {
       maxlimit <- limit
     }
-
+    
+    checklist_keys <- as.character(checklist_keys)
+    
     if (!is.null(origin)) {
-      checklist_keys <- as.character(checklist_keys)
-      checklist_keys_df <- as.data.frame(checklist_keys)
-      checklist_taxa <- checklist_keys_df %>%
-        rowwise() %>%
-        do_(interp(~as.data.frame(name_lookup(
-          datasetKey = .,
-          origin = origins,
-          limit = maxlimit,
-          return = "data"
-        ))))
+      checklist_taxa <- 
+        map_dfr(
+          checklist_keys, ~name_lookup(
+            datasetKey = .,
+            origin = origins,
+            limit = maxlimit,
+            return = "data"
+        ))
     } else {
-      checklist_taxa <- as.data.frame(checklist_keys) %>%
-        rowwise() %>%
-        do_(interp(~as.data.frame(name_lookup(
-          datasetKey = .,
-          limit = maxlimit,
-          return = "data"
-        ))))
+      checklist_taxa <- 
+        map_dfr(checklist_keys, ~name_lookup(datasetKey = .,
+                                             limit = maxlimit,
+                                             return = "data")
+        )
     }
 
-    checklist_taxa <- checklist_taxa %>%
+    checklist_taxa <- 
+      checklist_taxa %>%
       ungroup() %>%
       mutate(origin = str_to_lower(origin))
 
