@@ -87,16 +87,6 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     df %>%
     rename_at(vars(first_observed), ~"first_observed")
 
-  if (is.null(facet_column)) {
-    df_cleaned <-
-      df %>%
-      distinct_("speciesKey", "first_observed")
-  } else {
-    df_cleaned <-
-      df %>%
-      distinct_("speciesKey", "first_observed", facet_column)
-  }
-
   # Provide warning messages for first_observed NA values
   if (nrow(filter(df, is.na(first_observed)) > 0)) {
     warning(paste0(
@@ -105,17 +95,18 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       ") and are not taken into account."
     ))
   }
-
-  df_cleaned <-
-    df_cleaned %>%
-    filter(!is.na(first_observed)) # ignore information without first_observed
+  
+  # ignore information without first_observed
+  df <-
+    df %>%
+    filter(!is.na(.data$first_observed))
 
   # Make individual records for each year up to now
-  df_extended <- df_cleaned %>%
+  df_extended <- df %>%
     rowwise() %>%
     do(year = .data$first_observed:as.integer(format(Sys.Date(), "%Y"))) %>%
-    bind_cols(df_cleaned) %>%
-    unnest(year)
+    bind_cols(df) %>%
+    unnest(.data$year)
 
   maxDate <- max(df_extended$year)
   top_graph <- ggplot(df_extended, aes(x = year)) +
