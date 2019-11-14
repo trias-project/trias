@@ -155,7 +155,7 @@ get_table_pathways <- function(df,
   # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {
     if (!category %in% c("Chordata", "Not Chordata")) {
-      filtered_data <- df %>% filter(group == category)
+      filtered_data <- df %>% filter(.data$group == category)
     } else {
       # check parameter phylum
       assert_that(is.character(phylum_names),
@@ -166,11 +166,11 @@ get_table_pathways <- function(df,
         df %>%
         rename_at(vars(phylum_names), ~"phylum_group")
       if (category == "Chordata") {
-        filtered_data <- df %>% filter(phylum_group == category)
+        filtered_data <- df %>% filter(.data$phylum_group == category)
       } else {
         filtered_data <- df %>%
-          filter(group == "Animalia") %>%
-          filter(phylum_group != "Chordata")
+          filter(.data$group == "Animalia") %>%
+          filter(.data$phylum_group != "Chordata")
       }
     }
   } else {
@@ -180,18 +180,18 @@ get_table_pathways <- function(df,
   if (!is.null(from)) {
     filtered_data <-
       filtered_data %>%
-      filter(first_observed >= from)
+      filter(.data$first_observed >= from)
   }
   # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
   preprocess_data <-
     filtered_data %>%
     # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
-    mutate(pathway_level1 = ifelse(!is.na(pathway_level1),
+    mutate(pathway_level1 = ifelse(!is.na(.data$pathway_level1),
       pathway_level1,
       "unknown"
     )) %>%
-    mutate(pathway_level2 = ifelse(pathway_level1 != "unknown" &
-      !is.na(pathway_level2),
+    mutate(pathway_level2 = ifelse(.data$pathway_level1 != "unknown" &
+      !is.na(.data$pathway_level2),
     pathway_level2,
     ""
     ))
@@ -199,9 +199,9 @@ get_table_pathways <- function(df,
   preprocess_data <-
     preprocess_data %>%
     distinct(
-      taxa_names, pathway_level1, pathway_level2
+      .data$taxa_names, .data$pathway_level1, .data$pathway_level2
     ) %>%
-    group_by(pathway_level1, pathway_level2)
+    group_by(.data$pathway_level1, .data$pathway_level2)
 
   # Assess size of sample per group
   pathway_data <-
@@ -222,8 +222,8 @@ get_table_pathways <- function(df,
       function(p1, p2, s) {
         set_species <-
           preprocess_data %>%
-          filter(pathway_level1 == p1) %>%
-          filter(pathway_level2 == p2)
+          filter(.data$pathway_level1 == p1) %>%
+          filter(.data$pathway_level2 == p2)
         if (s < nrow(preprocess_data)) {
           examples <- sample_n(set_species, s)
         } else {
@@ -231,7 +231,7 @@ get_table_pathways <- function(df,
         }
         examples <-
           examples %>%
-          pull(taxa_names)
+          pull(.data$taxa_names)
 
         tibble(examples = str_c(examples, collapse = ", ")) %>%
           mutate(

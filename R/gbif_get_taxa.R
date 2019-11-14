@@ -42,6 +42,7 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage name_lookup
+#' @importFrom rlang .data
 #' @importFrom dplyr filter mutate ungroup %>%
 #' @importFrom purrr map_dfr
 #' @importFrom tibble tibble
@@ -127,14 +128,14 @@ gbif_get_taxa <- function(
     )
     taxon_taxa <- taxon_taxa %>%
       ungroup() %>%
-      mutate(origin = str_to_lower(origin))
+      mutate(origin = str_to_lower(.data$origin))
     if (!is.null(origin)) {
-      taxon_taxa <- taxon_taxa %>% filter(origin %in% origins)
+      taxon_taxa <- taxon_taxa %>% filter(.data$origin %in% origins)
     }
 
     # GBIF Backbone matching
     number_key <- nrow(taxon_taxa)
-    number_no_nubkey <- taxon_taxa %>% filter(is.na(nubKey)) %>% nrow()
+    number_no_nubkey <- taxon_taxa %>% filter(is.na(.data$nubKey)) %>% nrow()
   }
 
   # working with checklist_keys
@@ -168,7 +169,7 @@ gbif_get_taxa <- function(
     checklist_taxa <- 
       checklist_taxa %>%
       ungroup() %>%
-      mutate(origin = str_to_lower(origin))
+      mutate(origin = str_to_lower(.data$origin))
 
     if (!is.null(limit) &
       (nrow(checklist_taxa) < maxlimit * length(checklist_keys))) {
@@ -181,7 +182,10 @@ gbif_get_taxa <- function(
 
     # GBIF Backbone matching
     number_key <- nrow(checklist_taxa)
-    number_no_nubkey <- checklist_taxa %>% filter(is.na(nubKey)) %>% nrow()
+    number_no_nubkey <- 
+      checklist_taxa %>% 
+      filter(is.na(.data$nubKey)) %>% 
+      nrow()
   }
 
   # print GBIF Backbone matching on screen

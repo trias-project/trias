@@ -1,6 +1,6 @@
 #' Create cumulative number of alien species indicator plot.
 #'
-#' This function calculates the cumulative number of species introduced per
+#' This function calculates the cumulative number of taxa introduced per
 #' year. To do this, a column of input dataframe containing temporal information
 #' about year of introduction is required.
 #' @param df df. Contains the data as produced by the Trias pipeline,
@@ -32,6 +32,7 @@
 #' @importFrom dplyr distinct_ %>% filter rowwise do bind_cols group_by_ count
 #'   ungroup rename_at
 #' @importFrom tidyr unnest
+#' @importFrom rlang .data
 #' @importFrom ggplot2 ggplot geom_line aes xlab ylab scale_x_continuous
 #'   facet_wrap
 #' @importFrom egg ggarrange
@@ -139,10 +140,10 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       count() %>%
       ungroup()
 
-    facet_graph <- ggplot(
-      counts_ias_grouped,
-      aes(x = year, y = n)
-    ) +
+    facet_graph <- 
+      ggplot(
+        counts_ias_grouped,
+        aes(x = .data$year, y = .data$n)) +
       geom_line(stat = "identity") +
       xlab(x_lab) +
       ylab(y_lab) +
