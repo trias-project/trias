@@ -15,16 +15,18 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -39,13 +41,13 @@
 
 
 
-<meta property="og:title" content="Get taxa information from GBIF — gbif_get_taxa" />
 
+<meta property="og:title" content="Get taxa information from GBIF — gbif_get_taxa" />
 <meta property="og:description" content="This function retrieves taxa information from GBIF. It is a higher level function built
 on rgbif functions `name_usage()` and `name_lookup()`." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -92,7 +94,6 @@ on rgbif functions `name_usage()` and `name_lookup()`." />
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/trias-project/trias">
@@ -119,15 +120,13 @@ on rgbif functions `name_usage()` and `name_lookup()`." />
     </div>
 
     <div class="ref-description">
-    
     <p>This function retrieves taxa information from GBIF. It is a higher level function built
 on rgbif functions `name_usage()` and `name_lookup()`.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>origin</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>limit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -155,20 +154,17 @@ A warning is given if limit is higher than the length of taxon_keys or number of
 in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data.frame with all returned attributes for any taxa</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># A single numeric taxon_keys</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'crul':</span>
-#&gt; <span class='message'>  method                 from</span>
-#&gt; <span class='message'>  as.character.form_file httr</span></div><div class='output co'>#&gt; [1] "All 1 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 1 x 23
+<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; [1] "All 1 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 1 x 23
 #&gt;     key scientificName nubKey nameKey taxonID sourceTaxonKey kingdom kingdomKey
 #&gt;   &lt;int&gt; &lt;chr&gt;           &lt;int&gt;   &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;        &lt;int&gt;
-#&gt; 1     1 Animalia            1  1.85e7 gbif:1       144299179 Animal…          1
+#&gt; 1     1 Animalia            1  2.99e7 gbif:1       156096681 Animal…          1
 #&gt; # … with 15 more variables: datasetKey &lt;chr&gt;, constituentKey &lt;chr&gt;,
 #&gt; #   canonicalName &lt;chr&gt;, authorship &lt;chr&gt;, nameType &lt;chr&gt;, rank &lt;chr&gt;,
 #&gt; #   origin &lt;chr&gt;, taxonomicStatus &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
@@ -177,7 +173,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 <span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='st'>"1"</span>)</div><div class='output co'>#&gt; [1] "All 1 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 1 x 23
 #&gt;     key scientificName nubKey nameKey taxonID sourceTaxonKey kingdom kingdomKey
 #&gt;   &lt;int&gt; &lt;chr&gt;           &lt;int&gt;   &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;        &lt;int&gt;
-#&gt; 1     1 Animalia            1  1.85e7 gbif:1       144299179 Animal…          1
+#&gt; 1     1 Animalia            1  2.99e7 gbif:1       156096681 Animal…          1
 #&gt; # … with 15 more variables: datasetKey &lt;chr&gt;, constituentKey &lt;chr&gt;,
 #&gt; #   canonicalName &lt;chr&gt;, authorship &lt;chr&gt;, nameType &lt;chr&gt;, rank &lt;chr&gt;,
 #&gt; #   origin &lt;chr&gt;, taxonomicStatus &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
@@ -186,12 +182,12 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 <span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>))</div><div class='output co'>#&gt; [1] "All 6 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 6 x 23
 #&gt;     key scientificName nubKey nameKey taxonID sourceTaxonKey kingdom kingdomKey
 #&gt;   &lt;int&gt; &lt;chr&gt;           &lt;int&gt;   &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;        &lt;int&gt;
-#&gt; 1     1 Animalia            1  1.85e7 gbif:1       144299179 Animal…          1
-#&gt; 2     2 Archaea             2  1.86e7 gbif:2       144974845 Archaea          2
-#&gt; 3     3 Bacteria            3  1.86e7 gbif:3       144974961 Bacter…          3
-#&gt; 4     4 Chromista           4  1.86e7 gbif:4       144975033 Chromi…          4
-#&gt; 5     5 Fungi               5  1.86e7 gbif:5       145000585 Fungi            5
-#&gt; 6     6 Plantae             6  1.87e7 gbif:6       145014415 Plantae          6
+#&gt; 1     1 Animalia            1  2.99e7 gbif:1       156096681 Animal…          1
+#&gt; 2     2 Archaea             2  3.05e7 gbif:2       157030641 Archaea          2
+#&gt; 3     3 Bacteria            3  3.05e7 gbif:3       157030707 Bacter…          3
+#&gt; 4     4 Chromista           4  3.05e7 gbif:4       157030862 Chromi…          4
+#&gt; 5     5 Fungi               5  3.05e7 gbif:5       155647434 Fungi            5
+#&gt; 6     6 Plantae             6  3.06e7 gbif:6       155740154 Plantae          6
 #&gt; # … with 15 more variables: datasetKey &lt;chr&gt;, constituentKey &lt;chr&gt;,
 #&gt; #   canonicalName &lt;chr&gt;, authorship &lt;chr&gt;, nameType &lt;chr&gt;, rank &lt;chr&gt;,
 #&gt; #   origin &lt;chr&gt;, taxonomicStatus &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
@@ -200,12 +196,12 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 <span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>,<span class='st'>"2"</span>,<span class='st'>"3"</span>,<span class='st'>"4"</span>,<span class='st'>"5"</span>,<span class='st'>"6"</span>))</div><div class='output co'>#&gt; [1] "All 6 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 6 x 23
 #&gt;     key scientificName nubKey nameKey taxonID sourceTaxonKey kingdom kingdomKey
 #&gt;   &lt;int&gt; &lt;chr&gt;           &lt;int&gt;   &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;        &lt;int&gt;
-#&gt; 1     1 Animalia            1  1.85e7 gbif:1       144299179 Animal…          1
-#&gt; 2     2 Archaea             2  1.86e7 gbif:2       144974845 Archaea          2
-#&gt; 3     3 Bacteria            3  1.86e7 gbif:3       144974961 Bacter…          3
-#&gt; 4     4 Chromista           4  1.86e7 gbif:4       144975033 Chromi…          4
-#&gt; 5     5 Fungi               5  1.86e7 gbif:5       145000585 Fungi            5
-#&gt; 6     6 Plantae             6  1.87e7 gbif:6       145014415 Plantae          6
+#&gt; 1     1 Animalia            1  2.99e7 gbif:1       156096681 Animal…          1
+#&gt; 2     2 Archaea             2  3.05e7 gbif:2       157030641 Archaea          2
+#&gt; 3     3 Bacteria            3  3.05e7 gbif:3       157030707 Bacter…          3
+#&gt; 4     4 Chromista           4  3.05e7 gbif:4       157030862 Chromi…          4
+#&gt; 5     5 Fungi               5  3.05e7 gbif:5       155647434 Fungi            5
+#&gt; 6     6 Plantae             6  3.06e7 gbif:6       155740154 Plantae          6
 #&gt; # … with 15 more variables: datasetKey &lt;chr&gt;, constituentKey &lt;chr&gt;,
 #&gt; #   canonicalName &lt;chr&gt;, authorship &lt;chr&gt;, nameType &lt;chr&gt;, rank &lt;chr&gt;,
 #&gt; #   origin &lt;chr&gt;, taxonomicStatus &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
@@ -214,27 +210,27 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 <span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>), <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] "All 3 taxa match GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 3 x 23
 #&gt;     key scientificName nubKey nameKey taxonID sourceTaxonKey kingdom kingdomKey
 #&gt;   &lt;int&gt; &lt;chr&gt;           &lt;int&gt;   &lt;int&gt; &lt;chr&gt;            &lt;int&gt; &lt;chr&gt;        &lt;int&gt;
-#&gt; 1     1 Animalia            1  1.85e7 gbif:1       144299179 Animal…          1
-#&gt; 2     2 Archaea             2  1.86e7 gbif:2       144974845 Archaea          2
-#&gt; 3     3 Bacteria            3  1.86e7 gbif:3       144974961 Bacter…          3
+#&gt; 1     1 Animalia            1  2.99e7 gbif:1       156096681 Animal…          1
+#&gt; 2     2 Archaea             2  3.05e7 gbif:2       157030641 Archaea          2
+#&gt; 3     3 Bacteria            3  3.05e7 gbif:3       157030707 Bacter…          3
 #&gt; # … with 15 more variables: datasetKey &lt;chr&gt;, constituentKey &lt;chr&gt;,
 #&gt; #   canonicalName &lt;chr&gt;, authorship &lt;chr&gt;, nameType &lt;chr&gt;, rank &lt;chr&gt;,
 #&gt; #   origin &lt;chr&gt;, taxonomicStatus &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
 #&gt; #   remarks &lt;chr&gt;, numDescendants &lt;int&gt;, lastCrawled &lt;chr&gt;,
 #&gt; #   lastInterpreted &lt;chr&gt;, issues &lt;chr&gt;, synonym &lt;lgl&gt;</div><div class='input'><span class='co'># A single checklist_keys (character)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>)</div><div class='output co'>#&gt; [1] "90 taxa found of which 5 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 90 x 33
-#&gt;       key scientificName datasetKey  nubKey parentKey parent kingdom genus
-#&gt;     &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;        &lt;int&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;
-#&gt;  1 1.19e8 Capillaria     b3fa7329-… 9707382 156124609 Anima… Animal… Capi…
-#&gt;  2 1.19e8 Capillaria cy… b3fa7329-… 7020312 119338571 Capil… Animal… Capi…
-#&gt;  3 1.19e8 Capillaria (H… b3fa7329-… 7020317 119338571 Capil… Animal… Capi…
-#&gt;  4 1.19e8 Pseudocapilla… b3fa7329-… 9780320 156124613 Trich… Animal… Pseu…
-#&gt;  5 1.19e8 Pseudocapilla… b3fa7329-…      NA 119338578 Pseud… Animal… Pseu…
-#&gt;  6 1.19e8 Pseudocapilla… b3fa7329-… 7020058 156124614 Pseud… Animal… Pseu…
-#&gt;  7 1.19e8 Capillostrong… b3fa7329-… 4629935 156124613 Trich… Animal… Capi…
-#&gt;  8 1.19e8 Paracapillaria b3fa7329-… 9817653 156124613 Trich… Animal… Para…
-#&gt;  9 1.19e8 Capillariidae  b3fa7329-… 3249126 156124612 Trich… Animal… &lt;NA&gt; 
-#&gt; 10 1.19e8 Paracapillaro… b3fa7329-… 7019884 156124615 Parac… Animal… Para…
+<span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>)</div><div class='output co'>#&gt; [1] "90 taxa found of which 1 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 90 x 33
+#&gt;       key scientificName datasetKey nubKey parentKey parent kingdom genus
+#&gt;     &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;       &lt;int&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;
+#&gt;  1 1.19e8 Capillaria     b3fa7329-… 9.71e6 159602029 Anima… Animal… Capi…
+#&gt;  2 1.19e8 Capillaria cy… b3fa7329-… 7.02e6 119338571 Capil… Animal… Capi…
+#&gt;  3 1.19e8 Capillaria (H… b3fa7329-… 7.02e6 119338571 Capil… Animal… Capi…
+#&gt;  4 1.19e8 Pseudocapilla… b3fa7329-… 9.78e6 159602033 Trich… Animal… Pseu…
+#&gt;  5 1.19e8 Pseudocapilla… b3fa7329-… 8.99e6 119338578 Pseud… Animal… Pseu…
+#&gt;  6 1.19e8 Pseudocapilla… b3fa7329-… 7.02e6 159602034 Pseud… Animal… Pseu…
+#&gt;  7 1.19e8 Capillostrong… b3fa7329-… 4.63e6 159602033 Trich… Animal… Capi…
+#&gt;  8 1.19e8 Paracapillaria b3fa7329-… 9.82e6 159602033 Trich… Animal… Para…
+#&gt;  9 1.19e8 Capillariidae  b3fa7329-… 3.25e6 159602032 Trich… Animal… &lt;NA&gt; 
+#&gt; 10 1.19e8 Paracapillaro… b3fa7329-… 7.02e6 159602035 Parac… Animal… Para…
 #&gt; # … with 80 more rows, and 25 more variables: kingdomKey &lt;int&gt;, genusKey &lt;int&gt;,
 #&gt; #   canonicalName &lt;chr&gt;, nameType &lt;chr&gt;, taxonomicStatus &lt;chr&gt;, rank &lt;chr&gt;,
 #&gt; #   origin &lt;chr&gt;, numDescendants &lt;int&gt;, numOccurrences &lt;int&gt;, taxonID &lt;chr&gt;,
@@ -243,7 +239,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt; #   phylum &lt;chr&gt;, order &lt;chr&gt;, family &lt;chr&gt;, phylumKey &lt;int&gt;, classKey &lt;int&gt;,
 #&gt; #   orderKey &lt;int&gt;, familyKey &lt;int&gt;, class &lt;chr&gt;</div><div class='input'><span class='co'># Multiple checklist_keys (vector)</span>
 <span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"e4746398-f7c4-47a1-a474-ae80a4f18e92"</span>,
-                            <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>))</div><div class='output co'>#&gt; [1] "245 taxa found of which 9 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 245 x 33
+                            <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>))</div><div class='output co'>#&gt; [1] "245 taxa found of which 5 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 245 x 33
 #&gt;       key scientificName datasetKey  nubKey parentKey parent family familyKey
 #&gt;     &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;        &lt;int&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;int&gt;
 #&gt;  1 1.14e8 Acer negundo   e4746398-… 3189866 143920246 Acera… Acera… 143920246
@@ -265,7 +261,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt; #   phylumKey &lt;int&gt;, classKey &lt;int&gt;, orderKey &lt;int&gt;, class &lt;chr&gt;</div><div class='input'><span class='co'># Limit number of taxa (coupled with checklist_keys)</span>
 <span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"e4746398-f7c4-47a1-a474-ae80a4f18e92"</span>,
                             <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>),
-         <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>30</span>)</div><div class='output co'>#&gt; [1] "60 taxa found of which 5 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 60 x 33
+         <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>30</span>)</div><div class='output co'>#&gt; [1] "60 taxa found of which 1 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 60 x 33
 #&gt;       key scientificName datasetKey  nubKey parentKey parent family familyKey
 #&gt;     &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;        &lt;int&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;int&gt;
 #&gt;  1 1.14e8 Acer negundo   e4746398-… 3189866 143920246 Acera… Acera… 143920246
@@ -286,7 +282,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt; #   taxonID &lt;chr&gt;, species &lt;chr&gt;, speciesKey &lt;int&gt;, phylum &lt;chr&gt;, order &lt;chr&gt;,
 #&gt; #   phylumKey &lt;int&gt;, classKey &lt;int&gt;, orderKey &lt;int&gt;, class &lt;chr&gt;</div><div class='input'><span class='co'># Filter by origin</span>
 <span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='st'>"9ff7d317-609b-4c08-bd86-3bc404b77c42"</span>,
-         <span class='kw'>origin</span> <span class='kw'>=</span> <span class='st'>"source"</span>, <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3000</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Dataset contains less records than limit.</span></div><div class='output co'>#&gt; [1] "2531 taxa found of which 75 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 2,531 x 26
+         <span class='kw'>origin</span> <span class='kw'>=</span> <span class='st'>"source"</span>, <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3000</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Dataset contains less records than limit.</span></div><div class='output co'>#&gt; [1] "2531 taxa found of which 72 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 2,531 x 26
 #&gt;       key scientificName datasetKey nubKey parentKey parent kingdom family
 #&gt;     &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;       &lt;int&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt; 
 #&gt;  1 1.41e8 Nymphaea x ma… 9ff7d317-… 7.80e6 154434692 Nymph… Plantae Nymph…
@@ -300,12 +296,12 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt;  9 1.41e8 Scaevola aemu… 9ff7d317-… 5.57e6 154434700 Goode… Plantae Goode…
 #&gt; 10 1.41e8 Tarenaya hass… 9ff7d317-… 3.87e6 154434701 Cleom… Plantae Cleom…
 #&gt; # … with 2,521 more rows, and 18 more variables: kingdomKey &lt;int&gt;,
-#&gt; #   familyKey &lt;int&gt;, canonicalName &lt;chr&gt;, nameType &lt;chr&gt;,
+#&gt; #   familyKey &lt;int&gt;, canonicalName &lt;chr&gt;, authorship &lt;chr&gt;, nameType &lt;chr&gt;,
 #&gt; #   taxonomicStatus &lt;chr&gt;, origin &lt;chr&gt;, numDescendants &lt;int&gt;,
-#&gt; #   numOccurrences &lt;int&gt;, taxonID &lt;chr&gt;, habitats &lt;chr&gt;,
-#&gt; #   nomenclaturalStatus &lt;lgl&gt;, threatStatuses &lt;lgl&gt;, synonym &lt;lgl&gt;,
-#&gt; #   species &lt;chr&gt;, speciesKey &lt;int&gt;, rank &lt;chr&gt;, genus &lt;chr&gt;, genusKey &lt;int&gt;</div><div class='input'><span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='st'>"9ff7d317-609b-4c08-bd86-3bc404b77c42"</span>,
-         <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"source"</span> ,<span class='st'>"denormed_classification"</span>), <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3000</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Dataset contains less records than limit.</span></div><div class='output co'>#&gt; [1] "2685 taxa found of which 75 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 2,685 x 26
+#&gt; #   numOccurrences &lt;int&gt;, habitats &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
+#&gt; #   threatStatuses &lt;lgl&gt;, synonym &lt;lgl&gt;, species &lt;chr&gt;, speciesKey &lt;int&gt;,
+#&gt; #   rank &lt;chr&gt;, genus &lt;chr&gt;, genusKey &lt;int&gt;</div><div class='input'><span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='st'>"9ff7d317-609b-4c08-bd86-3bc404b77c42"</span>,
+         <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"source"</span> ,<span class='st'>"denormed_classification"</span>), <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3000</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Dataset contains less records than limit.</span></div><div class='output co'>#&gt; [1] "2685 taxa found of which 72 could not be matched to GBIF Backbone."</div><div class='output co'>#&gt; # A tibble: 2,685 x 26
 #&gt;       key scientificName datasetKey nubKey parentKey parent kingdom family
 #&gt;     &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;       &lt;int&gt;     &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt; 
 #&gt;  1 1.41e8 Nymphaea x ma… 9ff7d317-… 7.80e6 154434692 Nymph… Plantae Nymph…
@@ -319,19 +315,17 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 #&gt;  9 1.41e8 Scaevola aemu… 9ff7d317-… 5.57e6 154434700 Goode… Plantae Goode…
 #&gt; 10 1.41e8 Tarenaya hass… 9ff7d317-… 3.87e6 154434701 Cleom… Plantae Cleom…
 #&gt; # … with 2,675 more rows, and 18 more variables: kingdomKey &lt;int&gt;,
-#&gt; #   familyKey &lt;int&gt;, canonicalName &lt;chr&gt;, nameType &lt;chr&gt;,
+#&gt; #   familyKey &lt;int&gt;, canonicalName &lt;chr&gt;, authorship &lt;chr&gt;, nameType &lt;chr&gt;,
 #&gt; #   taxonomicStatus &lt;chr&gt;, origin &lt;chr&gt;, numDescendants &lt;int&gt;,
-#&gt; #   numOccurrences &lt;int&gt;, taxonID &lt;chr&gt;, habitats &lt;chr&gt;,
-#&gt; #   nomenclaturalStatus &lt;lgl&gt;, threatStatuses &lt;lgl&gt;, synonym &lt;lgl&gt;,
-#&gt; #   species &lt;chr&gt;, speciesKey &lt;int&gt;, rank &lt;chr&gt;, genus &lt;chr&gt;, genusKey &lt;int&gt;</div></pre>
+#&gt; #   numOccurrences &lt;int&gt;, habitats &lt;chr&gt;, nomenclaturalStatus &lt;lgl&gt;,
+#&gt; #   threatStatuses &lt;lgl&gt;, synonym &lt;lgl&gt;, species &lt;chr&gt;, speciesKey &lt;int&gt;,
+#&gt; #   rank &lt;chr&gt;, genus &lt;chr&gt;, genusKey &lt;int&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -345,7 +339,7 @@ in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>
