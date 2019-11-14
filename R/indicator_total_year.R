@@ -1,6 +1,6 @@
 #' Create cumulative number of alien species indicator plot.
 #'
-#' This function calculates the cumulative number of species introduced per
+#' This function calculates the cumulative number of taxa introduced per
 #' year. To do this, a column of input dataframe containing temporal information
 #' about year of introduction is required.
 #' @param df df. Contains the data as produced by the Trias pipeline,
@@ -32,6 +32,7 @@
 #' @importFrom dplyr distinct_ %>% filter rowwise do bind_cols group_by_ count
 #'   ungroup rename_at
 #' @importFrom tidyr unnest
+#' @importFrom rlang .data
 #' @importFrom ggplot2 ggplot geom_line aes xlab ylab scale_x_continuous
 #'   facet_wrap
 #' @importFrom egg ggarrange
@@ -87,35 +88,27 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     df %>%
     rename_at(vars(first_observed), ~"first_observed")
 
-  if (is.null(facet_column)) {
-    df_cleaned <-
-      df %>%
-      distinct_("speciesKey", "first_observed")
-  } else {
-    df_cleaned <-
-      df %>%
-      distinct_("speciesKey", "first_observed", facet_column)
-  }
-
   # Provide warning messages for first_observed NA values
   if (nrow(filter(df, is.na(first_observed)) > 0)) {
     warning(paste0(
-      "Some records have no information about year of introduction (empty values in column ",
+      "Some records have no information about year of introduction ",
+      "(empty values in column ",
       first_observed,
-      ") and are not taken into account."
+      ") and are not taken into account.\n"
     ))
   }
-
-  df_cleaned <-
-    df_cleaned %>%
-    filter(!is.na(first_observed)) # ignore information without first_observed
+  
+  # ignore information without first_observed
+  df <-
+    df %>%
+    filter(!is.na(.data$first_observed))
 
   # Make individual records for each year up to now
-  df_extended <- df_cleaned %>%
+  df_extended <- df %>%
     rowwise() %>%
     do(year = .data$first_observed:as.integer(format(Sys.Date(), "%Y"))) %>%
-    bind_cols(df_cleaned) %>%
-    unnest(year)
+    bind_cols(df) %>%
+    unnest(.data$year)
 
   maxDate <- max(df_extended$year)
   top_graph <- ggplot(df_extended, aes(x = year)) +
@@ -147,10 +140,10 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       count() %>%
       ungroup()
 
-    facet_graph <- ggplot(
-      counts_ias_grouped,
-      aes(x = year, y = n)
-    ) +
+    facet_graph <- 
+      ggplot(
+        counts_ias_grouped,
+        aes(x = .data$year, y = .data$n)) +
       geom_line(stat = "identity") +
       xlab(x_lab) +
       ylab(y_lab) +

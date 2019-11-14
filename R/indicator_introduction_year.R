@@ -30,6 +30,7 @@
 #' @importFrom dplyr %>% filter group_by group_by_ count ungroup rename_at
 #' @importFrom ggplot2 geom_point aes xlab ylab scale_x_continuous facet_wrap
 #'   geom_smooth
+#' @importFrom rlang .data
 #' @importFrom egg ggarrange
 #'
 #' @examples
@@ -81,18 +82,21 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
     rename_at(vars(first_observed), ~"first_observed")
 
   # first filtering of the incoming data
-  data <- df %>%
+  data <- 
+    df %>%
     filter(!is.na(.data$first_observed)) %>%
     filter(.data$first_observed > start_year_plot)
 
-  data_top_graph <- data %>%
+  data_top_graph <- 
+    data %>%
     group_by(.data$first_observed) %>%
     count() %>%
     ungroup()
 
   maxDate <- max(data_top_graph$first_observed)
   # top graph with all counts
-  top_graph <- ggplot(data_top_graph, aes(x = first_observed, y = n)) +
+  top_graph <- ggplot(data_top_graph, 
+                      aes(x = .data$first_observed, y = .data$n)) +
     geom_point(stat = "identity") +
     geom_smooth(span = smooth_span) +
     xlab(x_lab) +
@@ -131,7 +135,8 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
       ungroup()
 
     maxDate <- max(data_facet_graph$first_observed)
-    facet_graph <- ggplot(data_facet_graph, aes(x = first_observed, y = n)) +
+    facet_graph <- ggplot(data_facet_graph, 
+                          aes(x = .data$first_observed, y = .data$n)) +
       geom_point(stat = "identity") +
       geom_smooth(span = smooth_span) +
       facet_wrap(facet_column) +

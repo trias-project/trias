@@ -61,7 +61,7 @@
 #' @importFrom dplyr pull mutate filter left_join full_join select
 #' @importFrom purrr reduce map_df
 #' @importFrom rgbif name_usage
-#' @importFrom rlang !!
+#' @importFrom rlang !! .data
 #' @importFrom tidyr gather
 #' @importFrom tidyselect vars_pull enquo
 gbif_verify_keys <- function(keys, col_keys = "key") {
@@ -113,36 +113,38 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
       }
     ))
   check_keys <-
-    map_df(gbif_info, ~is.character(.) == FALSE) %>%
+    map_df(gbif_info, ~is.character(.) == FALSE)
+  check_keys <-
+    check_keys %>%
     gather(key = key, value = is_taxonKey) %>%
-    mutate(key = as.numeric(key))
+    mutate(key = as.numeric(.data$key))
   valid_keys_df <-
     check_keys %>%
-    filter(is_taxonKey == TRUE)
+    filter(.data$is_taxonKey == TRUE)
   valid_keys <- gbif_info[which(names(gbif_info) %in% valid_keys_df$key)]
   if (length(valid_keys) > 0) {
     valid_keys_df <-
       valid_keys %>%
       reduce(bind_rows) %>%
-      mutate(is_from_gbif_backbone = ifelse(datasetKey == uuid_backbone,
+      mutate(is_from_gbif_backbone = ifelse(.data$datasetKey == uuid_backbone,
         TRUE, FALSE
       ))
     check_keys <-
       check_keys %>%
       left_join(valid_keys_df %>%
-        select(key, is_from_gbif_backbone),
+        select(.data$key, .data$is_from_gbif_backbone),
       by = "key"
       )
     valid_keys_df <-
       valid_keys_df %>%
-      filter(is_from_gbif_backbone == TRUE) %>%
-      mutate(is_synonym = ifelse(!taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"),
+      filter(.data$is_from_gbif_backbone == TRUE) %>%
+      mutate(is_synonym = ifelse(!.data$taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"),
         TRUE, FALSE
       ))
     check_keys <-
       check_keys %>%
       left_join(valid_keys_df %>%
-        select(key, is_synonym),
+        select(.data$key, .data$is_synonym),
       by = "key"
       )
   } else {
