@@ -42,7 +42,7 @@ information about year of introduction. Default: \code{"first_observed"}.}
 ggplot2 object (or egg object if facets are used).
 }
 \description{
-This function calculates the cumulative number of species introduced per
+This function calculates the cumulative number of taxa introduced per
 year. To do this, a column of input dataframe containing temporal information
 about year of introduction is required.
 }
