@@ -90,9 +90,10 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   # Provide warning messages for first_observed NA values
   if (nrow(filter(df, is.na(first_observed)) > 0)) {
     warning(paste0(
-      "Some records have no information about year of introduction (empty values in column ",
+      "Some records have no information about year of introduction ",
+      "(empty values in column ",
       first_observed,
-      ") and are not taken into account."
+      ") and are not taken into account.\n"
     ))
   }
   
