@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v1.0.1
     - name: Codecov
         uses: codecov/codecov-action@v1.0.4
