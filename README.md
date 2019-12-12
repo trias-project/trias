@@ -6,16 +6,19 @@ R package with functions for TrIAS (Tracking Invasive Alien Species) project.
 
 ## Installation
 
+Install development version via `devtools`.
+
 ```r
-install.packages("rgbif")
+devtools::install_github("trias-project/trias")
 ```
 
-Alternatively, install development version
+If you don't have installed `devtools` before, install it:
 
 ```r
 install.packages("devtools")
-devtools::install_github("trias-project/trias")
 ```
+
+After installing `trias`, you can use it by loading the package in your R session:
 
 ```r
 library("trias")
