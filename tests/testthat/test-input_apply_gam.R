@@ -92,10 +92,6 @@ testthat::test_that("Test inputs' types.", {
 )
 
 testthat::test_that("Test input length.", {
-  expect_error(apply_gam(df = c(df_gam, df_gam),
-                         y_var = c("n_observations"),
-                         eval_years = 2018),
-               paste("Multiple values for argument df provided."))
   expect_error(apply_gam(df = df_gam,
                          y_var = c("n_observations", "why a second col?"),
                          eval_years = 2018),
