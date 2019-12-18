@@ -404,3 +404,49 @@ apply_gam <- function(df,
               second_derivative = deriv2,
               plot = plot_gam))
 }
+
+### Plot time series with confidence limits + emerging status
+plot_ribbon_em <- function(df_plot, 
+                           x_axis = "year", 
+                           y_axis = "obs", 
+                           ptitle = NULL){
+  
+  colors_em <- c("3" = "darkred", 
+                 "2" = "orangered",
+                 "1" = "grey50",
+                 "0" = "darkgreen")
+  labels_em <- c("3" = "emerging (3)", 
+                 "2" = "pot. emerging (2)",
+                 "1" = "unclear (1)",
+                 "0" = "not emerging (0)")
+  y_label <- case_when(
+    y_axis == "obs" ~ "number of obesrvations",
+    y_axis == "ncells" ~ "km2",
+    TRUE ~ y_axis)
+  g <- 
+    df_plot %>%
+    ggplot(aes(x = year, y = get(y_axis))) +
+    geom_point(color = "black") +
+    ylab(y_label) +
+    ggtitle(ptitle)
+  
+  if (all(all(abs(df_plot$lcl < 10^10)),
+          all(abs(df_plot$ucl < 10^10)),
+          all(abs(df_plot$fit < 10^10)))) {
+    g <- g + 
+      geom_ribbon(aes(ymax = ucl, ymin = lcl),
+                  fill = grey(0.5),
+                  alpha = 0.4) +
+      geom_line(aes(x = year, y = fit), color = "grey50") +
+      geom_point(aes(x = year, 
+                     y = fit, 
+                     color = factor(em_status)),
+                 size = 2) +
+      scale_colour_manual(values = colors_em,
+                          labels = labels_em,
+                          name = "Emerging status") +
+      theme(plot.title = element_text(size=10))
+  }
+  
+  return(g)
+}
