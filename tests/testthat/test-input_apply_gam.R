@@ -22,6 +22,12 @@ testthat::test_that("Test inputs' types.", {
                paste("yyyy is not a numeric or integer vector.",
                      "Check value of argument eval_years."),
                fixed = TRUE)
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = list(a = 2018)),
+               paste("2018 is not a numeric or integer vector.",
+                     "Check value of argument eval_years."),
+               fixed = TRUE)
   # y_var
   expect_error(apply_gam(df = df_gam,
                          y_var = 3,
@@ -61,6 +67,80 @@ testthat::test_that("Test inputs' types.", {
                          baseline_var = 4),
                paste("4 is not a character vector.",
                      "Check value of argument baseline_var."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = 2018,
+                         saveplot = c("TRUE")),
+               paste("TRUE is not a logical vector.",
+                     "Check value of argument saveplot.",
+                     "Did you maybe use quotation marks?"))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = 2018,
+                         saveplot = c(1,1)),
+               paste("1,1 is not a logical vector.",
+                     "Check value of argument saveplot.",
+                     "Did you maybe use quotation marks?"))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = 2018,
+                         verbose = c(1,1)),
+               paste("1,1 is not a logical vector.",
+                     "Check value of argument saveplot.",
+                     "Did you maybe use quotation marks?"))
+  }
+)
+
+testthat::test_that("Test input length.", {
+  expect_error(apply_gam(df = c(df_gam, df_gam),
+                         y_var = c("n_observations"),
+                         eval_years = 2018),
+               paste("Multiple values for argument df provided."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = c("n_observations", "why a second col?"),
+                         eval_years = 2018),
+               paste("Multiple values for argument y_var provided."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = c("n_observations"),
+                         year = c("year", "add a second to screw my code"),
+                         eval_years = 2018),
+               paste("Multiple values for argument year provided."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = c("n_observations"),
+                         eval_years = 2018,
+                         taxonKey = c("taxonKey", "taxon_col")),
+               paste("Multiple values for argument taxonKey provided."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = c("n_observations"),
+                         eval_years = 2018,
+                         type_indicator = c("occurrences", "occupancy")),
+               paste("Multiple values for argument type_indicator provided."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = 2018,
+                         name = c("1st_name", "2nd_name")),
+               paste("Multiple values for argument name provided."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = 2018,
+                         df_title = c("aaa", "bbb")),
+               paste("Multiple values for argument df_title provided."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = 2018,
+                         saveplot = c(FALSE, FALSE)),
+               paste("Multiple values for argument saveplot provided."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = 2018,
+                         saveplot = TRUE,
+                         dir_name = c("One_dir", "Second_dir")),
+               paste("Multiple values for argument dir_name provided."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = 2018,
+                         verbose = c(FALSE, FALSE)),
+               paste("Multiple values for argument verbose provided."))
   }
 )
 
@@ -141,9 +221,9 @@ testthat::test_that("Test other inputs.", {
                          y_var = "n_observations",
                          eval_years = 2018,
                          name = c(5,2)),
-               paste(name,
-                     "is not a character vector.",
+               paste("5,2 is not a character vector.",
                      "Check value of argument name."))
+  
   expect_warning(apply_gam(df = df_gam,
                            y_var = "n_observations",
                            eval_years = 2018, 
@@ -151,11 +231,5 @@ testthat::test_that("Test other inputs.", {
                            dir_name = "./data/"),
                  paste("saveplot is FALSE: plots are not saved.", 
                        "Argument dir_name ignored."))
-  expect_error(apply_gam(df = df_gam,
-                         y_var = "n_observations",
-                         eval_years = 2018,
-                         saveplot = TRUE,
-                         dir_name = c("One_dir", "Second_dir")),
-               paste("Multiple values for argument dir_name provided."))
   }
 )

@@ -96,51 +96,76 @@ apply_gam <- function(df,
   
   # Check right type of inputs
   assert_that(is.data.frame(df),
-              msg = paste(df,
+              msg = paste(paste(as.character(df), collapse = ","),
                           "is not a data frame.",
                           "Check value of argument df."))
   assert_that(is.character(y_var),
-              msg = paste(y_var, 
+              msg = paste(paste(as.character(y_var), collapse = ","), 
                           "is not a character vector.",
                           "Check value of argument y_var."))
   assert_that(is.numeric(eval_years),
-              msg = paste(eval_years, 
+              msg = paste(paste(as.character(eval_years), collapse = ","), 
                           "is not a numeric or integer vector.",
                           "Check value of argument eval_years."))
   assert_that(is.character(year),
-              msg = paste(year,
+              msg = paste(paste(as.character(year), collapse = ","),
                           "is not a character vector.",
                           "Check value of argument year."))
   assert_that(is.character(taxonKey),
-              msg = paste(taxonKey,
+              msg = paste(paste(as.character(taxonKey), collapse = ","),
                           "is not a character vector.",
                           "Check value of argument taxonKey."))
   assert_that(is.character(type_indicator),
-              msg = paste(type_indicator,
+              msg = paste(paste(as.character(type_indicator), collapse = ","),
                           "is not a character vector.",
                           "Check value of argument type_indicator."))
+  assert_that(length(type_indicator) == 1,
+              msg = "Multiple values for argument type_indicator provided.")
   assert_that(is.null(baseline_var) | is.character(baseline_var),
-              msg = paste(baseline_var,
+              msg = paste(paste(as.character(baseline_var), collapse = ","),
                           "is not a character vector.",
                           "Check value of argument baseline_var."))
   assert_that(is.null(name) | is.character(name),
-              msg = paste(name,
+              msg = paste(paste(as.character(name), collapse = ","),
                           "is not a character vector.",
                           "Check value of argument name."))
-  
-  # Check y_var, year, taxonKey, baseline_var are present in df
-  map2(c(y_var, year, taxonKey), 
+  assert_that(is.null(name) | length(name) == 1,
+              msg = "Multiple values for argument name provided.")
+  assert_that(is.null(df_title) | is.character(df_title),
+              msg = paste(paste(as.character(df_title), collapse = ","),
+                          "is not a character vector.",
+                          "Check value of argument name."))
+  assert_that(is.null(df_title) | length(df_title) == 1,
+              msg = "Multiple values for argument df_title provided.")
+  map2(list(saveplot, verbose),
+       c("saveplot", "verbose"), 
+       function(x, y){
+         assert_that(is.logical(x),
+                     msg = paste(paste(as.character(x), collapse = ","),
+                                 "is not a logical vector.",
+                                 "Check value of argument saveplot.",
+                                 "Did you maybe use quotation marks?"))
+         assert_that(length(x) == 1,
+              msg = paste("Multiple values for argument", y, "provided."))
+       }
+  )
+  map2(list(y_var, year, taxonKey), 
        c("y_var", "year", "taxonKey"), function(x, y){
-    assertthat::assert_that(
-      x %in% names(df),
-      msg = paste0(
-        "The column ", x, 
-        " is not present in df. Check value of argument ",  y, "."))
-  })
-  
+         # Check y_var, year, taxonKey, baseline_var have length 1
+         assert_that(length(x) == 1,
+                     msg = paste("Multiple values for argument",
+                                 paste0(y, collapse = ","),
+                                 "provided."))
+         # Check y_var, year, taxonKey, baseline_var are present in df
+         assert_that(x %in% names(df),
+                     msg = paste0("The column ", x, 
+                                  " is not present in df. Check value of",
+                                  " argument ",  y, "."))
+       }
+  )
   if (!is.null(baseline_var)) {
     # Check baseline_var is present in df
-    assertthat::assert_that(
+    assert_that(
       baseline_var %in% names(df),
       msg = paste0(
         "The column ", baseline_var, 
@@ -152,13 +177,13 @@ apply_gam <- function(df,
   
   if (isTRUE(saveplot)) {
     # Check type input of dir_name
-    assertthat::assert_that(is.character(dir_name),
-                            msg = paste("If you want to save the output plots,", 
-                                        "you have to provide a valid directory",
-                                        "name (character)."))
-    assertthat::assert_that(length(dir_name) == 1,
-                            msg = paste("Multiple values for argument",
-                                        "dir_name provided."))
+    assert_that(is.character(dir_name),
+                msg = paste("If you want to save the output plots,", 
+                            "you have to provide a valid directory",
+                            "name (character)."))
+    assert_that(length(dir_name) == 1,
+                msg = paste("Multiple values for argument",
+                            "dir_name provided."))
     dir.create(dir_name, showWarnings = FALSE)
     if (isTRUE(verbose)) {
       print(paste("Output plots saved in:", dir_name))
@@ -174,18 +199,18 @@ apply_gam <- function(df,
   taxonKey <- vars_pull(names(df), !!enquo(taxonKey))
   
   # Check eval_year is present in column year
-  assertthat::assert_that(all(eval_years %in% df[[year]]),
+  assert_that(all(eval_years %in% df[[year]]),
                           msg = paste("One or more evaluation years", 
                                       "not present in df.",
                                       "Check value of argument eval_years."))
   
-  assertthat::assert_that(is.numeric(p_max) && p_max > 0 && p_max < 1,
+  assert_that(is.numeric(p_max) && p_max > 0 && p_max < 1,
                           msg = paste("p_max is a p-value: it has to be a",
                                       "number between 0 and 1.")
   )
   
   # Check type_indicator is one of the two allowed values
-  assertthat::assert_that(type_indicator %in% c("observations", "occupancy"),
+  assert_that(type_indicator %in% c("observations", "occupancy"),
                           msg = paste("Invalid type_indicator.",
                                       "type_indicator has to be one of:", 
                                       "observations, occupancy.")
