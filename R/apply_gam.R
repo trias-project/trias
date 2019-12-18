@@ -72,6 +72,12 @@
 #'
 #' @examples
 #' \dontrun{
+#' df_gam <- tibble(
+#'   taxonKey = rep(2224970, 20),
+#'   canonicalName = rep("Palaemon macrodactylus", 20),
+#'   year = seq(2000, 2019),
+#'   n_observations = c(1, 5, 3, 12, 10, 3, 5, 0, 1, 3, 2, 4, 1,3, 3, 4,3, 0, 5, 1)
+#'   )
 #' }
 apply_gam <- function(df,
                       y_var,
