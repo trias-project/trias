@@ -94,49 +94,101 @@ apply_gam <- function(df,
                       dir_name = NULL,
                       verbose = FALSE) {
   
-  # Check df is a dataframe
-  assert_that(is.data.frame(df))
+  # Check right type of inputs
+  assert_that(is.data.frame(df),
+              msg = paste(df,
+                          "is not a data frame.",
+                          "Check value of argument df."))
+  assert_that(is.character(y_var),
+              msg = paste(y_var, 
+                          "is not a character vector.",
+                          "Check value of argument y_var."))
+  assert_that(is.numeric(eval_years),
+              msg = paste(eval_years, 
+                          "is not a numeric or integer vector.",
+                          "Check value of argument eval_years."))
+  assert_that(is.character(year),
+              msg = paste(year,
+                          "is not a character vector.",
+                          "Check value of argument year."))
+  assert_that(is.character(taxonKey),
+              msg = paste(taxonKey,
+                          "is not a character vector.",
+                          "Check value of argument taxonKey."))
+  assert_that(is.character(type_indicator),
+              msg = paste(type_indicator,
+                          "is not a character vector.",
+                          "Check value of argument type_indicator."))
+  assert_that(is.null(baseline_var) | is.character(baseline_var),
+              msg = paste(baseline_var,
+                          "is not a character vector.",
+                          "Check value of argument baseline_var."))
+  assert_that(is.null(name) | is.character(name),
+              msg = paste(name,
+                          "is not a character vector.",
+                          "Check value of argument name."))
   
-  # Check y_var, year, taxonKey are present in df
+  # Check y_var, year, taxonKey, baseline_var are present in df
   map2(c(y_var, year, taxonKey), 
        c("y_var", "year", "taxonKey"), function(x, y){
     assertthat::assert_that(
       x %in% names(df),
       msg = paste0(
         "The column ", x, 
-        " is not present in data.frame. Check value of argument ",  y, "."
-        )
-      )
+        " is not present in df. Check value of argument ",  y, "."))
   })
   
   if (!is.null(baseline_var)) {
+    # Check baseline_var is present in df
+    assertthat::assert_that(
+      baseline_var %in% names(df),
+      msg = paste0(
+        "The column ", baseline_var, 
+        " is not present in df. Check value of argument baseline_var."))
     method_em <- "correct_baseline"
-    assertthat::assert_that(baseline_var %in% names(df),
-                            msg = paste(
-                              "The column", baseline_var, "is not present in data.frame."
-                            ))
   } else {
     method_em <- "basic"
   }
   
-  if (saveplot == TRUE) {
+  if (isTRUE(saveplot)) {
+    # Check type input of dir_name
     assertthat::assert_that(is.character(dir_name),
                             msg = paste("If you want to save the output plots,", 
                                         "you have to provide a valid directory",
-                                        "name (character string).")
-    )
-    dir_name <- "./data/output/GAM_outputs/"
+                                        "name (character)."))
+    assertthat::assert_that(length(dir_name) == 1,
+                            msg = paste("Multiple values for argument",
+                                        "dir_name provided."))
     dir.create(dir_name, showWarnings = FALSE)
     if (isTRUE(verbose)) {
       print(paste("Output plots saved in:", dir_name))
+    }
+  } else {
+    if (!is.null(dir_name)) {
+      warning(paste("saveplot is FALSE: plots are not saved.", 
+                    "Argument dir_name ignored.")
+      )
     }
   }
   year <- vars_pull(names(df), !!enquo(year))
   taxonKey <- vars_pull(names(df), !!enquo(taxonKey))
   
+  # Check eval_year is present in column year
+  assertthat::assert_that(all(eval_years %in% df[[year]]),
+                          msg = paste("One or more evaluation years", 
+                                      "not present in df.",
+                                      "Check value of argument eval_years."))
+  
   assertthat::assert_that(is.numeric(p_max) && p_max > 0 && p_max < 1,
-                          msg = paste("The p-value has to be a number",
-                                      "between 0 and 1.")
+                          msg = paste("p_max is a p-value: it has to be a",
+                                      "number between 0 and 1.")
+  )
+  
+  # Check type_indicator is one of the two allowed values
+  assertthat::assert_that(type_indicator %in% c("observations", "occupancy"),
+                          msg = paste("Invalid type_indicator.",
+                                      "type_indicator has to be one of:", 
+                                      "observations, occupancy.")
   )
   
   if (verbose == TRUE ) {
@@ -152,24 +204,20 @@ apply_gam <- function(df,
     maxk <- max(round((lyear - fyear)/10, digits = 0), 5) # max number of knots
   }
   if (method_em == "correct_baseline") {
-    if (type_indicator %in% c("observations", "occupancy")) {
-      fm <- paste0(y_var,
-                   " ~ s(",
-                   year,
-                   ", k = maxk, m = 3, bs = \"tp\") + s(",
-                   baseline_var,
-                   ")")
-    }
+    fm <- paste0(y_var,
+                 " ~ s(",
+                 year,
+                 ", k = maxk, m = 3, bs = \"tp\") + s(",
+                 baseline_var,
+                 ")")
     fm <- formula(fm)
   } else {
     method_em <- "basic"
-    if (type_indicator %in% c("observations", "occupancy")) {
-      fm <- paste0(y_var,
-                   " ~ s(",
-                   year,
-                   ", k = maxk, m = 3, bs = \"tp\")")
-      fm <- formula(fm)
-    }
+    fm <- paste0(y_var,
+                 " ~ s(",
+                 year,
+                 ", k = maxk, m = 3, bs = \"tp\")")
+    fm <- formula(fm)
   }
   
   # Initialization
