@@ -99,44 +99,41 @@ apply_gam <- function(df,
               msg = paste(paste(as.character(df), collapse = ","),
                           "is not a data frame.",
                           "Check value of argument df."))
-  assert_that(is.character(y_var),
-              msg = paste(paste(as.character(y_var), collapse = ","), 
-                          "is not a character vector.",
-                          "Check value of argument y_var."))
+  map2(list(y_var, year, taxonKey, type_indicator), 
+       c("y_var", "year", "taxonKey", "type_indicator"),
+       function(x, y){
+         # Check right type of inputs
+         assert_that(is.character(x),
+                     msg = paste0(paste(as.character(x), collapse = ","), 
+                                  " is not a character vector.",
+                                  " Check value of argument ", y,  "."))
+         # Check y_var, year, taxonKey, type_indicator have length 1
+         assert_that(length(x) == 1,
+                     msg = paste0("Multiple values for argument ",
+                                 paste0(y, collapse = ","),
+                                 " provided."))
+       }
+  )
   assert_that(is.numeric(eval_years),
               msg = paste(paste(as.character(eval_years), collapse = ","), 
                           "is not a numeric or integer vector.",
                           "Check value of argument eval_years."))
-  assert_that(is.character(year),
-              msg = paste(paste(as.character(year), collapse = ","),
-                          "is not a character vector.",
-                          "Check value of argument year."))
-  assert_that(is.character(taxonKey),
-              msg = paste(paste(as.character(taxonKey), collapse = ","),
-                          "is not a character vector.",
-                          "Check value of argument taxonKey."))
-  assert_that(is.character(type_indicator),
-              msg = paste(paste(as.character(type_indicator), collapse = ","),
-                          "is not a character vector.",
-                          "Check value of argument type_indicator."))
-  assert_that(length(type_indicator) == 1,
-              msg = "Multiple values for argument type_indicator provided.")
-  assert_that(is.null(baseline_var) | is.character(baseline_var),
-              msg = paste(paste(as.character(baseline_var), collapse = ","),
-                          "is not a character vector.",
-                          "Check value of argument baseline_var."))
-  assert_that(is.null(name) | is.character(name),
-              msg = paste(paste(as.character(name), collapse = ","),
-                          "is not a character vector.",
-                          "Check value of argument name."))
-  assert_that(is.null(name) | length(name) == 1,
-              msg = "Multiple values for argument name provided.")
-  assert_that(is.null(df_title) | is.character(df_title),
-              msg = paste(paste(as.character(df_title), collapse = ","),
-                          "is not a character vector.",
-                          "Check value of argument name."))
-  assert_that(is.null(df_title) | length(df_title) == 1,
-              msg = "Multiple values for argument df_title provided.")
+  
+  map2(list(baseline_var, taxon_key, name, df_title, dir_name), 
+       c("baseline_var", "taxon_key", "name", "df_title", "dir_name"),
+       function(x, y) {
+         # check argument type
+         assert_that(is.null(x) | is.character(x),
+                     msg = paste0(paste(as.character(x), collapse = ","),
+                                 " is not a character vector.",
+                                 " Check value of argument ", y, "."))
+         # check length
+         assert_that(length(x) < 2,
+                     msg = paste("Multiple values for argument",
+                                 y, "provided."))
+       }
+  )
+  
   map2(list(saveplot, verbose),
        c("saveplot", "verbose"), 
        function(x, y){
@@ -149,14 +146,11 @@ apply_gam <- function(df,
               msg = paste("Multiple values for argument", y, "provided."))
        }
   )
+  
   map2(list(y_var, year, taxonKey), 
-       c("y_var", "year", "taxonKey"), function(x, y){
-         # Check y_var, year, taxonKey, baseline_var have length 1
-         assert_that(length(x) == 1,
-                     msg = paste("Multiple values for argument",
-                                 paste0(y, collapse = ","),
-                                 "provided."))
-         # Check y_var, year, taxonKey, baseline_var are present in df
+       c("y_var", "year", "taxonKey"),
+       function(x, y){
+         # Check y_var, year, taxonKey are present in df
          assert_that(x %in% names(df),
                      msg = paste0("The column ", x, 
                                   " is not present in df. Check value of",
@@ -176,14 +170,6 @@ apply_gam <- function(df,
   }
   
   if (isTRUE(saveplot)) {
-    # Check type input of dir_name
-    assert_that(is.character(dir_name),
-                msg = paste("If you want to save the output plots,", 
-                            "you have to provide a valid directory",
-                            "name (character)."))
-    assert_that(length(dir_name) == 1,
-                msg = paste("Multiple values for argument",
-                            "dir_name provided."))
     dir.create(dir_name, showWarnings = FALSE)
     if (isTRUE(verbose)) {
       print(paste("Output plots saved in:", dir_name))
