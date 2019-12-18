@@ -5,6 +5,8 @@ df_gam <- data.frame(
   canonicalName = rep("Palaemon macrodactylus", 19),
   year = seq(2001, 2019),
   n_observations = c(1, 5, 3, 12, 10, 3, 5, 0, 1, 3, 2, 4, 1,3, 3, 4,3, 0, 5),
+  baseline_observations = c(40, 50, 30, 120, 100, 30, 5000, 40, 100, 30, 20, 40,
+                            100,304, 343, 423, 343, 20, 50),
   stringsAsFactors = FALSE
 )
 
