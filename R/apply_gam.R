@@ -1,6 +1,6 @@
 #' Apply GAM to time series and assess emerging status
 #'
-#' This function applies Generalized Additive models (GAM) to assess emerging
+#' This function applies generalized additive models (GAM) to assess emerging
 #' status for a certain time window.
 #'
 #' @param df df. A dataframe containing temporal data.
@@ -13,7 +13,9 @@
 #'   \code{"year"}.
 #' @param taxonKey: character. Name of column containing taxon IDs. It has to be
 #'   passed as string, e.g. \code{"taxon"}. Default: \code{"taxonKey"}.
-#' @param type_indicator: . Default: \code{observations}.
+#' @param type_indicator: character. One of \code{"observations"},
+#'   \code{"occupancy"}. Used in title of the output plot. Default:
+#'   \code{"observations"}.
 #' @param baseline_var: character. Name of the column containing values to use
 #'   as additional covariate. Such covariate is introduced in the model to
 #'   correct research effort bias. Default: \code{NULL}. If \code{NULL} internal
@@ -50,14 +52,15 @@
 #'   between 0 and 3.} \item{\code{growth}: numeric. Lower limit of GAM
 #'   confidence interval for the first derivative. It represents the lower
 #'   guaranteed growth.} \item{\code{method}: character. GAM method, as defined
-#'   by internal variable \code{method_em}. One of: \code{"correct_baseline"} and
-#'   \code{"basic"}. See details above in description of argument
-#'   \code{use_baseline}.}} \item{\code{model}: GAM. The model as returned by
+#'   by internal variable \code{method_em}. One of: \code{"correct_baseline"}
+#'   and \code{"basic"}. See details above in description of argument
+#'   \code{use_baseline}.}}} \item{\code{model}: GAM. The model as returned by
 #'   GAM.} \item{\code{first_derivative}: df. Data.frame with details of first
-#'   derivatives. It contains following columns: \itemize{\item{\code{}}}
+#'   derivatives. It contains following columns: \itemize{\item{\code{}}}}}
 #' @export
 #' @importFrom assertthat assert_that
-#' @importFrom dplyr mutate filter select case_when rename left_join full_join %>%
+#' @importFrom dplyr mutate filter select case_when rename left_join full_join
+#'   %>%
 #' @importFrom ggplot2 ggsave
 #' @importFrom tidyselect vars_pull enquo
 #' @importFrom tibble as_tibble
