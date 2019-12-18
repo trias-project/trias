@@ -114,6 +114,11 @@ testthat::test_that("Test input length.", {
                          type_indicator = c("occurrences", "occupancy")),
                paste("Multiple values for argument type_indicator provided."))
   expect_error(apply_gam(df = df_gam,
+                         y_var = c("n_observations"),
+                         eval_years = 2018,
+                         baseline_var = c("q", "f")),
+               paste("Multiple values for argument baseline_var provided."))
+  expect_error(apply_gam(df = df_gam,
                          y_var = "n_observations",
                          eval_years = 2018,
                          name = c("1st_name", "2nd_name")),
@@ -167,6 +172,12 @@ testthat::test_that("Test df contains all needed columns and information.", {
                          eval_years = 1999),
                paste("One or more evaluation years not present in df.",
                      "Check value of argument eval_years."))
+  expect_error(apply_gam(df = df_gam,
+                         y_var = "n_observations",
+                         eval_years = 2017,
+                         baseline_var = "you_will_not_find_it"),
+               paste("The column you_will_not_find_it is not present in df.",
+                     "Check value of argument baseline_var."))
   expect_error(apply_gam(df = df_gam,
                          y_var = "n_observations",
                          eval_years = 2018,
