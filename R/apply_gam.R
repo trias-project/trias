@@ -3,7 +3,7 @@
 #' This function applies generalized additive models (GAM) to assess emerging
 #' status for a certain time window.
 #'
-#' @param df df. A dataframe containing temporal data.
+#' @param df: df. A dataframe containing temporal data.
 #' @param y_var: character. Name of column containing variable to model. It has
 #'   to be passed as string, e.g. \code{"occurrences"}.
 #' @param eval_years: numeric. Temporal value(s) where emerging status has to be
@@ -23,7 +23,7 @@
 #'   "correct_baseline"}. Value of \code{method_em} will be part of title of
 #'   output plot.
 #' @param  p_max: numeric. A value between 0 and 1. Default: 0.1.
-#' @param taxon_key: numeric, character. TaxonKey the timeseries belongs to.
+#' @param taxon_key: numeric, character. Taxon key the timeseries belongs to.
 #'   Used exclusively in graph title and filename (if \code{saveplot = TRUE}).
 #'   Default: \code{NULL}.
 #' @param name: character. Species name the timeseries belongs to. Used
@@ -33,6 +33,10 @@
 #'   and filenames (if \code{saveplot = TRUE}). The title is composed of:
 #'   \code{"GAM_"} + \code{type_indicator} + \code{method_em} + \code{taxon_key}
 #'   + \code{name}. Default: \code{NULL}.
+#' @param x_label: character. x-axis label of output plot. Default:
+#'   \code{"year"}.
+#' @param y_label: character. y-axis label of output plot. Default: \code{"number
+#'   of observations"}.
 #' @param verbose: logical. If \code{TRUE} status of processing is returned.
 #'   Default: \code{FALSE}.
 #' @param saveplot: logical. If \code{TRUE} the plots are authomatically saved.
@@ -61,12 +65,11 @@
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr mutate filter select case_when rename left_join full_join
 #'   %>%
-#' @importFrom ggplot2 ggsave
 #' @importFrom tidyselect vars_pull enquo
 #' @importFrom tibble as_tibble
 #' @importFrom purrr map2
 #' @importFrom rlang sym !! :=
-#' @importFrom mgcv gam summary.gam
+#' @importFrom mgcv nb gam summary.gam
 #' @importFrom stats formula predict
 #' @importFrom gratia derivatives
 #'
@@ -90,17 +93,22 @@ apply_gam <- function(df,
                       taxon_key = NULL,
                       name = NULL,
                       df_title = NULL,
+                      x_label = "year",
+                      y_label = "number of observations",
                       saveplot = FALSE,
                       dir_name = NULL,
                       verbose = FALSE) {
   
+  if (is.numeric(taxon_key)) {
+    taxon_key <- as.character(taxon_key)
+  }
   # Check right type of inputs
   assert_that(is.data.frame(df),
               msg = paste(paste(as.character(df), collapse = ","),
                           "is not a data frame.",
                           "Check value of argument df."))
-  map2(list(y_var, year, taxonKey, type_indicator), 
-       c("y_var", "year", "taxonKey", "type_indicator"),
+  map2(list(y_var, year, taxonKey, type_indicator, x_label, y_label), 
+       c("y_var", "year", "taxonKey", "type_indicator", "x_label", "y_label"),
        function(x, y){
          # Check right type of inputs
          assert_that(is.character(x),
@@ -385,8 +393,10 @@ apply_gam <- function(df,
           ptitle <- paste(ptitle, df_title, sep = "_")
         }
         plot_gam <- plot_ribbon_em(df_plot = output_model,
-                                   x_axis = "year",
+                                   x_axis = year,
                                    y_axis = y_var,
+                                   x_label = x_label,
+                                   y_label = y_label,
                                    ptitle = ptitle)
         if (saveplot == TRUE) {
           ggsave(filename = paste0(dir_name, "/", ptitle, ".png"), plot_gam)
@@ -419,8 +429,11 @@ apply_gam <- function(df,
 ### Plot time series with confidence limits + emerging status
 plot_ribbon_em <- function(df_plot, 
                            x_axis = "year", 
-                           y_axis = "obs", 
-                           ptitle = NULL){
+                           y_axis = "obs",
+                           x_label = "x",
+                           y_label = "y", 
+                           ptitle = NULL,
+                           verbose = FALSE){
   
   colors_em <- c("3" = "darkred", 
                  "2" = "orangered",
@@ -430,10 +443,6 @@ plot_ribbon_em <- function(df_plot,
                  "2" = "pot. emerging (2)",
                  "1" = "unclear (1)",
                  "0" = "not emerging (0)")
-  y_label <- case_when(
-    y_axis == "obs" ~ "number of obesrvations",
-    y_axis == "ncells" ~ "km2",
-    TRUE ~ y_axis)
   g <- 
     df_plot %>%
     ggplot(aes(x = year, y = get(y_axis))) +
