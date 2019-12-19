@@ -198,7 +198,7 @@ apply_gam <- function(df,
                                       "not present in df.",
                                       "Check value of argument eval_years."))
   
-  assert_that(is.numeric(p_max) && p_max > 0 && p_max < 1,
+  assert_that(is.numeric(p_max) && p_max >= 0 && p_max <= 1,
                           msg = paste("p_max is a p-value: it has to be a",
                                       "number between 0 and 1.")
   )
@@ -264,7 +264,7 @@ apply_gam <- function(df,
                    family = nb(),
                    data = df,
                    method = "REML")
-      # Check at p-value of least 1 smoother < 0.1
+      # Check that p-value of at least one smoother < 0.1
       summary_pv <- summary.gam(model)$s.pv
       p_ok <- ifelse(any(summary_pv < p_max), TRUE, FALSE)
       
