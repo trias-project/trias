@@ -481,7 +481,13 @@ plot_ribbon_em <- function(df_plot,
       scale_colour_manual(values = colors_em,
                           labels = labels_em,
                           name = "Emerging status") +
-      theme(plot.title = element_text(size=10))
+      theme(plot.title = element_text(size = 10))
+  } else {
+    if (isTRUE(verbose)) {
+      print(paste("Fit values are too big to plot.",
+                  "Probably GAM fit values do not converge.",
+                  "Please, check carefully."))
+    }
   }
   
   return(g)
