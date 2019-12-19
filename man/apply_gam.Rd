@@ -6,11 +6,12 @@
 \usage{
 apply_gam(df, y_var, eval_years, year = "year", taxonKey = "taxonKey",
   type_indicator = "observations", baseline_var = NULL, p_max = 0.1,
-  taxon_key = NULL, name = NULL, df_title = NULL, saveplot = FALSE,
+  taxon_key = NULL, name = NULL, df_title = NULL, x_label = "year",
+  y_label = "number of observations", saveplot = FALSE,
   dir_name = NULL, verbose = FALSE)
 }
 \arguments{
-\item{df}{df. A dataframe containing temporal data.}
+\item{df:}{df. A dataframe containing temporal data.}
 
 \item{y_var:}{character. Name of column containing variable to model. It has
 to be passed as string, e.g. \code{"occurrences"}.}
@@ -38,7 +39,7 @@ output plot.}
 
 \item{p_max:}{numeric. A value between 0 and 1. Default: 0.1.}
 
-\item{taxon_key:}{numeric, character. TaxonKey the timeseries belongs to.
+\item{taxon_key:}{numeric, character. Taxon key the timeseries belongs to.
 Used exclusively in graph title and filename (if \code{saveplot = TRUE}).
 Default: \code{NULL}.}
 
@@ -50,6 +51,12 @@ Default: \code{NULL}.}
 and filenames (if \code{saveplot = TRUE}). The title is composed of:
 \code{"GAM_"} + \code{type_indicator} + \code{method_em} + \code{taxon_key}
 + \code{name}. Default: \code{NULL}.}
+
+\item{x_label:}{character. x-axis label of output plot. Default:
+\code{"year"}.}
+
+\item{y_label:}{character. y-axis label of output plot. Default: \code{"number
+of observations"}.}
 
 \item{verbose:}{logical. If \code{TRUE} status of processing is returned.
 Default: \code{FALSE}.}
