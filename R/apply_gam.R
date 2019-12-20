@@ -250,13 +250,13 @@ apply_gam <- function(df,
            em2 = NA_real_,
            em = NA_real_,
            em_status = NA_real_,
-           growth = NA_real_)
+           growth = NA_real_,
+           method = method_em)
   model <- deriv1 <- deriv2 <- plot_gam <- summary_pv <- p_ok <- NULL
   emerging_status_output <-
     output_model %>%
     filter(!!sym(year) %in% eval_years) %>%
-    select(taxonKey, year, em_status, growth) %>%
-    mutate(method = method_em)
+    select(taxonKey, year, em_status, growth, method)
   
   if (nrow(df) > 3 & sum(df[[y_var]][2:nrow(df)]) != 0) {
     result <- tryCatch(expr = {
@@ -280,6 +280,10 @@ apply_gam <- function(df,
     } else{
       if (isTRUE(p_ok)) {
         output_model <- df
+        # Add method
+        output_model <- 
+          output_model %>% 
+          mutate(method = method_em)
         # Predict to new data (5 values per year)
         temp <- predict(object = model,
                         newdata = output_model,
@@ -292,7 +296,14 @@ apply_gam <- function(df,
         output_model$fit <- model$family$linkinv(temp$fit[,1] + intercept)
         output_model$ucl <- model$family$linkinv(temp$fit[,1] + intercept + temp$se.fit[,1] * 1.96)
         output_model$lcl <- model$family$linkinv(temp$fit[,1] + intercept - temp$se.fit[,1] * 1.96)
-        # output_model$lcl <- exp(temp$fit[,1] + intercept - temp$se.fit[,1] * 1.96)
+        
+        # Check that fit ucl and lcl are all above zero
+        output_model <-
+          output_model %>%
+          mutate(fit = ifelse(fit < 0, 0, fit),
+                 ucl = ifelse(ucl < 0, 0, ucl),
+                 lcl = ifelse(lcl < 0, 0, lcl)
+          )
         
         # Calculate first and second derivative + conf. interval
         deriv1 <- derivatives(model, type = "central", order = 1, level = 0.8,
@@ -366,11 +377,6 @@ apply_gam <- function(df,
         
         # Add lower value of first derivative
         output_model <- left_join(output_model, lower_deriv1, by = "year")
-        
-        # Add method
-        output_model <- 
-          output_model %>%
-          mutate(method = method_em)
         
         # Get emergin status summary for output
         emerging_status_output <-
