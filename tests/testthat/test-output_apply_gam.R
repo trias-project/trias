@@ -127,7 +127,7 @@ testthat::test_that("Test output", {
   expect_true(all(names(df_gam) %in% names(corrected_gam_ys$output)))
   expect_true(all(names(df_bad) %in% names(corrected_gam_bad$output)))
   expect_true(all(names(df_bad) %in% names(corrected_gam_bad_ys$output)))
-  
+  # values of these columns are also identical
   expect_true(all(df_gam$taxonKey == basic_gam$output$taxonKey))
   expect_true(all(df_gam$taxonKey == basic_gam_ys$output$taxonKey))
   expect_true(all(df_bad$taxonKey == basic_gam_bad$output$taxonKey))
@@ -225,7 +225,23 @@ testthat::test_that("Test output", {
                     basic_gam_bad_ys$output$lcl,
                     corrected_gam_bad_ys$output$fit, 
                     corrected_gam_bad_ys$output$ucl,
-                    corrected_gam_bad_ys$output$lcl) > 0)))
+                    corrected_gam_bad_ys$output$lcl))))
+  # lcl <= fit <= ucl
+  expect_true(all(basic_gam$output$lcl <= basic_gam$output$fit &
+                basic_gam$output$fit <= basic_gam$output$ucl))
+  expect_true(all(basic_gam_ys$output$lcl <= basic_gam_ys$output$fit &
+                    basic_gam_ys$output$fit <= basic_gam_ys$output$ucl))
+  expect_true(all(corrected_gam$output$lcl <= corrected_gam$output$fit &
+                    corrected_gam$output$fit <= corrected_gam$output$ucl))
+  expect_true(all(corrected_gam_ys$output$lcl <= corrected_gam_ys$output$fit &
+                    corrected_gam_ys$output$fit <= corrected_gam_ys$output$ucl))
+  # amount of years for evaluation doesn't affect fit values
+  expect_true(all(basic_gam$output$lcl == basic_gam_ys$output$lcl & 
+                    basic_gam$output$fit == basic_gam_ys$output$fit &
+                    basic_gam$output$ucl == basic_gam_ys$output$ucl))
+  expect_true(all(corrected_gam$output$lcl == corrected_gam_ys$output$lcl & 
+                    corrected_gam$output$fit == corrected_gam_ys$output$fit &
+                    corrected_gam$output$ucl == corrected_gam_ys$output$ucl))
   # em_status is equal to em_summary for evaluation_years
   expect_true(all((basic_gam$output %>%
                 dplyr::filter(year == evaluation_year) %>%
@@ -263,7 +279,26 @@ testthat::test_that("Test output", {
   expect_true(all(is.na(corrected_gam_bad_ys$output %>%
                           dplyr::filter(year %in% evaluation_years) %>%
                           pull(em_status))))
+  # amount of years for evaluation doesn't affect em1,  em2, em, em_status
+  expect_true(all(basic_gam$output$em1 == basic_gam_ys$output$em1,
+                  basic_gam$output$em2 == basic_gam_ys$output$em2,
+                  basic_gam$output$em == basic_gam_ys$output$em,
+                  basic_gam$output$em_status == corrected_gam_ys$output$em_status))
+  expect_true(all(corrected_gam_ys$output$em1 == corrected_gam_ys$output$em1,
+                  corrected_gam_ys$output$em2 == corrected_gam_ys$output$em2,
+                  corrected_gam_ys$output$em == corrected_gam_ys$output$em,
+                  corrected_gam_ys$output$em_status == corrected_gam_ys$output$em_status))
+  
   # growth
+  expect_true(is.numeric(basic_gam$output$growth))
+  expect_true(is.numeric(basic_gam_ys$output$growth))
+  expect_true(is.numeric(basic_gam_bad$output$growth))
+  expect_true(is.numeric(basic_gam_bad_ys$output$growth))
+  expect_true(is.numeric(corrected_gam$output$growth))
+  expect_true(is.numeric(corrected_gam_ys$output$growth))
+  expect_true(is.numeric(corrected_gam_bad$output$growth))
+  expect_true(is.numeric(corrected_gam_bad_ys$output$growth))
+  # add some checks about values of growth?
   
   # method is correctly returned
   expect_true(all(c(basic_gam$output$method,
