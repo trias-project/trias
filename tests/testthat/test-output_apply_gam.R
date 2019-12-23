@@ -23,6 +23,12 @@ df_bad <- data.frame(
 evaluation_year <- 2018
 evaluation_years <- c(2017, 2018)
 
+basic_fm <- as.formula("n_observations ~ s(year, k = maxk, m = 3, bs = \"tp\")")
+corrected_fm <- as.formula(paste0("n_observations ~ ", 
+                                  "s(year, k = maxk, ",
+                                  "m = 3, bs = \"tp\") ",
+                                  "+ s(baseline_observations)"))
+
 basic_gam <- apply_gam(df = df_gam,
                        y_var = "n_observations",
                        eval_years = evaluation_year)
@@ -105,6 +111,28 @@ testthat::test_that("Test em_summary", {
   # if GAM is performed em_summary is one of 0,1,2,3
   expect_true(all(corrected_gam$em_summary$em_status %in% c(0, 1, 2, 3),
                   corrected_gam_ys$em_summary$em_status %in% c(0, 1, 2, 3)))
+  }
+)
+
+testthat::test_that("Test model", {
+  
+  # model output is an instance of class "gam" 
+  expect_true(all(class(basic_gam$model) == c("gam", "glm", "lm")))
+  expect_true(all(class(basic_gam_ys$model) == c("gam", "glm", "lm")))
+  expect_true(all(class(corrected_gam$model) == c("gam", "glm", "lm")))
+  expect_true(all(class(corrected_gam_ys$model) == c("gam", "glm", "lm")))
+  
+  # model output is NULL if gam is not performed
+  expect_null(basic_gam_bad$model)
+  expect_null(basic_gam_bad_ys$model)
+  expect_null(corrected_gam_bad$model)
+  expect_null(corrected_gam_bad_ys$model)
+  
+  # model formula is correct
+  expect_true(all(basic_gam$model$formula == basic_fm,
+                  basic_gam_ys$model$formula == basic_fm))
+  expect_true(all(corrected_gam$model$formula == corrected_fm,
+                  corrected_gam_ys$model$formula == corrected_fm))
   }
 )
 
@@ -361,5 +389,267 @@ testthat::test_that("Test output", {
                     corrected_gam_ys$output$method,
                     corrected_gam_bad_ys$output$method) == "correct_baseline"))
   
+  }
+)
+
+testthat::test_that("Test first derivative", {
+  
+  # first derivative is a data.frame or is NULL
+  expect_true(is.data.frame(basic_gam$first_derivative))
+  expect_true(is.data.frame(basic_gam_ys$first_derivative))
+  expect_true(is.data.frame(corrected_gam$first_derivative))
+  expect_true(is.data.frame(corrected_gam_ys$first_derivative))
+  expect_null(basic_gam_bad$first_derivative)
+  expect_null(basic_gam_bad_ys$first_derivative)
+  expect_null(corrected_gam_bad$first_derivative)
+  expect_null(corrected_gam_bad_ys$first_derivative)
+  
+  # first derivatives has right columns
+  expect_that(basic_gam$first_derivative, 
+               has_names(expected = c("smooth",
+                           "var",
+                           "data",
+                           "derivative",
+                           "se", 
+                           "crit",
+                           "lower",
+                           "upper")))
+  expect_true(all(names(basic_gam$first_derivative) ==
+                    names(basic_gam_ys$first_derivative)))
+  expect_true(all(names(basic_gam$first_derivative) ==
+                    names(corrected_gam$first_derivative)))
+  expect_true(all(names(corrected_gam$first_derivative) ==
+                    names(corrected_gam_ys$first_derivative)))
+  
+  # smooth column contains only s(year) for basic gam
+  expect_true(unique(basic_gam$first_derivative$smooth) == "s(year)")
+  expect_true(unique(basic_gam_ys$first_derivative$smooth) == "s(year)")
+  expect_false(all(unique(corrected_gam$first_derivative$smooth) == "s(year)"))
+  expect_false(all(unique(corrected_gam_ys$first_derivative$smooth) == "s(year)"))
+  
+  # smooth column contains s(year) and s(baseline_observations) if correction
+  # baseline is applied
+  expect_true(all(corrected_gam$first_derivative$smooth %in% 
+                c("s(year)", "s(baseline_observations)")))
+  expect_true(all(corrected_gam_ys$first_derivative$smooth %in% 
+                c("s(year)", "s(baseline_observations)")))
+  
+  # var contains always value "year" if GAM is performed
+  expect_true("year" %in% basic_gam$first_derivative$var)
+  expect_true("year" %in% basic_gam_ys$first_derivative$var)
+  expect_true("year" %in% corrected_gam$first_derivative$var)
+  expect_true("year" %in% corrected_gam_ys$first_derivative$var)
+  
+  # if correction based on column baseline_observations, baseline_observations
+  # is present in var
+  expect_true("baseline_observations" %in% corrected_gam$first_derivative$var)
+  expect_true("baseline_observations" %in% 
+                corrected_gam_ys$first_derivative$var)
+  expect_false("baseline_observations" %in% basic_gam$first_derivative$var)
+  expect_false("baseline_observations" %in% basic_gam_ys$first_derivative$var)
+  
+  # data contains numeric values
+  expect_true(is.numeric(basic_gam$first_derivative$data))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$data))
+  expect_true(is.numeric(corrected_gam$first_derivative$data))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$data))
+  
+  # data column is equal to column year of df_gam for basic gam
+  expect_equivalent(round(basic_gam$first_derivative$data),
+                    expected = df_gam$year)
+  expect_equivalent(round(basic_gam_ys$first_derivative$data),
+                    expected = df_gam$year)
+  
+  # columns derivative, se, crit, lower, upper are numeric
+  expect_true(is.numeric(basic_gam$first_derivative$derivative))
+  expect_true(is.numeric(basic_gam$first_derivative$se))
+  expect_true(is.numeric(basic_gam$first_derivative$crit))
+  expect_true(is.numeric(basic_gam$first_derivative$lower))
+  expect_true(is.numeric(basic_gam$first_derivative$upper))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$derivative))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$se))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$crit))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$lower))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$upper))
+  expect_true(is.numeric(corrected_gam$first_derivative$derivative))
+  expect_true(is.numeric(corrected_gam$first_derivative$se))
+  expect_true(is.numeric(corrected_gam$first_derivative$crit))
+  expect_true(is.numeric(corrected_gam$first_derivative$lower))
+  expect_true(is.numeric(corrected_gam$first_derivative$upper))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$derivative))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$se))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$crit))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$lower))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$upper))
+  
+  # number of evaluation years doesn't affect derivative values
+  expect_that(basic_gam_ys$first_derivative$derivative,
+              is_identical_to(basic_gam$first_derivative$derivative))
+  expect_that(corrected_gam$first_derivative$derivative,
+              is_identical_to(corrected_gam$first_derivative$derivative))
+  expect_that(basic_gam_ys$first_derivative$se,
+              is_identical_to(basic_gam$first_derivative$se))
+  expect_that(corrected_gam$first_derivative$se,
+              is_identical_to(corrected_gam$first_derivative$se))
+  expect_that(basic_gam_ys$first_derivative$crit,
+              is_identical_to(basic_gam$first_derivative$crit))
+  expect_that(corrected_gam$first_derivative$crit,
+              is_identical_to(corrected_gam$first_derivative$crit))
+  expect_that(basic_gam_ys$first_derivative$lower,
+              is_identical_to(basic_gam$first_derivative$lower))
+  expect_that(corrected_gam$first_derivative$lower,
+              is_identical_to(corrected_gam$first_derivative$lower))
+  expect_that(basic_gam_ys$first_derivative$upper,
+              is_identical_to(basic_gam$first_derivative$upper))
+  expect_that(corrected_gam$first_derivative$upper,
+              is_identical_to(corrected_gam$first_derivative$upper))
+  
+  # lower <= derivative <= upper
+  expect_true(all(basic_gam$first_derivative$lower <= 
+                    basic_gam$first_derivative$derivative &
+                    basic_gam$first_derivative$derivative <= 
+                    basic_gam$first_derivative$upper))
+  expect_true(all(corrected_gam$first_derivative$lower <= 
+                    corrected_gam$first_derivative$derivative &
+                    corrected_gam$first_derivative$derivative <= 
+                    corrected_gam$first_derivative$upper))
+  }
+)
+
+testthat::test_that("Test second derivative", {
+  
+  # second derivative is a data.frame or is NULL
+  expect_true(is.data.frame(basic_gam$second_derivative))
+  expect_true(is.data.frame(basic_gam_ys$second_derivative))
+  expect_true(is.data.frame(corrected_gam$second_derivative))
+  expect_true(is.data.frame(corrected_gam_ys$second_derivative))
+  expect_null(basic_gam_bad$second_derivative)
+  expect_null(basic_gam_bad_ys$second_derivative)
+  expect_null(corrected_gam_bad$second_derivative)
+  expect_null(corrected_gam_bad_ys$second_derivative)
+  
+  # second derivatives has right columns
+  expect_that(basic_gam$second_derivative, 
+              has_names(expected = c("smooth",
+                                     "var",
+                                     "data",
+                                     "derivative",
+                                     "se", 
+                                     "crit",
+                                     "lower",
+                                     "upper")))
+  expect_true(all(names(basic_gam$second_derivative) ==
+                    names(basic_gam_ys$second_derivative)))
+  expect_true(all(names(basic_gam$second_derivative) ==
+                    names(corrected_gam$second_derivative)))
+  expect_true(all(names(corrected_gam$second_derivative) ==
+                    names(corrected_gam_ys$second_derivative)))
+  
+  # smooth column contains only s(year) for basic gam
+  expect_true(unique(basic_gam$second_derivative$smooth) == "s(year)")
+  expect_true(unique(basic_gam_ys$second_derivative$smooth) == "s(year)")
+  expect_false(all(unique(corrected_gam$second_derivative$smooth) == "s(year)"))
+  expect_false(all(unique(corrected_gam_ys$second_derivative$smooth) == "s(year)"))
+  
+  # smooth column contains s(year) and s(baseline_observations) if correction
+  # baseline is applied
+  expect_true(all(corrected_gam$second_derivative$smooth %in% 
+                    c("s(year)", "s(baseline_observations)")))
+  expect_true(all(corrected_gam_ys$second_derivative$smooth %in% 
+                    c("s(year)", "s(baseline_observations)")))
+  
+  # var contains always value "year" if GAM is performed
+  expect_true("year" %in% basic_gam$second_derivative$var)
+  expect_true("year" %in% basic_gam_ys$second_derivative$var)
+  expect_true("year" %in% corrected_gam$second_derivative$var)
+  expect_true("year" %in% corrected_gam_ys$second_derivative$var)
+  
+  # if correction based on column baseline_observations, baseline_observations
+  # is present in var
+  expect_true("baseline_observations" %in% corrected_gam$second_derivative$var)
+  expect_true("baseline_observations" %in% 
+                corrected_gam_ys$second_derivative$var)
+  expect_false("baseline_observations" %in% basic_gam$second_derivative$var)
+  expect_false("baseline_observations" %in% basic_gam_ys$second_derivative$var)
+  
+  # data contains numeric values
+  expect_true(is.numeric(basic_gam$second_derivative$data))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$data))
+  expect_true(is.numeric(corrected_gam$second_derivative$data))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$data))
+  
+  # data column is equal to column year of df_gam for basic gam
+  expect_equivalent(round(basic_gam$second_derivative$data),
+                    expected = df_gam$year)
+  expect_equivalent(round(basic_gam_ys$second_derivative$data),
+                    expected = df_gam$year)
+  
+  # columns derivative, se, crit, lower, upper are numeric
+  expect_true(is.numeric(basic_gam$second_derivative$derivative))
+  expect_true(is.numeric(basic_gam$second_derivative$se))
+  expect_true(is.numeric(basic_gam$second_derivative$crit))
+  expect_true(is.numeric(basic_gam$second_derivative$lower))
+  expect_true(is.numeric(basic_gam$second_derivative$upper))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$derivative))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$se))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$crit))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$lower))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$upper))
+  expect_true(is.numeric(corrected_gam$second_derivative$derivative))
+  expect_true(is.numeric(corrected_gam$second_derivative$se))
+  expect_true(is.numeric(corrected_gam$second_derivative$crit))
+  expect_true(is.numeric(corrected_gam$second_derivative$lower))
+  expect_true(is.numeric(corrected_gam$second_derivative$upper))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$derivative))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$se))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$crit))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$lower))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$upper))
+  
+  # number of evaluation years doesn't affect derivative values
+  expect_that(basic_gam_ys$second_derivative$derivative,
+              is_identical_to(basic_gam$second_derivative$derivative))
+  expect_that(corrected_gam$second_derivative$derivative,
+              is_identical_to(corrected_gam$second_derivative$derivative))
+  expect_that(basic_gam_ys$second_derivative$se,
+              is_identical_to(basic_gam$second_derivative$se))
+  expect_that(corrected_gam$second_derivative$se,
+              is_identical_to(corrected_gam$second_derivative$se))
+  expect_that(basic_gam_ys$second_derivative$crit,
+              is_identical_to(basic_gam$second_derivative$crit))
+  expect_that(corrected_gam$second_derivative$crit,
+              is_identical_to(corrected_gam$second_derivative$crit))
+  expect_that(basic_gam_ys$second_derivative$lower,
+              is_identical_to(basic_gam$second_derivative$lower))
+  expect_that(corrected_gam$second_derivative$lower,
+              is_identical_to(corrected_gam$second_derivative$lower))
+  expect_that(basic_gam_ys$second_derivative$upper,
+              is_identical_to(basic_gam$second_derivative$upper))
+  expect_that(corrected_gam$second_derivative$upper,
+              is_identical_to(corrected_gam$second_derivative$upper))
+  
+  # lower <= derivative <= upper
+  expect_true(all(basic_gam$second_derivative$lower <= 
+                    basic_gam$second_derivative$derivative &
+                    basic_gam$second_derivative$derivative <= 
+                    basic_gam$second_derivative$upper))
+  expect_true(all(corrected_gam$second_derivative$lower <= 
+                    corrected_gam$second_derivative$derivative &
+                    corrected_gam$second_derivative$derivative <= 
+                    corrected_gam$second_derivative$upper))
+  }
+)
+
+testthat::test_that("Test plot", {
+  # All plots have class ggplot is gam is performed
+  expect_true(all(class(basic_gam$plot) == c("gg", "ggplot")))
+  expect_true(all(class(basic_gam_ys$plot) == c("gg", "ggplot")))
+  expect_true(all(class(corrected_gam$plot) == c("gg", "ggplot")))
+  expect_true(all(class(corrected_gam_ys$plot) == c("gg", "ggplot")))
+  # if gam is not performed, plot slot is NULL
+  expect_null(basic_gam_bad$plot)
+  expect_null(basic_gam_bad_ys$plot)
+  expect_null(corrected_gam_bad$plot)
+  expect_null(corrected_gam_bad_ys$plot)
   }
 )
