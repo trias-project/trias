@@ -275,6 +275,7 @@ testthat::test_that("Test output", {
   expect_true(all(corrected_gam$output$lcl == corrected_gam_ys$output$lcl & 
                     corrected_gam$output$fit == corrected_gam_ys$output$fit &
                     corrected_gam$output$ucl == corrected_gam_ys$output$ucl))
+  
   # em1, em2, em, em_status are numeric
   expect_true(is.numeric(basic_gam$output$em1))
   expect_true(is.numeric(basic_gam$output$em2))
@@ -637,19 +638,23 @@ testthat::test_that("Test second derivative", {
                     corrected_gam$second_derivative$derivative &
                     corrected_gam$second_derivative$derivative <= 
                     corrected_gam$second_derivative$upper))
+  
   }
 )
 
 testthat::test_that("Test plot", {
-  # All plots have class ggplot is gam is performed
+                    
+  # All plots have class ggplot if gam is performed
   expect_true(all(class(basic_gam$plot) == c("gg", "ggplot")))
   expect_true(all(class(basic_gam_ys$plot) == c("gg", "ggplot")))
   expect_true(all(class(corrected_gam$plot) == c("gg", "ggplot")))
   expect_true(all(class(corrected_gam_ys$plot) == c("gg", "ggplot")))
+  
   # if gam is not performed, plot slot is NULL
   expect_null(basic_gam_bad$plot)
   expect_null(basic_gam_bad_ys$plot)
   expect_null(corrected_gam_bad$plot)
   expect_null(corrected_gam_bad_ys$plot)
+  
   }
 )
