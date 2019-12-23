@@ -323,9 +323,9 @@ apply_gam <- function(df,
           as_tibble() %>%
           filter(var == year) %>%
           mutate(em1 = case_when(
-            lower < 0 & upper <= 0 ~ "-1",
-            lower < 0 & upper > 0 ~ "0",
-            lower >= 0 & upper > 0 ~ "1")) %>%
+            lower < 0 & upper <= 0 ~ -1,
+            lower < 0 & upper > 0 ~ 0,
+            lower >= 0 & upper > 0 ~ 1)) %>%
           select(!!sym(year) := data, em1) %>%
           mutate(!!sym(year) := round(!!sym(year)))
         
@@ -333,9 +333,9 @@ apply_gam <- function(df,
           as_tibble() %>%
           filter(var == year) %>%
           mutate(em2 = case_when(
-            .$lower < 0  & .$upper <= 0 ~ "-1",
-            .$lower < 0  & .$upper > 0 ~ "0",
-            .$lower >= 0  & .$upper > 0 ~ "1")) %>%
+            .$lower < 0  & .$upper <= 0 ~ -1,
+            .$lower < 0  & .$upper > 0 ~ 0,
+            .$lower >= 0  & .$upper > 0 ~ 1)) %>%
           select(!!sym(year) := data, em2)  %>%
           mutate(!!sym(year) := round(!!sym(year)))
         
@@ -348,15 +348,15 @@ apply_gam <- function(df,
         
         em_level_gam <- full_join(em1, em2, by = year) %>%
           mutate(em = case_when(
-            em1 == 1 & em2 == 1 ~ "4",
-            em1 == 1 & em2 == 0 ~ "3",
-            em1 == 1 & em2 == -1 ~ "2",
-            em1 == 0 & em2 == 1 ~ "1",
-            em1 == 0 & em2 == 0 ~ "0",
-            em1 == 0 & em2 == -1 ~ "-1",
-            em1 == -1 & em2 == 1 ~ "-2",
-            em1 == -1 & em2 == 0 ~ "-3",
-            em1 == -1 & em2 == -1 ~ "-4"))
+            em1 == 1 & em2 == 1 ~ 4,
+            em1 == 1 & em2 == 0 ~ 3,
+            em1 == 1 & em2 == -1 ~ 2,
+            em1 == 0 & em2 == 1 ~ 1,
+            em1 == 0 & em2 == 0 ~ 0,
+            em1 == 0 & em2 == -1 ~ -1,
+            em1 == -1 & em2 == 1 ~ -2,
+            em1 == -1 & em2 == 0 ~ -3,
+            em1 == -1 & em2 == -1 ~ -4))
         
         # Emerging status
         em_levels <-
