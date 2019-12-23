@@ -278,7 +278,13 @@ apply_gam <- function(df,
         )
       }
     } else{
-      if (isTRUE(p_ok)) {
+      if (isFALSE(p_ok)){
+        if (verbose) {
+          print(paste0("GAM output cannot be used: ",
+                       "p-values of all GAM smoothers are above ",
+                       p_max, "."))
+        }
+      } else{
         output_model <- df
         # Add method
         output_model <- 
@@ -406,12 +412,6 @@ apply_gam <- function(df,
                                    ptitle = ptitle)
         if (saveplot == TRUE) {
           ggsave(filename = paste0(dir_name, "/", ptitle, ".png"), plot_gam)
-        }
-      } else {
-        if (verbose) {
-          print(paste0("GAM output cannot be used: ",
-                       "p-values of all GAM smoothers are above ",
-                       p_max, "."))
         }
       }
       
