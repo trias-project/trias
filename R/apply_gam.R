@@ -339,13 +339,6 @@ apply_gam <- function(df,
           select(!!sym(year) := data, em2)  %>%
           mutate(!!sym(year) := round(!!sym(year)))
         
-        if (any(c(nrow(em1), nrow(em2)) != length(unique(output_model[[year]])))) {
-          warning(print(paste(taxon_key),
-                        nrow(em1),
-                        nrow(em2),
-                        length(unique(output_model[[year]]))))
-        }
-        
         em_level_gam <- full_join(em1, em2, by = year) %>%
           mutate(em = case_when(
             em1 == 1 & em2 == 1 ~ 4,
