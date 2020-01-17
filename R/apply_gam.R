@@ -272,17 +272,17 @@ apply_gam <- function(df,
     
     if (class(result)[1] %in% c("simpleWarning", "simpleError")) {
       if (verbose) {
-        print(paste0("GAM (",
+        warning(paste0("GAM (",
                      method_em,
-                     ") cannot be performed or cannot converge.")
+                     ") cannot be performed or cannot converge.\n")
         )
       }
     } else{
       if (isFALSE(p_ok)){
         if (verbose) {
-          print(paste0("GAM output cannot be used: ",
+          warning(paste0("GAM output cannot be used: ",
                        "p-values of all GAM smoothers are above ",
-                       p_max, "."))
+                       p_max, ".\n"))
         }
       } else{
         output_model <- df
@@ -418,9 +418,25 @@ apply_gam <- function(df,
     }
   } else {
     if (verbose) {
-      print(paste0("Too few data for applying GAM (",
-                   method_em,
-                   ") to ", name, "(", taxon_key, ")."))
+      if (!is.null(name) & !is.null(taxon_key)) {
+        warning(paste0("Too few data for applying GAM (",
+                       method_em,
+                       ") to ", name, " (", taxon_key, ").\n"))
+      } else {
+        if (!is.null(name)) {
+            warning(paste0("Too few data for applying GAM (",
+                           method_em, ") to ", name, ".\n"))
+          } else {
+            if (!is.null(taxon_key)) {
+                warning(paste0("Too few data for applying GAM (",
+                               method_em,
+                               ") to taxon key: ", taxon_key, ".\n"))
+            } else {
+              warning(paste0("Too few data for applying GAM (",
+                             method_em, ").\n"))
+            }
+        }
+      }
     }
   }
   
@@ -490,7 +506,7 @@ plot_ribbon_em <- function(df_plot,
       theme(plot.title = element_text(size = 10))
   } else {
     if (isTRUE(verbose)) {
-      print(paste("Fit values are too big to plot.",
+      warning(paste("Fit values are too big to plot.",
                   "Probably GAM fit values do not converge.",
                   "Please, check carefully."))
     }
