@@ -43,6 +43,7 @@ corrected_fm <- as.formula(paste0("n_observations ~ ",
 basic_gam <- apply_gam(df = df_gam,
                        y_var = "n_observations",
                        eval_years = evaluation_year)
+
 corrected_gam <- apply_gam(df = df_gam,
                           y_var = "n_observations",
                           eval_years = evaluation_year, 
@@ -51,6 +52,7 @@ corrected_gam <- apply_gam(df = df_gam,
 basic_gam_bad <- apply_gam(df = df_bad,
                        y_var = "n_observations",
                        eval_years = evaluation_year)
+
 corrected_gam_bad <- apply_gam(df = df_bad,
                            y_var = "n_observations",
                            eval_years = evaluation_year, 
@@ -369,7 +371,7 @@ testthat::test_that("Test output", {
                           dplyr::filter(year %in% evaluation_years) %>%
                           pull(em_status))))
   
-  # number of years for evaluation doesn't affect em1,  em2, em, em_status
+  # number of years for evaluation doesn't affect em1, em2, em, em_status
   expect_true(all(basic_gam$output$em1 == basic_gam_ys$output$em1,
                   basic_gam$output$em2 == basic_gam_ys$output$em2,
                   basic_gam$output$em == basic_gam_ys$output$em,
@@ -494,7 +496,7 @@ testthat::test_that("Test first derivative", {
   expect_true(is.numeric(corrected_gam_ys$first_derivative$lower))
   expect_true(is.numeric(corrected_gam_ys$first_derivative$upper))
   
-  # number of evaluation years doesn't affect derivative values
+  # number of evaluation years doesn't affect 1st derivative values
   expect_that(basic_gam_ys$first_derivative$derivative,
               is_identical_to(basic_gam$first_derivative$derivative))
   expect_that(corrected_gam$first_derivative$derivative,
@@ -618,7 +620,7 @@ testthat::test_that("Test second derivative", {
   expect_true(is.numeric(corrected_gam_ys$second_derivative$lower))
   expect_true(is.numeric(corrected_gam_ys$second_derivative$upper))
   
-  # number of evaluation years doesn't affect derivative values
+  # number of evaluation years doesn't affect 2nd derivative values
   expect_that(basic_gam_ys$second_derivative$derivative,
               is_identical_to(basic_gam$second_derivative$derivative))
   expect_that(corrected_gam$second_derivative$derivative,
