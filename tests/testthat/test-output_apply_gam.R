@@ -20,6 +20,17 @@ df_bad <- data.frame(
   stringsAsFactors = FALSE
 )
 
+df_bad_p_values_occupancy <- read.delim(
+  paste0("./data_test_output_apply_gam/",
+         "example_gam_taxonKey2876049_p-values_error.tsv"), 
+  sep = "\t")
+
+df_bad_gam_not_perf <- read.delim(
+  paste0("./data_test_output_apply_gam/",
+         "example_gam_taxonKey2927530_no_gam.tsv"), 
+  sep = "\t"
+)
+
 evaluation_year <- 2018
 evaluation_years <- c(2017, 2018)
 
@@ -658,3 +669,56 @@ testthat::test_that("Test plot", {
   
   }
 )
+
+testthat::test_that("Test warnings and messages.", {
+  expect_warning(apply_gam(df = df_bad,
+                           y_var = "n_observations",
+                           eval_years = evaluation_year, 
+                           baseline_var = "baseline_observations",
+                           verbose = TRUE),
+                 "Too few data for applying GAM (correct_baseline).",
+                 fixed = TRUE)
+  expect_warning(apply_gam(df = df_bad,
+                           y_var = "n_observations",
+                           eval_years = evaluation_year, 
+                           baseline_var = "baseline_observations",
+                           name = "test-name",
+                           verbose = TRUE),
+                 paste("Too few data for applying GAM (correct_baseline)", 
+                       "to test-name."),
+                 fixed = TRUE)
+  expect_warning(apply_gam(df = df_bad,
+                           y_var = "n_observations",
+                           eval_years = evaluation_year, 
+                           baseline_var = "baseline_observations",
+                           name = "test-name",
+                           taxon_key = "2224970",
+                           verbose = TRUE),
+                 paste("Too few data for applying GAM (correct_baseline)", 
+                       "to test-name (2224970)."),
+                 fixed = TRUE)
+  expect_warning(apply_gam(df = df_bad_p_values_obs, 
+                           year = "year",
+                           y_var = "obs",
+                           taxonKey = "taxonKey",
+                           eval_years = evaluation_years,
+                           type_indicator = "observations",
+                           baseline_var = "native_obs",
+                           verbose = TRUE),
+                 paste("GAM output cannot be used: p-values of all",
+                       "GAM smoothers are above 0.1."),
+                 fixed = TRUE)
+  
+  expect_warning(apply_gam(df_bad_gam_not_perf, 
+                           year = "year",
+                           y_var = "obs",
+                           taxonKey = "taxonKey",
+                           eval_years = evaluation_years,
+                           type_indicator = "observations",
+                           baseline_var = "native_obs",
+                           verbose = TRUE),
+                 paste("GAM (correct_baseline) cannot be performed or",
+                       "cannot converge."),
+                 fixed = TRUE)
+  
+})
