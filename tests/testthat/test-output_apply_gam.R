@@ -40,6 +40,13 @@ corrected_fm <- as.formula(paste0("n_observations ~ ",
                                   "m = 3, bs = \"tp\") ",
                                   "+ s(baseline_observations)"))
 
+obs_indicator <- "observations"
+occ_indicator <- "occupancy"
+
+name_sp <- "Palaemon macrodactylus"
+
+taxon_key <- "2224970"
+
 basic_gam <- apply_gam(df = df_gam,
                        y_var = "n_observations",
                        eval_years = evaluation_year)
@@ -61,6 +68,7 @@ corrected_gam_bad <- apply_gam(df = df_bad,
 basic_gam_ys <- apply_gam(df = df_gam,
                        y_var = "n_observations",
                        eval_years = evaluation_years)
+
 corrected_gam_ys <- apply_gam(df = df_gam,
                            y_var = "n_observations",
                            eval_years = evaluation_years, 
@@ -69,10 +77,37 @@ corrected_gam_ys <- apply_gam(df = df_gam,
 basic_gam_bad_ys <- apply_gam(df = df_bad,
                            y_var = "n_observations",
                            eval_years = evaluation_years)
+
 corrected_gam_bad_ys <- apply_gam(df = df_bad,
                                y_var = "n_observations",
                                eval_years = evaluation_years, 
                                baseline_var = "baseline_observations")
+
+basic_gam_name <- apply_gam(df = df_gam,
+                       y_var = "n_observations",
+                       eval_years = evaluation_year,
+                       name = name_sp)
+
+basic_gam_occ <- apply_gam(df = df_gam,
+                           y_var = "n_observations",
+                           eval_years = evaluation_year,
+                           type_indicator = occ_indicator)
+
+basic_gam_taxon_key_as_number <- apply_gam(df = df_gam,
+                                           y_var = "n_observations",
+                                           eval_years = evaluation_year,
+                                           taxon_key = as.integer(taxon_key))
+
+basic_gam_taxon_key_as_string <- apply_gam(df = df_gam,
+                                           y_var = "n_observations",
+                                           eval_years = evaluation_year,
+                                           taxon_key = taxon_key)
+
+basic_gam_taxon_key_and_name <- apply_gam(df = df_gam,
+                                          y_var = "n_observations",
+                                          eval_years = evaluation_year,
+                                          name = name_sp,
+                                          taxon_key = taxon_key)
 
 testthat::test_that("Test length of output list", {
   # length of list output is not dependent on GAM output
@@ -657,11 +692,15 @@ testthat::test_that("Test second derivative", {
 
 testthat::test_that("Test plot", {
                     
-  # All plots have class ggplot if gam is performed
+  # if gam is performed, plot is an obejct of class ggplot
   expect_true(all(class(basic_gam$plot) == c("gg", "ggplot")))
   expect_true(all(class(basic_gam_ys$plot) == c("gg", "ggplot")))
   expect_true(all(class(corrected_gam$plot) == c("gg", "ggplot")))
   expect_true(all(class(corrected_gam_ys$plot) == c("gg", "ggplot")))
+  basic_gam_occ
+  basic_gam_taxon_key_as_number
+  basic_gam_taxon_key_as_string
+  basic_gam_taxon_key_and_name
   
   # if gam is not performed, plot slot is NULL
   expect_null(basic_gam_bad$plot)
@@ -669,6 +708,61 @@ testthat::test_that("Test plot", {
   expect_null(corrected_gam_bad$plot)
   expect_null(corrected_gam_bad_ys$plot)
   
+  # All plot titles start with "GAM"
+  title_plot <- basic_gam_name$plot$labels$title
+  title_plot_occ <- basic_gam_occ$plot$labels$title
+  title_plot_with_key_number <- basic_gam_taxon_key_as_number$plot$labels$title
+  title_plot_with_key_string <- basic_gam_taxon_key_as_string$plot$labels$title
+  title_plot_with_name <- basic_gam_name$plot$labels$title
+  title_plot_with_key_and_name <- basic_gam_taxon_key_and_name$plot$labels$title
+  titles <- c(title_plot,
+              title_plot_occ,
+              title_plot_with_key_number,
+              title_plot_with_key_string,
+              title_plot_with_name,
+              title_plot_with_key_and_name)
+  
+  expect_true(all(substr(titles, start = 1, stop = 3) == "GAM"))
+  
+  # type of indicator follows the word GAM in title
+  expect_equal(substr(title_plot,
+                      start = 5,
+                      stop = 5 + nchar(obs_indicator) - 1),
+               obs_indicator)
+  expect_equal(substr(title_plot_occ,
+                      start = 5,
+                      stop = 5 + nchar(occ_indicator) - 1),
+               occ_indicator)
+  
+  # if provided, value of argument taxon_key is in title of plot
+  expect_equal(substr(
+    title_plot_with_key_string,
+    start = nchar(title_plot_with_key_string) - nchar(taxon_key) + 1,
+    stop = nchar(title_plot_with_key_string)),
+    taxon_key)
+  
+  expect_equal(substr(
+    title_plot_with_key_number,
+    start = nchar(title_plot_with_key_number) - nchar(taxon_key) + 1,
+    stop = nchar(title_plot_with_key_number)),
+    taxon_key)
+  
+  # title of plot doens't change if taxon_key is char or numeric
+  expect_equal(title_plot_with_key_string, title_plot_with_key_number)
+  
+  # if provided, value of argument name is in title of plot at the end
+  
+  expect_equal(substr(title_plot_with_name, 
+                      start = nchar(title_plot_with_name) - nchar(name_sp) + 1,
+                      stop = nchar(title_plot_with_name)), 
+               name_sp)
+  
+  # if both provided, values of taxon_key and name are in title of plot as
+  # taxon_key_name
+  expect_equal(substr(title_plot_with_key_and_name, 
+                      start = nchar(title_plot_with_key_and_name) - nchar(name_sp) - nchar(taxon_key),
+                      stop = nchar(title_plot_with_key_and_name)), 
+               paste(taxon_key, name_sp, sep = "_"))
   }
 )
 
