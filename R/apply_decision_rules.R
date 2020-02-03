@@ -41,7 +41,7 @@
 #' @importFrom tidyselect vars_pull enquo
 #' @importFrom tibble as_tibble
 #' @importFrom purrr map2 reduce
-#' @importFrom rlang sym !! :=
+#' @importFrom rlang sym !! := .data
 #' @importFrom stats median
 #' @examples
 #' \dontrun{
@@ -140,7 +140,7 @@ apply_decision_rules <- function(df,
     summarize(
       has_distinct_years = n_distinct(!!sym(year)) == n()
     ) %>%
-    distinct(has_distinct_years) %>%
+    distinct(.data$has_distinct_years) %>%
     pull() == TRUE),
   msg = paste0(
     "Timeseries in column ",
@@ -155,7 +155,7 @@ apply_decision_rules <- function(df,
     group_by(!!sym(taxonKey)) %>%
     summarize(
       has_all_years = n() == (max(!!sym(year)) - min(!!sym(year)) + 1)) %>%
-    filter(has_all_years == FALSE)
+    filter(.data$has_all_years == FALSE)
   
   assert_that(nrow(taxa_not_consecutive_ts) == 0,
               msg = paste0(
@@ -176,9 +176,9 @@ apply_decision_rules <- function(df,
   taxa_eval_out_of_min_max <- 
     df %>%
     group_by(!!sym(taxonKey)) %>%
-    summarise(min_ts = min(!!sym(year)),
+    summarize(min_ts = min(!!sym(year)),
               max_ts = max(!!sym(year))) %>%
-    filter(eval_year < min_ts | eval_year > max_ts)
+    filter(eval_year < .data$min_ts | eval_year > .data$max_ts)
 
   if (nrow(taxa_eval_out_of_min_max) > 0) {
     warning(paste0("Taxa with timseries not containing evaluation year (",
@@ -218,10 +218,10 @@ apply_decision_rules <- function(df,
     )) %>%
     summarize(
       median_occ = median(!!sym(y_var)),
-      last_occ = max(last_occ)
+      last_occ = max(.data$last_occ)
     ) %>%
-    mutate(dr_2 = last_occ > median_occ) %>%
-    select(!!sym(taxonKey), dr_2)
+    mutate(dr_2 = .data$last_occ > .data$median_occ) %>%
+    select(!!sym(taxonKey), .data$dr_2)
 
   # Rule 3: 0 in the last 5 years?
   dr_3 <-
@@ -230,7 +230,7 @@ apply_decision_rules <- function(df,
     filter(!!sym(year) > (max(!!sym(year)) - 5)) %>%
     tally(!!sym(y_var)) %>%
     mutate(dr_3 = n == 0) %>%
-    select(!!sym(taxonKey), dr_3)
+    select(!!sym(taxonKey), .data$dr_3)
 
   # Rule 4: last value (at eval_year) is the maximum ever observed?
   dr_4 <-
@@ -243,8 +243,8 @@ apply_decision_rules <- function(df,
       rename(last_value = !!sym(y_var)),
     by = taxonKey
     ) %>%
-    mutate(dr_4 = last_value == max_occ) %>%
-    select(!!sym(taxonKey), dr_4)
+    mutate(dr_4 = .data$last_value == .data$max_occ) %>%
+    select(!!sym(taxonKey), .data$dr_4)
 
   # Join all decision rules together
   dr_all <-
@@ -260,26 +260,26 @@ apply_decision_rules <- function(df,
   em_dr <-
     dr_all %>%
     mutate(em_status = case_when(
-      dr_3 == TRUE ~ 0, # not emerging
+      .data$dr_3 == TRUE ~ 0, # not emerging
 
-      dr_1 == FALSE & dr_2 == TRUE &
-        dr_3 == FALSE & dr_4 == TRUE ~ 3, # emerging
+      .data$dr_1 == FALSE & .data$dr_2 == TRUE &
+        .data$dr_3 == FALSE & .data$dr_4 == TRUE ~ 3, # emerging
 
-      dr_1 == FALSE & dr_2 == TRUE &
-        dr_3 == FALSE & dr_4 == FALSE ~ 2, # potentially emerging
+      .data$dr_1 == FALSE & .data$dr_2 == TRUE &
+        .data$dr_3 == FALSE & .data$dr_4 == FALSE ~ 2, # potentially emerging
 
-      (dr_1 == TRUE & dr_3 == FALSE) |
-        (dr_1 == FALSE & dr_2 == FALSE & dr_3 == FALSE) ~ 1 # unclear
+      (.data$dr_1 == TRUE & .data$dr_3 == FALSE) |
+        (.data$dr_1 == FALSE & .data$dr_2 == FALSE & .data$dr_3 == FALSE) ~ 1 # unclear
     )) %>%
     mutate(!!sym(year) := eval_year) %>%
     select(
       !!sym(taxonKey),
       !!sym(year),
-      em_status,
-      dr_1,
-      dr_2,
-      dr_3,
-      dr_4
+      .data$em_status,
+      .data$dr_1,
+      .data$dr_2,
+      .data$dr_3,
+      .data$dr_4
     ) %>%
     as_tibble()
 

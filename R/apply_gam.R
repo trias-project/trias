@@ -390,7 +390,11 @@ apply_gam <- function(df,
   emerging_status_output <-
     output_model %>%
     filter(!!sym(year) %in% eval_years) %>%
-    select(!!sym(taxonKey), year, em_status, growth, method)
+    select(!!sym(taxonKey),
+           .data$year,
+           .data$em_status,
+           .data$growth,
+           .data$method)
 
   if (nrow(df) > 3 & sum(df[[y_var]][2:nrow(df)]) != 0) {
     result <- tryCatch(expr = {
@@ -447,9 +451,9 @@ apply_gam <- function(df,
         output_model <-
           output_model %>%
           mutate(
-            fit = ifelse(fit < 0, 0, fit),
-            ucl = ifelse(ucl < 0, 0, ucl),
-            lcl = ifelse(lcl < 0, 0, lcl)
+            fit = ifelse(.data$fit < 0, 0, .data$fit),
+            ucl = ifelse(.data$ucl < 0, 0, .data$ucl),
+            lcl = ifelse(.data$lcl < 0, 0, .data$lcl)
           )
 
         # Calculate first and second derivative + conf. interval
@@ -466,47 +470,47 @@ apply_gam <- function(df,
         em1 <-
           deriv1 %>%
           as_tibble() %>%
-          filter(var == year) %>%
+          filter(.data$var == year) %>%
           mutate(em1 = case_when(
-            lower < 0 & upper <= 0 ~ -1,
-            lower < 0 & upper > 0 ~ 0,
-            lower >= 0 & upper > 0 ~ 1
+            .data$lower < 0 & .data$upper <= 0 ~ -1,
+            .data$lower < 0 & .data$upper > 0 ~ 0,
+            .data$lower >= 0 & .data$upper > 0 ~ 1
           )) %>%
-          select(!!sym(year) := data, em1) %>%
+          select(!!sym(year) := .data$data, .data$em1) %>%
           mutate(!!sym(year) := round(!!sym(year)))
 
         em2 <- deriv2 %>%
           as_tibble() %>%
-          filter(var == year) %>%
+          filter(.data$var == year) %>%
           mutate(em2 = case_when(
-            .$lower < 0 & .$upper <= 0 ~ -1,
-            .$lower < 0 & .$upper > 0 ~ 0,
-            .$lower >= 0 & .$upper > 0 ~ 1
+            .data$lower < 0 & .data$upper <= 0 ~ -1,
+            .data$lower < 0 & .data$upper > 0 ~ 0,
+            .data$lower >= 0 & .data$upper > 0 ~ 1
           )) %>%
-          select(!!sym(year) := data, em2) %>%
+          select(!!sym(year) := .data$data, .data$em2) %>%
           mutate(!!sym(year) := round(!!sym(year)))
 
         em_level_gam <- full_join(em1, em2, by = year) %>%
           mutate(em = case_when(
-            em1 == 1 & em2 == 1 ~ 4,
-            em1 == 1 & em2 == 0 ~ 3,
-            em1 == 1 & em2 == -1 ~ 2,
-            em1 == 0 & em2 == 1 ~ 1,
-            em1 == 0 & em2 == 0 ~ 0,
-            em1 == 0 & em2 == -1 ~ -1,
-            em1 == -1 & em2 == 1 ~ -2,
-            em1 == -1 & em2 == 0 ~ -3,
-            em1 == -1 & em2 == -1 ~ -4
+            .data$em1 == 1 & .data$em2 == 1 ~ 4,
+            .data$em1 == 1 & .data$em2 == 0 ~ 3,
+            .data$em1 == 1 & .data$em2 == -1 ~ 2,
+            .data$em1 == 0 & .data$em2 == 1 ~ 1,
+            .data$em1 == 0 & .data$em2 == 0 ~ 0,
+            .data$em1 == 0 & .data$em2 == -1 ~ -1,
+            .data$em1 == -1 & .data$em2 == 1 ~ -2,
+            .data$em1 == -1 & .data$em2 == 0 ~ -3,
+            .data$em1 == -1 & .data$em2 == -1 ~ -4
           ))
 
         # Emerging status
         em_levels <-
           em_level_gam %>%
           mutate(em_status = case_when(
-            em < 0 ~ 0, # not emerging
-            em == 0 ~ 1, # unclear
-            em < 3 ~ 2, # potentially emerging
-            em >= 3 ~ 3 # emerging
+            .data$em < 0 ~ 0, # not emerging
+            .data$em == 0 ~ 1, # unclear
+            .data$em < 3 ~ 2, # potentially emerging
+            .data$em >= 3 ~ 3 # emerging
           ))
 
         output_model <- left_join(output_model, em_levels, by = year)
@@ -514,12 +518,12 @@ apply_gam <- function(df,
         # Lower value of first dedrivative (minimal guaranted growth) if positive
         lower_deriv1 <-
           deriv1 %>%
-          filter(var == year) %>%
-          rename(!!sym(year) := data) %>%
+          filter(.data$var == year) %>%
+          rename(!!sym(year) := .data$data) %>%
           mutate(!!sym(year) := round(!!sym(year), digits = 0)) %>%
           mutate(growth = model$family$linkinv(lower)) %>%
           # mutate(growth = ifelse(lower >= 0, lower, NA_real_)) %>%
-          select(!!sym(year), growth)
+          select(!!sym(year), .data$growth)
 
         # Add lower value of first derivative
         output_model <- left_join(output_model, lower_deriv1, by = "year")
@@ -528,7 +532,11 @@ apply_gam <- function(df,
         emerging_status_output <-
           output_model %>%
           filter(!!sym(year) %in% eval_years) %>%
-          select(!!sym(taxonKey), year, em_status, growth, method)
+          select(!!sym(taxonKey),
+                 .data$year,
+                 .data$em_status,
+                 .data$growth,
+                 .data$method)
 
         # Create plot with conf. interval + colour for status
         ptitle <- paste("GAM",
@@ -646,7 +654,7 @@ plot_ribbon_em <- function(df_plot,
   )
   g <-
     df_plot %>%
-    ggplot(aes(x = year, y = get(y_axis))) +
+    ggplot(aes(x = .data$year, y = get(y_axis))) +
     geom_point(color = "black") +
     ylab(y_label) +
     ggtitle(ptitle)
