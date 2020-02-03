@@ -8,21 +8,21 @@ plot_ribbon_em(df_plot, x_axis = "year", y_axis = "obs",
   x_label = "x", y_label = "y", ptitle = NULL, verbose = FALSE)
 }
 \arguments{
-\item{df_plot:}{df. A data.frame containing data to plot.}
+\item{df_plot}{df. A data.frame containing data to plot.}
 
-\item{x_axis:}{character. Name of column containing x-values. Default:
+\item{x_axis}{character. Name of column containing x-values. Default:
 \code{"year"}.}
 
-\item{y_axis:}{character. Name of column containing y-values. Default:
+\item{y_axis}{character. Name of column containing y-values. Default:
 \code{"number of observations"}.}
 
-\item{x_label:}{character. x-axis label. Default: \code{"x"}.}
+\item{x_label}{character. x-axis label. Default: \code{"x"}.}
 
-\item{y_label:}{character. y-axis label. Default: \code{"y"}.}
+\item{y_label}{character. y-axis label. Default: \code{"y"}.}
 
-\item{ptitle:}{character. Plot title. Default: \code{NULL}.}
+\item{ptitle}{character. Plot title. Default: \code{NULL}.}
 
-\item{verbose:}{logical. If \code{TRUE}, informations about possible issues
+\item{verbose}{logical. If \code{TRUE}, informations about possible issues
 are returned. Default: \code{FALSE}.}
 }
 \value{

@@ -610,15 +610,15 @@ apply_gam <- function(df,
 
 #' Plot time series with confidence limits and emerging status
 #'
-#' @param df_plot: df. A data.frame containing data to plot.
-#' @param x_axis: character. Name of column containing x-values. Default:
+#' @param df_plot df. A data.frame containing data to plot.
+#' @param x_axis character. Name of column containing x-values. Default:
 #'   \code{"year"}.
-#' @param y_axis: character. Name of column containing y-values. Default:
+#' @param y_axis character. Name of column containing y-values. Default:
 #'   \code{"number of observations"}.
-#' @param x_label: character. x-axis label. Default: \code{"x"}.
-#' @param y_label: character. y-axis label. Default: \code{"y"}.
-#' @param ptitle: character. Plot title. Default: \code{NULL}.
-#' @param verbose: logical. If \code{TRUE}, informations about possible issues
+#' @param x_label character. x-axis label. Default: \code{"x"}.
+#' @param y_label character. y-axis label. Default: \code{"y"}.
+#' @param ptitle character. Plot title. Default: \code{NULL}.
+#' @param verbose logical. If \code{TRUE}, informations about possible issues
 #'   are returned. Default: \code{FALSE}.
 #' @return a ggplot2 plot object.
 #' @importFrom ggplot2 ggsave ggplot geom_point ylab ggtitle geom_ribbon
