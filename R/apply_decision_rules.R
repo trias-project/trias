@@ -2,19 +2,21 @@
 #'
 #' This function defines and applies some decision rules to assess emerging
 #' status at a specific time.
-#' @param df: df. A dataframe containing temporal data of one or more taxa. The
+#' 
+#' @param df df. A dataframe containing temporal data of one or more taxa. The
 #'   column with taxa can be of class character, numeric or integers.
-#' @param y_var: character. Name of column of \code{df} containing variable to
+#' @param y_var character. Name of column of \code{df} containing variable to
 #'   model. It has to be passed as string, e.g. \code{"occurrences"}.
-#' @param eval_year: numeric. Temporal value at which emerging status has to be
+#' @param eval_year numeric. Temporal value at which emerging status has to be
 #'   evaluated. \code{eval_year} should be present in timeseries of at least one
 #'   taxon.
-#' @param year: character. Name of column of \code{df} containing temporal
+#' @param year character. Name of column of \code{df} containing temporal
 #'   values. It has to be passed as string, e.g. \code{"time"}. Default:
 #'   \code{"year"}.
-#' @param taxonKey: character. Name of column of \code{df} containing taxon IDs.
+#' @param taxonKey character. Name of column of \code{df} containing taxon IDs.
 #'   It has to be passed as string, e.g. \code{"taxon"}. Default:
 #'   \code{"taxonKey"}.
+#'
 #' @return df. A dataframe (tibble) containing emerging status. Columns:
 #'   \itemize{\item{\code{taxonKey}: column containing taxon ID. Column name
 #'   equal to value of argument \code{taxonKey}.} \item{\code{year}: column
@@ -55,6 +57,7 @@
 #'   year = y
 #' )
 #' }
+
 apply_decision_rules <- function(df,
                                  y_var = "ncells",
                                  eval_year,

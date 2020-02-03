@@ -11,61 +11,61 @@ apply_gam(df, y_var, eval_years, year = "year", taxonKey = "taxonKey",
   verbose = FALSE)
 }
 \arguments{
-\item{df:}{df. A dataframe containing temporal data.}
+\item{df}{df. A dataframe containing temporal data.}
 
-\item{y_var:}{character. Name of column containing variable to model. It has
+\item{y_var}{character. Name of column containing variable to model. It has
 to be passed as string, e.g. \code{"occurrences"}.}
 
-\item{eval_years:}{numeric. Temporal value(s) when emerging status has to be
+\item{eval_years}{numeric. Temporal value(s) when emerging status has to be
 evaluated.}
 
-\item{year:}{character. Name of column containing temporal values. It has to
+\item{year}{character. Name of column containing temporal values. It has to
 be passed as string, e.g. \code{"time"}. Default: \code{"year"}.}
 
-\item{taxonKey:}{character. Name of column containing taxon IDs. It has to be
+\item{taxonKey}{character. Name of column containing taxon IDs. It has to be
 passed as string, e.g. \code{"taxon"}. Default: \code{"taxonKey"}.}
 
-\item{type_indicator:}{character. One of \code{"observations"},
+\item{type_indicator}{character. One of \code{"observations"},
 \code{"occupancy"}. Used in title of the output plot. Default:
 \code{"observations"}.}
 
-\item{baseline_var:}{character. Name of the column containing values to use
+\item{baseline_var}{character. Name of the column containing values to use
 as additional covariate. Such covariate is introduced in the model to
 correct research effort bias. Default: \code{NULL}. If \code{NULL} internal
 variable \code{method_em = "basic"}, otherwise \code{method_em =
 "correct_baseline"}. Value of \code{method_em} will be part of title of
 output plot.}
 
-\item{p_max:}{numeric. A value between 0 and 1. Default: 0.1.}
+\item{p_max}{numeric. A value between 0 and 1. Default: 0.1.}
 
-\item{taxon_key:}{numeric, character. Taxon key the timeseries belongs to.
+\item{taxon_key}{numeric, character. Taxon key the timeseries belongs to.
 Used exclusively in graph title and filename (if \code{saveplot = TRUE}).
 Default: \code{NULL}.}
 
-\item{name:}{character. Species name the timeseries belongs to. Used
+\item{name}{character. Species name the timeseries belongs to. Used
 exclusively in graph title and filename (if \code{saveplot = TRUE}).
 Default: \code{NULL}.}
 
-\item{df_title:}{character. Any string you would like to add to graph titles
+\item{df_title}{character. Any string you would like to add to graph titles
 and filenames (if \code{saveplot = TRUE}). The title is always composed of:
 \code{"GAM"} + \code{type_indicator} + \code{method_em} + \code{taxon_key}
 + \code{name} + \code{df_title} separated by underscore ("_"). Default:
 \code{NULL}.}
 
-\item{x_label:}{character. x-axis label of output plot. Default:
+\item{x_label}{character. x-axis label of output plot. Default:
 \code{"year"}.}
 
-\item{y_label:}{character. y-axis label of output plot. Default:
+\item{y_label}{character. y-axis label of output plot. Default:
 \code{"number of observations"}.}
 
-\item{saveplot:}{logical. If \code{TRUE} the plots are authomatically saved.
+\item{saveplot}{logical. If \code{TRUE} the plots are authomatically saved.
 Default: \code{FALSE}.}
 
-\item{dir_name:}{character. Path of directory where saving plots. If path
+\item{dir_name}{character. Path of directory where saving plots. If path
 doesn't exists, directory will be created. Example: "./output/graphs/". If
 \code{NULL}, plots are saved in current directory. Default: \code{NULL}.}
 
-\item{verbose:}{logical. If \code{TRUE} status of processing and possible
+\item{verbose}{logical. If \code{TRUE} status of processing and possible
 issues are returned. Default: \code{FALSE}.}
 }
 \value{

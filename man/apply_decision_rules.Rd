@@ -8,21 +8,21 @@ apply_decision_rules(df, y_var = "ncells", eval_year, year = "year",
   taxonKey = "taxonKey")
 }
 \arguments{
-\item{df:}{df. A dataframe containing temporal data of one or more taxa. The
+\item{df}{df. A dataframe containing temporal data of one or more taxa. The
 column with taxa can be of class character, numeric or integers.}
 
-\item{y_var:}{character. Name of column of \code{df} containing variable to
+\item{y_var}{character. Name of column of \code{df} containing variable to
 model. It has to be passed as string, e.g. \code{"occurrences"}.}
 
-\item{eval_year:}{numeric. Temporal value at which emerging status has to be
+\item{eval_year}{numeric. Temporal value at which emerging status has to be
 evaluated. \code{eval_year} should be present in timeseries of at least one
 taxon.}
 
-\item{year:}{character. Name of column of \code{df} containing temporal
+\item{year}{character. Name of column of \code{df} containing temporal
 values. It has to be passed as string, e.g. \code{"time"}. Default:
 \code{"year"}.}
 
-\item{taxonKey:}{character. Name of column of \code{df} containing taxon IDs.
+\item{taxonKey}{character. Name of column of \code{df} containing taxon IDs.
 It has to be passed as string, e.g. \code{"taxon"}. Default:
 \code{"taxonKey"}.}
 }
