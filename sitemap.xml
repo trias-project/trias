@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://trias-project.github.io/trias/index.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/GBIF_distr_terms.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/gbif_get_taxa.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/gbif_has_distribution.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/gbif_verify_keys.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/get_table_pathways.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/indicator_introduction_year.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/indicator_total_year.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/spread_with_multiple_values.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/update_download_list.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/verify_taxa.html</loc>
+  </url>
+</urlset>
