@@ -40,27 +40,31 @@
 #'   "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
 #'   "interim/test_data_output_checklist_indicators.tsv"
 #' )
-#' data <- read_tsv(datafile, 
-#'                  na = "NA", 
-#'                  col_types = cols(
-#'                    .default = col_character(),
-#'                    key = col_double(),
-#'                    nubKey = col_double(),
-#'                    speciesKey = col_double(),
-#'                    acceptedKey = col_double(),
-#'                    first_observed = col_double(),
-#'                    last_observed = col_double()
-#'                  ))
+#' data <- read_tsv(datafile,
+#'   na = "NA",
+#'   col_types = cols(
+#'     .default = col_character(),
+#'     key = col_double(),
+#'     nubKey = col_double(),
+#'     speciesKey = col_double(),
+#'     acceptedKey = col_double(),
+#'     first_observed = col_double(),
+#'     last_observed = col_double()
+#'   )
+#' )
 #' # without facets
 #' indicator_introduction_year(data)
 #' # specify start year and smoother parameter
-#' indicator_introduction_year(data, start_year_plot = 1940,
-#'                             smooth_span = 0.6)
+#' indicator_introduction_year(data,
+#'   start_year_plot = 1940,
+#'   smooth_span = 0.6
+#' )
 #' # with facets
 #' indicator_introduction_year(data, facet_column = "kingdom")
 #' # specifiy columns with year of first observed
 #' indicator_introduction_year(data,
-#'                             first_observed = "first_observed")
+#'   first_observed = "first_observed"
+#' )
 #' # specify axis labels
 #' indicator_introduction_year(data, x_lab = "YEAR", y_lab = NULL)
 #' }
@@ -82,12 +86,12 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
     rename_at(vars(first_observed), ~"first_observed")
 
   # first filtering of the incoming data
-  data <- 
+  data <-
     df %>%
     filter(!is.na(.data$first_observed)) %>%
     filter(.data$first_observed > start_year_plot)
 
-  data_top_graph <- 
+  data_top_graph <-
     data %>%
     group_by(.data$first_observed) %>%
     count() %>%
@@ -95,8 +99,10 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
 
   maxDate <- max(data_top_graph$first_observed)
   # top graph with all counts
-  top_graph <- ggplot(data_top_graph, 
-                      aes(x = .data$first_observed, y = .data$n)) +
+  top_graph <- ggplot(
+    data_top_graph,
+    aes(x = .data$first_observed, y = .data$n)
+  ) +
     geom_point(stat = "identity") +
     geom_smooth(span = smooth_span) +
     xlab(x_lab) +
@@ -135,8 +141,10 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
       ungroup()
 
     maxDate <- max(data_facet_graph$first_observed)
-    facet_graph <- ggplot(data_facet_graph, 
-                          aes(x = .data$first_observed, y = .data$n)) +
+    facet_graph <- ggplot(
+      data_facet_graph,
+      aes(x = .data$first_observed, y = .data$n)
+    ) +
       geom_point(stat = "identity") +
       geom_smooth(span = smooth_span) +
       facet_wrap(facet_column) +

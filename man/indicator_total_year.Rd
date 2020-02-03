@@ -53,17 +53,18 @@ datafile <- paste0(
   "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
   "interim/test_data_output_checklist_indicators.tsv"
 )
-data <- read_tsv(datafile, 
-                 na = "NA", 
-                 col_types = cols(
-                   .default = col_character(),
-                   key = col_double(),
-                   nubKey = col_double(),
-                   speciesKey = col_double(),
-                   acceptedKey = col_double(),
-                   first_observed = col_double(),
-                   last_observed = col_double()
-                 ))
+data <- read_tsv(datafile,
+  na = "NA",
+  col_types = cols(
+    .default = col_character(),
+    key = col_double(),
+    nubKey = col_double(),
+    speciesKey = col_double(),
+    acceptedKey = col_double(),
+    first_observed = col_double(),
+    last_observed = col_double()
+  )
+)
 start_year_plot <- 1900
 x_major_scale_stepsize <- 25
 x_minor_scale_stepsize <- 5

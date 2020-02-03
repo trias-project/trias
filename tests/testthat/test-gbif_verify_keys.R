@@ -29,8 +29,8 @@ keys2 <- data.frame(
 keys3 <- keys1
 names(keys3) <- purrr::map_chr(
   c(1:length(keys3)),
-  ~paste(sample(c(0:9, letters, LETTERS), 3),
-         collapse = ""
+  ~ paste(sample(c(0:9, letters, LETTERS), 3),
+    collapse = ""
   )
 )
 # input keys are numeric
@@ -69,12 +69,12 @@ testthat::test_that("test several input types", {
     "keys should be a vector, a named list or a data.frame."
   )
   expect_error(gbif_verify_keys(data.frame(bad_col_name = 12)),
-               paste(
-                 "Column with keys not found.",
-                 "Did you forget maybe to pass",
-                 "the right column name to col_keys?"
-               ),
-               fixed = TRUE
+    paste(
+      "Column with keys not found.",
+      "Did you forget maybe to pass",
+      "the right column name to col_keys?"
+    ),
+    fixed = TRUE
   )
 })
 

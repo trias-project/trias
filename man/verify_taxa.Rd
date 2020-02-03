@@ -554,7 +554,7 @@ my_verification <- data.frame(
     FALSE
   ),
   stringsAsFactors = FALSE
-  )
+)
 
 # output
 verify_taxa(taxa = my_taxa, verification = my_verification)
@@ -567,7 +567,7 @@ my_taxa_other_colnames <-
     my_taxa,
     checklist = datasetKey,
     scientific_names = scientificName
-)
+  )
 
 my_verification_other_colnames <-
   rename(
@@ -576,7 +576,7 @@ my_verification_other_colnames <-
     backbone_accepted_names = bb_acceptedName,
     is_outdated = outdated,
     author_verification = verifiedBy
-)
+  )
 
 # output
 verify_taxa(

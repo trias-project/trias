@@ -26,23 +26,28 @@ It is a function built on rgbif function `name_usage()`.
 \examples{
 # numeric taxonKey, atomic parameters
 gbif_has_distribution(145953242,
-                      country = "BE",
-                      status = "PRESENT",
-                      establishmentMeans = "INTRODUCED")
+  country = "BE",
+  status = "PRESENT",
+  establishmentMeans = "INTRODUCED"
+)
 
 # character taxonKey, distribution properties as vectors, treated as OR
 gbif_has_distribution("145953242",
-                      country = c("NL","BE"),
-                      status = c("PRESENT", "DOUBTFUL"))
+  country = c("NL", "BE"),
+  status = c("PRESENT", "DOUBTFUL")
+)
 
 # use alternative names: countryCode, occurrenceStatus.
 # Function works. Warning is given.
-gbif_has_distribution("145953242", countryCode = c("NL","BE"),
-                 occurrenceStatus = c("PRESENT", "DOUBTFUL"))
+gbif_has_distribution("145953242",
+  countryCode = c("NL", "BE"),
+  occurrenceStatus = c("PRESENT", "DOUBTFUL")
+)
 
 # Case insensitive
-gbif_has_distribution("145953242", countryCode = "be",
-                 status = "PRESENT",
-                 establishmentMeans = "InTrOdUcEd")
-
+gbif_has_distribution("145953242",
+  countryCode = "be",
+  status = "PRESENT",
+  establishmentMeans = "InTrOdUcEd"
+)
 }

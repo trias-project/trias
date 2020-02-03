@@ -60,7 +60,8 @@
 #'   "Plantae",
 #'   n_species = 8,
 #'   kingdom_names = "kingdom",
-#'   species_names = "canonicalName")
+#'   species_names = "canonicalName"
+#' )
 #' }
 get_table_pathways <- function(df,
                                category = NULL,

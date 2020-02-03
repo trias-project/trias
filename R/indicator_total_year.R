@@ -44,17 +44,18 @@
 #'   "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
 #'   "interim/test_data_output_checklist_indicators.tsv"
 #' )
-#' data <- read_tsv(datafile, 
-#'                  na = "NA", 
-#'                  col_types = cols(
-#'                    .default = col_character(),
-#'                    key = col_double(),
-#'                    nubKey = col_double(),
-#'                    speciesKey = col_double(),
-#'                    acceptedKey = col_double(),
-#'                    first_observed = col_double(),
-#'                    last_observed = col_double()
-#'                  ))
+#' data <- read_tsv(datafile,
+#'   na = "NA",
+#'   col_types = cols(
+#'     .default = col_character(),
+#'     key = col_double(),
+#'     nubKey = col_double(),
+#'     speciesKey = col_double(),
+#'     acceptedKey = col_double(),
+#'     first_observed = col_double(),
+#'     last_observed = col_double()
+#'   )
+#' )
 #' start_year_plot <- 1900
 #' x_major_scale_stepsize <- 25
 #' x_minor_scale_stepsize <- 5
@@ -97,7 +98,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       ") and are not taken into account.\n"
     ))
   }
-  
+
   # ignore information without first_observed
   df <-
     df %>%
@@ -140,10 +141,11 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       count() %>%
       ungroup()
 
-    facet_graph <- 
+    facet_graph <-
       ggplot(
         counts_ias_grouped,
-        aes(x = .data$year, y = .data$n)) +
+        aes(x = .data$year, y = .data$n)
+      ) +
       geom_line(stat = "identity") +
       xlab(x_lab) +
       ylab(y_lab) +
