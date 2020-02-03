@@ -44,21 +44,28 @@ This function performs three checks:
 }
 \examples{
 # input is a vector
-keys1 = c("12323785387253", # invalid GBIF taxonKey
-          "128545334", # valid taxonKey, not a GBIF Backbone key
-          "1000693", # a GBIF Backbone key, synonym
-          "1000310", # a GBIF Backbone key, accepted
-          NA, NA)
+keys1 <- c(
+  "12323785387253", # invalid GBIF taxonKey
+  "128545334", # valid taxonKey, not a GBIF Backbone key
+  "1000693", # a GBIF Backbone key, synonym
+  "1000310", # a GBIF Backbone key, accepted
+  NA, NA
+)
 # input is a df
-keys2 <- data.frame(keys = keys1,
-                    other_col = sample.int(40, size = length(keys1)),
-                    stringsAsFactors = FALSE)
+keys2 <- data.frame(
+  keys = keys1,
+  other_col = sample.int(40, size = length(keys1)),
+  stringsAsFactors = FALSE
+)
 # input is a named list
 keys3 <- keys1
 library(purrr)
-names(keys3) <- purrr::map_chr(c(1:length(keys3)),
-                               ~paste(sample(c(0:9, letters, LETTERS),3),
-                                      collapse=""))
+names(keys3) <- purrr::map_chr(
+  c(1:length(keys3)),
+  ~ paste(sample(c(0:9, letters, LETTERS), 3),
+    collapse = ""
+  )
+)
 # input keys are numeric
 keys4 <- as.numeric(keys1)
 
@@ -66,5 +73,4 @@ gbif_verify_keys(keys1)
 gbif_verify_keys(keys2, col_keys = "keys")
 gbif_verify_keys(keys3)
 gbif_verify_keys(keys4)
-
 }

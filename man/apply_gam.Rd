@@ -7,8 +7,8 @@
 apply_gam(df, y_var, eval_years, year = "year", taxonKey = "taxonKey",
   type_indicator = "observations", baseline_var = NULL, p_max = 0.1,
   taxon_key = NULL, name = NULL, df_title = NULL, x_label = "year",
-  y_label = "number of observations", saveplot = FALSE,
-  dir_name = NULL, verbose = FALSE)
+  y_label = "Observations", saveplot = FALSE, dir_name = NULL,
+  verbose = FALSE)
 }
 \arguments{
 \item{df:}{df. A dataframe containing temporal data.}
@@ -16,12 +16,11 @@ apply_gam(df, y_var, eval_years, year = "year", taxonKey = "taxonKey",
 \item{y_var:}{character. Name of column containing variable to model. It has
 to be passed as string, e.g. \code{"occurrences"}.}
 
-\item{eval_years:}{numeric. Temporal value(s) where emerging status has to be
+\item{eval_years:}{numeric. Temporal value(s) when emerging status has to be
 evaluated.}
 
-\item{year:}{character. Name of column containing temporal values, e.g. years
-as numeric. It has to be passed as string, e.g. \code{"time"}. Default:
-\code{"year"}.}
+\item{year:}{character. Name of column containing temporal values. It has to
+be passed as string, e.g. \code{"time"}. Default: \code{"year"}.}
 
 \item{taxonKey:}{character. Name of column containing taxon IDs. It has to be
 passed as string, e.g. \code{"taxon"}. Default: \code{"taxonKey"}.}
@@ -47,26 +46,31 @@ Default: \code{NULL}.}
 exclusively in graph title and filename (if \code{saveplot = TRUE}).
 Default: \code{NULL}.}
 
-\item{df_title:}{character. Any string you would like to use in graph titles
-and filenames (if \code{saveplot = TRUE}). The title is composed of:
-\code{"GAM_"} + \code{type_indicator} + \code{method_em} + \code{taxon_key}
-+ \code{name}. Default: \code{NULL}.}
+\item{df_title:}{character. Any string you would like to add to graph titles
+and filenames (if \code{saveplot = TRUE}). The title is always composed of:
+\code{"GAM"} + \code{type_indicator} + \code{method_em} + \code{taxon_key}
++ \code{name} + \code{df_title} separated by underscore ("_"). Default:
+\code{NULL}.}
 
 \item{x_label:}{character. x-axis label of output plot. Default:
 \code{"year"}.}
 
-\item{y_label:}{character. y-axis label of output plot. Default: \code{"number
-of observations"}.}
-
-\item{verbose:}{logical. If \code{TRUE} status of processing is returned.
-Default: \code{FALSE}.}
+\item{y_label:}{character. y-axis label of output plot. Default:
+\code{"number of observations"}.}
 
 \item{saveplot:}{logical. If \code{TRUE} the plots are authomatically saved.
 Default: \code{FALSE}.}
+
+\item{dir_name:}{character. Path of directory where saving plots. If path
+doesn't exists, directory will be created. Example: "./output/graphs/". If
+\code{NULL}, plots are saved in current directory. Default: \code{NULL}.}
+
+\item{verbose:}{logical. If \code{TRUE} status of processing and possible
+issues are returned. Default: \code{FALSE}.}
 }
 \value{
-list. List with three objects: \itemize{\item{\code{em_summary}: df.
-  A data.frame summarizing results, i.e. emerging statuses. \code{em_summary}
+list. List with six objects: \itemize{\item{\code{em_summary}: df. A
+  data.frame summarizing the emerging status outputs. \code{em_summary}
   contains as many rows as the length of input variable \code{eval_year}. So,
   if you evaluate GAM on three years, \code{em_summary} will contain three
   rows. Columns: \itemize{\item{\code{"taxonKey"}: column containing taxon
@@ -79,11 +83,29 @@ list. List with three objects: \itemize{\item{\code{em_summary}: df.
   between 0 and 3.} \item{\code{growth}: numeric. Lower limit of GAM
   confidence interval for the first derivative. It represents the lower
   guaranteed growth.} \item{\code{method}: character. GAM method, as defined
-  by internal variable \code{method_em}. One of: \code{"correct_baseline"}
-  and \code{"basic"}. See details above in description of argument
-  \code{use_baseline}.}}} \item{\code{model}: GAM. The model as returned by
-  GAM.} \item{\code{first_derivative}: df. Data.frame with details of first
-  derivatives. It contains following columns: \itemize{\item{\code{}}}}}
+  by internal variable \code{method_em}: character. One of:
+  \code{"correct_baseline"} and \code{"basic"}. See details above in
+  description of argument \code{use_baseline}.}}} \item{\code{model}: gam
+  object. The model as returned by GAM.} \item{\code{first_derivative}: df.
+  Data.frame with details of first derivatives. It contains following
+  columns: \itemize{\item{\code{smooth}: smoooth identifier. Example:
+  \code{s(year)}.} \item{\code{var}: character. Column name the smoother is
+  applied to.} \item{\code{data}: numeric. Data in columns defined by
+  \code{var}.} \item{\code{derivative}: numeric. Value of first derivative.}
+  \item{\code{se}: numeric. Standard error of \code{derivative}.}
+  \item{\code{crit}: numeric. Critical value required such that
+  \code{derivative + (se * crit)} and \code{derivative - (se * crit)} form
+  the upper and lower bounds of the confidence interval on the first
+  derivative of the estimated smooth at the specific confidence level. In our
+  case the confidence level is hard-coded: 0.8. Then \code{crit <- qnorm(p =
+  (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)}.}
+  \item{\code{lower}: numeric. Lower bound of the confidence interval of the
+  estimated smooth.} \item{\code{upper}: numeric. Upper bound of the
+  confidence interval of the estimated smooth.}}}
+  \item{\code{second_derivative}: df. Data.frame with details of second
+  derivatives. Same columns as \code{first_derivatives}.} \item{\code{plot}:
+  a ggplot2 object. Plot of GAM output and emerging. \code{NULL} if GAM
+  cannot be applied.}}
 }
 \description{
 This function applies generalized additive models (GAM) to assess emerging
@@ -92,10 +114,72 @@ status for a certain time window.
 \examples{
 \dontrun{
 df_gam <- tibble(
-  taxonKey = rep(2224970, 20),
-  canonicalName = rep("Palaemon macrodactylus", 20),
-  year = seq(2000, 2019),
-  n_observations = c(1, 5, 3, 12, 10, 3, 5, 0, 1, 3, 2, 4, 1,3, 3, 4,3, 0, 5, 1)
+  taxonKey = rep(3003709, 24),
+  canonicalName = rep("Rosa glauca", 24),
+  year = seq(1995, 2018),
+  n = c(
+    1, 1, 0, 0, 0, 2, 0, 0, 1, 3, 1, 2, 0, 5, 0, 5, 4, 2, 1,
+    1, 3, 3, 8, 10
+  ),
+  n_class = c(
+    229, 555, 1116, 939, 919, 853, 442, 532, 623, 1178, 732, 371, 1053,
+    1001, 1550, 1142, 1076, 1310, 922, 1773, 1637,
+    1866, 2234, 2013
   )
+)
+# apply GAM to n without baseline as covariate
+apply_gam(df_gam,
+  y_var = "n",
+  eval_years = 2018,
+  taxon_key = 3003709,
+  name = "Rosa glauca",
+  verbose = TRUE
+)
+# apply GAM using baseline data in column n_class as covariate
+apply_gam(df_gam,
+  y_var = "n",
+  eval_years = 2018,
+  baseline_var = "n_class",
+  taxon_key = 3003709,
+  name = "Rosa glauca",
+  verbose = TRUE
+)
+# apply GAM using n as occupancy values, evaluate on two years. No baseline
+apply_gam(df_gam,
+  y_var = "n",
+  eval_years = c(2017, 2018),
+  taxon_key = 3003709,
+  type_indicator = "occupancy",
+  name = "Rosa glauca",
+  y_label = "occupancy",
+  verbose = TRUE
+)
+# apply GAM using n as occupancy values and n_class as covariate (baseline)
+apply_gam(df_gam,
+  y_var = "n",
+  eval_years = c(2017, 2018),
+  baseline_var = "n_class",
+  taxon_key = 3003709,
+  type_indicator = "occupancy",
+  name = "Rosa glauca",
+  y_label = "occupancy",
+  verbose = TRUE
+)
+# How to modify other arguments
+apply_gam(df_gam,
+  y_var = "n",
+  eval_years = c(2017, 2018),
+  baseline_var = "n_class",
+  p_max = 0.3,
+  taxon_key = "3003709",
+  type_indicator = "occupancy",
+  name = "Rosa glauca",
+  df_title = "Belgium",
+  x_label = "time (years)",
+  y_label = "area of occupancy (km2)",
+  saveplot = TRUE,
+  dir_name = "./data/",
+  verbose = TRUE
+)
 }
 }
