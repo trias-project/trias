@@ -31,6 +31,7 @@ This function retrieves taxa information from GBIF. It is a higher level functio
 on rgbif functions `name_usage()` and `name_lookup()`.
 }
 \examples{
+\dontrun{
 # A single numeric taxon_keys
 gbif_get_taxa(taxon_keys = 1)
 # A single character taxon_keys
@@ -65,4 +66,5 @@ gbif_get_taxa(
   checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
   origin = c("source", "denormed_classification"), limit = 3000
 )
+}
 }

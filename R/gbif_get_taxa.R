@@ -15,6 +15,7 @@
 #' in the checklist_keys (if string) or any of the checklist_keys (if vector)
 #' @return A data.frame with all returned attributes for any taxa
 #' @examples
+#' \dontrun{
 #' # A single numeric taxon_keys
 #' gbif_get_taxa(taxon_keys = 1)
 #' # A single character taxon_keys
@@ -49,6 +50,7 @@
 #'   checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
 #'   origin = c("source", "denormed_classification"), limit = 3000
 #' )
+#' }
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage name_lookup
