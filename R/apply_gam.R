@@ -523,7 +523,7 @@ apply_gam <- function(df,
           filter(.data$var == year) %>%
           rename(!!sym(year) := .data$data) %>%
           mutate(!!sym(year) := round(!!sym(year), digits = 0)) %>%
-          mutate(growth = model$family$linkinv(lower)) %>%
+          mutate(growth = model$family$linkinv(.data$lower)) %>%
           select(!!sym(year), .data$growth)
 
         # Add lower value of first derivative
