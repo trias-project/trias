@@ -2,7 +2,7 @@
 #'
 #' This function defines and applies some decision rules to assess emerging
 #' status at a specific time.
-#' 
+#'
 #' @param df df. A dataframe containing temporal data of one or more taxa. The
 #'   column with taxa can be of class character, numeric or integers.
 #' @param y_var character. Name of column of \code{df} containing variable to
@@ -57,7 +57,7 @@
 #'   year = y
 #' )
 #' }
-
+#'
 apply_decision_rules <- function(df,
                                  y_var = "ncells",
                                  eval_year,
@@ -148,21 +148,23 @@ apply_decision_rules <- function(df,
     " of one or more taxa contain duplicates."
   )
   )
-  
+
   # Check timeseries has no holes (consecutive years)
-  taxa_not_consecutive_ts <- 
+  taxa_not_consecutive_ts <-
     df %>%
     group_by(!!sym(taxonKey)) %>%
     summarize(
-      has_all_years = n() == (max(!!sym(year)) - min(!!sym(year)) + 1)) %>%
+      has_all_years = n() == (max(!!sym(year)) - min(!!sym(year)) + 1)
+    ) %>%
     filter(.data$has_all_years == FALSE)
-  
+
   assert_that(nrow(taxa_not_consecutive_ts) == 0,
-              msg = paste0(
-                "The timeseries of these taxa are not valid ",
-                "as they contain missing time values: ",
-                paste(taxa_not_consecutive_ts[[taxonKey]], collapse = ", "),
-                ".")
+    msg = paste0(
+      "The timeseries of these taxa are not valid ",
+      "as they contain missing time values: ",
+      paste(taxa_not_consecutive_ts[[taxonKey]], collapse = ", "),
+      "."
+    )
   )
 
   # Get all taxa in df
@@ -173,25 +175,27 @@ apply_decision_rules <- function(df,
 
   # Find taxa whose timeseries don't contain eval_year, remove them and throw a
   # warning
-  taxa_eval_out_of_min_max <- 
+  taxa_eval_out_of_min_max <-
     df %>%
     group_by(!!sym(taxonKey)) %>%
-    summarize(min_ts = min(!!sym(year)),
-              max_ts = max(!!sym(year))) %>%
+    summarize(
+      min_ts = min(!!sym(year)),
+      max_ts = max(!!sym(year))
+    ) %>%
     filter(eval_year < .data$min_ts | eval_year > .data$max_ts)
 
   if (nrow(taxa_eval_out_of_min_max) > 0) {
-    warning(paste0("Taxa with timseries not containing evaluation year (",
-                   eval_year,
-                   "): ",
-                   paste(taxa_eval_out_of_min_max[[taxonKey]], collapse = ", ")
-                   )
-            )
+    warning(paste0(
+      "Taxa with timseries not containing evaluation year (",
+      eval_year,
+      "): ",
+      paste(taxa_eval_out_of_min_max[[taxonKey]], collapse = ", ")
+    ))
     df <-
       df %>%
       filter(!(!!sym(taxonKey)) %in% taxa_eval_out_of_min_max[[taxonKey]])
   }
-  
+
   # Cut time series up to eval_year
   df <-
     df %>%
@@ -208,7 +212,7 @@ apply_decision_rules <- function(df,
     add_tally(wt = NULL) %>%
     mutate(dr_1 = n == 1) %>%
     distinct(!!sym(taxonKey), dr_1)
-  
+
   # Rule 2: last value (at eval_year) above median value?
   dr_2 <-
     df %>%

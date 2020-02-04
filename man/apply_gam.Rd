@@ -182,4 +182,5 @@ apply_gam(df_gam,
   verbose = TRUE
 )
 }
+
 }

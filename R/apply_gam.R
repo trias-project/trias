@@ -166,7 +166,7 @@
 #'   verbose = TRUE
 #' )
 #' }
-
+#'
 apply_gam <- function(df,
                       y_var,
                       eval_years,
@@ -390,11 +390,13 @@ apply_gam <- function(df,
   emerging_status_output <-
     output_model %>%
     filter(!!sym(year) %in% eval_years) %>%
-    select(!!sym(taxonKey),
-           .data$year,
-           .data$em_status,
-           .data$growth,
-           .data$method)
+    select(
+      !!sym(taxonKey),
+      .data$year,
+      .data$em_status,
+      .data$growth,
+      .data$method
+    )
 
   if (nrow(df) > 3 & sum(df[[y_var]][2:nrow(df)]) != 0) {
     result <- tryCatch(expr = {
@@ -522,7 +524,6 @@ apply_gam <- function(df,
           rename(!!sym(year) := .data$data) %>%
           mutate(!!sym(year) := round(!!sym(year), digits = 0)) %>%
           mutate(growth = model$family$linkinv(lower)) %>%
-          # mutate(growth = ifelse(lower >= 0, lower, NA_real_)) %>%
           select(!!sym(year), .data$growth)
 
         # Add lower value of first derivative
@@ -532,11 +533,13 @@ apply_gam <- function(df,
         emerging_status_output <-
           output_model %>%
           filter(!!sym(year) %in% eval_years) %>%
-          select(!!sym(taxonKey),
-                 .data$year,
-                 .data$em_status,
-                 .data$growth,
-                 .data$method)
+          select(
+            !!sym(taxonKey),
+            .data$year,
+            .data$em_status,
+            .data$growth,
+            .data$method
+          )
 
         # Create plot with conf. interval + colour for status
         ptitle <- paste("GAM",
@@ -633,6 +636,7 @@ apply_gam <- function(df,
 #'   element_text
 #'   geom_line scale_colour_manual theme aes
 #' @importFrom dplyr case_when %>%
+#' @importFrom rlang .data
 plot_ribbon_em <- function(df_plot,
                            x_axis = "year",
                            y_axis = "obs",
@@ -665,15 +669,15 @@ plot_ribbon_em <- function(df_plot,
     all(abs(df_plot$fit < 10^10))
   )) {
     g <- g +
-      geom_ribbon(aes(ymax = ucl, ymin = lcl),
+      geom_ribbon(aes(ymax = .data$ucl, ymin = .data$lcl),
         fill = grey(0.5),
         alpha = 0.4
       ) +
-      geom_line(aes(x = year, y = fit), color = "grey50") +
+      geom_line(aes(x = .data$year, y = .data$fit), color = "grey50") +
       geom_point(aes(
-        x = year,
-        y = fit,
-        color = factor(em_status)
+        x = .data$year,
+        y = .data$fit,
+        color = factor(.data$em_status)
       ),
       size = 2
       ) +
