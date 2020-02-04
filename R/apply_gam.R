@@ -89,7 +89,7 @@
 #' @importFrom tidyselect vars_pull enquo
 #' @importFrom tibble as_tibble
 #' @importFrom purrr map2
-#' @importFrom rlang sym !! :=
+#' @importFrom rlang sym !! := .data
 #' @importFrom stringr str_ends str_sub
 #' @importFrom mgcv nb gam summary.gam
 #' @importFrom stats formula predict
