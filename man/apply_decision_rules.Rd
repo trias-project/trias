@@ -28,22 +28,22 @@ It has to be passed as string, e.g. \code{"taxon"}. Default:
 }
 \value{
 df. A dataframe (tibble) containing emerging status. Columns:
-  \itemize{\item{\code{taxonKey}: column containing taxon ID. Column name
-  equal to value of argument \code{taxonKey}.} \item{\code{year}: column
-  containing temporal values. Column name equal to value of argument
-  \code{year}. Column itself is equal to value of argument \code{eval_year}.
-  So, if you apply decision rules on years 2018 (\code{eval_year = 2018}),
-  you will get 2018 in this column.} \item{\code{em_status}: numeric.
-  Emerging status, an integer between 0 and 3, based on output of decision
-  rules (next columns).} \item{\code{dr_1}: logical. Output of decision rule
-  1 answers to the question: does the time series contain only one positive
-  value at evaluation year?} \item{\code{dr_2}: logical. Output of decision
-  rule 2 answers to the question: is value at evaluation year above median
-  value?} \item{\code{dr_3}: logical. Output of decision rule 3 answers to
-  the question: does the time series contains only zeros in the five years
-  before \code{eval_year}?} \item{\code{dr_4}: logical. Output of decision
-  rule 4 answers to the question: is the value in column \code{y_var} the
-  maximum ever observed up to \code{eval_year}?}}
+\itemize{\item{\code{taxonKey}: column containing taxon ID. Column name
+equal to value of argument \code{taxonKey}.} \item{\code{year}: column
+containing temporal values. Column name equal to value of argument
+\code{year}. Column itself is equal to value of argument \code{eval_year}.
+So, if you apply decision rules on years 2018 (\code{eval_year = 2018}),
+you will get 2018 in this column.} \item{\code{em_status}: numeric.
+Emerging status, an integer between 0 and 3, based on output of decision
+rules (next columns).} \item{\code{dr_1}: logical. Output of decision rule
+1 answers to the question: does the time series contain only one positive
+value at evaluation year?} \item{\code{dr_2}: logical. Output of decision
+rule 2 answers to the question: is value at evaluation year above median
+value?} \item{\code{dr_3}: logical. Output of decision rule 3 answers to
+the question: does the time series contains only zeros in the five years
+before \code{eval_year}?} \item{\code{dr_4}: logical. Output of decision
+rule 4 answers to the question: is the value in column \code{y_var} the
+maximum ever observed up to \code{eval_year}?}}
 }
 \description{
 This function defines and applies some decision rules to assess emerging

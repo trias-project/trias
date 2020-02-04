@@ -9,14 +9,14 @@ gbif_get_taxa(taxon_keys = NULL, checklist_keys = NULL,
 }
 \arguments{
 \item{taxon_keys}{(single numeric or character or a vector) a single key or a
-vector of keys. Not to use together with `checklist_keys`.}
+vector of keys. Not to use together with \code{checklist_keys}.}
 
 \item{checklist_keys}{(single character or a vector) a datasetKey (character)
-or a vector of datasetkeys. Not to use together with `checklist_keys`.}
+or a vector of datasetkeys. Not to use together with \code{checklist_keys}.}
 
 \item{origin}{(single character or a vector) filter by origin.
 It can take many inputs, and treated as OR (e.g., a or b or c)
-To be used only in combination with `checklist_keys`. Ignored otherwise.}
+To be used only in combination with \code{checklist_keys}. Ignored otherwise.}
 
 \item{limit}{With taxon_keys: limit number of taxa.
 With checklist_keys: limit number of taxa per each dataset.
@@ -28,7 +28,7 @@ A data.frame with all returned attributes for any taxa
 }
 \description{
 This function retrieves taxa information from GBIF. It is a higher level function built
-on rgbif functions `name_usage()` and `name_lookup()`.
+on rgbif functions \code{name_usage()} and \code{name_lookup()}.
 }
 \examples{
 \dontrun{

@@ -149,7 +149,7 @@
 #'   y_label = "occupancy",
 #'   verbose = TRUE
 #' )
-#' # How to modify other arguments
+#' # How to use other arguments
 #' apply_gam(df_gam,
 #'   y_var = "n",
 #'   eval_years = c(2017, 2018),
