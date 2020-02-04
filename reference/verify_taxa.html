@@ -102,7 +102,7 @@ ancillary information." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -288,31 +288,31 @@ names as specified above in <code>verification</code>.</p></td>
 
     <p>list. List with three objects:</p><ul>
 <li><p><code>taxa</code>: df.
-  Provided dataframe with additional column <code>verificationKey</code>.</p></li>
+Provided dataframe with additional column <code>verificationKey</code>.</p></li>
 <li><p><code>verification</code>: df. New or updated dataframe with verification
-  information.</p></li>
+information.</p></li>
 <li><p><code>info</code>: list. Dataframes with ancillary
-  information regarding changes to the verification. <ul>
+information regarding changes to the verification. <ul>
 <li><p><code>new_synonyms</code>: df. Subset of <code>verification</code> with synonym
-  taxa found in <code>taxa</code> but not in provided <code>verification</code>).</p></li>
+taxa found in <code>taxa</code> but not in provided <code>verification</code>).</p></li>
 <li><p><code>new_unmatched_taxa</code>: df. Subset of <code>verification</code> with
-  unmatched taxa found in <code>taxa</code> but not in provided
-  <code>verification</code>).</p></li>
+unmatched taxa found in <code>taxa</code> but not in provided
+<code>verification</code>).</p></li>
 <li><p><code>outdated_synonyms</code>: df. Subset of
-  <code>verification</code> with synonyms found in provided <code>verification</code> but
-  not in <code>taxa</code>.</p></li>
+<code>verification</code> with synonyms found in provided <code>verification</code> but
+not in <code>taxa</code>.</p></li>
 <li><p><code>outdated_unmatched_taxa</code>: df. Subset of
-  <code>verification</code> with unmatched taxa found in provided
-  <code>verification</code> but not in <code>taxa</code>.</p></li>
+<code>verification</code> with unmatched taxa found in provided
+<code>verification</code> but not in <code>taxa</code>.</p></li>
 <li><p><code>updated_bb_scientificName</code>: df. <code>bb_scientificName</code>s in
-  provided <code>verification</code> that were updated
-  <code>updated_bb_scientificName</code> in the backbone since.</p></li>
+provided <code>verification</code> that were updated
+<code>updated_bb_scientificName</code> in the backbone since.</p></li>
 <li><p><code>updated_bb_acceptedName</code>: df. <code>bb_acceptedName</code>s in
-  provided <code>verification</code> that were updated
-  <code>updated_bb_acceptedName</code> in the backbone since.</p></li>
+provided <code>verification</code> that were updated
+<code>updated_bb_acceptedName</code> in the backbone since.</p></li>
 <li><p><code>duplicates</code>: df. Taxa present in more than one checklist.</p></li>
 <li><p><code>check_verificationKey</code>: df. Check if provided
-  <code>verificationKey</code>s can be found in backbone.</p></li>
+<code>verificationKey</code>s can be found in backbone.</p></li>
 </ul></p></li>
 </ul>
 
@@ -742,7 +742,7 @@ names as specified above in <code>verification</code>.</p></td>
     <span class='fl'>FALSE</span>
   ),
   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-  )
+)
 
 <span class='co'># output</span>
 <span class='fu'>verify_taxa</span>(<span class='kw'>taxa</span> <span class='kw'>=</span> <span class='no'>my_taxa</span>, <span class='kw'>verification</span> <span class='kw'>=</span> <span class='no'>my_verification</span>)
@@ -755,7 +755,7 @@ names as specified above in <code>verification</code>.</p></td>
     <span class='no'>my_taxa</span>,
     <span class='kw'>checklist</span> <span class='kw'>=</span> <span class='no'>datasetKey</span>,
     <span class='kw'>scientific_names</span> <span class='kw'>=</span> <span class='no'>scientificName</span>
-)
+  )
 
 <span class='no'>my_verification_other_colnames</span> <span class='kw'>&lt;-</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>rename</a></span>(
@@ -764,7 +764,7 @@ names as specified above in <code>verification</code>.</p></td>
     <span class='kw'>backbone_accepted_names</span> <span class='kw'>=</span> <span class='no'>bb_acceptedName</span>,
     <span class='kw'>is_outdated</span> <span class='kw'>=</span> <span class='no'>outdated</span>,
     <span class='kw'>author_verification</span> <span class='kw'>=</span> <span class='no'>verifiedBy</span>
-)
+  )
 
 <span class='co'># output</span>
 <span class='fu'>verify_taxa</span>(

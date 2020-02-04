@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get taxa information from GBIF — gbif_get_taxa • trias</title>
+<title>Apply decision rules to time series and assess emerging status — apply_decision_rules • trias</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,9 @@
 
 
 
-<meta property="og:title" content="Get taxa information from GBIF — gbif_get_taxa" />
-<meta property="og:description" content="This function retrieves taxa information from GBIF. It is a higher level function built
-on rgbif functions name_usage() and name_lookup()." />
+<meta property="og:title" content="Apply decision rules to time series and assess emerging status — apply_decision_rules" />
+<meta property="og:description" content="This function defines and applies some decision rules to assess emerging
+status at a specific time." />
 <meta property="og:image" content="https://trias-project.github.io/trias/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -114,86 +114,90 @@ on rgbif functions name_usage() and name_lookup()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get taxa information from GBIF</h1>
-    <small class="dont-index">Source: <a href='https://github.com/trias-project/trias/blob/master/R/gbif_get_taxa.R'><code>R/gbif_get_taxa.R</code></a></small>
-    <div class="hidden name"><code>gbif_get_taxa.Rd</code></div>
+    <h1>Apply decision rules to time series and assess emerging status</h1>
+    <small class="dont-index">Source: <a href='https://github.com/trias-project/trias/blob/master/R/apply_decision_rules.R'><code>R/apply_decision_rules.R</code></a></small>
+    <div class="hidden name"><code>apply_decision_rules.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function retrieves taxa information from GBIF. It is a higher level function built
-on rgbif functions <code>name_usage()</code> and <code>name_lookup()</code>.</p>
+    <p>This function defines and applies some decision rules to assess emerging
+status at a specific time.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>origin</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>limit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>apply_decision_rules</span>(<span class='no'>df</span>, <span class='kw'>y_var</span> <span class='kw'>=</span> <span class='st'>"ncells"</span>, <span class='no'>eval_year</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='st'>"year"</span>,
+  <span class='kw'>taxonKey</span> <span class='kw'>=</span> <span class='st'>"taxonKey"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>taxon_keys</th>
-      <td><p>(single numeric or character or a vector) a single key or a
-vector of keys. Not to use together with <code>checklist_keys</code>.</p></td>
+      <th>df</th>
+      <td><p>df. A dataframe containing temporal data of one or more taxa. The
+column with taxa can be of class character, numeric or integers.</p></td>
     </tr>
     <tr>
-      <th>checklist_keys</th>
-      <td><p>(single character or a vector) a datasetKey (character)
-or a vector of datasetkeys. Not to use together with <code>checklist_keys</code>.</p></td>
+      <th>y_var</th>
+      <td><p>character. Name of column of <code>df</code> containing variable to
+model. It has to be passed as string, e.g. <code>"occurrences"</code>.</p></td>
     </tr>
     <tr>
-      <th>origin</th>
-      <td><p>(single character or a vector) filter by origin.
-It can take many inputs, and treated as OR (e.g., a or b or c)
-To be used only in combination with <code>checklist_keys</code>. Ignored otherwise.</p></td>
+      <th>eval_year</th>
+      <td><p>numeric. Temporal value at which emerging status has to be
+evaluated. <code>eval_year</code> should be present in timeseries of at least one
+taxon.</p></td>
     </tr>
     <tr>
-      <th>limit</th>
-      <td><p>With taxon_keys: limit number of taxa.
-With checklist_keys: limit number of taxa per each dataset.
-A warning is given if limit is higher than the length of taxon_keys or number of records
-in the checklist_keys (if string) or any of the checklist_keys (if vector)</p></td>
+      <th>year</th>
+      <td><p>character. Name of column of <code>df</code> containing temporal
+values. It has to be passed as string, e.g. <code>"time"</code>. Default:
+<code>"year"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>taxonKey</th>
+      <td><p>character. Name of column of <code>df</code> containing taxon IDs.
+It has to be passed as string, e.g. <code>"taxon"</code>. Default:
+<code>"taxonKey"</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame with all returned attributes for any taxa</p>
+    <p>df. A dataframe (tibble) containing emerging status. Columns:</p><ul>
+<li><p><code>year</code>: column
+containing temporal values. Column name equal to value of argument
+<code>year</code>. Column itself is equal to value of argument <code>eval_year</code>.
+So, if you apply decision rules on years 2018 (<code>eval_year = 2018</code>),
+you will get 2018 in this column.</p></li>
+<li><p><code>em_status</code>: numeric.
+Emerging status, an integer between 0 and 3, based on output of decision
+rules (next columns).</p></li>
+<li><p><code>dr_1</code>: logical. Output of decision rule
+1 answers to the question: does the time series contain only one positive
+value at evaluation year?</p></li>
+<li><p><code>dr_2</code>: logical. Output of decision
+rule 2 answers to the question: is value at evaluation year above median
+value?</p></li>
+<li><p><code>dr_3</code>: logical. Output of decision rule 3 answers to
+the question: does the time series contains only zeros in the five years
+before <code>eval_year</code>?</p></li>
+<li><p><code>dr_4</code>: logical. Output of decision
+rule 4 answers to the question: is the value in column <code>y_var</code> the
+maximum ever observed up to <code>eval_year</code>?</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='co'># A single numeric taxon_keys</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='co'># A single character taxon_keys</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='st'>"1"</span>)
-<span class='co'># Multiple numeric taxon_keys (vector)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>))
-<span class='co'># Multiple character taxon_keys (vector)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"2"</span>, <span class='st'>"3"</span>, <span class='st'>"4"</span>, <span class='st'>"5"</span>, <span class='st'>"6"</span>))
-<span class='co'># Limit number of taxa (coupled with taxon_keys)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>taxon_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span>), <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-<span class='co'># A single checklist_keys (character)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>)
-<span class='co'># Multiple checklist_keys (vector)</span>
-<span class='fu'>gbif_get_taxa</span>(<span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
-  <span class='st'>"e4746398-f7c4-47a1-a474-ae80a4f18e92"</span>,
-  <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>
-))
-<span class='co'># Limit number of taxa (coupled with checklist_keys)</span>
-<span class='fu'>gbif_get_taxa</span>(
-  <span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
-    <span class='st'>"e4746398-f7c4-47a1-a474-ae80a4f18e92"</span>,
-    <span class='st'>"b3fa7329-a002-4243-a7a7-cd066092c9a6"</span>
-  ),
-  <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>30</span>
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>tibble</span>(
+  <span class='kw'>taxonID</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1008955</span>, <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>2493598</span>, <span class='fl'>3</span>)),
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>2009</span>, <span class='fl'>2018</span>), <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>2016</span>, <span class='fl'>2018</span>)),
+  <span class='kw'>obs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span>)
 )
-<span class='co'># Filter by origin</span>
-<span class='fu'>gbif_get_taxa</span>(
-  <span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='st'>"9ff7d317-609b-4c08-bd86-3bc404b77c42"</span>,
-  <span class='kw'>origin</span> <span class='kw'>=</span> <span class='st'>"source"</span>, <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3000</span>
-)
-<span class='fu'>gbif_get_taxa</span>(
-  <span class='kw'>checklist_keys</span> <span class='kw'>=</span> <span class='st'>"9ff7d317-609b-4c08-bd86-3bc404b77c42"</span>,
-  <span class='kw'>origin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"source"</span>, <span class='st'>"denormed_classification"</span>), <span class='kw'>limit</span> <span class='kw'>=</span> <span class='fl'>3000</span>
+<span class='fu'>apply_decision_rules</span>(<span class='no'>df</span>,
+  <span class='kw'>eval_year</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2016</span>, <span class='fl'>2017</span>, <span class='fl'>2018</span>),
+  <span class='kw'>y_var</span> <span class='kw'>=</span> <span class='st'>"obs"</span>,
+  <span class='kw'>taxonKey</span> <span class='kw'>=</span> <span class='st'>"taxonID"</span>,
+  <span class='kw'>year</span> <span class='kw'>=</span> <span class='no'>y</span>
 )
 }</div></pre>
   </div>

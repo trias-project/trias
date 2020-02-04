@@ -79,7 +79,7 @@ about year of introduction is required." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -192,16 +192,17 @@ information about year of introduction. Default: <code>"first_observed"</code>.<
   <span class='st'>"interim/test_data_output_checklist_indicators.tsv"</span>
 )
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='no'>datafile</span>,
-                 <span class='kw'>na</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-                 <span class='kw'>col_types</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/cols.html'>cols</a></span>(
-                   <span class='kw'>.default</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span>(),
-                   <span class='kw'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>nubKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>speciesKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>acceptedKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>last_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>()
-                 ))
+  <span class='kw'>na</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
+  <span class='kw'>col_types</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/cols.html'>cols</a></span>(
+    <span class='kw'>.default</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span>(),
+    <span class='kw'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>nubKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>speciesKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>acceptedKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>last_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>()
+  )
+)
 <span class='no'>start_year_plot</span> <span class='kw'>&lt;-</span> <span class='fl'>1900</span>
 <span class='no'>x_major_scale_stepsize</span> <span class='kw'>&lt;-</span> <span class='fl'>25</span>
 <span class='no'>x_minor_scale_stepsize</span> <span class='kw'>&lt;-</span> <span class='fl'>5</span>

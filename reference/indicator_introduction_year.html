@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -191,26 +191,30 @@ information about year of introduction. Default: <code>first_observed</code>.</p
   <span class='st'>"interim/test_data_output_checklist_indicators.tsv"</span>
 )
 <span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='no'>datafile</span>,
-                 <span class='kw'>na</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
-                 <span class='kw'>col_types</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/cols.html'>cols</a></span>(
-                   <span class='kw'>.default</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span>(),
-                   <span class='kw'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>nubKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>speciesKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>acceptedKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-                   <span class='kw'>last_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>()
-                 ))
+  <span class='kw'>na</span> <span class='kw'>=</span> <span class='st'>"NA"</span>,
+  <span class='kw'>col_types</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/cols.html'>cols</a></span>(
+    <span class='kw'>.default</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span>(),
+    <span class='kw'>key</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>nubKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>speciesKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>acceptedKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
+    <span class='kw'>last_observed</span> <span class='kw'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>()
+  )
+)
 <span class='co'># without facets</span>
 <span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>)
 <span class='co'># specify start year and smoother parameter</span>
-<span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>, <span class='kw'>start_year_plot</span> <span class='kw'>=</span> <span class='fl'>1940</span>,
-                            <span class='kw'>smooth_span</span> <span class='kw'>=</span> <span class='fl'>0.6</span>)
+<span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>,
+  <span class='kw'>start_year_plot</span> <span class='kw'>=</span> <span class='fl'>1940</span>,
+  <span class='kw'>smooth_span</span> <span class='kw'>=</span> <span class='fl'>0.6</span>
+)
 <span class='co'># with facets</span>
 <span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>, <span class='kw'>facet_column</span> <span class='kw'>=</span> <span class='st'>"kingdom"</span>)
 <span class='co'># specifiy columns with year of first observed</span>
 <span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>,
-                            <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>)
+  <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>
+)
 <span class='co'># specify axis labels</span>
 <span class='fu'>indicator_introduction_year</span>(<span class='no'>data</span>, <span class='kw'>x_lab</span> <span class='kw'>=</span> <span class='st'>"YEAR"</span>, <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 }</div></pre>

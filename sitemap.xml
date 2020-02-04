@@ -7,6 +7,12 @@
     <loc>https://trias-project.github.io/trias/reference/GBIF_distr_terms.html</loc>
   </url>
   <url>
+    <loc>https://trias-project.github.io/trias/reference/apply_decision_rules.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/apply_gam.html</loc>
+  </url>
+  <url>
     <loc>https://trias-project.github.io/trias/reference/gbif_get_taxa.html</loc>
   </url>
   <url>
@@ -25,7 +31,7 @@
     <loc>https://trias-project.github.io/trias/reference/indicator_total_year.html</loc>
   </url>
   <url>
-    <loc>https://trias-project.github.io/trias/reference/spread_with_multiple_values.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/plot_ribbon_em.html</loc>
   </url>
   <url>
     <loc>https://trias-project.github.io/trias/reference/update_download_list.html</loc>
