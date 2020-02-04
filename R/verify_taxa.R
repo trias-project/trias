@@ -97,9 +97,9 @@
 #'
 #' @export
 #' @importFrom assertthat assert_that is.date
-#' @importFrom dplyr desc filter filter_at select distinct mutate rename rename_at
-#'   arrange bind_rows inner_join anti_join left_join right_join %>% pull vars
-#'   as_tibble group_by count starts_with all_vars any_vars
+#' @importFrom dplyr desc filter filter_at select distinct mutate rename
+#'   rename_at arrange bind_rows inner_join anti_join left_join right_join %>%
+#'   pull vars as_tibble group_by count starts_with all_vars any_vars funs
 #' @importFrom stringr str_remove str_split
 #' @importFrom tidyselect one_of ends_with
 #' @importFrom tibble tibble
@@ -532,7 +532,7 @@
 #'     FALSE
 #'   ),
 #'   stringsAsFactors = FALSE
-#'   )
+#' )
 #'
 #' # output
 #' verify_taxa(taxa = my_taxa, verification = my_verification)
@@ -545,7 +545,7 @@
 #'     my_taxa,
 #'     checklist = datasetKey,
 #'     scientific_names = scientificName
-#' )
+#'   )
 #'
 #' my_verification_other_colnames <-
 #'   rename(
@@ -554,7 +554,7 @@
 #'     backbone_accepted_names = bb_acceptedName,
 #'     is_outdated = outdated,
 #'     author_verification = verifiedBy
-#' )
+#'   )
 #'
 #' # output
 #' verify_taxa(
@@ -1156,10 +1156,12 @@ verify_taxa <- function(taxa,
         select(.data$bb_key, .data$bb_acceptedKey, .data$bb_scientificName)),
       by = c("bb_key", "bb_acceptedKey")
       ) %>%
-      select(.data$bb_key,
-             .data$bb_acceptedKey,
-             .data$bb_scientificName,
-             .data$n) %>%
+      select(
+        .data$bb_key,
+        .data$bb_acceptedKey,
+        .data$bb_scientificName,
+        .data$n
+      ) %>%
       arrange(desc(.data$n)) %>%
       ungroup()
   } else {

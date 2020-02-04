@@ -84,28 +84,28 @@ names as specified above in \code{verification}.}
 }
 \value{
 list. List with three objects: \itemize{ \item{\code{taxa}: df.
-  Provided dataframe with additional column \code{verificationKey}.}
-  \item{\code{verification}: df. New or updated dataframe with verification
-  information.} \item{\code{info}: list. Dataframes with ancillary
-  information regarding changes to the verification. \itemize{
-  \item{\code{new_synonyms}: df. Subset of \code{verification} with synonym
-  taxa found in \code{taxa} but not in provided \code{verification}).}
-  \item{\code{new_unmatched_taxa}: df. Subset of \code{verification} with
-  unmatched taxa found in \code{taxa} but not in provided
-  \code{verification}).} \item{\code{outdated_synonyms}: df. Subset of
-  \code{verification} with synonyms found in provided \code{verification} but
-  not in \code{taxa}.} \item{\code{outdated_unmatched_taxa}: df. Subset of
-  \code{verification} with unmatched taxa found in provided
-  \code{verification} but not in \code{taxa}.}
-  \item{\code{updated_bb_scientificName}: df. \code{bb_scientificName}s in
-  provided \code{verification} that were updated
-  \code{updated_bb_scientificName} in the backbone since.}
-  \item{\code{updated_bb_acceptedName}: df. \code{bb_acceptedName}s in
-  provided \code{verification} that were updated
-  \code{updated_bb_acceptedName} in the backbone since.}
-  \item{\code{duplicates}: df. Taxa present in more than one checklist.}
-  \item{\code{check_verificationKey}: df. Check if provided
-  \code{verificationKey}s can be found in backbone.} }} }
+Provided dataframe with additional column \code{verificationKey}.}
+\item{\code{verification}: df. New or updated dataframe with verification
+information.} \item{\code{info}: list. Dataframes with ancillary
+information regarding changes to the verification. \itemize{
+\item{\code{new_synonyms}: df. Subset of \code{verification} with synonym
+taxa found in \code{taxa} but not in provided \code{verification}).}
+\item{\code{new_unmatched_taxa}: df. Subset of \code{verification} with
+unmatched taxa found in \code{taxa} but not in provided
+\code{verification}).} \item{\code{outdated_synonyms}: df. Subset of
+\code{verification} with synonyms found in provided \code{verification} but
+not in \code{taxa}.} \item{\code{outdated_unmatched_taxa}: df. Subset of
+\code{verification} with unmatched taxa found in provided
+\code{verification} but not in \code{taxa}.}
+\item{\code{updated_bb_scientificName}: df. \code{bb_scientificName}s in
+provided \code{verification} that were updated
+\code{updated_bb_scientificName} in the backbone since.}
+\item{\code{updated_bb_acceptedName}: df. \code{bb_acceptedName}s in
+provided \code{verification} that were updated
+\code{updated_bb_acceptedName} in the backbone since.}
+\item{\code{duplicates}: df. Taxa present in more than one checklist.}
+\item{\code{check_verificationKey}: df. Check if provided
+\code{verificationKey}s can be found in backbone.} }} }
 }
 \description{
 Verify taxa that the \href{https://doi.org/10.15468/39omei}{GBIF Backbone
@@ -554,7 +554,7 @@ my_verification <- data.frame(
     FALSE
   ),
   stringsAsFactors = FALSE
-  )
+)
 
 # output
 verify_taxa(taxa = my_taxa, verification = my_verification)
@@ -567,7 +567,7 @@ my_taxa_other_colnames <-
     my_taxa,
     checklist = datasetKey,
     scientific_names = scientificName
-)
+  )
 
 my_verification_other_colnames <-
   rename(
@@ -576,7 +576,7 @@ my_verification_other_colnames <-
     backbone_accepted_names = bb_acceptedName,
     is_outdated = outdated,
     author_verification = verifiedBy
-)
+  )
 
 # output
 verify_taxa(

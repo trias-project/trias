@@ -15,30 +15,42 @@
 #' in the checklist_keys (if string) or any of the checklist_keys (if vector)
 #' @return A data.frame with all returned attributes for any taxa
 #' @examples
+#' \dontrun{
 #' # A single numeric taxon_keys
 #' gbif_get_taxa(taxon_keys = 1)
 #' # A single character taxon_keys
 #' gbif_get_taxa(taxon_keys = "1")
 #' # Multiple numeric taxon_keys (vector)
-#' gbif_get_taxa(taxon_keys = c(1,2,3,4,5,6))
+#' gbif_get_taxa(taxon_keys = c(1, 2, 3, 4, 5, 6))
 #' # Multiple character taxon_keys (vector)
-#' gbif_get_taxa(taxon_keys = c("1","2","3","4","5","6"))
+#' gbif_get_taxa(taxon_keys = c("1", "2", "3", "4", "5", "6"))
 #' # Limit number of taxa (coupled with taxon_keys)
-#' gbif_get_taxa(taxon_keys = c(1,2,3,4,5,6), limit = 3)
+#' gbif_get_taxa(taxon_keys = c(1, 2, 3, 4, 5, 6), limit = 3)
 #' # A single checklist_keys (character)
 #' gbif_get_taxa(checklist_keys = "b3fa7329-a002-4243-a7a7-cd066092c9a6")
 #' # Multiple checklist_keys (vector)
-#' gbif_get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
-#'                             "b3fa7329-a002-4243-a7a7-cd066092c9a6"))
+#' gbif_get_taxa(checklist_keys = c(
+#'   "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#'   "b3fa7329-a002-4243-a7a7-cd066092c9a6"
+#' ))
 #' # Limit number of taxa (coupled with checklist_keys)
-#' gbif_get_taxa(checklist_keys = c("e4746398-f7c4-47a1-a474-ae80a4f18e92",
-#'                             "b3fa7329-a002-4243-a7a7-cd066092c9a6"),
-#'          limit = 30)
+#' gbif_get_taxa(
+#'   checklist_keys = c(
+#'     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#'     "b3fa7329-a002-4243-a7a7-cd066092c9a6"
+#'   ),
+#'   limit = 30
+#' )
 #' # Filter by origin
-#' gbif_get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-#'          origin = "source", limit = 3000)
-#' gbif_get_taxa(checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-#'          origin = c("source" ,"denormed_classification"), limit = 3000)
+#' gbif_get_taxa(
+#'   checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'   origin = "source", limit = 3000
+#' )
+#' gbif_get_taxa(
+#'   checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#'   origin = c("source", "denormed_classification"), limit = 3000
+#' )
+#' }
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage name_lookup
@@ -124,7 +136,7 @@ gbif_get_taxa <- function(
     taxon_keys <- as.integer(taxon_keys[1:maxlimit])
     taxon_keys_df <- as.data.frame(taxon_keys)
     taxon_taxa <- map_dfr(
-      taxon_keys_df$taxon_keys, ~name_usage(key = ., return = "data")
+      taxon_keys_df$taxon_keys, ~ name_usage(key = ., return = "data")
     )
     taxon_taxa <- taxon_taxa %>%
       ungroup() %>%
@@ -135,7 +147,9 @@ gbif_get_taxa <- function(
 
     # GBIF Backbone matching
     number_key <- nrow(taxon_taxa)
-    number_no_nubkey <- taxon_taxa %>% filter(is.na(.data$nubKey)) %>% nrow()
+    number_no_nubkey <- taxon_taxa %>%
+      filter(is.na(.data$nubKey)) %>%
+      nrow()
   }
 
   # working with checklist_keys
@@ -146,27 +160,29 @@ gbif_get_taxa <- function(
     } else {
       maxlimit <- limit
     }
-    
+
     checklist_keys <- as.character(checklist_keys)
-    
+
     if (!is.null(origin)) {
-      checklist_taxa <- 
+      checklist_taxa <-
         map_dfr(
-          checklist_keys, ~name_lookup(
+          checklist_keys, ~ name_lookup(
             datasetKey = .,
             origin = origins,
             limit = maxlimit,
             return = "data"
-        ))
-    } else {
-      checklist_taxa <- 
-        map_dfr(checklist_keys, ~name_lookup(datasetKey = .,
-                                             limit = maxlimit,
-                                             return = "data")
+          )
         )
+    } else {
+      checklist_taxa <-
+        map_dfr(checklist_keys, ~ name_lookup(
+          datasetKey = .,
+          limit = maxlimit,
+          return = "data"
+        ))
     }
 
-    checklist_taxa <- 
+    checklist_taxa <-
       checklist_taxa %>%
       ungroup() %>%
       mutate(origin = str_to_lower(.data$origin))
@@ -182,9 +198,9 @@ gbif_get_taxa <- function(
 
     # GBIF Backbone matching
     number_key <- nrow(checklist_taxa)
-    number_no_nubkey <- 
-      checklist_taxa %>% 
-      filter(is.na(.data$nubKey)) %>% 
+    number_no_nubkey <-
+      checklist_taxa %>%
+      filter(is.na(.data$nubKey)) %>%
       nrow()
   }
 

@@ -29,7 +29,7 @@ keys2 <- data.frame(
 keys3 <- keys1
 names(keys3) <- purrr::map_chr(
   c(1:length(keys3)),
-  ~paste(sample(c(0:9, letters, LETTERS), 3),
+  ~ paste(sample(c(0:9, letters, LETTERS), 3),
     collapse = ""
   )
 )

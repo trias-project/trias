@@ -1,6 +1,6 @@
 Package: trias
 Title: Process Data for the Project Tracking Invasive Alien Species (TrIAS)
-Version: 0.1.0
+Version: 1.0.0.9000
 Description: TrIAS provides functionality to facilitate the data processing 
     for the project Tracking Invasive Alien Species (TrIAS 
     <http://trias-project.be>).
@@ -19,9 +19,11 @@ Imports:
     assertable,
     dplyr,
     egg,
+    gratia,
     ggplot2,
     lazyeval,
     magrittr,
+    mgcv,
     purrr,
     readr,
     rgbif,
@@ -38,4 +40,5 @@ Remotes:
 LazyData: true
 Encoding: UTF-8
 VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1

@@ -249,15 +249,15 @@ testthat::test_that("Use with 'n_species'", {
   )
   expect_true(all(purrr::map_lgl(
     pathways_n_species_10$examples,
-    ~length(str_split(., ",")) <= 10
+    ~ length(str_split(., ",")) <= 10
   )))
   expect_true(all(purrr::map_lgl(
     pathways_n_species_1$examples,
-    ~length(str_split(., ",")) == 1
+    ~ length(str_split(., ",")) == 1
   )))
   expect_true(all(purrr::map_lgl(
     pathways_n_species_3_large_df$examples,
-    ~length(str_split(., ",")) <= 3
+    ~ length(str_split(., ",")) <= 3
   )))
 })
 
@@ -279,7 +279,7 @@ testthat::test_that("Use with 'species_names'", {
   scientific_names <- pathways_scientificName %>% pull(examples)
   expect_true(all(purrr::map_lgl(
     scientific_names,
-    ~. %in% input_test_df$scientificName
+    ~ . %in% input_test_df$scientificName
   )))
   expect_equal(pathways_species, pathways_other)
 })

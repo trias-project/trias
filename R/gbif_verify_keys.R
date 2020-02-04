@@ -32,21 +32,28 @@
 #'   (\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
 #' @examples
 #' # input is a vector
-#' keys1 = c("12323785387253", # invalid GBIF taxonKey
-#'           "128545334", # valid taxonKey, not a GBIF Backbone key
-#'           "1000693", # a GBIF Backbone key, synonym
-#'           "1000310", # a GBIF Backbone key, accepted
-#'           NA, NA)
+#' keys1 <- c(
+#'   "12323785387253", # invalid GBIF taxonKey
+#'   "128545334", # valid taxonKey, not a GBIF Backbone key
+#'   "1000693", # a GBIF Backbone key, synonym
+#'   "1000310", # a GBIF Backbone key, accepted
+#'   NA, NA
+#' )
 #' # input is a df
-#' keys2 <- data.frame(keys = keys1,
-#'                     other_col = sample.int(40, size = length(keys1)),
-#'                     stringsAsFactors = FALSE)
+#' keys2 <- data.frame(
+#'   keys = keys1,
+#'   other_col = sample.int(40, size = length(keys1)),
+#'   stringsAsFactors = FALSE
+#' )
 #' # input is a named list
 #' keys3 <- keys1
 #' library(purrr)
-#' names(keys3) <- purrr::map_chr(c(1:length(keys3)),
-#'                                ~paste(sample(c(0:9, letters, LETTERS),3),
-#'                                       collapse=""))
+#' names(keys3) <- purrr::map_chr(
+#'   c(1:length(keys3)),
+#'   ~ paste(sample(c(0:9, letters, LETTERS), 3),
+#'     collapse = ""
+#'   )
+#' )
 #' # input keys are numeric
 #' keys4 <- as.numeric(keys1)
 #'
@@ -54,7 +61,6 @@
 #' gbif_verify_keys(keys2, col_keys = "keys")
 #' gbif_verify_keys(keys3)
 #' gbif_verify_keys(keys4)
-#'
 #' @export
 #'
 #' @importFrom assertthat assert_that
@@ -107,13 +113,13 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   names(keys) <- as.character(keys)
   gbif_info <-
     keys %>%
-    map(~tryCatch(name_usage(., return = "data")[1, ],
+    map(~ tryCatch(name_usage(., return = "data")[1, ],
       error = function(e) {
         print(paste("Key", ., "is an invalid GBIF taxon key."))
       }
     ))
   check_keys <-
-    map_df(gbif_info, ~is.character(.) == FALSE)
+    map_df(gbif_info, ~ is.character(.) == FALSE)
   check_keys <-
     check_keys %>%
     gather(key = key, value = is_taxonKey) %>%
