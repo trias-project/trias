@@ -188,12 +188,12 @@ get_table_pathways <- function(df,
     filtered_data %>%
     # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
     mutate(pathway_level1 = ifelse(!is.na(.data$pathway_level1),
-      pathway_level1,
+      .data$pathway_level1,
       "unknown"
     )) %>%
     mutate(pathway_level2 = ifelse(.data$pathway_level1 != "unknown" &
       !is.na(.data$pathway_level2),
-    pathway_level2,
+    .data$pathway_level2,
     ""
     ))
   # Create groups based on pathway level1 and level2
@@ -257,7 +257,7 @@ get_table_pathways <- function(df,
     left_join(samples,
       by = c("pathway_level1", "pathway_level2")
     ) %>%
-    select(-size_sample) %>%
+    select(-.data$size_sample) %>%
     ungroup()
 
   pathway_data
