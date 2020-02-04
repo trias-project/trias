@@ -637,6 +637,7 @@ apply_gam <- function(df,
 #'   geom_line scale_colour_manual theme aes
 #' @importFrom dplyr case_when %>%
 #' @importFrom rlang .data
+#' @importFrom grDevices grey
 plot_ribbon_em <- function(df_plot,
                            x_axis = "year",
                            y_axis = "obs",
