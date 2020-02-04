@@ -112,7 +112,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     unnest(.data$year)
 
   maxDate <- max(df_extended$year)
-  top_graph <- ggplot(df_extended, aes(x = year)) +
+  top_graph <- ggplot(df_extended, aes(x = .data$year)) +
     geom_line(stat = "count") +
     xlab(x_lab) +
     ylab(y_lab) +
