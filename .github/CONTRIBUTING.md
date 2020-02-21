@@ -9,7 +9,7 @@ trias is an open source project, maintained by people who care. We are not direc
 [new_issue]: https://github.com/trias-project/trias/issues/new
 [website]: https://trias-project.github.io/trias
 [citation]: https://trias-project.github.io/trias/authors.html
-[email]: damiano.oldoni@inbo.be
+[email]: mailto:damiano.oldoni@inbo.be
 
 ## Code of conduct
 
