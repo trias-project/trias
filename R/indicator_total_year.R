@@ -31,7 +31,7 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
-#' @importFrom dplyr distinct_ %>% filter rowwise do bind_cols group_by count
+#' @importFrom dplyr %>% filter rowwise do bind_cols group_by count
 #'   ungroup rename_at distinct .data syms
 #' @importFrom tidyr unnest
 #' @importFrom rlang !!!
