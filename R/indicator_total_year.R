@@ -31,10 +31,11 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
-#' @importFrom dplyr distinct_ %>% filter rowwise do bind_cols group_by_ count
-#'   ungroup rename_at distinct
+#' @importFrom dplyr distinct_ %>% filter rowwise do bind_cols group_by count
+#'   ungroup rename_at distinct .data syms
 #' @importFrom tidyr unnest
 #' @importFrom rlang .data
+#' @importFrom rlang !!!
 #' @importFrom ggplot2 ggplot geom_line aes xlab ylab scale_x_continuous
 #'   facet_wrap
 #' @importFrom egg ggarrange
@@ -185,7 +186,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     # calculate numbers
     counts_ias_grouped <-
       df_extended %>%
-      group_by_("year", facet_column) %>%
+      group_by(!!!syms(c("year", facet_column))) %>%
       count() %>%
       ungroup()
     
