@@ -35,7 +35,6 @@
 #' @importFrom assertable assert_colnames
 #' @importFrom stringr str_c
 #' @importFrom purrr pmap_dfr
-#'
 #' @examples
 #' \dontrun{
 #' library(readr)
