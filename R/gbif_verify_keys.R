@@ -64,10 +64,10 @@
 #' @export
 #'
 #' @importFrom assertthat assert_that
-#' @importFrom dplyr pull mutate filter left_join full_join select
+#' @importFrom dplyr pull mutate filter left_join full_join select .data
 #' @importFrom purrr reduce map_df
 #' @importFrom rgbif name_usage
-#' @importFrom rlang !! .data
+#' @importFrom rlang !!
 #' @importFrom tidyr gather
 #' @importFrom tidyselect vars_pull enquo
 gbif_verify_keys <- function(keys, col_keys = "key") {
