@@ -10,6 +10,11 @@
 #' country (and its synoynym: countryCode), status (and its synonym:
 #' occurrenceStatus) and establishmentMeans.
 #' @return a logical, TRUE or FALSE.
+#' @export
+#' @importFrom assertthat assert_that
+#' @importFrom rgbif name_usage
+#' @importFrom dplyr select %>% intersect distinct_ mutate_all
+#' @importFrom purrr map cross_df
 #' @examples
 #' # numeric taxonKey, atomic parameters
 #' gbif_has_distribution(145953242,
@@ -37,13 +42,6 @@
 #'   status = "PRESENT",
 #'   establishmentMeans = "InTrOdUcEd"
 #' )
-#' @export
-#'
-#' @importFrom assertthat assert_that
-#' @importFrom rgbif name_usage
-#' @importFrom dplyr select %>% intersect distinct_ mutate_all
-#' @importFrom purrr map cross_df
-
 gbif_has_distribution <- function(taxon_key, ...) {
   # df with all possible combinations of user's distribution properties values
   user_properties <- list(...)
