@@ -17,6 +17,8 @@
 #'   \code{"class"}, \code{"phylum"}, \code{"kingdom"}, \code{"pathway_level1"},
 #'   \code{"locality"}, \code{"native_range"} or  \code{"habitat"}. Default:
 #'   NULL.
+#' @param taxon_key_col character. Name of the column of \code{df} containing
+#'   unique taxon IDs. Default: \code{key}.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{first_observed}.
 #' @param x_lab NULL or character. to set or remove the x-axis label.
@@ -28,6 +30,7 @@
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
 #' @importFrom dplyr %>% filter group_by group_by_ count ungroup rename_at
+#'   distinct
 #' @importFrom ggplot2 geom_point aes xlab ylab scale_x_continuous facet_wrap
 #'   geom_smooth
 #' @importFrom rlang .data
@@ -73,23 +76,44 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
                                         x_major_scale_stepsize = 10,
                                         x_minor_scale_stepsize = 5,
                                         facet_column = NULL,
+                                        taxon_key_col = "key",
                                         first_observed = "first_observed",
                                         x_lab = "Year",
                                         y_lab = "Number of introduced alien species") {
   # initial input checks
   assert_that(is.data.frame(df))
-  assert_colnames(df, c(first_observed), only_colnames = FALSE)
+  assert_colnames(df, facet_column, only_colnames = FALSE)
+  assert_colnames(df, first_observed, only_colnames = FALSE)
 
-  # rename to default column name
+  # check for valid facet options
+  valid_facet_options <- c(
+    "family", "order", "class", "phylum",
+    "kingdom", "pathway_level1", "locality",
+    "native_range", "habitat"
+  )
+  facet_column <- match.arg(facet_column, valid_facet_options)
+
+  # Rename to default column name
   df <-
     df %>%
     rename_at(vars(first_observed), ~"first_observed")
 
-  # first filtering of the incoming data
+  # Filter the incoming data
   data <-
     df %>%
     filter(!is.na(.data$first_observed)) %>%
     filter(.data$first_observed > start_year_plot)
+
+  # Distinct values in columns of interest
+  if (is.null(facet_column)) {
+    data <-
+      data %>%
+      distinct(.data$key, .data$first_observed)
+  } else {
+    data <-
+      data %>%
+      distinct(.data$key, .data$first_observed, .data[[facet_column]])
+  }
 
   data_top_graph <-
     data %>%
@@ -127,14 +151,6 @@ indicator_introduction_year <- function(df, start_year_plot = 1920,
   if (is.null(facet_column)) {
     return(top_graph)
   } else {
-    # check for valid facet options
-    valid_facet_options <- c(
-      "family", "order", "class", "phylum",
-      "kingdom", "pathway_level1", "locality",
-      "native_range", "habitat"
-    )
-    facet_column <- match.arg(facet_column, valid_facet_options)
-
     data_facet_graph <- data %>%
       group_by_("first_observed", facet_column) %>%
       count() %>%

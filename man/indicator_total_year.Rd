@@ -10,14 +10,15 @@ indicator_total_year(
   x_major_scale_stepsize = 10,
   x_minor_scale_stepsize = 5,
   facet_column = NULL,
+  taxon_key_col = "key",
   first_observed = "first_observed",
   x_lab = "Year",
   y_lab = "Cumulative number of alien species"
 )
 }
 \arguments{
-\item{df}{df. Contains the data as produced by the Trias pipeline,
-with minimal columns.}
+\item{df}{df. Contains the data as produced by the Trias pipeline, with
+minimal columns.}
 
 \item{start_year_plot}{integer. Limit to use as start year of the plot. For
 scientific usage, the entire period could be relevant, but for policy
@@ -34,8 +35,11 @@ additional facet wrap plots underneath the main graph. When NULL, no facet
 graph is included. It is typically one of the highest taxonomic ranks, e.g.
 \code{"kingdom"}, \code{"phylum"}, \code{"class"}, \code{"order"},
 \code{"family"}. Other typical breakwdowns could be geographically related,
-e.g. \code{"country"}, \code{"locality"}, \code{"pathway"} of
-introduction or \code{"habitat"}.}
+e.g. \code{"country"}, \code{"locality"}, \code{"pathway"} of introduction
+or \code{"habitat"}.}
+
+\item{taxon_key_col}{character. Name of the column of \code{df} containing
+unique taxon IDs. Default: \code{key}.}
 
 \item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{"first_observed"}.}
@@ -48,9 +52,9 @@ information about year of introduction. Default: \code{"first_observed"}.}
 ggplot2 object (or egg object if facets are used).
 }
 \description{
-This function calculates the cumulative number of taxa introduced per
-year. To do this, a column of input dataframe containing temporal information
-about year of introduction is required.
+This function calculates the cumulative number of taxa introduced per year.
+To do this, a column of input dataframe containing temporal information about
+year of introduction is required.
 }
 \examples{
 \dontrun{
