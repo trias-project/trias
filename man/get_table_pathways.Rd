@@ -4,10 +4,16 @@
 \alias{get_table_pathways}
 \title{Pathway count indicator table}
 \usage{
-get_table_pathways(df, category = NULL, from = NULL, n_species = 5,
-  kingdom_names = "kingdom", phylum_names = "phylum",
+get_table_pathways(
+  df,
+  category = NULL,
+  from = NULL,
+  n_species = 5,
+  kingdom_names = "kingdom",
+  phylum_names = "phylum",
   year_introduction = "first_observed",
-  species_names = "canonicalName")
+  species_names = "canonicalName"
+)
 }
 \arguments{
 \item{df}{df.}
@@ -54,13 +60,24 @@ limit year).
 library(readr)
 datafile <- paste0(
   "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
-  "output/data_input_checklist_indicators.tsv"
+  "interim/data_input_checklist_indicators.tsv"
 )
-data <- read_tsv(datafile)
+data <- read_tsv(datafile,
+  na = "NA",
+  col_types = cols(
+    .default = col_character(),
+    key = col_double(),
+    nubKey = col_double(),
+    speciesKey = col_double(),
+    acceptedKey = col_double(),
+    first_observed = col_double(),
+    last_observed = col_double()
+  )
+)
 get_table_pathways(data)
 # Specify kingdom
 get_table_pathways(data, "Plantae")
-# with special categoeries, `Chordata` or `not Chordata`
+# with special categories, `Chordata` or `not Chordata`
 get_table_pathways(data, "Chordata")
 get_table_pathways(data, "Not Chordata")
 # From 2000

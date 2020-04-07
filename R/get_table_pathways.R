@@ -42,13 +42,24 @@
 #' library(readr)
 #' datafile <- paste0(
 #'   "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
-#'   "output/data_input_checklist_indicators.tsv"
+#'   "interim/data_input_checklist_indicators.tsv"
 #' )
-#' data <- read_tsv(datafile)
+#' data <- read_tsv(datafile,
+#'   na = "NA",
+#'   col_types = cols(
+#'     .default = col_character(),
+#'     key = col_double(),
+#'     nubKey = col_double(),
+#'     speciesKey = col_double(),
+#'     acceptedKey = col_double(),
+#'     first_observed = col_double(),
+#'     last_observed = col_double()
+#'   )
+#' )
 #' get_table_pathways(data)
 #' # Specify kingdom
 #' get_table_pathways(data, "Plantae")
-#' # with special categoeries, `Chordata` or `not Chordata`
+#' # with special categories, `Chordata` or `not Chordata`
 #' get_table_pathways(data, "Chordata")
 #' get_table_pathways(data, "Not Chordata")
 #' # From 2000
@@ -103,7 +114,6 @@ get_table_pathways <- function(df,
     )
   }
   assert_colnames(df, kingdom_names, only_colnames = FALSE)
-  assert_colnames(df, species_names, only_colnames = FALSE)
   assert_that(is.character(kingdom_names),
     msg = "Parameter 'kingdom_names' should be a character."
   )

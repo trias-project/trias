@@ -4,8 +4,12 @@
 \alias{update_download_list}
 \title{Update the list with all downloads}
 \usage{
-update_download_list(file, download_to_add, input_checklist,
-  url_doi_base = "https://doi.org/")
+update_download_list(
+  file,
+  download_to_add,
+  input_checklist,
+  url_doi_base = "https://doi.org/"
+)
 }
 \arguments{
 \item{file}{text file containing all occurrence downloads from GBIF.}

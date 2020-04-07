@@ -4,11 +4,17 @@
 \alias{indicator_introduction_year}
 \title{Plot number of new introductions per year.}
 \usage{
-indicator_introduction_year(df, start_year_plot = 1920,
-  smooth_span = 0.85, x_major_scale_stepsize = 10,
-  x_minor_scale_stepsize = 5, facet_column = NULL,
-  first_observed = "first_observed", x_lab = "Year",
-  y_lab = "Number of introduced alien species")
+indicator_introduction_year(
+  df,
+  start_year_plot = 1920,
+  smooth_span = 0.85,
+  x_major_scale_stepsize = 10,
+  x_minor_scale_stepsize = 5,
+  facet_column = NULL,
+  first_observed = "first_observed",
+  x_lab = "Year",
+  y_lab = "Number of introduced alien species"
+)
 }
 \arguments{
 \item{df}{A data frame.}
@@ -49,8 +55,8 @@ Calculate how many new species has been introduced in a year.
 \dontrun{
 library(readr)
 datafile <- paste0(
-  "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
-  "interim/test_data_output_checklist_indicators.tsv"
+  "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
+  "interim/data_input_checklist_indicators.tsv"
 )
 data <- read_tsv(datafile,
   na = "NA",
