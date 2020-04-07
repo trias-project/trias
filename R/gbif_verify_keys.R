@@ -64,12 +64,12 @@
 #' @export
 #'
 #' @importFrom assertthat assert_that
-#' @importFrom dplyr pull mutate filter left_join full_join select .data
+#' @importFrom dplyr pull mutate filter left_join full_join select .data enquo
 #' @importFrom purrr reduce map_df
 #' @importFrom rgbif name_usage
 #' @importFrom rlang !!
 #' @importFrom tidyr gather
-#' @importFrom tidyselect vars_pull enquo
+#' @importFrom tidyselect vars_pull 
 gbif_verify_keys <- function(keys, col_keys = "key") {
   assert_that(is.data.frame(keys) | is.vector(keys),
     msg = "keys should be a vector, a named list or a data.frame."

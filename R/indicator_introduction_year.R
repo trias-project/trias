@@ -29,11 +29,11 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
-#' @importFrom dplyr %>% filter group_by group_by_ count ungroup rename_at
-#'   distinct
+#' @importFrom dplyr %>% filter group_by count ungroup rename_at
+#'   distinct .data syms
 #' @importFrom ggplot2 geom_point aes xlab ylab scale_x_continuous facet_wrap
 #'   geom_smooth
-#' @importFrom rlang .data
+#' @importFrom rlang !!!
 #' @importFrom egg ggarrange
 #'
 #' @examples
@@ -197,7 +197,7 @@ indicator_introduction_year <- function(df,
     return(top_graph)
   } else {
     data_facet_graph <- data %>%
-      group_by_("first_observed", facet_column) %>%
+      group_by(!!!syms(c("first_observed", facet_column))) %>%
       count() %>%
       ungroup()
 

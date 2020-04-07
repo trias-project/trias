@@ -34,7 +34,6 @@
 #' @importFrom dplyr distinct_ %>% filter rowwise do bind_cols group_by count
 #'   ungroup rename_at distinct .data syms
 #' @importFrom tidyr unnest
-#' @importFrom rlang .data
 #' @importFrom rlang !!!
 #' @importFrom ggplot2 ggplot geom_line aes xlab ylab scale_x_continuous
 #'   facet_wrap
@@ -65,7 +64,7 @@
 #' # without facets
 #' indicator_total_year(data, start_year_plot, x_major_scale_stepsize)
 #' # with facets
-#' indicator_total_year(data, start_year_plot, facet_column = "phylum")
+#' indicator_total_year(data, start_year_plot, facet_column = "kingdom")
 #' # specify name of column containing year of introduction (first_observed)
 #' indicator_total_year(data, first_observed = "first_observed")
 #' # specify axis labels

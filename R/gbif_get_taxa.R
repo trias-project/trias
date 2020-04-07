@@ -54,8 +54,7 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage name_lookup
-#' @importFrom rlang .data
-#' @importFrom dplyr filter mutate ungroup %>%
+#' @importFrom dplyr filter mutate ungroup %>% .data
 #' @importFrom purrr map_dfr
 #' @importFrom tibble tibble
 #' @importFrom lazyeval interp

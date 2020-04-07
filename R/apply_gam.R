@@ -85,11 +85,11 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr mutate filter select case_when rename left_join full_join
-#'   %>%
+#'   %>% .data sym
 #' @importFrom tidyselect vars_pull enquo
 #' @importFrom tibble as_tibble
 #' @importFrom purrr map2
-#' @importFrom rlang sym !! := .data
+#' @importFrom rlang !! :=
 #' @importFrom stringr str_ends str_sub
 #' @importFrom mgcv nb gam summary.gam
 #' @importFrom stats formula predict
