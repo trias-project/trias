@@ -30,6 +30,14 @@
 #'   If a key didn't pass the first check (\code{is_taxonKey = FALSE}) then
 #'   \code{NA} for other two columns. If a key didn't pass the second check
 #'   (\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
+#' @export
+#' @importFrom assertthat assert_that
+#' @importFrom dplyr pull mutate filter left_join full_join select .data enquo
+#' @importFrom purrr reduce map_df
+#' @importFrom rgbif name_usage
+#' @importFrom rlang !!
+#' @importFrom tidyr gather
+#' @importFrom tidyselect vars_pull
 #' @examples
 #' # input is a vector
 #' keys1 <- c(
@@ -61,15 +69,6 @@
 #' gbif_verify_keys(keys2, col_keys = "keys")
 #' gbif_verify_keys(keys3)
 #' gbif_verify_keys(keys4)
-#' @export
-#'
-#' @importFrom assertthat assert_that
-#' @importFrom dplyr pull mutate filter left_join full_join select .data enquo
-#' @importFrom purrr reduce map_df
-#' @importFrom rgbif name_usage
-#' @importFrom rlang !!
-#' @importFrom tidyr gather
-#' @importFrom tidyselect vars_pull 
 gbif_verify_keys <- function(keys, col_keys = "key") {
   assert_that(is.data.frame(keys) | is.vector(keys),
     msg = "keys should be a vector, a named list or a data.frame."

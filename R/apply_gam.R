@@ -94,7 +94,6 @@
 #' @importFrom mgcv nb gam summary.gam
 #' @importFrom stats formula predict
 #' @importFrom gratia derivatives
-#'
 #' @examples
 #' \dontrun{
 #' df_gam <- tibble(
