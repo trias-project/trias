@@ -30,7 +30,7 @@
 #' @return a data.frame
 #' @export
 #' @importFrom dplyr %>% filter distinct mutate mutate_if group_by count ungroup
-#'   rowwise sample_n pull select rename_at as_tibble
+#'   rowwise sample_n pull select rename_at as_tibble .data
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
 #' @importFrom stringr str_c
