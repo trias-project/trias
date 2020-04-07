@@ -158,13 +158,13 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   }
 
   # Make individual records for each year up to now
+  maxDate <- as.integer(format(Sys.Date(), "%Y"))
   df_extended <- df %>%
     rowwise() %>%
-    do(year = .data$first_observed:as.integer(format(Sys.Date(), "%Y"))) %>%
+    do(year = .data$first_observed:maxDate) %>%
     bind_cols(df) %>%
     unnest(.data$year)
 
-  maxDate <- max(df_extended$year)
   top_graph <- ggplot(df_extended, aes(x = .data$year)) +
     geom_line(stat = "count") +
     xlab(x_lab) +
