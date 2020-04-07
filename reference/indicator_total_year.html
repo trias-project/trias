@@ -47,9 +47,9 @@
 
 
 <meta property="og:title" content="Create cumulative number of alien species indicator plot. — indicator_total_year" />
-<meta property="og:description" content="This function calculates the cumulative number of taxa introduced per
-year. To do this, a column of input dataframe containing temporal information
-about year of introduction is required." />
+<meta property="og:description" content="This function calculates the cumulative number of taxa introduced per year.
+To do this, a column of input dataframe containing temporal information about
+year of introduction is required." />
 <meta property="og:image" content="https://trias-project.github.io/trias/logo.png" />
 
 
@@ -82,7 +82,7 @@ about year of introduction is required." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
       </span>
     </div>
 
@@ -124,9 +124,9 @@ about year of introduction is required." />
     </div>
 
     <div class="ref-description">
-    <p>This function calculates the cumulative number of taxa introduced per
-year. To do this, a column of input dataframe containing temporal information
-about year of introduction is required.</p>
+    <p>This function calculates the cumulative number of taxa introduced per year.
+To do this, a column of input dataframe containing temporal information about
+year of introduction is required.</p>
     </div>
 
     <pre class="usage"><span class='fu'>indicator_total_year</span>(
@@ -135,6 +135,7 @@ about year of introduction is required.</p>
   <span class='kw'>x_major_scale_stepsize</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>x_minor_scale_stepsize</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>facet_column</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>taxon_key_col</span> <span class='kw'>=</span> <span class='st'>"key"</span>,
   <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>,
   <span class='kw'>x_lab</span> <span class='kw'>=</span> <span class='st'>"Year"</span>,
   <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='st'>"Cumulative number of alien species"</span>
@@ -145,8 +146,8 @@ about year of introduction is required.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>df</th>
-      <td><p>df. Contains the data as produced by the Trias pipeline,
-with minimal columns.</p></td>
+      <td><p>df. Contains the data as produced by the Trias pipeline, with
+minimal columns.</p></td>
     </tr>
     <tr>
       <th>start_year_plot</th>
@@ -171,8 +172,13 @@ additional facet wrap plots underneath the main graph. When NULL, no facet
 graph is included. It is typically one of the highest taxonomic ranks, e.g.
 <code>"kingdom"</code>, <code>"phylum"</code>, <code>"class"</code>, <code>"order"</code>,
 <code>"family"</code>. Other typical breakwdowns could be geographically related,
-e.g. <code>"country"</code>, <code>"locality"</code>, <code>"pathway"</code> of
-introduction or <code>"habitat"</code>.</p></td>
+e.g. <code>"country"</code>, <code>"locality"</code>, <code>"pathway"</code> of introduction
+or <code>"habitat"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>taxon_key_col</th>
+      <td><p>character. Name of the column of <code>df</code> containing
+unique taxon IDs. Default: <code>key</code>.</p></td>
     </tr>
     <tr>
       <th>first_observed</th>
@@ -218,7 +224,7 @@ information about year of introduction. Default: <code>"first_observed"</code>.<
 <span class='co'># without facets</span>
 <span class='fu'>indicator_total_year</span>(<span class='no'>data</span>, <span class='no'>start_year_plot</span>, <span class='no'>x_major_scale_stepsize</span>)
 <span class='co'># with facets</span>
-<span class='fu'>indicator_total_year</span>(<span class='no'>data</span>, <span class='no'>start_year_plot</span>, <span class='kw'>facet_column</span> <span class='kw'>=</span> <span class='st'>"phylum"</span>)
+<span class='fu'>indicator_total_year</span>(<span class='no'>data</span>, <span class='no'>start_year_plot</span>, <span class='kw'>facet_column</span> <span class='kw'>=</span> <span class='st'>"kingdom"</span>)
 <span class='co'># specify name of column containing year of introduction (first_observed)</span>
 <span class='fu'>indicator_total_year</span>(<span class='no'>data</span>, <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>)
 <span class='co'># specify axis labels</span>

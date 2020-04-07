@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
       </span>
     </div>
 
@@ -132,6 +132,7 @@
   <span class='kw'>x_major_scale_stepsize</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>x_minor_scale_stepsize</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>facet_column</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>taxon_key_col</span> <span class='kw'>=</span> <span class='st'>"key"</span>,
   <span class='kw'>first_observed</span> <span class='kw'>=</span> <span class='st'>"first_observed"</span>,
   <span class='kw'>x_lab</span> <span class='kw'>=</span> <span class='st'>"Year"</span>,
   <span class='kw'>y_lab</span> <span class='kw'>=</span> <span class='st'>"Number of introduced alien species"</span>
@@ -172,6 +173,11 @@ created. Valid facet options: <code>"family"</code>, <code>"order"</code>,
 <code>"class"</code>, <code>"phylum"</code>, <code>"kingdom"</code>, <code>"pathway_level1"</code>,
 <code>"locality"</code>, <code>"native_range"</code> or  <code>"habitat"</code>. Default:
 NULL.</p></td>
+    </tr>
+    <tr>
+      <th>taxon_key_col</th>
+      <td><p>character. Name of the column of <code>df</code> containing
+unique taxon IDs. Default: <code>key</code>.</p></td>
     </tr>
     <tr>
       <th>first_observed</th>
