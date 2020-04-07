@@ -85,8 +85,8 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr mutate filter select case_when rename left_join full_join
-#'   %>% .data sym
-#' @importFrom tidyselect vars_pull enquo
+#'   %>% .data sym enquo
+#' @importFrom tidyselect vars_pull
 #' @importFrom tibble as_tibble
 #' @importFrom purrr map2
 #' @importFrom rlang !! :=

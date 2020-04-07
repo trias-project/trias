@@ -38,8 +38,8 @@
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr mutate filter select case_when rename %>% summarize pull
 #'   group_by ungroup tally add_tally inner_join anti_join tibble n_distinct n
-#'   .data as_tibble
-#' @importFrom tidyselect vars_pull enquo
+#'   .data as_tibble enquo
+#' @importFrom tidyselect vars_pull 
 #' @importFrom purrr map2 reduce
 #' @importFrom rlang sym !! :=
 #' @importFrom stats median
