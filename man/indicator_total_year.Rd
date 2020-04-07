@@ -81,7 +81,7 @@ x_minor_scale_stepsize <- 5
 # without facets
 indicator_total_year(data, start_year_plot, x_major_scale_stepsize)
 # with facets
-indicator_total_year(data, start_year_plot, facet_column = "phylum")
+indicator_total_year(data, start_year_plot, facet_column = "kingdom")
 # specify name of column containing year of introduction (first_observed)
 indicator_total_year(data, first_observed = "first_observed")
 # specify axis labels
