@@ -121,10 +121,11 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     ))
   }
 
-  # Ignore information without first_observed
+  # Filter the incoming data
   df <-
     df %>%
-    filter(!is.na(.data$first_observed))
+    filter(!is.na(.data$first_observed)) %>%
+    filter(.data$first_observed > start_year_plot)
 
   # Distinct values in columns of interest
   if (is.null(facet_column)) {
