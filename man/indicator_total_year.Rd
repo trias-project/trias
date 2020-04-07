@@ -56,8 +56,8 @@ about year of introduction is required.
 \dontrun{
 library(readr)
 datafile <- paste0(
-  "https://raw.githubusercontent.com/trias-project/pipeline/master/data/",
-  "interim/test_data_output_checklist_indicators.tsv"
+  "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
+  "interim/data_input_checklist_indicators.tsv"
 )
 data <- read_tsv(datafile,
   na = "NA",

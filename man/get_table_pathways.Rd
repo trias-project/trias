@@ -60,9 +60,20 @@ limit year).
 library(readr)
 datafile <- paste0(
   "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
-  "interim/test_data_output_checklist_indicators.tsv"
+  "interim/data_input_checklist_indicators.tsv"
 )
-data <- read_tsv(datafile, na = "", guess_max = 10000)
+data <- read_tsv(datafile,
+  na = "NA",
+  col_types = cols(
+    .default = col_character(),
+    key = col_double(),
+    nubKey = col_double(),
+    speciesKey = col_double(),
+    acceptedKey = col_double(),
+    first_observed = col_double(),
+    last_observed = col_double()
+  )
+)
 get_table_pathways(data)
 # Specify kingdom
 get_table_pathways(data, "Plantae")
