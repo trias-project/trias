@@ -14,6 +14,14 @@
 #' A warning is given if limit is higher than the length of taxon_keys or number of records
 #' in the checklist_keys (if string) or any of the checklist_keys (if vector)
 #' @return A data.frame with all returned attributes for any taxa
+#' @export
+#' @importFrom assertthat assert_that
+#' @importFrom rgbif name_usage name_lookup
+#' @importFrom dplyr filter mutate ungroup %>% .data
+#' @importFrom purrr map_dfr
+#' @importFrom tibble tibble
+#' @importFrom lazyeval interp
+#' @importFrom stringr str_to_lower
 #' @examples
 #' \dontrun{
 #' # A single numeric taxon_keys
@@ -51,16 +59,6 @@
 #'   origin = c("source", "denormed_classification"), limit = 3000
 #' )
 #' }
-#' @export
-#' @importFrom assertthat assert_that
-#' @importFrom rgbif name_usage name_lookup
-#' @importFrom rlang .data
-#' @importFrom dplyr filter mutate ungroup %>%
-#' @importFrom purrr map_dfr
-#' @importFrom tibble tibble
-#' @importFrom lazyeval interp
-#' @importFrom stringr str_to_lower
-
 gbif_get_taxa <- function(
                           taxon_keys = NULL,
                           checklist_keys = NULL,

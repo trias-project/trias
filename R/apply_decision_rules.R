@@ -38,10 +38,10 @@
 #' @importFrom assertthat assert_that
 #' @importFrom dplyr mutate filter select case_when rename %>% summarize pull
 #'   group_by ungroup tally add_tally inner_join anti_join tibble n_distinct n
-#' @importFrom tidyselect vars_pull enquo
-#' @importFrom tibble as_tibble
+#'   .data as_tibble enquo
+#' @importFrom tidyselect vars_pull 
 #' @importFrom purrr map2 reduce
-#' @importFrom rlang sym !! := .data
+#' @importFrom rlang sym !! :=
 #' @importFrom stats median
 #' @examples
 #' \dontrun{
@@ -57,7 +57,7 @@
 #'   year = y
 #' )
 #' }
-#'
+#' 
 apply_decision_rules <- function(df,
                                  y_var = "ncells",
                                  eval_year,

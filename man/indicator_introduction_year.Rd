@@ -11,6 +11,7 @@ indicator_introduction_year(
   x_major_scale_stepsize = 10,
   x_minor_scale_stepsize = 5,
   facet_column = NULL,
+  taxon_key_col = "key",
   first_observed = "first_observed",
   x_lab = "Year",
   y_lab = "Number of introduced alien species"
@@ -37,6 +38,9 @@ created. Valid facet options: \code{"family"}, \code{"order"},
 \code{"class"}, \code{"phylum"}, \code{"kingdom"}, \code{"pathway_level1"},
 \code{"locality"}, \code{"native_range"} or  \code{"habitat"}. Default:
 NULL.}
+
+\item{taxon_key_col}{character. Name of the column of \code{df} containing
+unique taxon IDs. Default: \code{key}.}
 
 \item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{first_observed}.}

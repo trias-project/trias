@@ -99,12 +99,11 @@
 #' @importFrom assertthat assert_that is.date
 #' @importFrom dplyr desc filter filter_at select distinct mutate rename
 #'   rename_at arrange bind_rows inner_join anti_join left_join right_join %>%
-#'   pull vars as_tibble group_by count starts_with all_vars any_vars funs
+#'   pull vars as_tibble group_by count starts_with all_vars any_vars .data
 #' @importFrom stringr str_remove str_split
 #' @importFrom tidyselect one_of ends_with
 #' @importFrom tibble tibble
 #' @importFrom purrr pmap_dfr map2_chr
-#' @importFrom rlang .data
 #' @importFrom rgbif name_usage
 #'
 #' @examples
@@ -914,7 +913,7 @@ verify_taxa <- function(taxa,
         updated_bb_scientificName,
         ends_with(".x")
       ) %>%
-      rename_at(vars(ends_with(".x")), funs(str_remove(., "\\.x")))
+      rename_at(vars(ends_with(".x")), list(~ str_remove(., "\\.x")))
     # Update bb_scientificName of verification
     verification <-
       verification %>%
@@ -974,7 +973,7 @@ verify_taxa <- function(taxa,
         .data$updated_bb_acceptedName,
         ends_with(".x")
       ) %>%
-      rename_at(vars(ends_with(".x")), funs(str_remove(., "\\.x")))
+      rename_at(vars(ends_with(".x")), list(~ str_remove(., "\\.x")))
     # Update bb_acceptedName of verification
     verification <-
       verification %>%

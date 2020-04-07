@@ -1,10 +1,10 @@
 #' Create cumulative number of alien species indicator plot.
 #'
-#' This function calculates the cumulative number of taxa introduced per
-#' year. To do this, a column of input dataframe containing temporal information
-#' about year of introduction is required.
-#' @param df df. Contains the data as produced by the Trias pipeline,
-#'   with minimal columns.
+#' This function calculates the cumulative number of taxa introduced per year.
+#' To do this, a column of input dataframe containing temporal information about
+#' year of introduction is required.
+#' @param df df. Contains the data as produced by the Trias pipeline, with
+#'   minimal columns.
 #' @param start_year_plot integer. Limit to use as start year of the plot. For
 #'   scientific usage, the entire period could be relevant, but for policy
 #'   purpose, focusing on a more recent period could be required.
@@ -17,8 +17,10 @@
 #'   graph is included. It is typically one of the highest taxonomic ranks, e.g.
 #'   \code{"kingdom"}, \code{"phylum"}, \code{"class"}, \code{"order"},
 #'   \code{"family"}. Other typical breakwdowns could be geographically related,
-#'   e.g. \code{"country"}, \code{"locality"}, \code{"pathway"} of
-#'   introduction or \code{"habitat"}.
+#'   e.g. \code{"country"}, \code{"locality"}, \code{"pathway"} of introduction
+#'   or \code{"habitat"}.
+#' @param taxon_key_col character. Name of the column of \code{df} containing
+#'   unique taxon IDs. Default: \code{key}.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{"first_observed"}.
 #' @param x_lab NULL or character. to set or remove the x-axis label.
@@ -29,10 +31,10 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
-#' @importFrom dplyr distinct_ %>% filter rowwise do bind_cols group_by_ count
-#'   ungroup rename_at
+#' @importFrom dplyr %>% filter rowwise do bind_cols group_by count
+#'   ungroup rename_at distinct .data syms
 #' @importFrom tidyr unnest
-#' @importFrom rlang .data
+#' @importFrom rlang !!!
 #' @importFrom ggplot2 ggplot geom_line aes xlab ylab scale_x_continuous
 #'   facet_wrap
 #' @importFrom egg ggarrange
@@ -62,7 +64,7 @@
 #' # without facets
 #' indicator_total_year(data, start_year_plot, x_major_scale_stepsize)
 #' # with facets
-#' indicator_total_year(data, start_year_plot, facet_column = "phylum")
+#' indicator_total_year(data, start_year_plot, facet_column = "kingdom")
 #' # specify name of column containing year of introduction (first_observed)
 #' indicator_total_year(data, first_observed = "first_observed")
 #' # specify axis labels
@@ -72,53 +74,105 @@ indicator_total_year <- function(df, start_year_plot = 1940,
                                  x_major_scale_stepsize = 10,
                                  x_minor_scale_stepsize = 5,
                                  facet_column = NULL,
+                                 taxon_key_col = "key",
                                  first_observed = "first_observed",
                                  x_lab = "Year",
                                  y_lab = "Cumulative number of alien species") {
 
   # initial input checks
   assert_that(is.data.frame(df))
-  assert_that(x_major_scale_stepsize >= x_minor_scale_stepsize)
-  assert_colnames(df, first_observed, only_colnames = FALSE)
+  assert_that(is.numeric(start_year_plot),
+              msg = "Argument start_year_plot has to be a number.")
+  assert_that(start_year_plot < as.integer(format(Sys.Date(), "%Y")),
+              msg = paste("Argument start_year_plot has to be less than",
+                          format(Sys.Date(), "%Y")))
+  assert_that(is.numeric(x_major_scale_stepsize),
+              msg = "Argument x_major_scale_stepsize has to be a number.")
+  assert_that(is.numeric(x_minor_scale_stepsize),
+              msg = "Argument x_minor_scale_stepsize has to be a number.")
+  assert_that(x_major_scale_stepsize >= x_minor_scale_stepsize,
+              msg = paste0("x_major_scale_stepsize should be greater ",
+                           "than x_minor_scale_stepsize."))
+  assert_that(is.null(facet_column) | is.character(facet_column),
+              msg = "Argument facet_column has to be NULL or a character.")
   if (is.character(facet_column)) {
     assert_colnames(df, facet_column, only_colnames = FALSE)
   }
 
+  # check for valid facet options
+  valid_facet_options <- c(
+    "family", "order", "class", "phylum",
+    "kingdom", "pathway_level1", "locality",
+    "native_range", "habitat"
+  )
+  if (!is.null(facet_column)) {
+    facet_column <- match.arg(facet_column, valid_facet_options)
+  } 
+  
+  assert_that(is.character(taxon_key_col), 
+              msg = "Argument taxon_key_col has to be a character.")
+  assert_colnames(df, taxon_key_col, only_colnames = FALSE)
+  assert_that(is.character(first_observed),
+              msg = "Argument first_observed has to be a character.")
+  assert_colnames(df, first_observed, only_colnames = FALSE)
+  
+  assert_that(is.null(x_lab) | is.character(x_lab),
+              msg = "Argument x_lab has to be a character or NULL.")
+  assert_that(is.null(y_lab) | is.character(y_lab),
+              msg = "Argument y_lab has to be a character or NULL.")
   # rename to default column name
   df <-
     df %>%
-    rename_at(vars(first_observed), ~"first_observed")
+    rename_at(vars(first_observed), ~"first_observed") %>%
+    rename_at(vars(taxon_key_col), ~"key")
 
   # Provide warning messages for first_observed NA values
-  if (nrow(filter(df, is.na(first_observed))) > 0) {
+  n_first_observed_not_present <- 
+    df %>%
+    filter(is.na(.data$first_observed)) %>%
+    nrow
+  if (n_first_observed_not_present) {
     warning(paste0(
-      "Some records have no information about year of introduction ",
+      n_first_observed_not_present,
+      " records have no information about year of introduction ",
       "(empty values in column ",
       first_observed,
       ") and are not taken into account.\n"
     ))
   }
 
-  # ignore information without first_observed
+  # Filter the incoming data
   df <-
     df %>%
-    filter(!is.na(.data$first_observed))
+    filter(.data$first_observed > start_year_plot)
+
+  # Distinct values in columns of interest
+  if (is.null(facet_column)) {
+    df <-
+      df %>%
+      distinct(.data$key, .data$first_observed)
+  } else {
+    df <-
+      df %>%
+      distinct(.data$key, .data$first_observed, .data[[facet_column]])
+  }
 
   # Make individual records for each year up to now
+  maxDate <- as.integer(format(Sys.Date(), "%Y"))
   df_extended <- df %>%
     rowwise() %>%
-    do(year = .data$first_observed:as.integer(format(Sys.Date(), "%Y"))) %>%
+    do(year = .data$first_observed:maxDate) %>%
     bind_cols(df) %>%
     unnest(.data$year)
 
-  maxDate <- max(df_extended$year)
   top_graph <- ggplot(df_extended, aes(x = .data$year)) +
     geom_line(stat = "count") +
     xlab(x_lab) +
     ylab(y_lab) +
     scale_x_continuous(
       breaks = seq(
-        start_year_plot, maxDate,
+        start_year_plot,
+        maxDate,
         x_major_scale_stepsize
       ),
       limits = c(start_year_plot, maxDate)
@@ -127,20 +181,14 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   if (is.null(facet_column)) {
     return(top_graph)
   } else {
-    # check for valid facet options
-    valid_facet_options <- c(
-      "family", "order", "class", "phylum",
-      "kingdom", "pathway_level1", "locality",
-      "native_range", "habitat"
-    )
-    facet_column <- match.arg(facet_column, valid_facet_options)
+
     # calculate numbers
     counts_ias_grouped <-
       df_extended %>%
-      group_by_("year", facet_column) %>%
+      group_by(!!!syms(c("year", facet_column))) %>%
       count() %>%
       ungroup()
-
+    
     facet_graph <-
       ggplot(
         counts_ias_grouped,
