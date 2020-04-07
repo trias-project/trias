@@ -81,7 +81,17 @@ indicator_total_year <- function(df, start_year_plot = 1940,
 
   # initial input checks
   assert_that(is.data.frame(df))
+  assert_that(is.numeric(x_major_scale_stepsize),
+              msg = "Argument x_major_scale_stepsize has to be a number.")
+  assert_that(is.numeric(x_minor_scale_stepsize),
+              msg = "Argument x_minor_scale_stepsize has to be a number.")
   assert_that(x_major_scale_stepsize >= x_minor_scale_stepsize)
+  assert_that(is.character(taxon_key_col), 
+              msg = "Argument taxon_key_col has to be a character.")
+  assert_that(is.numeric(first_observed),
+              msg = "Argument first_observed has to be a character.")
+  assert_that(is.null(facet_column) | is.character(facet_column),
+              msg = "Argument facet_column should be NULL or a character.")
   assert_colnames(df, taxon_key_col, only_colnames = FALSE)
   assert_colnames(df, first_observed, only_colnames = FALSE)
   if (is.character(facet_column)) {
