@@ -4,11 +4,24 @@
 \alias{apply_gam}
 \title{Apply GAM to time series and assess emerging status}
 \usage{
-apply_gam(df, y_var, eval_years, year = "year", taxonKey = "taxonKey",
-  type_indicator = "observations", baseline_var = NULL, p_max = 0.1,
-  taxon_key = NULL, name = NULL, df_title = NULL, x_label = "year",
-  y_label = "Observations", saveplot = FALSE, dir_name = NULL,
-  verbose = FALSE)
+apply_gam(
+  df,
+  y_var,
+  eval_years,
+  year = "year",
+  taxonKey = "taxonKey",
+  type_indicator = "observations",
+  baseline_var = NULL,
+  p_max = 0.1,
+  taxon_key = NULL,
+  name = NULL,
+  df_title = NULL,
+  x_label = "year",
+  y_label = "Observations",
+  saveplot = FALSE,
+  dir_name = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{df}{df. A dataframe containing temporal data.}

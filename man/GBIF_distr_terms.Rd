@@ -4,7 +4,9 @@
 \name{GBIF_distr_terms}
 \alias{GBIF_distr_terms}
 \title{Accepted GBIF distribution terms}
-\format{An object of class \code{character} of length 3.}
+\format{
+An object of class \code{character} of length 3.
+}
 \usage{
 GBIF_distr_terms
 }

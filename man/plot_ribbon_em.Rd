@@ -4,8 +4,15 @@
 \alias{plot_ribbon_em}
 \title{Plot time series with confidence limits and emerging status}
 \usage{
-plot_ribbon_em(df_plot, x_axis = "year", y_axis = "obs",
-  x_label = "x", y_label = "y", ptitle = NULL, verbose = FALSE)
+plot_ribbon_em(
+  df_plot,
+  x_axis = "year",
+  y_axis = "obs",
+  x_label = "x",
+  y_label = "y",
+  ptitle = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{df_plot}{df. A data.frame containing data to plot.}

@@ -4,10 +4,16 @@
 \alias{verify_taxa}
 \title{Verify taxa that the GBIF Backbone Taxonomy does not recognize or will lump}
 \usage{
-verify_taxa(taxa, verification = NULL, taxonKey = "taxonKey",
-  scientificName = "scientificName", datasetKey = "datasetKey",
-  bb_key = "bb_key", bb_scientificName = "bb_scientificName",
-  bb_kingdom = "bb_kingdom", bb_rank = "bb_rank",
+verify_taxa(
+  taxa,
+  verification = NULL,
+  taxonKey = "taxonKey",
+  scientificName = "scientificName",
+  datasetKey = "datasetKey",
+  bb_key = "bb_key",
+  bb_scientificName = "bb_scientificName",
+  bb_kingdom = "bb_kingdom",
+  bb_rank = "bb_rank",
   bb_taxonomicStatus = "bb_taxonomicStatus",
   bb_acceptedKey = "bb_acceptedKey",
   bb_acceptedName = "bb_acceptedName",
@@ -28,7 +34,8 @@ verify_taxa(taxa, verification = NULL, taxonKey = "taxonKey",
   verification_remarks = "remarks",
   verification_verifiedBy = "verifiedBy",
   verification_dateAdded = "dateAdded",
-  verification_outdated = "outdated")
+  verification_outdated = "outdated"
+)
 }
 \arguments{
 \item{taxa}{df. Dataframe with at least the following (default) columns for

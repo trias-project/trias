@@ -4,8 +4,13 @@
 \alias{apply_decision_rules}
 \title{Apply decision rules to time series and assess emerging status}
 \usage{
-apply_decision_rules(df, y_var = "ncells", eval_year, year = "year",
-  taxonKey = "taxonKey")
+apply_decision_rules(
+  df,
+  y_var = "ncells",
+  eval_year,
+  year = "year",
+  taxonKey = "taxonKey"
+)
 }
 \arguments{
 \item{df}{df. A dataframe containing temporal data of one or more taxa. The

@@ -4,10 +4,16 @@
 \alias{indicator_total_year}
 \title{Create cumulative number of alien species indicator plot.}
 \usage{
-indicator_total_year(df, start_year_plot = 1940,
-  x_major_scale_stepsize = 10, x_minor_scale_stepsize = 5,
-  facet_column = NULL, first_observed = "first_observed",
-  x_lab = "Year", y_lab = "Cumulative number of alien species")
+indicator_total_year(
+  df,
+  start_year_plot = 1940,
+  x_major_scale_stepsize = 10,
+  x_minor_scale_stepsize = 5,
+  facet_column = NULL,
+  first_observed = "first_observed",
+  x_lab = "Year",
+  y_lab = "Cumulative number of alien species"
+)
 }
 \arguments{
 \item{df}{df. Contains the data as produced by the Trias pipeline,
