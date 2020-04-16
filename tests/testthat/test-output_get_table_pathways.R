@@ -78,7 +78,7 @@ input_test_df_other_name <-
 input_test_df_large <- read.delim(
   paste0("./data_test_pathways/",
          "input_data_pathways.tsv"),
-  sep = "/t"
+  sep = "\t"
 )
 
 # Output basic usage : default values for all params
