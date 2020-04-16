@@ -78,7 +78,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
                                  first_observed = "first_observed",
                                  x_lab = "Year",
                                  y_lab = "Cumulative number of alien species") {
-
+  
   # initial input checks
   assert_that(is.data.frame(df))
   assert_that(is.numeric(start_year_plot),
@@ -144,7 +144,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   # Filter the incoming data
   df <-
     df %>%
-    filter(.data$first_observed > start_year_plot)
+    filter(!is.na(.data$first_observed))
 
   # Distinct values in columns of interest
   if (is.null(facet_column)) {
