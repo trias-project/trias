@@ -142,7 +142,7 @@ get_table_pathways <- function(df,
       )
     )
     assert_that(is.character(first_observed),
-      msg = "Column 'year_of_introduction' should be a character."
+      msg = "Column 'first_observed' should be a character."
     )
     assert_colnames(df, first_observed, only_colnames = FALSE)
   }

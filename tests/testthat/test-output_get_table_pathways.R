@@ -229,7 +229,7 @@ testthat::test_that("Use with 'from'", {
     pathways_2018,
     get_table_pathways(input_test_df_year,
       from = 2018,
-      year_introduction = "first_obs"
+      from = "first_obs"
     )
   )
 })
