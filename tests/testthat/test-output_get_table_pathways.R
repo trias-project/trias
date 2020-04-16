@@ -75,11 +75,10 @@ input_test_df_other_name <-
   input_test_df %>%
   rename(other_name = species)
 # test on large input
-input_test_df_large <- readr::read_tsv(
-  paste0("./data_test_output_get_table_pathways/",
-    "input1_get_table_pathways.tsv",
-    na = ""
-  )
+input_test_df_large <- read.delim(
+  paste0("./data_test_pathways/",
+         "input_data_pathways.tsv"),
+  sep = "/t"
 )
 
 # Output basic usage : default values for all params
