@@ -21,7 +21,7 @@
 #' @param phylum_names character. Name of the column of \code{df} containing
 #'   information about phylum. This parameter is used only if \code{category} is
 #'   one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default: \code{"phylum"}.
-#' @param year_introduction character. Name of the column of \code{df}
+#' @param first_observed character. Name of the column of \code{df}
 #'   containing information about year of introduction. Default:
 #'   \code{"first_observed"}.
 #' @param species_names character. Name of the column of \code{df} containing
@@ -61,7 +61,7 @@
 #' get_table_pathways(data, "Chordata")
 #' get_table_pathways(data, "Not Chordata")
 #' # From 2000
-#' get_table_pathways(data, from = 2000, year_introduction = "first_observed")
+#' get_table_pathways(data, from = 2000, first_observed = "first_observed")
 #' # Specify number of species to include in examples
 #' get_table_pathways(data, "Plantae", n_species = 8)
 #' # Specify columns containing kingdom and species names
@@ -78,7 +78,7 @@ get_table_pathways <- function(df,
                                n_species = 5,
                                kingdom_names = "kingdom",
                                phylum_names = "phylum",
-                               year_introduction = "first_observed",
+                               first_observed = "first_observed",
                                species_names = "canonicalName") {
   categories <- c(
     "Plantae",
@@ -141,10 +141,10 @@ get_table_pathways <- function(df,
         substr(Sys.Date(), start = 1, stop = 4)
       )
     )
-    assert_that(is.character(year_introduction),
+    assert_that(is.character(first_observed),
       msg = "Column 'year_of_introduction' should be a character."
     )
-    assert_colnames(df, year_introduction, only_colnames = FALSE)
+    assert_colnames(df, first_observed, only_colnames = FALSE)
   }
 
   assert_colnames(df, species_names, only_colnames = FALSE)
@@ -159,7 +159,7 @@ get_table_pathways <- function(df,
   if (!is.null(from)) {
     df <-
       df %>%
-      rename_at(vars(year_introduction), ~"first_observed")
+      rename_at(vars(first_observed), ~"first_observed")
   }
   # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {

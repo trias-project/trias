@@ -143,11 +143,11 @@ testthat::test_that("Param: phylum_names", {
 
 testthat::test_that("Param: year_of_introduction", {
   expect_error(
-    get_table_pathways(input_test_df, from = 2000, year_introduction = 5),
+    get_table_pathways(input_test_df, from = 2000, first_observed = 5),
     msg = "Parameter 'year_of_introduction' should be a character."
   )
   expect_error(
-    get_table_pathways(input_test_df, from = 2000, year_introduction = "yy"),
+    get_table_pathways(input_test_df, from = 2000, first_observed = "yy"),
     msg = paste0(
       "These columns exist in colnames but not in your dataframe: ",
       "yy and these exist in your dataframe but not in ",
