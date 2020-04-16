@@ -10,7 +10,7 @@
 #'   `Plantae` 2. `Animalia` 3. `Fungi` 4. `Chromista` 5. `Archaea` 6.
 #'   `Bacteria` 7. `Protozoa` 8. `Viruses` 9. `incertae sedis` 10. `Chordata`
 #'   11. `Not Chordata` Default: `NULL`.
-#' @param start_year_plot NULL or numeric. Year trade-off: if not \code{NULL}
+#' @param from NULL or numeric. Year trade-off: if not \code{NULL}
 #'   select only pathways related to taxa introduced during or after this year.
 #'   Default: `NULL`.
 #' @param facet_column NULL or character. The column to use to create additional
@@ -86,17 +86,17 @@
 #' visualize_pathways_level1(t, facet_column = "habitat")
 #'
 #' # Only taxa introduced from 1950
-#' visualize_pathways_level1(t, start_year_plot = 1950)
+#' visualize_pathways_level1(t, from = 1950)
 #' 
 #' # Add a title
-#' visualize_pathways_level1(t, category = "Plantae", start_year_plot = 1950, title = "Pathway level 1: Plantae. From 1950")
+#' visualize_pathways_level1(t, category = "Plantae", from = 1950, title = "Pathway level 1: Plantae. From 1950")
 #' 
 #' # Personalize axis labels
 #' visualize_pathways_level1(t, x_lab = "Aantal taxa", y_lab = "pathways")
 #' }
 visualize_pathways_level1 <- function(df,
                                category = NULL,
-                               start_year_plot = NULL,
+                               from = NULL,
                                facet_column = NULL,
                                pathway_level1_names = "pathway_level1",
                                taxon_names = "key",
@@ -161,20 +161,20 @@ visualize_pathways_level1 <- function(df,
   assert_that(is.character(phylum_names),
               msg = "`phylum_names` must be a character."
   )
-  # Check start_year_plot
-  if (!is.null(start_year_plot)) {
-    assert_that(is.numeric(start_year_plot),
-                msg = "`start_year_plot` must be a number (year)."
+  # Check from
+  if (!is.null(from)) {
+    assert_that(is.numeric(from),
+                msg = "`from` must be a number (year)."
     )
-    assert_that(start_year_plot > 0,
-                msg = "`start_year_plot` must be a positive number."
+    assert_that(from > 0,
+                msg = "`from` must be a positive number."
     )
-    assert_that(start_year_plot == as.integer(start_year_plot),
-                msg = "`start_year_plot` must be an integer."
+    assert_that(from == as.integer(from),
+                msg = "`from` must be an integer."
     )
-    assert_that(start_year_plot <= as.numeric(substr(Sys.Date(), start = 1, stop = 4)),
+    assert_that(from <= as.numeric(substr(Sys.Date(), start = 1, stop = 4)),
                 msg = paste0(
-                  "`start_year_plot` must be less than ",
+                  "`from` must be less than ",
                   format(Sys.Date(), "%Y"),
                   "."
                 )
@@ -227,10 +227,10 @@ visualize_pathways_level1 <- function(df,
     }
   }
   # Apply cut-off on year of introduction if given
-  if (!is.null(start_year_plot)) {
+  if (!is.null(from)) {
     df <-
       df %>%
-      filter(.data$first_observed >= start_year_plot)
+      filter(.data$first_observed >= from)
   }
   
   # Handle NAs and ""

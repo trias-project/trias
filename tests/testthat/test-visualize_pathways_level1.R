@@ -63,13 +63,13 @@ testthat::test_that("Argument: df", {
                "`df` must be a data frame.")
 })
 
-testthat::test_that("Argument: start_year_plot", {
+testthat::test_that("Argument: from", {
   expect_error(visualize_pathways_level1(input_test_df,
-                                    start_year_plot = "1950"),
-               "`start_year_plot` must be a number.")
+                                    from = "1950"),
+               "`from` must be a number.")
   expect_error(visualize_pathways_level1(input_test_df,
-                                    start_year_plot = 2900),
-               paste0("`start_year_plot` must be less than ",
+                                    from = 2900),
+               paste0("`from` must be less than ",
                      format(Sys.Date(), "%Y"),
                      "."))
 })
