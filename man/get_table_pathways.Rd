@@ -11,7 +11,7 @@ get_table_pathways(
   n_species = 5,
   kingdom_names = "kingdom",
   phylum_names = "phylum",
-  year_introduction = "first_observed",
+  first_observed = "first_observed",
   species_names = "canonicalName"
 )
 }
@@ -40,7 +40,7 @@ information about kingdom. Default: \code{"kingdom"}.}
 information about phylum. This parameter is used only if \code{category} is
 one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default: \code{"phylum"}.}
 
-\item{year_introduction}{character. Name of the column of \code{df}
+\item{first_observed}{character. Name of the column of \code{df}
 containing information about year of introduction. Default:
 \code{"first_observed"}.}
 
@@ -81,7 +81,7 @@ get_table_pathways(data, "Plantae")
 get_table_pathways(data, "Chordata")
 get_table_pathways(data, "Not Chordata")
 # From 2000
-get_table_pathways(data, from = 2000, year_introduction = "first_observed")
+get_table_pathways(data, from = 2000, first_observed = "first_observed")
 # Specify number of species to include in examples
 get_table_pathways(data, "Plantae", n_species = 8)
 # Specify columns containing kingdom and species names
