@@ -19,6 +19,7 @@ Imports:
     assertable,
     dplyr,
     egg,
+    forcats,
     gratia,
     ggplot2,
     lazyeval,

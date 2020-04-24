@@ -1,11 +1,13 @@
-#' Plot number of introduced taxa for CBD pathways level 1
+#' Plot number of introduced taxa for CBD pathways level 2
 #'
 #' Function to plot bar graph with number of taxa introduced by different
-#' pathways at level 1. Possible breakpoints: taxonomic (kingdoms +
-#' vertebrates/invertebrates) and temporal (lower limit year). Facets can be
-#' added (see argument `facet_column`).
+#' pathways at level 2, given a pathway level 1. Possible breakpoints: taxonomic
+#' (kingdoms + vertebrates/invertebrates) and temporal (lower limit year).
 #'
 #' @param df df.
+#' @param chosen_pathway_level1 character. A pathway level 1. If CBD standard is
+#'   followed (see argument `cbd_standard`), one of the level 1 pathways from
+#'   `pathways_cbd()`.
 #' @param category NULL or character. One of the kingdoms as given in GBIF and
 #'   `Chordata` (the phylum), `Not Chordata` (all other phyla of `Animalia`): 1.
 #'   `Plantae` 2. `Animalia` 3. `Fungi` 4. `Chromista` 5. `Archaea` 6.
@@ -22,7 +24,10 @@
 #' @param pathway_level1_names character. Name of the column of \code{df}
 #'   containing information about pathways at level 1. Default:
 #'   `pathway_level1`.
-#' @param pathways character. Vector with pathways level 1 to visualize. The
+#' @param pathway_level2_names character. Name of the column of \code{df}
+#'   containing information about pathways at level 2. Default:
+#'   `pathway_level2`.
+#' @param pathways character. Vector with pathways level 2 to visualize. The
 #'   pathways are displayed following the order as in this vector.
 #' @param taxon_names character. Name of the column of \code{df} containing
 #'   information about taxa. This parameter is used to uniquely identify taxa.
@@ -34,7 +39,7 @@
 #'   \code{"phylum"}.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{"first_observed"}.
-#' @param cbd_standard logical. If TRUE the values of pathway level 1 are
+#' @param cbd_standard logical. If TRUE the values of pathway level 2 are
 #'   checked based on CBD standard as returned by `pathways_cbd()`. Error is
 #'   returned if unmatched values are found. If FALSE, a warning is returned.
 #'   Default: TRUE.
@@ -75,65 +80,83 @@
 #'   )
 #' )
 #' # All taxa
-#' visualize_pathways_level1(data)
+#' visualize_pathways_level2(t, chosen_pathway_level1 = "escape")
 #'
 #' # Animalia
-#' visualize_pathways_level1(data, category = "Animalia")
+#' visualize_pathways_level2(t,
+#'   chosen_pathway_level1 = "escape",
+#'   category = "Animalia")
 #'
 #' # Chordata
-#' visualize_pathways_level1(data, category = "Chordata")
+#' visualize_pathways_level2(
+#'   df = t,
+#'   chosen_pathway_level1 = "escape",
+#'   category = "Chordata")
 #'
 #' # facet phylum
-#' visualize_pathways_level1(
-#'   data,
+#' visualize_pathways_level2(
+#'   df = t,
+#'   chosen_pathway_level1 = "escape",
 #'   category = "Animalia",
-#'   facet_column = "phylum"
-#' )
+#'   facet_column = "phylum")
 #'
 #' # facet habitat
-#' visualize_pathways_level1(data, facet_column = "habitat")
+#' visualize_pathways_level2(
+#'   df = t,
+#'   chosen_pathway_level1 = "escape",
+#'   facet_column = "habitat")
 #'
 #' # Only taxa introduced from 1950
-#' visualize_pathways_level1(data, from = 1950)
-#' 
-#' # Only taxa with pathways "corridor" and "escape"
-#' visualize_pathways_level1(data, pathways = c("corridor", "escape"))
-#' 
+#' visualize_pathways_level2(
+#'   df = t,
+#'   chosen_pathway_level1 = "escape",
+#'   from = 1950)
+#'
 #' # Add a title
-#' visualize_pathways_level1(
-#'   data,
-#'   category = "Plantae",
-#'   from = 1950,
-#'   title = "Plantae - Pathway level 1 from 1950"
-#' )
+#' visualize_pathways_level2(
+#' df = t,
+#' chosen_pathway_level1 = "escape",
+#' category = "Plantae",
+#' from = 1950,
+#' title = "Pathway level 2 (escape): Plantae, from 1950")
 #'
 #' # Personalize axis labels
-#' visualize_pathways_level1(data, x_lab = "Aantal taxa", y_lab = "pathways")
+#' visualize_pathways_level2(
+#'   df = t,
+#'   chosen_pathway_level1 = "escape",
+#'   x_lab = "Aantal taxa",
+#'   y_lab = "pathways")
 #' }
-visualize_pathways_level1 <- function(df,
-                               category = NULL,
-                               from = NULL,
-                               facet_column = NULL,
-                               pathways = NULL,
-                               pathway_level1_names = "pathway_level1",
-                               taxon_names = "key",
-                               kingdom_names = "kingdom",
-                               phylum_names = "phylum",
-                               first_observed = "first_observed",
-                               cbd_standard = TRUE,
-                               title = NULL,
-                               x_lab = "Number of introduced taxa",
-                               y_lab = "Pathways") {
+visualize_pathways_level2 <- function(df,
+                                      chosen_pathway_level1,
+                                      category = NULL,
+                                      from = NULL,
+                                      facet_column = NULL,
+                                      pathways = NULL,
+                                      pathway_level1_names = "pathway_level1",
+                                      pathway_level2_names = "pathway_level2",
+                                      taxon_names = "key",
+                                      kingdom_names = "kingdom",
+                                      phylum_names = "phylum",
+                                      first_observed = "first_observed",
+                                      cbd_standard = TRUE,
+                                      title = NULL,
+                                      x_lab = "Number of introduced taxa",
+                                      y_lab = "Pathways") {
+  
   # initial input checks
   # Check df
   assert_that(is.data.frame(df), msg = "`df` must be a data frame.")
-  
   # Check pathway_level1_names
   assert_that(is.character(pathway_level1_names),
               msg = "`pathway_level1_names` must be a character."
   )
   assert_colnames(df, pathway_level1_names, only_colnames = FALSE)
-  
+  # Check pathway_level2_names
+  assert_that(is.character(pathway_level2_names),
+              msg = "`pathway_level2_names` must be a character."
+  )
+  assert_colnames(df, pathway_level2_names, only_colnames = FALSE)
   # Check category
   if (!is.null(category)) {
     assert_that(is.character(category),
@@ -151,6 +174,7 @@ visualize_pathways_level1 <- function(df,
                 )
     )
   }
+  # Check facet_column
   assert_that(is.null(facet_column) | is.character(facet_column),
               msg = "Argument facet_column has to be NULL or a character.")
   if (is.character(facet_column)) {
@@ -167,13 +191,23 @@ visualize_pathways_level1 <- function(df,
                                          facet_column == "phylum"),
                 msg = "You cannot use phylum as facet with category Chordata.")
   }
+  # Check chosen_pathway_level1
+  assert_that(is.character(chosen_pathway_level1), 
+              msg = "Argument `chosen_pathway_level1` must be a character.")
+  pathways_level1 <- unique(df[[pathway_level1_names]])
+  assert_that(chosen_pathway_level1 %in% pathways_level1,
+              msg = paste0("chosen_pathway_level1 ",
+                           chosen_pathway_level1,
+                           " not present in column ",
+                           pathway_level1_names,
+                           "."))
   # Check pathways
   if (!is.null(pathways)) {
     assert_that(is.character(pathways),
                 msg = "`pathways` must be a vector of characters."
     )
     invalid_pathways <- pathways[!pathways %in% 
-                                   df[[pathway_level1_names]]]
+                                   df[[pathway_level2_names]]]
     assert_that(length(invalid_pathways) == 0,
                 msg = paste0("Pathways in `pathways` not present in ",
                              "data.frame: ",
@@ -241,7 +275,12 @@ visualize_pathways_level1 <- function(df,
     rename_at(vars(all_of(kingdom_names)), ~"group") %>%
     rename_at(vars(all_of(taxon_names)), ~"taxonKey") %>%
     rename_at(vars(all_of(first_observed)), ~"first_observed") %>%
-    rename_at(vars(all_of(pathway_level1_names)), ~ "pathway_level1")
+    rename_at(vars(all_of(pathway_level1_names)), ~ "pathway_level1") %>%
+    rename_at(vars(all_of(pathway_level2_names)), ~ "pathway_level2")
+  # Select data with the chosen pathway level 1
+  df <-
+    df %>%
+    filter(pathway_level1 == chosen_pathway_level1)
   # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {
     if (!category %in% c("Chordata", "Not Chordata")) {
@@ -267,58 +306,58 @@ visualize_pathways_level1 <- function(df,
       filter(.data$first_observed >= from)
   }
   # Handle NAs and ""
-  nas_or_empty_pathway_level1 <-
+  nas_or_empty_pathway_level2 <-
     df %>%
-    filter(is.na(.data$pathway_level1) |
-      .data$pathway_level1 == "") %>%
+    filter(is.na(.data$pathway_level2) |
+             .data$pathway_level2 == "") %>%
     distinct(taxonKey)
-  if (nrow(nas_or_empty_pathway_level1) > 0) {
-    message_warning <- paste(nrow(nas_or_empty_pathway_level1),
-                             "taxa have no information about pathway level 1.",
+  if (nrow(nas_or_empty_pathway_level2) > 0) {
+    message_warning <- paste(nrow(nas_or_empty_pathway_level2),
+                             "taxa have no information about pathway level 2.",
                              "Set to 'unknown'.")
     warning(message_warning)
   }
   df <-
     df %>%
     # Handle NAs and "unknown"
-    mutate(pathway_level1 = ifelse(is.na(.data$pathway_level1) |
-                                     .data$pathway_level1 == "",
+    mutate(pathway_level2 = ifelse(is.na(.data$pathway_level2) |
+                                     .data$pathway_level2 == "",
                                    "unknown",
-                                   .data$pathway_level1
-    ))
-  # Import all CBD pathways level 1
-  pathways_level1_all <- 
-    pathways_cbd() %>%
-    distinct(pathway_level1)
+                                   .data$pathway_level2))
+  # Import all CBD pathways level 2 within chosen pathway level 1
+  pathways_level2_all <- 
+    pathways_cbd() %>% 
+    filter(pathway_level1 == chosen_pathway_level1) %>%
+    distinct(pathway_level2)
   # Select pathways
   if (!is.null(pathways)) {
     pathways <- replace(pathways, is.na(pathways) | pathways == "", "unknown")
     pathways <- unique(pathways)
     df <-
       df %>% 
-      filter(.data$pathway_level1  %in% pathways)
+      filter(.data$pathway_level2  %in% pathways)
   } else {
     if (cbd_standard == TRUE) {
-      pathways <- pathways_level1_all %>% pull()
+      pathways <- pathways_level2_all %>% pull()
     } else {
-      pathways <- unique(df$pathway_level1)
+      pathways <- unique(df$pathway_level2)
     }
   }
-  # Check values in column with pathways level 1
+  # Check values in column with pathways level 2
   invalid_pathways <- 
     df %>%
-    anti_join(pathways_level1_all, 
-              by = "pathway_level1") %>%
-    distinct(pathway_level1) %>%
+    anti_join(pathways_level2_all, 
+              by = "pathway_level2") %>%
+    distinct(pathway_level2) %>%
     pull()
   message_invalid_pathways <-
     paste0(
-      "No CBD standard pathways level 1 value(s) in column `",
-      pathway_level1_names,
+      "No CBD standard pathways level 2 value(s) in column `",
+      pathway_level2_names,
       "`: ",
       paste0(invalid_pathways, collapse = ", "),
       ". Valid pathways values: ",
-      paste0(unique(pathways_level1_all$pathway_level1), collapse = ", "),
+      paste0(unique(pathways_level2_all$pathway_level2), collapse = ", "),
       "."
     )
   if (cbd_standard == TRUE) {
@@ -331,22 +370,23 @@ visualize_pathways_level1 <- function(df,
   if (!is.null(facet_column)) {
     df <-
       df %>%
-      distinct(.data$taxonKey, .data$pathway_level1, !!sym(facet_column)
+      distinct(.data$taxonKey, .data$pathway_level2, !!sym(facet_column)
       )
   }
-  # Transform pathway level 1 column to factor to make ordering in graph easily
+  # Transform pathway level 2 column to factor to make ordering in graph easily
   df <-
     df %>%
-    mutate(pathway_level1 = factor(.data$pathway_level1, levels = pathways))
+    mutate(pathway_level2 = factor(pathway_level2, levels = pathways))
   # Distinct taxa without facet
   df_top_graph <-
     df %>%
-    distinct(.data$taxonKey, .data$pathway_level1)
+    distinct(.data$taxonKey,
+             .data$pathway_level2)
   # Plot number of taxa per pathway_level1
   top_graph <-
     ggplot(
-    df_top_graph,
-    aes(x = fct_rev(.data$pathway_level1))) +
+      df_top_graph,
+      aes(x = fct_rev(.data$pathway_level2))) +
     geom_bar() +
     xlab(y_lab) +
     ylab(x_lab) +
@@ -358,9 +398,9 @@ visualize_pathways_level1 <- function(df,
     facet_graph <- 
       ggplot(
         df,
-        aes(x = fct_rev(.data$pathway_level1))) +
+        aes(x = fct_rev(.data$pathway_level2))) +
       geom_bar() +
-      xlab(y_lab) +
+      xlab(y_lab) + # invert labels to get them right after flipping
       ylab(x_lab) +
       coord_flip() +
       ggtitle(title) +

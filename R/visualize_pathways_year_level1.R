@@ -1,19 +1,16 @@
-#' Plot number of introduced taxa for CBD pathways level 1
+#' Plot number of introduced taxa over time for pathways level 1
 #'
-#' Function to plot bar graph with number of taxa introduced by different
-#' pathways at level 1. Possible breakpoints: taxonomic (kingdoms +
-#' vertebrates/invertebrates) and temporal (lower limit year). Facets can be
-#' added (see argument `facet_column`).
-#'
+#' Function to plot a line graph with number of taxa introduced over time
+#' through different CBD pathways level 1. Time expressed in years. Possible
+#' breakpoints: taxonomic (kingdoms + vertebrates/invertebrates).
 #' @param df df.
 #' @param category NULL or character. One of the kingdoms as given in GBIF and
 #'   `Chordata` (the phylum), `Not Chordata` (all other phyla of `Animalia`): 1.
 #'   `Plantae` 2. `Animalia` 3. `Fungi` 4. `Chromista` 5. `Archaea` 6.
 #'   `Bacteria` 7. `Protozoa` 8. `Viruses` 9. `incertae sedis` 10. `Chordata`
 #'   11. `Not Chordata` Default: `NULL`.
-#' @param from NULL or numeric. Year trade-off: if not \code{NULL} select only
-#'   pathways related to taxa introduced during or after this year. Default:
-#'   `NULL`.
+#' @param from numeric. Year trade-off: taxa introduced before this year are
+#'   grouped all together. Default: 1950.
 #' @param facet_column NULL or character. The column to use to create additional
 #'   facet wrap bar graphs underneath the main graph. When NULL, no facet graph
 #'   are created. One of `family`, `order`, `class`, `phylum`, `locality`,
@@ -47,13 +44,12 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
-#' @importFrom dplyr %>% anti_join distinct filter mutate pull rename_at sym
-#' @importFrom ggplot2 ggplot geom_bar theme ggtitle xlab ylab coord_flip
-#'   facet_wrap
-#' @importFrom tidyselect all_of
-#' @importFrom forcats fct_rev
-#' @importFrom rlang !!
+#' @importFrom dplyr %>% anti_join count distinct filter group_by if_else mutate
+#'   pull rename_at sym ungroup
 #' @importFrom egg ggarrange
+#' @importFrom ggplot2 facet_wrap geom_line geom_point ggplot ggtitle xlab ylab
+#' @importFrom rlang !!
+#' @importFrom tidyselect all_of
 #'
 #' @examples
 #' \dontrun{
@@ -63,7 +59,7 @@
 #'   "interim/data_input_checklist_indicators.tsv"
 #' )
 #' data <- read_tsv(datafile,
-#'   na = "NA",
+#'   na = "",
 #'   col_types = cols(
 #'     .default = col_character(),
 #'     key = col_double(),
@@ -75,59 +71,56 @@
 #'   )
 #' )
 #' # All taxa
-#' visualize_pathways_level1(data)
+#' visualize_pathways_year_level1(data)
 #'
 #' # Animalia
-#' visualize_pathways_level1(data, category = "Animalia")
+#' visualize_pathways_year_level1(data, category = "Animalia")
 #'
 #' # Chordata
-#' visualize_pathways_level1(data, category = "Chordata")
+#' visualize_pathways_year_level1(data, category = "Chordata")
 #'
-#' # facet phylum
-#' visualize_pathways_level1(
-#'   data,
-#'   category = "Animalia",
-#'   facet_column = "phylum"
-#' )
+#' # Group by 20 years
+#' visualize_pathways_year_level1(data, bin = 20)
+#'
+#' # Group taxa introudced before 1970 alltogether
+#' visualize_pathways_year_level1(data, from = 1970)
+#'
+#' # facet locality
+#' visualize_pathways_year_level1(data, category = "Not Chordata", facet_column = "locality")
 #'
 #' # facet habitat
-#' visualize_pathways_level1(data, facet_column = "habitat")
+#' visualize_pathways_year_level1(data, facet_column = "habitat")
 #'
-#' # Only taxa introduced from 1950
-#' visualize_pathways_level1(data, from = 1950)
-#' 
 #' # Only taxa with pathways "corridor" and "escape"
-#' visualize_pathways_level1(data, pathways = c("corridor", "escape"))
-#' 
+#' visualize_pathways_year_level1(data, pathways = c("corridor", "escape"))
+#'
 #' # Add a title
-#' visualize_pathways_level1(
-#'   data,
-#'   category = "Plantae",
-#'   from = 1950,
-#'   title = "Plantae - Pathway level 1 from 1950"
-#' )
+#' visualize_pathways_year_level1(data, category = "Plantae", from = 1950, title = "Pathway level 1: Plantae")
 #'
 #' # Personalize axis labels
-#' visualize_pathways_level1(data, x_lab = "Aantal taxa", y_lab = "pathways")
+#' visualize_pathways_year_level1(data, x_lab = "Jaar", y_lab = "Aantal geïntroduceerde taxa")
 #' }
-visualize_pathways_level1 <- function(df,
-                               category = NULL,
-                               from = NULL,
-                               facet_column = NULL,
-                               pathways = NULL,
-                               pathway_level1_names = "pathway_level1",
-                               taxon_names = "key",
-                               kingdom_names = "kingdom",
-                               phylum_names = "phylum",
-                               first_observed = "first_observed",
-                               cbd_standard = TRUE,
-                               title = NULL,
-                               x_lab = "Number of introduced taxa",
-                               y_lab = "Pathways") {
+visualize_pathways_year_level1 <- function(df,
+                                           bin = 10,
+                                           from = 1950,
+                                           category = NULL,
+                                           facet_column = NULL,
+                                           pathways = NULL,
+                                           pathway_level1_names = "pathway_level1",
+                                           taxon_names = "key",
+                                           kingdom_names = "kingdom",
+                                           phylum_names = "phylum",
+                                           first_observed = "first_observed",
+                                           cbd_standard = TRUE,
+                                           title = NULL,
+                                           x_lab = "Time period",
+                                           y_lab = "Number of introduced taxa") {
   # initial input checks
   # Check df
   assert_that(is.data.frame(df), msg = "`df` must be a data frame.")
-  
+  # Check bin
+  assert_that(is.numeric(bin), msg = "`bin` must be a number.")
+  assert_that(bin == as.integer(bin), msg = "`bin` must be an integer.")
   # Check pathway_level1_names
   assert_that(is.character(pathway_level1_names),
               msg = "`pathway_level1_names` must be a character."
@@ -156,15 +149,14 @@ visualize_pathways_level1 <- function(df,
   if (is.character(facet_column)) {
     assert_colnames(df, facet_column, only_colnames = FALSE)
   }
-  # check for valid facet options
+  # Check for valid facet options
   valid_facet_options <- c(
     "family", "order", "class", "phylum",
     "locality", "native_range", "habitat"
   )
   if (is.character(facet_column)) {
     facet_column <- match.arg(facet_column, valid_facet_options)
-    assert_that(is.null(category) || !(category == "Chordata" & 
-                                         facet_column == "phylum"),
+    assert_that(is.null(category) || !(category == "Chordata" & facet_column == "phylum"),
                 msg = "You cannot use phylum as facet with category Chordata.")
   }
   # Check pathways
@@ -260,17 +252,12 @@ visualize_pathways_level1 <- function(df,
       }
     }
   }
-  # Apply cut-off on year of introduction if given
-  if (!is.null(from)) {
-    df <-
-      df %>%
-      filter(.data$first_observed >= from)
-  }
+  
   # Handle NAs and ""
   nas_or_empty_pathway_level1 <-
     df %>%
     filter(is.na(.data$pathway_level1) |
-      .data$pathway_level1 == "") %>%
+             .data$pathway_level1 == "") %>%
     distinct(taxonKey)
   if (nrow(nas_or_empty_pathway_level1) > 0) {
     message_warning <- paste(nrow(nas_or_empty_pathway_level1),
@@ -327,42 +314,105 @@ visualize_pathways_level1 <- function(df,
   } else {
     warning(message_invalid_pathways)
   }
+  # Throw warning if there are taxa without first_observed
+  n_first_observed_na <-
+    df %>%
+    filter(is.na(first_observed)) %>%
+    nrow()
+  if (n_first_observed_na > 0) {
+    warning(
+      paste0(n_first_observed_na,
+             " rows without year of introduction in column `",
+             first_observed,
+             "` removed."))
+    df <- 
+      df %>%
+      filter(!is.na(first_observed))
+  }
   # Distinct taxa
-  if (!is.null(facet_column)) {
+  if (is.null(facet_column)) {
     df <-
       df %>%
-      distinct(.data$taxonKey, .data$pathway_level1, !!sym(facet_column)
-      )
+      distinct(.data$taxonKey,
+               .data$first_observed,
+               .data$pathway_level1)
+  } else {
+    df <-
+      df %>%
+      distinct(.data$taxonKey,
+               .data$first_observed,
+               .data$pathway_level1,
+               !!sym(facet_column))
   }
+  
+  df <-
+    df %>%
+    mutate(bins_first_observed = 
+             floor((.data$first_observed - from) / bin) * bin + from) %>% 
+    mutate(bins_first_observed = if_else(
+      .data$bins_first_observed < from,
+      paste("before", from),
+      paste(as.character(.data$bins_first_observed),
+            "-",
+            as.character(.data$bins_first_observed + bin - 1))))
+  
+  # Set order of year first_observed based on bin and from
+  levels_first_observed <- 
+    levels(ordered(unique(df$bins_first_observed)))
+  levels_first_observed <-
+    c(levels_first_observed[length(levels_first_observed)],
+      levels_first_observed[1:length(levels_first_observed) - 1])
+  df <- 
+    df %>%
+    mutate(bins_first_observed = factor(.data$bins_first_observed,
+                                   levels = levels_first_observed))
   # Transform pathway level 1 column to factor to make ordering in graph easily
   df <-
     df %>%
     mutate(pathway_level1 = factor(.data$pathway_level1, levels = pathways))
-  # Distinct taxa without facet
+  
+  # Plot number of taxa per pathway_level1 over time
   df_top_graph <-
     df %>%
-    distinct(.data$taxonKey, .data$pathway_level1)
-  # Plot number of taxa per pathway_level1
-  top_graph <-
-    ggplot(
-    df_top_graph,
-    aes(x = fct_rev(.data$pathway_level1))) +
-    geom_bar() +
-    xlab(y_lab) +
-    ylab(x_lab) +
-    coord_flip() +
+    group_by(.data$bins_first_observed,
+           .data$pathway_level1) %>%
+    count() %>%
+    ungroup()
+  top_graph <- 
+    ggplot(df_top_graph) +
+    geom_line(aes(x = .data$bins_first_observed,
+                  y = .data$n,
+                  group = .data$pathway_level1,
+                  color = .data$pathway_level1)) +
+    geom_point(aes(x = .data$bins_first_observed,
+                   y = .data$n,
+                   group = .data$pathway_level1,
+                   color = .data$pathway_level1)) +
+    xlab(x_lab) +
+    ylab(y_lab) +
     ggtitle(title)
   if (is.null(facet_column)) {
     return(top_graph)
-  } else {
+  } else{
+    df_facet_graph <-
+      df %>%
+      group_by(.data$bins_first_observed,
+               .data$pathway_level1,
+               !!sym(facet_column)) %>%
+      count() %>%
+      ungroup()
     facet_graph <- 
-      ggplot(
-        df,
-        aes(x = fct_rev(.data$pathway_level1))) +
-      geom_bar() +
-      xlab(y_lab) +
-      ylab(x_lab) +
-      coord_flip() +
+      ggplot(df_facet_graph) +
+      geom_line(aes(x = .data$bins_first_observed,
+                    y = .data$n,
+                    group = .data$pathway_level1,
+                    color = .data$pathway_level1)) +
+      geom_point(aes(x = .data$bins_first_observed,
+                     y = .data$n,
+                     group = .data$pathway_level1,
+                     color = .data$pathway_level1)) +
+      xlab(x_lab) +
+      ylab(y_lab) +
       ggtitle(title) +
       facet_wrap(facet_column)
     ggarrange(top_graph, facet_graph)
