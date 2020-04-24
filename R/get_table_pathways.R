@@ -97,59 +97,59 @@ get_table_pathways <- function(df,
   assert_that(is.data.frame(df), msg = "df is not a data frame.")
   if (!is.null(category)) {
     assert_that(is.character(category),
-      msg = paste0(
-        "Category has to be a character. One of: ",
-        paste(categories, collapse = ", "),
-        "."
-      )
+                msg = paste0(
+                  "Category has to be a character. One of: ",
+                  paste(categories, collapse = ", "),
+                  "."
+                )
     )
     assert_that(category %in% categories,
-      msg = paste0(
-        "Category not correct. Choose one of: ",
-        paste(categories, collapse = ", "),
-        "."
-      )
+                msg = paste0(
+                  "Category not correct. Choose one of: ",
+                  paste(categories, collapse = ", "),
+                  "."
+                )
     )
   }
   assert_colnames(df, kingdom_names, only_colnames = FALSE)
   assert_that(is.character(kingdom_names),
-    msg = "Parameter 'kingdom_names' should be a character."
+              msg = "Parameter 'kingdom_names' should be a character."
   )
   assert_that(is.numeric(n_species),
-    msg = "Parameter 'n_species' should be a number."
+              msg = "Parameter 'n_species' should be a number."
   )
   assert_that(n_species > 0,
-    msg = "Parameter 'n_species' should be a positive number."
+              msg = "Parameter 'n_species' should be a positive number."
   )
   assert_that(n_species == as.integer(n_species),
-    msg = "Parameter 'n_species' should be an integer."
+              msg = "Parameter 'n_species' should be an integer."
   )
   if (!is.null(from)) {
     assert_that(is.numeric(from),
-      msg = "Parameter 'from' should be a number (year)."
+                msg = "Parameter 'from' should be a number (year)."
     )
     assert_that(from > 0,
-      msg = "Parameter 'from' should be a positive number."
+                msg = "Parameter 'from' should be a positive number."
     )
     assert_that(from == as.integer(from),
-      msg = "Parameter 'from' should be an integer."
+                msg = "Parameter 'from' should be an integer."
     )
     assert_that(from <= as.numeric(substr(Sys.Date(), start = 1, stop = 4)),
-      msg = paste0(
-        "Invalid year in 'from'. ",
-        "Choose a year smaller than ",
-        substr(Sys.Date(), start = 1, stop = 4)
-      )
+                msg = paste0(
+                  "Invalid year in 'from'. ",
+                  "Choose a year smaller than ",
+                  substr(Sys.Date(), start = 1, stop = 4)
+                )
     )
     assert_that(is.character(first_observed),
-      msg = "Column 'first_observed' should be a character."
+                msg = "Column 'first_observed' should be a character."
     )
     assert_colnames(df, first_observed, only_colnames = FALSE)
   }
-
+  
   assert_colnames(df, species_names, only_colnames = FALSE)
   assert_that(is.character(species_names),
-    msg = "Parameter 'species_names' should be a character."
+              msg = "Parameter 'species_names' should be a character."
   )
   
   # convert factors to characters (in case stringsAsFactors = TRUE)
@@ -176,7 +176,7 @@ get_table_pathways <- function(df,
     } else {
       # check parameter phylum
       assert_that(is.character(phylum_names),
-        msg = "Parameter 'phylum_names' should be a character."
+                  msg = "Parameter 'phylum_names' should be a character."
       )
       assert_colnames(df, phylum_names, only_colnames = FALSE)
       df <-
@@ -220,14 +220,14 @@ get_table_pathways <- function(df,
       .data$taxa_names, .data$pathway_level1, .data$pathway_level2
     ) %>%
     group_by(.data$pathway_level1, .data$pathway_level2)
-
+  
   # Assess size of sample per group
   pathway_data <-
     preprocess_data %>%
     count() %>%
     rowwise() %>%
     mutate(size_sample = ifelse(n > n_species,
-      n_species, n
+                                n_species, n
     ))
   # Make df with sample species
   samples <-
@@ -250,7 +250,7 @@ get_table_pathways <- function(df,
         examples <-
           examples %>%
           pull(.data$taxa_names)
-
+        
         tibble(examples = str_c(examples, collapse = ", ")) %>%
           mutate(
             pathway_level1 = as.character(p1),
@@ -272,10 +272,10 @@ get_table_pathways <- function(df,
     # if pathway_data is empty
     mutate_if(is.logical, as.character) %>%
     left_join(samples,
-      by = c("pathway_level1", "pathway_level2")
+              by = c("pathway_level1", "pathway_level2")
     ) %>%
     select(-.data$size_sample) %>%
     ungroup()
-
+  
   pathway_data
 }
