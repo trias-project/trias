@@ -203,14 +203,15 @@ get_table_pathways <- function(df,
   preprocess_data <-
     filtered_data %>%
     # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
-    mutate(pathway_level1 = ifelse(!is.na(.data$pathway_level1),
-      .data$pathway_level1,
-      "unknown"
+    mutate(pathway_level1 = ifelse(is.na(.data$pathway_level1) |
+                                     .data$pathway_level1 == "",
+                                   "unknown",
+                                   .data$pathway_level1
     )) %>%
     mutate(pathway_level2 = ifelse(.data$pathway_level1 != "unknown" &
-      !is.na(.data$pathway_level2),
-    .data$pathway_level2,
-    ""
+                                     !is.na(.data$pathway_level2) & .data$pathway_level2 != "",
+                                   .data$pathway_level2,
+                                   "unknown"
     ))
   # Create groups based on pathway level1 and level2
   preprocess_data <-
