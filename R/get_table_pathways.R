@@ -151,6 +151,14 @@ get_table_pathways <- function(df,
   assert_that(is.character(species_names),
     msg = "Parameter 'species_names' should be a character."
   )
+  
+  # convert factors to characters (in case stringsAsFactors = TRUE)
+  if (any(map_chr(names(df), ~class(df[[.]])) == "factor")) {
+    warning("Factors are converted to characters.")
+    df <-
+      df %>%
+      mutate_if(is.factor, as.character)
+  }
   # rename to default column name
   df <-
     df %>%
