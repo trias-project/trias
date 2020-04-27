@@ -71,7 +71,7 @@ pathwayscbd <- tibble(
     "water",
     "land",
     "unknown",
-    "dispersal",
+    "natural_dispersal",
     "unknown",
     "unknown"
   )
