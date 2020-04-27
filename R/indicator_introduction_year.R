@@ -31,7 +31,7 @@
 #' @importFrom assertable assert_colnames
 #' @importFrom dplyr %>% filter group_by count ungroup rename_at
 #'   distinct .data syms
-#' @importFrom ggplot2 geom_point aes xlab ylab scale_x_continuous facet_wrap
+#' @importFrom ggplot2 coord_cartesian geom_point aes xlab ylab scale_x_continuous facet_wrap
 #'   geom_smooth
 #' @importFrom rlang !!!
 #' @importFrom egg ggarrange
@@ -201,12 +201,8 @@ indicator_introduction_year <- function(df,
         start_year_plot,
         maxDate,
         x_minor_scale_stepsize
-      ),
-      limits = c(
-        start_year_plot,
-        maxDate
-      )
-    )
+      )) +
+    coord_cartesian(xlim = c(start_year_plot, maxDate))
 
   if (is.null(facet_column)) {
     return(top_graph)
@@ -236,12 +232,8 @@ indicator_introduction_year <- function(df,
           start_year_plot,
           maxDate,
           x_minor_scale_stepsize
-        ),
-        limits = c(
-          start_year_plot,
-          maxDate
-        )
-      )
+        )) + 
+      coord_cartesian(xlim = c(start_year_plot, maxDate))
 
     ggarrange(top_graph, facet_graph)
   }

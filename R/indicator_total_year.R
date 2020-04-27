@@ -35,7 +35,7 @@
 #'   ungroup rename_at distinct .data syms
 #' @importFrom tidyr unnest
 #' @importFrom rlang !!!
-#' @importFrom ggplot2 ggplot geom_line aes xlab ylab scale_x_continuous
+#' @importFrom ggplot2 coord_cartesian ggplot geom_line aes xlab ylab scale_x_continuous
 #'   facet_wrap
 #' @importFrom egg ggarrange
 #'
@@ -189,8 +189,12 @@ indicator_total_year <- function(df, start_year_plot = 1940,
         maxDate,
         x_major_scale_stepsize
       ),
-      limits = c(start_year_plot, maxDate)
-    )
+      minor_breaks = seq(
+        start_year_plot,
+        maxDate,
+        x_minor_scale_stepsize
+      )) +
+    coord_cartesian(xlim = c(start_year_plot, maxDate))
 
   if (is.null(facet_column)) {
     return(top_graph)
