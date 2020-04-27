@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update the list with all downloads — update_download_list • trias</title>
+<title>Pathways of introdcution as defined by CBD — pathways_cbd • trias</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,10 @@
 
 
 
-<meta property="og:title" content="Update the list with all downloads — update_download_list" />
-<meta property="og:description" content="This function opens a (tab-separated) text file containing all occurrence
-downloads from GBIF and updates the status of all downloads with status
-RUNNING or PREPARING. If the specifid download is not present it will be add." />
+<meta property="og:title" content="Pathways of introdcution as defined by CBD — pathways_cbd" />
+<meta property="og:description" content="Function to get all CBD pathays of introdution at level 1 (pathway_level1)
+and level 2 (pathway_level2). Added pathway unknown at level 1 and level
+2 for classifying taxa without pathway (at level 1 or level 2) information." />
 <meta property="og:image" content="https://trias-project.github.io/trias/logo.png" />
 
 
@@ -118,54 +118,24 @@ RUNNING or PREPARING. If the specifid download is not present it will be add." /
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update the list with all downloads</h1>
-    <small class="dont-index">Source: <a href='https://github.com/trias-project/trias/blob/master/R/update_download_list.R'><code>R/update_download_list.R</code></a></small>
-    <div class="hidden name"><code>update_download_list.Rd</code></div>
+    <h1>Pathways of introdcution as defined by CBD</h1>
+    <small class="dont-index">Source: <a href='https://github.com/trias-project/trias/blob/master/R/pathways_cbd.R'><code>R/pathways_cbd.R</code></a></small>
+    <div class="hidden name"><code>pathways_cbd.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function opens a (tab-separated) text file containing all occurrence
-downloads from GBIF and updates the status of all downloads with status
-<code>RUNNING</code> or <code>PREPARING</code>. If the specifid download is not present it will be add.</p>
+    <p>Function to get all CBD pathays of introdution at level 1 (<code>pathway_level1</code>)
+and level 2 (<code>pathway_level2</code>). Added pathway <code>unknown</code> at level 1 and level
+2 for classifying taxa without pathway (at level 1 or level 2) information.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_download_list</span>(
-  <span class='no'>file</span>,
-  <span class='no'>download_to_add</span>,
-  <span class='no'>input_checklist</span>,
-  <span class='kw'>url_doi_base</span> <span class='kw'>=</span> <span class='st'>"https://doi.org/"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>pathways_cbd</span>()</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>file</th>
-      <td><p>text file containing all occurrence downloads from GBIF.</p></td>
-    </tr>
-    <tr>
-      <th>download_to_add</th>
-      <td><p>character. A GBIF download key to be added to file.</p></td>
-    </tr>
-    <tr>
-      <th>input_checklist</th>
-      <td><p>text file with taxon keys whose occurrences you want
-to download.</p></td>
-    </tr>
-    <tr>
-      <th>url_doi_base</th>
-      <td><p>character. doi base URL; <code>url_doi_base</code> + doi form a
-link to a page with download information. Default: "https://doi.org/".</p></td>
-    </tr>
-    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>message with the performed updates</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>If a download key is passed which is not present in the file it will be added
-as a new line.</p>
+    <p>A tibble data.frame with 2 columns: <code>pathway_level1</code> and
+<code>pathway_level2</code>.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

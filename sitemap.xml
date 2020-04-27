@@ -31,6 +31,9 @@
     <loc>https://trias-project.github.io/trias/reference/indicator_total_year.html</loc>
   </url>
   <url>
+    <loc>https://trias-project.github.io/trias/reference/pathways_cbd.html</loc>
+  </url>
+  <url>
     <loc>https://trias-project.github.io/trias/reference/plot_ribbon_em.html</loc>
   </url>
   <url>
@@ -38,5 +41,17 @@
   </url>
   <url>
     <loc>https://trias-project.github.io/trias/reference/verify_taxa.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/visualize_pathways_level1.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/visualize_pathways_level2.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/visualize_pathways_year_level1.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/visualize_pathways_year_level2.html</loc>
   </url>
 </urlset>
