@@ -53,6 +53,10 @@ pathways are displayed following the order as in this vector.}
 containing information about pathways at level 1. Default:
 \code{pathway_level1}.}
 
+\item{pathway_level2_names}{character. Name of the column of \code{df}
+containing information about pathways at level 2. Default:
+\code{pathway_level2}.}
+
 \item{taxon_names}{character. Name of the column of \code{df} containing
 information about taxa. This parameter is used to uniquely identify taxa.}
 
