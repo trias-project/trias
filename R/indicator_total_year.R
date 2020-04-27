@@ -78,23 +78,33 @@ indicator_total_year <- function(df, start_year_plot = 1940,
                                  first_observed = "first_observed",
                                  x_lab = "Year",
                                  y_lab = "Cumulative number of alien species") {
-  
+
   # initial input checks
   assert_that(is.data.frame(df))
   assert_that(is.numeric(start_year_plot),
-              msg = "Argument start_year_plot has to be a number.")
+    msg = "Argument start_year_plot has to be a number."
+  )
   assert_that(start_year_plot < as.integer(format(Sys.Date(), "%Y")),
-              msg = paste("Argument start_year_plot has to be less than",
-                          format(Sys.Date(), "%Y")))
+    msg = paste(
+      "Argument start_year_plot has to be less than",
+      format(Sys.Date(), "%Y")
+    )
+  )
   assert_that(is.numeric(x_major_scale_stepsize),
-              msg = "Argument x_major_scale_stepsize has to be a number.")
+    msg = "Argument x_major_scale_stepsize has to be a number."
+  )
   assert_that(is.numeric(x_minor_scale_stepsize),
-              msg = "Argument x_minor_scale_stepsize has to be a number.")
+    msg = "Argument x_minor_scale_stepsize has to be a number."
+  )
   assert_that(x_major_scale_stepsize >= x_minor_scale_stepsize,
-              msg = paste0("x_major_scale_stepsize should be greater ",
-                           "than x_minor_scale_stepsize."))
+    msg = paste0(
+      "x_major_scale_stepsize should be greater ",
+      "than x_minor_scale_stepsize."
+    )
+  )
   assert_that(is.null(facet_column) | is.character(facet_column),
-              msg = "Argument facet_column has to be NULL or a character.")
+    msg = "Argument facet_column has to be NULL or a character."
+  )
   if (is.character(facet_column)) {
     assert_colnames(df, facet_column, only_colnames = FALSE)
   }
@@ -107,19 +117,23 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   )
   if (!is.null(facet_column)) {
     facet_column <- match.arg(facet_column, valid_facet_options)
-  } 
-  
-  assert_that(is.character(taxon_key_col), 
-              msg = "Argument taxon_key_col has to be a character.")
+  }
+
+  assert_that(is.character(taxon_key_col),
+    msg = "Argument taxon_key_col has to be a character."
+  )
   assert_colnames(df, taxon_key_col, only_colnames = FALSE)
   assert_that(is.character(first_observed),
-              msg = "Argument first_observed has to be a character.")
+    msg = "Argument first_observed has to be a character."
+  )
   assert_colnames(df, first_observed, only_colnames = FALSE)
-  
+
   assert_that(is.null(x_lab) | is.character(x_lab),
-              msg = "Argument x_lab has to be a character or NULL.")
+    msg = "Argument x_lab has to be a character or NULL."
+  )
   assert_that(is.null(y_lab) | is.character(y_lab),
-              msg = "Argument y_lab has to be a character or NULL.")
+    msg = "Argument y_lab has to be a character or NULL."
+  )
   # rename to default column name
   df <-
     df %>%
@@ -127,10 +141,10 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     rename_at(vars(taxon_key_col), ~"key")
 
   # Provide warning messages for first_observed NA values
-  n_first_observed_not_present <- 
+  n_first_observed_not_present <-
     df %>%
     filter(is.na(.data$first_observed)) %>%
-    nrow
+    nrow()
   if (n_first_observed_not_present) {
     warning(paste0(
       n_first_observed_not_present,
@@ -188,7 +202,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       group_by(!!!syms(c("year", facet_column))) %>%
       count() %>%
       ungroup()
-    
+
     facet_graph <-
       ggplot(
         counts_ias_grouped,

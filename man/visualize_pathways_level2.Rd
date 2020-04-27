@@ -116,46 +116,53 @@ visualize_pathways_level2(t, chosen_pathway_level1 = "escape")
 # Animalia
 visualize_pathways_level2(t,
   chosen_pathway_level1 = "escape",
-  category = "Animalia")
+  category = "Animalia"
+)
 
 # Chordata
 visualize_pathways_level2(
   df = t,
   chosen_pathway_level1 = "escape",
-  category = "Chordata")
+  category = "Chordata"
+)
 
 # facet phylum
 visualize_pathways_level2(
   df = t,
   chosen_pathway_level1 = "escape",
   category = "Animalia",
-  facet_column = "phylum")
+  facet_column = "phylum"
+)
 
 # facet habitat
 visualize_pathways_level2(
   df = t,
   chosen_pathway_level1 = "escape",
-  facet_column = "habitat")
+  facet_column = "habitat"
+)
 
 # Only taxa introduced from 1950
 visualize_pathways_level2(
   df = t,
   chosen_pathway_level1 = "escape",
-  from = 1950)
+  from = 1950
+)
 
 # Add a title
 visualize_pathways_level2(
-df = t,
-chosen_pathway_level1 = "escape",
-category = "Plantae",
-from = 1950,
-title = "Pathway level 2 (escape): Plantae, from 1950")
+  df = t,
+  chosen_pathway_level1 = "escape",
+  category = "Plantae",
+  from = 1950,
+  title = "Pathway level 2 (escape): Plantae, from 1950"
+)
 
 # Personalize axis labels
 visualize_pathways_level2(
   df = t,
   chosen_pathway_level1 = "escape",
   x_lab = "Aantal taxa",
-  y_lab = "pathways")
+  y_lab = "pathways"
+)
 }
 }

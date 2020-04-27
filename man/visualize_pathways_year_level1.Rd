@@ -25,6 +25,8 @@ visualize_pathways_year_level1(
 \arguments{
 \item{df}{df.}
 
+\item{bin}{numeric. Time span in years to use for agggregation. Default: 10.}
+
 \item{from}{numeric. Year trade-off: taxa introduced before this year are
 grouped all together. Default: 1950.}
 
@@ -116,7 +118,10 @@ visualize_pathways_year_level1(data, bin = 20)
 visualize_pathways_year_level1(data, from = 1970)
 
 # facet locality
-visualize_pathways_year_level1(data, category = "Not Chordata", facet_column = "locality")
+visualize_pathways_year_level1(
+  data, category = "Not Chordata",
+  facet_column = "locality"
+)
 
 # facet habitat
 visualize_pathways_year_level1(data, facet_column = "habitat")
@@ -125,9 +130,18 @@ visualize_pathways_year_level1(data, facet_column = "habitat")
 visualize_pathways_year_level1(data, pathways = c("corridor", "escape"))
 
 # Add a title
-visualize_pathways_year_level1(data, category = "Plantae", from = 1950, title = "Pathway level 1: Plantae")
+visualize_pathways_year_level1(
+  data,
+  category = "Plantae",
+  from = 1950,
+  title = "Pathway level 1: Plantae"
+)
 
 # Personalize axis labels
-visualize_pathways_year_level1(data, x_lab = "Jaar", y_lab = "Aantal geÃ¯ntroduceerde taxa")
+visualize_pathways_year_level1(
+  data,
+  x_lab = "Jaar",
+  y_lab = "Aantal geÃ¯ntroduceerde taxa"
+)
 }
 }

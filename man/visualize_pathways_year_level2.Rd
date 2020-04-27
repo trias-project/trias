@@ -27,6 +27,10 @@ visualize_pathways_year_level2(
 \arguments{
 \item{df}{df.}
 
+\item{chosen_pathway_level1}{character. Selected pathway level 1.}
+
+\item{bin}{numeric. Time span in years to use for agggregation. Default: 10.}
+
 \item{from}{numeric. Year trade-off: taxa introduced before this year are
 grouped all together. Default: 1950.}
 
@@ -106,50 +110,58 @@ data <- read_tsv(datafile,
 # All taxa
 visualize_pathways_year_level2(
   data,
-  chosen_pathway_level1 = "escape")
+  chosen_pathway_level1 = "escape"
+)
 
 # Animalia
 visualize_pathways_year_level2(
   data,
   chosen_pathway_level1 = "escape",
-  category = "Animalia")
+  category = "Animalia"
+)
 
 # Chordata
 visualize_pathways_year_level2(
   data,
   chosen_pathway_level1 = "escape",
-  category = "Chordata")
+  category = "Chordata"
+)
 
 # Group by 20 years
 visualize_pathways_year_level2(
   data,
   chosen_pathway_level1 = "escape",
-  bin = 20)
+  bin = 20
+)
 
 # Group taxa introudced before 1970 alltogether
 visualize_pathways_year_level2(
   data,
   chosen_pathway_level1 = "escape",
-  from = 1970)
+  from = 1970
+)
 
 # facet locality
 visualize_pathways_year_level2(
   data,
   chosen_pathway_level1 = "escape",
   category = "Not Chordata",
-  facet_column = "locality")
+  facet_column = "locality"
+)
 
 # facet habitat
 visualize_pathways_year_level2(
   data,
   chosen_pathway_level1 = "escape",
-  facet_column = "habitat")
+  facet_column = "habitat"
+)
 
 # Only taxa with pathways "horticulture" and "pet"
 visualize_pathways_year_level2(
   data,
   chosen_pathway_level1 = "escape",
-  pathways = c("horticulture", "pet"))
+  pathways = c("horticulture", "pet")
+)
 
 # Add a title
 visualize_pathways_year_level2(
@@ -157,13 +169,15 @@ visualize_pathways_year_level2(
   chosen_pathway_level1 = "escape",
   category = "Plantae",
   from = 1950,
-  title = "Plantae - Pathway level 1")
+  title = "Plantae - Pathway level 1"
+)
 
 # Personalize axis labels
 visualize_pathways_year_level2(
   data,
   chosen_pathway_level1 = "escape",
   x_lab = "Jaar",
-  y_lab = "Aantal geÃ¯ntroduceerde taxa")
+  y_lab = "Aantal geÃƒÂ¯ntroduceerde taxa"
+)
 }
 }

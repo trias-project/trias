@@ -2,24 +2,26 @@ context("test_visualize_pathways_level1")
 
 # input df
 input_test_df <- read.delim(
-  paste0("./data_test_pathways/",
-         "input_data_pathways.tsv"),
+  paste0(
+    "./data_test_pathways/",
+    "input_data_pathways.tsv"
+  ),
   sep = "\t",
   stringsAsFactors = FALSE
 )
 
-valid_pathways <- 
+valid_pathways <-
   pathways_cbd() %>%
   distinct(pathway_level1) %>%
   pull()
 
-invalid_pathways_df <- input_test_df[1:6,]
+invalid_pathways_df <- input_test_df[1:6, ]
 
 no_cbd_values <- c(
   "corrrrrriddor",
   "releaseeeee",
   "essscapppeee"
-  )
+)
 
 invalid_pathways_df$pathway_level1 <- c(
   "corridor",
@@ -28,11 +30,11 @@ invalid_pathways_df$pathway_level1 <- c(
   no_cbd_values
 )
 
-na_pathways <- input_test_df[1:6,]
+na_pathways <- input_test_df[1:6, ]
 na_pathways$pathway_level1[3:4] <- c(NA_character_, NA_character_)
 taxa_na <- unique(na_pathways$key[3:4])
 
-empty_pathways <-  input_test_df[1:6,]
+empty_pathways <- input_test_df[1:6, ]
 empty_pathways$pathway_level1[3] <- ""
 taxa_empty <- unique(empty_pathways$key[3])
 
@@ -59,7 +61,8 @@ pathways_selection_inverted <- c("escape", "corridor")
 
 output_general <- visualize_pathways_level1(input_test_df)
 output_with_facet <- visualize_pathways_level1(input_test_df,
-                                               facet_column = "habitat")
+  facet_column = "habitat"
+)
 output_less_pathways <- visualize_pathways_level1(
   input_test_df,
   pathways = pathways_selection
@@ -70,19 +73,29 @@ output_less_pathways_inverted <- visualize_pathways_level1(
 )
 
 testthat::test_that("Argument: df", {
-  expect_error(visualize_pathways_level1(3),
-               "`df` must be a data frame.")
+  expect_error(
+    visualize_pathways_level1(3),
+    "`df` must be a data frame."
+  )
 })
 
 testthat::test_that("Argument: from", {
-  expect_error(visualize_pathways_level1(input_test_df,
-                                    from = "1950"),
-               "`from` must be a number.")
-  expect_error(visualize_pathways_level1(input_test_df,
-                                    from = 2900),
-               paste0("`from` must be less than ",
-                     format(Sys.Date(), "%Y"),
-                     "."))
+  expect_error(
+    visualize_pathways_level1(input_test_df,
+      from = "1950"
+    ),
+    "`from` must be a number."
+  )
+  expect_error(
+    visualize_pathways_level1(input_test_df,
+      from = 2900
+    ),
+    paste0(
+      "`from` must be less than ",
+      format(Sys.Date(), "%Y"),
+      "."
+    )
+  )
 })
 
 testthat::test_that("Argument: category", {
@@ -96,80 +109,110 @@ testthat::test_that("Argument: category", {
   )
   expect_error(
     visualize_pathways_level1(input_test_df,
-                         category = "not nice"),
+      category = "not nice"
+    ),
     paste0(
       "`category` is not correct. Choose one of: ",
       paste0(categories, collapse = ", "),
       "."
-    ))
+    )
+  )
 })
 
 testthat::test_that("Argument: facet_column", {
+  expect_error(
+    visualize_pathways_level1(input_test_df,
+      facet_column = 5
+    ),
+    "Argument facet_column has to be NULL or a character."
+  )
   expect_error(visualize_pathways_level1(input_test_df,
-                                         facet_column = 5),
-               "Argument facet_column has to be NULL or a character.")
-  expect_error(visualize_pathways_level1(input_test_df,
-                                         facet_column = "strange_col"))
-  expect_error(visualize_pathways_level1(input_test_df,
-                                         category = "Chordata",
-                                         facet_column = "phylum"),
-               "You cannot use phylum as facet with category Chordata.")
+    facet_column = "strange_col"
+  ))
+  expect_error(
+    visualize_pathways_level1(input_test_df,
+      category = "Chordata",
+      facet_column = "phylum"
+    ),
+    "You cannot use phylum as facet with category Chordata."
+  )
 })
 
 testthat::test_that("Argument pathways", {
-  expect_error(visualize_pathways_level1(input_test_df,
-                                         pathways = TRUE),
-               "`pathways` must be a vector of characters.")
-  expect_error(visualize_pathways_level1(input_test_df,
-                                         pathways = no_cbd_values),
-               paste0("Pathways in `pathways` not present in data.frame: ",
-                     paste(no_cbd_values, collapse = ","),
-                     "."))
+  expect_error(
+    visualize_pathways_level1(input_test_df,
+      pathways = TRUE
+    ),
+    "`pathways` must be a vector of characters."
+  )
+  expect_error(
+    visualize_pathways_level1(input_test_df,
+      pathways = no_cbd_values
+    ),
+    paste0(
+      "Pathways in `pathways` not present in data.frame: ",
+      paste(no_cbd_values, collapse = ","),
+      "."
+    )
+  )
 })
 testthat::test_that("Argument: taxon_names", {
   expect_error(
     visualize_pathways_level1(input_test_df, taxon_names = input_test_df),
-    "`taxon_names` must be a character.")
+    "`taxon_names` must be a character."
+  )
   expect_error(
-    visualize_pathways_level1(input_test_df, taxon_names = "blablabla"))
+    visualize_pathways_level1(input_test_df, taxon_names = "blablabla")
+  )
 })
 
 testthat::test_that("Argument: kingdom_names", {
   expect_error(
     visualize_pathways_level1(input_test_df, kingdom_names = input_test_df),
-    "`kingdom_names` must be a character.")
+    "`kingdom_names` must be a character."
+  )
   expect_error(
-    visualize_pathways_level1(input_test_df, kingdom_names = "blablabla"))
+    visualize_pathways_level1(input_test_df, kingdom_names = "blablabla")
+  )
 })
 
 testthat::test_that("Argument: phylum_names", {
   expect_error(
     visualize_pathways_level1(input_test_df, phylum_names = TRUE),
-    "`phylum_names` must be a character.")
+    "`phylum_names` must be a character."
+  )
   expect_error(
     visualize_pathways_level1(input_test_df,
-                              category = "Chordata",
-                              phylum_names = "blablabla"))
+      category = "Chordata",
+      phylum_names = "blablabla"
+    )
+  )
 })
 
 testthat::test_that("Argument: first_observed", {
   expect_error(
     visualize_pathways_level1(input_test_df, first_observed = 4),
-    "`first_observed` must be a character.")
+    "`first_observed` must be a character."
+  )
   expect_error(
     visualize_pathways_level1(input_test_df,
-                              first_observed = "strange_colname"))
+      first_observed = "strange_colname"
+    )
+  )
 })
 testthat::test_that("Argument: title labels", {
   expect_error(
     visualize_pathways_level1(input_test_df, title = TRUE),
-    "`title` must be a character or NULL.")
+    "`title` must be a character or NULL."
+  )
   expect_error(
     visualize_pathways_level1(input_test_df, x_lab = input_test_df),
-    "`x_lab` must be a character or NULL.")
+    "`x_lab` must be a character or NULL."
+  )
   expect_error(
     visualize_pathways_level1(input_test_df, y_lab = 4),
-    "`y_lab` must be a character or NULL.")
+    "`y_lab` must be a character or NULL."
+  )
 })
 
 testthat::test_that("Test CBD standard compliance", {
@@ -182,40 +225,44 @@ testthat::test_that("Test CBD standard compliance", {
       "."
     )
   expect_warning(visualize_pathways_level1(invalid_pathways_df,
-                                           cbd_standard = FALSE),
-                 message_invalid_pathways,
-                 fixed = TRUE
+    cbd_standard = FALSE
+  ),
+  message_invalid_pathways,
+  fixed = TRUE
   )
   expect_error(visualize_pathways_level1(invalid_pathways_df,
-                                         cbd_standard = TRUE),
-               message_invalid_pathways,
-               fixed = TRUE
+    cbd_standard = TRUE
+  ),
+  message_invalid_pathways,
+  fixed = TRUE
   )
 })
 
 testthat::test_that("Test empty pathway_level1 transformation to unknown", {
   expect_warning(visualize_pathways_level1(na_pathways),
-                 paste(
-                   nrow(taxa_na),
-                   "taxa have no information about pathway level 1.",
-                   "Set to 'unknown'."),
-                 fixed = TRUE
+    paste(
+      nrow(taxa_na),
+      "taxa have no information about pathway level 1.",
+      "Set to 'unknown'."
+    ),
+    fixed = TRUE
   )
   expect_warning(visualize_pathways_level1(empty_pathways),
-                 paste(
-                   nrow(taxa_empty),
-                   "taxa have no information about pathway level 1.",
-                   "Set to 'unknown'."),
-                 fixed = TRUE
+    paste(
+      nrow(taxa_empty),
+      "taxa have no information about pathway level 1.",
+      "Set to 'unknown'."
+    ),
+    fixed = TRUE
   )
   expect_warning(visualize_pathways_level1(na_empty_pathways),
-                 paste(
-                   nrow(taxa_na_empty),
-                   "taxa have no information about pathway level 1.",
-                   "Set to 'unknown'."),
-                 fixed = TRUE
+    paste(
+      nrow(taxa_na_empty),
+      "taxa have no information about pathway level 1.",
+      "Set to 'unknown'."
+    ),
+    fixed = TRUE
   )
-  
 })
 
 testthat::test_that("Test output class", {
@@ -229,10 +276,10 @@ testthat::test_that("test pathway factors and their order", {
   expect_true(is.factor(output_general$data$pathway_level1))
   expect_true(is.factor(output_less_pathways$data$pathway_level1))
   expect_true(is.factor(output_less_pathways_inverted$data$pathway_level1))
-  expect_true(all(levels(output_general$data$pathway_level1) == 
-                    valid_pathways))
-  expect_true(all(levels(output_less_pathways$data$pathway_level1) == 
-                    pathways_selection))
-  expect_true(all(levels(output_less_pathways_inverted$data$pathway_level1) == 
-                    pathways_selection_inverted))
+  expect_true(all(levels(output_general$data$pathway_level1) ==
+    valid_pathways))
+  expect_true(all(levels(output_less_pathways$data$pathway_level1) ==
+    pathways_selection))
+  expect_true(all(levels(output_less_pathways_inverted$data$pathway_level1) ==
+    pathways_selection_inverted))
 })

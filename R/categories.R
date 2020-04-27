@@ -1,7 +1,7 @@
 #' Categories for pathway tables and bar graphs
 #'
 #' Vector `categories` is saved as it used by all *_pathways() functions.
-#' 
+#'
 #' @keywords internal
 #'
 #' @noRd
