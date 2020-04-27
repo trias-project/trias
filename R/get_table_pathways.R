@@ -21,7 +21,7 @@
 #' @param phylum_names character. Name of the column of \code{df} containing
 #'   information about phylum. This parameter is used only if \code{category} is
 #'   one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default: \code{"phylum"}.
-#' @param year_introduction character. Name of the column of \code{df}
+#' @param first_observed character. Name of the column of \code{df}
 #'   containing information about year of introduction. Default:
 #'   \code{"first_observed"}.
 #' @param species_names character. Name of the column of \code{df} containing
@@ -34,7 +34,7 @@
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
 #' @importFrom stringr str_c
-#' @importFrom purrr pmap_dfr
+#' @importFrom purrr pmap_dfr map_chr
 #' @examples
 #' \dontrun{
 #' library(readr)
@@ -61,7 +61,7 @@
 #' get_table_pathways(data, "Chordata")
 #' get_table_pathways(data, "Not Chordata")
 #' # From 2000
-#' get_table_pathways(data, from = 2000, year_introduction = "first_observed")
+#' get_table_pathways(data, from = 2000, first_observed = "first_observed")
 #' # Specify number of species to include in examples
 #' get_table_pathways(data, "Plantae", n_species = 8)
 #' # Specify columns containing kingdom and species names
@@ -78,7 +78,7 @@ get_table_pathways <- function(df,
                                n_species = 5,
                                kingdom_names = "kingdom",
                                phylum_names = "phylum",
-                               year_introduction = "first_observed",
+                               first_observed = "first_observed",
                                species_names = "canonicalName") {
   categories <- c(
     "Plantae",
@@ -141,16 +141,24 @@ get_table_pathways <- function(df,
         substr(Sys.Date(), start = 1, stop = 4)
       )
     )
-    assert_that(is.character(year_introduction),
-      msg = "Column 'year_of_introduction' should be a character."
+    assert_that(is.character(first_observed),
+      msg = "Column 'first_observed' should be a character."
     )
-    assert_colnames(df, year_introduction, only_colnames = FALSE)
+    assert_colnames(df, first_observed, only_colnames = FALSE)
   }
 
   assert_colnames(df, species_names, only_colnames = FALSE)
   assert_that(is.character(species_names),
     msg = "Parameter 'species_names' should be a character."
   )
+
+  # convert factors to characters (in case stringsAsFactors = TRUE)
+  if (any(map_chr(names(df), ~ class(df[[.]])) == "factor")) {
+    warning("Factors are converted to characters.")
+    df <-
+      df %>%
+      mutate_if(is.factor, as.character)
+  }
   # rename to default column name
   df <-
     df %>%
@@ -159,7 +167,7 @@ get_table_pathways <- function(df,
   if (!is.null(from)) {
     df <-
       df %>%
-      rename_at(vars(year_introduction), ~"first_observed")
+      rename_at(vars(first_observed), ~"first_observed")
   }
   # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {
@@ -195,14 +203,15 @@ get_table_pathways <- function(df,
   preprocess_data <-
     filtered_data %>%
     # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
-    mutate(pathway_level1 = ifelse(!is.na(.data$pathway_level1),
-      .data$pathway_level1,
-      "unknown"
+    mutate(pathway_level1 = ifelse(is.na(.data$pathway_level1) |
+      .data$pathway_level1 == "",
+    "unknown",
+    .data$pathway_level1
     )) %>%
     mutate(pathway_level2 = ifelse(.data$pathway_level1 != "unknown" &
-      !is.na(.data$pathway_level2),
+      !is.na(.data$pathway_level2) & .data$pathway_level2 != "",
     .data$pathway_level2,
-    ""
+    "unknown"
     ))
   # Create groups based on pathway level1 and level2
   preprocess_data <-

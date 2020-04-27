@@ -58,6 +58,7 @@ input_test_df <- data.frame(
   ),
   stringsAsFactors = FALSE
 )
+
 # kingdom column is not the default value
 input_test_df_kingdom <-
   input_test_df %>%
@@ -74,18 +75,24 @@ input_test_df_year <-
 input_test_df_other_name <-
   input_test_df %>%
   rename(other_name = species)
+# factors instead of characters
+input_test_df_factors <-
+  input_test_df %>%
+  mutate_if(is.character, as.factor)
 # test on large input
-input_test_df_large <- readr::read_tsv(
-  paste0("./data_test_output_get_table_pathways/",
-    "input1_get_table_pathways.tsv",
-    na = ""
-  )
+input_test_df_large <- read.delim(
+  paste0(
+    "./data_test_pathways/",
+    "input_data_pathways.tsv"
+  ),
+  sep = "\t",
+  stringsAsFactors = FALSE
 )
 
 # Output basic usage : default values for all params
 output_test_df_basic <- data.frame(
   pathway_level1 = c("contaminant", "unknown"),
-  pathway_level2 = c("animal_parasite", ""),
+  pathway_level2 = c("animal_parasite", "unknown"),
   n = as.integer(c(2, 3)),
   examples = c(
     "Aphanomyces astaci, Gyrodactylus proterorhini",
@@ -96,12 +103,25 @@ output_test_df_basic <- data.frame(
 
 testthat::test_that("Basic usage: default values", {
   pathways_default <- get_table_pathways(input_test_df)
+  expect_warning(
+    pathways_default_from_factors <-
+      get_table_pathways(input_test_df_factors),
+    "Factors are converted to characters."
+  )
   pathways_default_large <- get_table_pathways(input_test_df_large)
   # same cols
   expect_true(all(names(pathways_default) == names(output_test_df_basic)))
   expect_true(all(names(pathways_default) == names(pathways_default_large)))
   # same number of rows (pathways combinations)
   expect_true(nrow(pathways_default) == nrow(output_test_df_basic))
+  # if input contains factors, they are converted to characters: same output
+  # except order of examples which is randomized by default
+  expect_equal(
+    pathways_default %>%
+      select(-examples),
+    pathways_default_from_factors %>%
+      select(-examples)
+  )
   # large input, more pathways, more rows
   expect_true(nrow(pathways_default_large) > nrow(pathways_default))
   # large input, more taxa sharing same pathways, higher n value
@@ -123,7 +143,7 @@ testthat::test_that("Basic usage: default values", {
 testthat::test_that("Use with 'category'", {
   output_test_df_animals <- data.frame(
     pathway_level1 = c("contaminant", "unknown"),
-    pathway_level2 = c("animal_parasite", ""),
+    pathway_level2 = c("animal_parasite", "unknown"),
     n = as.integer(c(1, 2)),
     examples = c(
       "Gyrodactylus proterorhini",
@@ -133,14 +153,14 @@ testthat::test_that("Use with 'category'", {
   )
   output_test_df_chordata <- data.frame(
     pathway_level1 = "unknown",
-    pathway_level2 = "",
+    pathway_level2 = "unknown",
     n = as.integer(1),
     examples = "Scutigera coleoptrata, Tricellaria inopinata",
     stringsAsFactors = FALSE
   )
   output_test_df_not_chordata <- data.frame(
     pathway_level1 = c("contaminant", "unknown"),
-    pathway_level2 = c("animal_parasite", ""),
+    pathway_level2 = c("animal_parasite", "unknown"),
     n = as.integer(c(1, 1)),
     examples = c(
       "Gyrodactylus proterorhini",
@@ -197,7 +217,7 @@ testthat::test_that("Use with 'category'", {
 testthat::test_that("Use with 'from'", {
   output_test_df_2012 <- data.frame(
     pathway_level1 = c("contaminant", "unknown"),
-    pathway_level2 = c("animal_parasite", ""),
+    pathway_level2 = c("animal_parasite", "unknown"),
     n = as.integer(c(1, 1)),
     examples = c("Aphanomyces astaci", "Thecaphora oxalidis"),
     stringsAsFactors = FALSE
@@ -230,7 +250,7 @@ testthat::test_that("Use with 'from'", {
     pathways_2018,
     get_table_pathways(input_test_df_year,
       from = 2018,
-      year_introduction = "first_obs"
+      first_observed = "first_obs"
     )
   )
 })

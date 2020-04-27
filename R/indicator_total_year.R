@@ -5,37 +5,39 @@
 #' year of introduction is required.
 #' @param df df. Contains the data as produced by the Trias pipeline, with
 #'   minimal columns.
-#' @param start_year_plot integer. Limit to use as start year of the plot. For
+#' @param start_year_plot numeric. Limit to use as start year of the plot. For
 #'   scientific usage, the entire period could be relevant, but for policy
-#'   purpose, focusing on a more recent period could be required.
+#'   purpose, focusing on a more recent period could be required. Default: 1940.
 #' @param x_major_scale_stepsize integer. On which year interval labels are
-#'   placed on the x axis.
+#'   placed on the x axis. Default: 10.
 #' @param x_minor_scale_stepsize integer. On which year interval minor breaks
-#'   are placed on the x axis.
+#'   are placed on the x axis. Default: 5.
 #' @param facet_column NULL or character. Name of the column to use to create
 #'   additional facet wrap plots underneath the main graph. When NULL, no facet
 #'   graph is included. It is typically one of the highest taxonomic ranks, e.g.
 #'   \code{"kingdom"}, \code{"phylum"}, \code{"class"}, \code{"order"},
 #'   \code{"family"}. Other typical breakwdowns could be geographically related,
 #'   e.g. \code{"country"}, \code{"locality"}, \code{"pathway"} of introduction
-#'   or \code{"habitat"}.
+#'   or \code{"habitat"}. Default: `NULL`.
 #' @param taxon_key_col character. Name of the column of \code{df} containing
 #'   unique taxon IDs. Default: \code{key}.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{"first_observed"}.
-#' @param x_lab NULL or character. to set or remove the x-axis label.
-#' @param y_lab NULL or character. to set or remove the y-axis label.
+#' @param x_lab NULL or character. To personalize or remove the x-axis label.
+#'   Default: "Year.
+#' @param y_lab NULL or character. To personalize or remove the y-axis label.
+#'   Default: "Cumulative number of alien species".
 #'
 #' @return ggplot2 object (or egg object if facets are used).
 #'
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
-#' @importFrom dplyr %>% filter rowwise do bind_cols group_by count
-#'   ungroup rename_at distinct .data syms
+#' @importFrom dplyr %>% filter rowwise do bind_cols group_by count ungroup
+#'   rename_at distinct .data syms
 #' @importFrom tidyr unnest
 #' @importFrom rlang !!!
-#' @importFrom ggplot2 ggplot geom_line aes xlab ylab scale_x_continuous
+#' @importFrom ggplot2 coord_cartesian ggplot geom_line aes xlab ylab scale_x_continuous
 #'   facet_wrap
 #' @importFrom egg ggarrange
 #'
@@ -82,19 +84,29 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   # initial input checks
   assert_that(is.data.frame(df))
   assert_that(is.numeric(start_year_plot),
-              msg = "Argument start_year_plot has to be a number.")
+    msg = "Argument start_year_plot has to be a number."
+  )
   assert_that(start_year_plot < as.integer(format(Sys.Date(), "%Y")),
-              msg = paste("Argument start_year_plot has to be less than",
-                          format(Sys.Date(), "%Y")))
+    msg = paste(
+      "Argument start_year_plot has to be less than",
+      format(Sys.Date(), "%Y")
+    )
+  )
   assert_that(is.numeric(x_major_scale_stepsize),
-              msg = "Argument x_major_scale_stepsize has to be a number.")
+    msg = "Argument x_major_scale_stepsize has to be a number."
+  )
   assert_that(is.numeric(x_minor_scale_stepsize),
-              msg = "Argument x_minor_scale_stepsize has to be a number.")
+    msg = "Argument x_minor_scale_stepsize has to be a number."
+  )
   assert_that(x_major_scale_stepsize >= x_minor_scale_stepsize,
-              msg = paste0("x_major_scale_stepsize should be greater ",
-                           "than x_minor_scale_stepsize."))
+    msg = paste0(
+      "x_major_scale_stepsize should be greater ",
+      "than x_minor_scale_stepsize."
+    )
+  )
   assert_that(is.null(facet_column) | is.character(facet_column),
-              msg = "Argument facet_column has to be NULL or a character.")
+    msg = "Argument facet_column has to be NULL or a character."
+  )
   if (is.character(facet_column)) {
     assert_colnames(df, facet_column, only_colnames = FALSE)
   }
@@ -107,19 +119,23 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   )
   if (!is.null(facet_column)) {
     facet_column <- match.arg(facet_column, valid_facet_options)
-  } 
-  
-  assert_that(is.character(taxon_key_col), 
-              msg = "Argument taxon_key_col has to be a character.")
+  }
+
+  assert_that(is.character(taxon_key_col),
+    msg = "Argument taxon_key_col has to be a character."
+  )
   assert_colnames(df, taxon_key_col, only_colnames = FALSE)
   assert_that(is.character(first_observed),
-              msg = "Argument first_observed has to be a character.")
+    msg = "Argument first_observed has to be a character."
+  )
   assert_colnames(df, first_observed, only_colnames = FALSE)
-  
+
   assert_that(is.null(x_lab) | is.character(x_lab),
-              msg = "Argument x_lab has to be a character or NULL.")
+    msg = "Argument x_lab has to be a character or NULL."
+  )
   assert_that(is.null(y_lab) | is.character(y_lab),
-              msg = "Argument y_lab has to be a character or NULL.")
+    msg = "Argument y_lab has to be a character or NULL."
+  )
   # rename to default column name
   df <-
     df %>%
@@ -127,10 +143,10 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     rename_at(vars(taxon_key_col), ~"key")
 
   # Provide warning messages for first_observed NA values
-  n_first_observed_not_present <- 
+  n_first_observed_not_present <-
     df %>%
     filter(is.na(.data$first_observed)) %>%
-    nrow
+    nrow()
   if (n_first_observed_not_present) {
     warning(paste0(
       n_first_observed_not_present,
@@ -144,7 +160,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   # Filter the incoming data
   df <-
     df %>%
-    filter(.data$first_observed > start_year_plot)
+    filter(!is.na(.data$first_observed))
 
   # Distinct values in columns of interest
   if (is.null(facet_column)) {
@@ -175,8 +191,12 @@ indicator_total_year <- function(df, start_year_plot = 1940,
         maxDate,
         x_major_scale_stepsize
       ),
-      limits = c(start_year_plot, maxDate)
-    )
+      minor_breaks = seq(
+        start_year_plot,
+        maxDate,
+        x_minor_scale_stepsize
+      )) +
+    coord_cartesian(xlim = c(start_year_plot, maxDate))
 
   if (is.null(facet_column)) {
     return(top_graph)
@@ -188,7 +208,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       group_by(!!!syms(c("year", facet_column))) %>%
       count() %>%
       ungroup()
-    
+
     facet_graph <-
       ggplot(
         counts_ias_grouped,
@@ -200,9 +220,8 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       facet_wrap(facet_column) +
       scale_x_continuous(
         breaks = seq(start_year_plot, maxDate, x_major_scale_stepsize),
-        minor_breaks = seq(start_year_plot, maxDate, x_minor_scale_stepsize),
-        limits = c(start_year_plot, maxDate)
-      )
+        minor_breaks = seq(start_year_plot, maxDate, x_minor_scale_stepsize)) +
+      coord_cartesian(xlim = c(start_year_plot, maxDate))
 
     ggarrange(top_graph, facet_graph)
   }

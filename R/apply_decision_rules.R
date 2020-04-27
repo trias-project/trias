@@ -39,7 +39,7 @@
 #' @importFrom dplyr mutate filter select case_when rename %>% summarize pull
 #'   group_by ungroup tally add_tally inner_join anti_join tibble n_distinct n
 #'   .data as_tibble enquo
-#' @importFrom tidyselect vars_pull 
+#' @importFrom tidyselect vars_pull
 #' @importFrom purrr map2 reduce
 #' @importFrom rlang sym !! :=
 #' @importFrom stats median
@@ -57,7 +57,7 @@
 #'   year = y
 #' )
 #' }
-#' 
+#'
 apply_decision_rules <- function(df,
                                  y_var = "ncells",
                                  eval_year,
