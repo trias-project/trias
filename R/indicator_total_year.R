@@ -5,34 +5,36 @@
 #' year of introduction is required.
 #' @param df df. Contains the data as produced by the Trias pipeline, with
 #'   minimal columns.
-#' @param start_year_plot integer. Limit to use as start year of the plot. For
+#' @param start_year_plot numeric. Limit to use as start year of the plot. For
 #'   scientific usage, the entire period could be relevant, but for policy
-#'   purpose, focusing on a more recent period could be required.
+#'   purpose, focusing on a more recent period could be required. Default: 1940.
 #' @param x_major_scale_stepsize integer. On which year interval labels are
-#'   placed on the x axis.
+#'   placed on the x axis. Default: 10.
 #' @param x_minor_scale_stepsize integer. On which year interval minor breaks
-#'   are placed on the x axis.
+#'   are placed on the x axis. Default: 5.
 #' @param facet_column NULL or character. Name of the column to use to create
 #'   additional facet wrap plots underneath the main graph. When NULL, no facet
 #'   graph is included. It is typically one of the highest taxonomic ranks, e.g.
 #'   \code{"kingdom"}, \code{"phylum"}, \code{"class"}, \code{"order"},
 #'   \code{"family"}. Other typical breakwdowns could be geographically related,
 #'   e.g. \code{"country"}, \code{"locality"}, \code{"pathway"} of introduction
-#'   or \code{"habitat"}.
+#'   or \code{"habitat"}. Default: `NULL`.
 #' @param taxon_key_col character. Name of the column of \code{df} containing
 #'   unique taxon IDs. Default: \code{key}.
 #' @param first_observed character. Name of the column of \code{df} containing
 #'   information about year of introduction. Default: \code{"first_observed"}.
-#' @param x_lab NULL or character. to set or remove the x-axis label.
-#' @param y_lab NULL or character. to set or remove the y-axis label.
+#' @param x_lab NULL or character. To personalize or remove the x-axis label.
+#'   Default: "Year.
+#' @param y_lab NULL or character. To personalize or remove the y-axis label.
+#'   Default: "Cumulative number of alien species".
 #'
 #' @return ggplot2 object (or egg object if facets are used).
 #'
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
-#' @importFrom dplyr %>% filter rowwise do bind_cols group_by count
-#'   ungroup rename_at distinct .data syms
+#' @importFrom dplyr %>% filter rowwise do bind_cols group_by count ungroup
+#'   rename_at distinct .data syms
 #' @importFrom tidyr unnest
 #' @importFrom rlang !!!
 #' @importFrom ggplot2 coord_cartesian ggplot geom_line aes xlab ylab scale_x_continuous

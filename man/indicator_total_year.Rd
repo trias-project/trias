@@ -20,15 +20,15 @@ indicator_total_year(
 \item{df}{df. Contains the data as produced by the Trias pipeline, with
 minimal columns.}
 
-\item{start_year_plot}{integer. Limit to use as start year of the plot. For
+\item{start_year_plot}{numeric. Limit to use as start year of the plot. For
 scientific usage, the entire period could be relevant, but for policy
-purpose, focusing on a more recent period could be required.}
+purpose, focusing on a more recent period could be required. Default: 1940.}
 
 \item{x_major_scale_stepsize}{integer. On which year interval labels are
-placed on the x axis.}
+placed on the x axis. Default: 10.}
 
 \item{x_minor_scale_stepsize}{integer. On which year interval minor breaks
-are placed on the x axis.}
+are placed on the x axis. Default: 5.}
 
 \item{facet_column}{NULL or character. Name of the column to use to create
 additional facet wrap plots underneath the main graph. When NULL, no facet
@@ -36,7 +36,7 @@ graph is included. It is typically one of the highest taxonomic ranks, e.g.
 \code{"kingdom"}, \code{"phylum"}, \code{"class"}, \code{"order"},
 \code{"family"}. Other typical breakwdowns could be geographically related,
 e.g. \code{"country"}, \code{"locality"}, \code{"pathway"} of introduction
-or \code{"habitat"}.}
+or \code{"habitat"}. Default: \code{NULL}.}
 
 \item{taxon_key_col}{character. Name of the column of \code{df} containing
 unique taxon IDs. Default: \code{key}.}
@@ -44,9 +44,11 @@ unique taxon IDs. Default: \code{key}.}
 \item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{"first_observed"}.}
 
-\item{x_lab}{NULL or character. to set or remove the x-axis label.}
+\item{x_lab}{NULL or character. To personalize or remove the x-axis label.
+Default: "Year.}
 
-\item{y_lab}{NULL or character. to set or remove the y-axis label.}
+\item{y_lab}{NULL or character. To personalize or remove the y-axis label.
+Default: "Cumulative number of alien species".}
 }
 \value{
 ggplot2 object (or egg object if facets are used).
