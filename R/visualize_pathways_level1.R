@@ -47,7 +47,8 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
-#' @importFrom dplyr %>% anti_join distinct filter mutate pull rename_at sym
+#' @importFrom dplyr %>% anti_join distinct filter if_else mutate pull rename_at
+#'   sym
 #' @importFrom ggplot2 ggplot geom_bar theme ggtitle xlab ylab coord_flip
 #'   facet_wrap
 #' @importFrom tidyselect all_of
@@ -288,7 +289,7 @@ visualize_pathways_level1 <- function(df,
   df <-
     df %>%
     # Handle NAs and "unknown"
-    mutate(pathway_level1 = ifelse(is.na(.data$pathway_level1) |
+    mutate(pathway_level1 = if_else(is.na(.data$pathway_level1) |
       .data$pathway_level1 == "",
     "unknown",
     .data$pathway_level1
