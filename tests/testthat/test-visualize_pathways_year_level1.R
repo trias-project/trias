@@ -110,6 +110,12 @@ output_later_from <- visualize_pathways_year_level1(input_test_df,
   from = later_from
 )
 
+empty_output <- visualize_pathways_level1(
+  input_test_df %>%
+    filter(kingdom != "Protozoa" | pathway_level1 != "unknown"),
+  category = "Protozoa"
+)
+
 testthat::test_that("Argument: df", {
   expect_error(
     visualize_pathways_year_level1(3),
@@ -332,6 +338,7 @@ testthat::test_that("Test warning no year of introduction", {
 testthat::test_that("Test output class", {
   expect_type(output_general, type = "list")
   expect_type(output_with_facet, type = "list")
+  expect_null(empty_output)
   expect_s3_class(output_general, class = "gg")
   expect_s3_class(output_with_facet, class = "egg")
 })

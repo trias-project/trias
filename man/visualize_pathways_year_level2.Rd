@@ -49,13 +49,11 @@ calling this function. Default: \code{NULL}.}
 \item{pathways}{character. Vector with pathways level 1 to visualize. The
 pathways are displayed following the order as in this vector.}
 
-\item{pathway_level1_names}{character. Name of the column of \code{df}
-containing information about pathways at level 1. Default:
-\code{pathway_level1}.}
+\item{pathway_level1_names}{character. Name of the column of \code{df} containing
+information about pathways at level 1. Default: \code{pathway_level1}.}
 
-\item{pathway_level2_names}{character. Name of the column of \code{df}
-containing information about pathways at level 2. Default:
-\code{pathway_level2}.}
+\item{pathway_level2_names}{character. Name of the column of \code{df} containing
+information about pathways at level 2. Default: \code{pathway_level2}.}
 
 \item{taxon_names}{character. Name of the column of \code{df} containing
 information about taxa. This parameter is used to uniquely identify taxa.}
@@ -84,7 +82,8 @@ taxa".}
 \item{y_lab}{NULL or character. Title of the graph. Default: "Pathways".}
 }
 \value{
-A ggplot2 object (or egg object if facets are used).
+A ggplot2 object (or egg object if facets are used). NULL if there are
+no data to plot.
 }
 \description{
 Function to plot a line graph with number of taxa introduced over time

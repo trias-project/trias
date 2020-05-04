@@ -47,7 +47,8 @@
 #' @param x_lab NULL or character. x-axis label. Default: "Number of introduced
 #'   taxa".
 #' @param y_lab NULL or character. Title of the graph. Default: "Pathways".
-#' @return A ggplot2 object (or egg object if facets are used).
+#'@return A ggplot2 object (or egg object if facets are used). NULL if there are
+#'  no data to plot.
 #'
 #' @export
 #' @importFrom assertthat assert_that
@@ -406,30 +407,41 @@ visualize_pathways_level2 <- function(df,
       .data$pathway_level2
     )
   # Plot number of taxa per pathway_level1
-  top_graph <-
-    ggplot(
-      df_top_graph,
-      aes(x = fct_rev(.data$pathway_level2))
-    ) +
-    geom_bar() +
-    xlab(y_lab) +
-    ylab(x_lab) +
-    coord_flip() +
-    ggtitle(title)
-  if (is.null(facet_column)) {
-    return(top_graph)
-  } else {
-    facet_graph <-
+  top_graph <- NULL
+  if (nrow(df_top_graph) > 0) {
+    top_graph <-
       ggplot(
-        df,
+        df_top_graph,
         aes(x = fct_rev(.data$pathway_level2))
       ) +
       geom_bar() +
-      xlab(y_lab) + # invert labels to get them right after flipping
+      xlab(y_lab) +
       ylab(x_lab) +
       coord_flip() +
-      ggtitle(title) +
-      facet_wrap(facet_column)
-    ggarrange(top_graph, facet_graph)
+      ggtitle(title)
+  }
+  if (is.null(facet_column)) {
+    return(top_graph)
+  } else {
+    facet_graph <- NULL
+    if (nrow(df) > 0) {
+      facet_graph <-
+        ggplot(
+          df,
+          aes(x = fct_rev(.data$pathway_level2))
+        ) +
+        geom_bar() +
+        xlab(y_lab) + # invert labels to get them right after flipping
+        ylab(x_lab) +
+        coord_flip() +
+        ggtitle(title) +
+        facet_wrap(facet_column)
+    }
+    if (all(!is.null(top_graph), !is.null(facet_graph))) {
+      ggarrange(top_graph, facet_graph)
+    }
+    else {
+      NULL
+    }
   }
 }
