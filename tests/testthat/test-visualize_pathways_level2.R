@@ -87,7 +87,6 @@ output_less_pathways_inverted_escape <- visualize_pathways_level2(
   chosen_pathway_level1 = "escape",
   pathways = pathways_selection_inverted_escape
 )
-
 empty_output <- visualize_pathways_level2(
   input_test_df %>% # filter to be sure to produce empty bar plot
     filter(kingdom != "Protozoa" | pathway_level1 != "corridor"),
@@ -362,18 +361,15 @@ testthat::test_that("Test empty pathway_level1 transformation to unknown", {
 testthat::test_that("Test output class", {
   expect_type(output_general, type = "list")
   expect_type(output_with_facet, type = "list")
-  expect_type(empty_output, type = "list")
+  expect_null(empty_output)
   expect_s3_class(output_general, class = "gg")
   expect_s3_class(output_with_facet, class = "egg")
-  expect_s3_class(empty_output, class = "gg")
 })
 
 testthat::test_that("test pathway factors and their order", {
   expect_true(is.factor(output_general$data$pathway_level2))
   expect_true(is.factor(output_less_pathways_escape$data$pathway_level2))
   expect_true(is.factor(output_less_pathways_inverted_escape$data$pathway_level2))
-  expect_true(is.factor(empty_output$data$pathway_level2))
-  expect_true(nrow(empty_output$data) == 0)
   expect_true(all(levels(output_general$data$pathway_level2) ==
     valid_pathways_escape))
   expect_true(all(levels(output_less_pathways_escape$data$pathway_level2) ==

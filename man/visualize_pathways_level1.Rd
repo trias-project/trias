@@ -74,7 +74,8 @@ taxa".}
 \item{y_lab}{NULL or character. Title of the graph. Default: "Pathways".}
 }
 \value{
-A ggplot2 object (or egg object if facets are used).
+A ggplot2 object (or egg object if facets are used). NULL if there
+are no data to plot.
 }
 \description{
 Function to plot bar graph with number of taxa introduced by different

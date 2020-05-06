@@ -1,56 +1,56 @@
-#' Plot number of introduced taxa over time for pathways level 1
+#'Plot number of introduced taxa over time for pathways level 1
 #'
-#' Function to plot a line graph with number of taxa introduced over time
-#' through different CBD pathways level 1. Time expressed in years. Possible
-#' breakpoints: taxonomic (kingdoms + vertebrates/invertebrates).
-#' @param df df.
-#' @param bin numeric. Time span in years to use for agggregation. Default: 10.
-#' @param from numeric. Year trade-off: taxa introduced before this year are
-#'   grouped all together. Default: 1950.
-#' @param category NULL or character. One of the kingdoms as given in GBIF and
-#'   `Chordata` (the phylum), `Not Chordata` (all other phyla of `Animalia`): 1.
-#'   `Plantae` 2. `Animalia` 3. `Fungi` 4. `Chromista` 5. `Archaea` 6.
-#'   `Bacteria` 7. `Protozoa` 8. `Viruses` 9. `incertae sedis` 10. `Chordata`
-#'   11. `Not Chordata` Default: `NULL`.
-#' @param facet_column NULL or character. The column to use to create additional
-#'   facet wrap bar graphs underneath the main graph. When NULL, no facet graph
-#'   are created. One of `family`, `order`, `class`, `phylum`, `locality`,
-#'   `native_range`, `habitat`. If column has another name, rename it before
-#'   calling this function. Default: `NULL`.
-#' @param pathway_level1_names character. Name of the column of \code{df}
-#'   containing information about pathways at level 1. Default:
-#'   `pathway_level1`.
-#' @param pathways character. Vector with pathways level 1 to visualize. The
-#'   pathways are displayed following the order as in this vector.
-#' @param taxon_names character. Name of the column of \code{df} containing
-#'   information about taxa. This parameter is used to uniquely identify taxa.
-#' @param kingdom_names character. Name of the column of \code{df} containing
-#'   information about kingdom. Default: \code{"kingdom"}.
-#' @param phylum_names character. Name of the column of \code{df} containing
-#'   information about phylum. This parameter is used only if \code{category} is
-#'   one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default:
-#'   \code{"phylum"}.
-#' @param first_observed character. Name of the column of \code{df} containing
-#'   information about year of introduction. Default: \code{"first_observed"}.
-#' @param cbd_standard logical. If TRUE the values of pathway level 1 are
-#'   checked based on CBD standard as returned by `pathways_cbd()`. Error is
-#'   returned if unmatched values are found. If FALSE, a warning is returned.
-#'   Default: TRUE.
-#' @param title NULL or character. Title of the graph. Default: NULL.
-#' @param x_lab NULL or character. x-axis label. Default: "Number of introduced
-#'   taxa".
-#' @param y_lab NULL or character. Title of the graph. Default: "Pathways".
-#' @return A ggplot2 object (or egg object if facets are used).
+#'Function to plot a line graph with number of taxa introduced over time through
+#'different CBD pathways level 1. Time expressed in years. Possible breakpoints:
+#'taxonomic (kingdoms + vertebrates/invertebrates).
+#'@param df df.
+#'@param bin numeric. Time span in years to use for agggregation. Default: 10.
+#'@param from numeric. Year trade-off: taxa introduced before this year are
+#'  grouped all together. Default: 1950.
+#'@param category NULL or character. One of the kingdoms as given in GBIF and
+#'  `Chordata` (the phylum), `Not Chordata` (all other phyla of `Animalia`): 1.
+#'  `Plantae` 2. `Animalia` 3. `Fungi` 4. `Chromista` 5. `Archaea` 6. `Bacteria`
+#'  7. `Protozoa` 8. `Viruses` 9. `incertae sedis` 10. `Chordata` 11. `Not
+#'  Chordata` Default: `NULL`.
+#'@param facet_column NULL or character. The column to use to create additional
+#'  facet wrap bar graphs underneath the main graph. When NULL, no facet graph
+#'  are created. One of `family`, `order`, `class`, `phylum`, `locality`,
+#'  `native_range`, `habitat`. If column has another name, rename it before
+#'  calling this function. Default: `NULL`.
+#'@param pathway_level1_names character. Name of the column of \code{df}
+#'  containing information about pathways at level 1. Default: `pathway_level1`.
+#'@param pathways character. Vector with pathways level 1 to visualize. The
+#'  pathways are displayed following the order as in this vector.
+#'@param taxon_names character. Name of the column of \code{df} containing
+#'  information about taxa. This parameter is used to uniquely identify taxa.
+#'@param kingdom_names character. Name of the column of \code{df} containing
+#'  information about kingdom. Default: \code{"kingdom"}.
+#'@param phylum_names character. Name of the column of \code{df} containing
+#'  information about phylum. This parameter is used only if \code{category} is
+#'  one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default:
+#'  \code{"phylum"}.
+#'@param first_observed character. Name of the column of \code{df} containing
+#'  information about year of introduction. Default: \code{"first_observed"}.
+#'@param cbd_standard logical. If TRUE the values of pathway level 1 are checked
+#'  based on CBD standard as returned by `pathways_cbd()`. Error is returned if
+#'  unmatched values are found. If FALSE, a warning is returned. Default: TRUE.
+#'@param title NULL or character. Title of the graph. Default: NULL.
+#'@param x_lab NULL or character. x-axis label. Default: "Number of introduced
+#'  taxa".
+#'@param y_lab NULL or character. Title of the graph. Default: "Pathways".
+#'@return A ggplot2 object (or egg object if facets are used). NULL if there are
+#'  no data to plot.
 #'
-#' @export
-#' @importFrom assertthat assert_that
-#' @importFrom assertable assert_colnames
-#' @importFrom dplyr %>% .data anti_join count distinct filter group_by if_else mutate
-#'   pull rename_at sym ungroup
-#' @importFrom egg ggarrange
-#' @importFrom ggplot2 facet_wrap geom_line geom_point ggplot ggtitle xlab ylab
-#' @importFrom rlang !!
-#' @importFrom tidyselect all_of
+#'@export
+#'@importFrom assertthat assert_that
+#'@importFrom assertable assert_colnames
+#'@importFrom dplyr %>% .data anti_join count distinct filter group_by if_else
+#'  mutate pull rename_at sym ungroup
+#'@importFrom egg ggarrange
+#'@importFrom ggplot2 facet_wrap geom_line geom_point ggplot ggtitle xlab ylab
+#'  ylim
+#'@importFrom rlang !!
+#'@importFrom tidyselect all_of
 #'
 #' @examples
 #' \dontrun{
@@ -290,7 +290,7 @@ visualize_pathways_year_level1 <- function(
   df <-
     df %>%
     # Handle NAs and "unknown"
-    mutate(pathway_level1 = ifelse(is.na(.data$pathway_level1) |
+    mutate(pathway_level1 = if_else(is.na(.data$pathway_level1) |
       .data$pathway_level1 == "",
     "unknown",
     .data$pathway_level1
@@ -410,7 +410,7 @@ visualize_pathways_year_level1 <- function(
     df %>%
     mutate(pathway_level1 = factor(.data$pathway_level1, levels = pathways))
 
-  # Plot number of taxa per pathway_level1 over time
+  # Count number of taxa per pathway_level1 over time
   df_top_graph <-
     df %>%
     group_by(
@@ -419,37 +419,12 @@ visualize_pathways_year_level1 <- function(
     ) %>%
     count() %>%
     ungroup()
-  top_graph <-
-    ggplot(df_top_graph) +
-    geom_line(aes(
-      x = .data$bins_first_observed,
-      y = .data$n,
-      group = .data$pathway_level1,
-      color = .data$pathway_level1
-    )) +
-    geom_point(aes(
-      x = .data$bins_first_observed,
-      y = .data$n,
-      group = .data$pathway_level1,
-      color = .data$pathway_level1
-    )) +
-    xlab(x_lab) +
-    ylab(y_lab) +
-    ggtitle(title)
-  if (is.null(facet_column)) {
-    return(top_graph)
-  } else {
-    df_facet_graph <-
-      df %>%
-      group_by(
-        .data$bins_first_observed,
-        .data$pathway_level1,
-        !!sym(facet_column)
-      ) %>%
-      count() %>%
-      ungroup()
-    facet_graph <-
-      ggplot(df_facet_graph) +
+  max_n <- max(df_top_graph$n)
+  # Plot number of taxa per pathwhay_level1 over time
+  top_graph <- NULL
+  if (nrow(df_top_graph) > 0) {
+    top_graph <-
+      ggplot(df_top_graph) +
       geom_line(aes(
         x = .data$bins_first_observed,
         y = .data$n,
@@ -462,10 +437,53 @@ visualize_pathways_year_level1 <- function(
         group = .data$pathway_level1,
         color = .data$pathway_level1
       )) +
+      ylim(0, max_n) +
       xlab(x_lab) +
       ylab(y_lab) +
-      ggtitle(title) +
-      facet_wrap(facet_column)
-    ggarrange(top_graph, facet_graph)
+      ggtitle(title)
+  }
+  if (is.null(facet_column)) {
+    return(top_graph)
+  } else {
+    # Count number of taxa per pathway_level1 per facet over time
+    df_facet_graph <-
+      df %>%
+      group_by(
+        .data$bins_first_observed,
+        .data$pathway_level1,
+        !!sym(facet_column)
+      ) %>%
+      count() %>%
+      ungroup()
+    max_n <- max(df_facet_graph$n)
+    # Plot number of taxa per pathway_level1 per facet over time
+    facet_graph <- NULL
+    if (nrow(df_facet_graph) > 0) {
+      facet_graph <-
+        ggplot(df_facet_graph) +
+        geom_line(aes(
+          x = .data$bins_first_observed,
+          y = .data$n,
+          group = .data$pathway_level1,
+          color = .data$pathway_level1
+        )) +
+        geom_point(aes(
+          x = .data$bins_first_observed,
+          y = .data$n,
+          group = .data$pathway_level1,
+          color = .data$pathway_level1
+        )) +
+        ylim(0, max_n) +
+        xlab(x_lab) +
+        ylab(y_lab) +
+        ggtitle(title) +
+        facet_wrap(facet_column)
+    }
+    if (all(!is.null(top_graph), !is.null(facet_graph))) {
+      ggarrange(top_graph, facet_graph)
+    }
+    else {
+      NULL
+    }
   }
 }

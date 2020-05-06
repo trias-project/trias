@@ -19,12 +19,10 @@
 #'   are created. One of `family`, `order`, `class`, `phylum`, `locality`,
 #'   `native_range`, `habitat`. If column has another name, rename it before
 #'   calling this function. Default: `NULL`.
-#' @param pathway_level1_names character. Name of the column of `df`
-#'   containing information about pathways at level 1. Default:
-#'   `pathway_level1`.
-#' @param pathway_level2_names character. Name of the column of `df`
-#'   containing information about pathways at level 2. Default:
-#'   `pathway_level2`.
+#' @param pathway_level1_names character. Name of the column of `df` containing
+#'   information about pathways at level 1. Default: `pathway_level1`.
+#' @param pathway_level2_names character. Name of the column of `df` containing
+#'   information about pathways at level 2. Default: `pathway_level2`.
 #' @param pathways character. Vector with pathways level 1 to visualize. The
 #'   pathways are displayed following the order as in this vector.
 #' @param taxon_names character. Name of the column of \code{df} containing
@@ -45,15 +43,17 @@
 #' @param x_lab NULL or character. x-axis label. Default: "Number of introduced
 #'   taxa".
 #' @param y_lab NULL or character. Title of the graph. Default: "Pathways".
-#' @return A ggplot2 object (or egg object if facets are used).
+#'@return A ggplot2 object (or egg object if facets are used). NULL if there are
+#'  no data to plot.
 #'
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom assertable assert_colnames
-#' @importFrom dplyr %>% .data anti_join count distinct filter group_by if_else mutate
-#'   pull rename_at sym ungroup
+#' @importFrom dplyr %>% .data anti_join count distinct filter group_by if_else
+#'   mutate pull rename_at sym ungroup
 #' @importFrom egg ggarrange
 #' @importFrom ggplot2 facet_wrap geom_line geom_point ggplot ggtitle xlab ylab
+#'   ylim
 #' @importFrom rlang !!
 #' @importFrom tidyselect all_of
 #'
@@ -349,7 +349,7 @@ visualize_pathways_year_level2 <- function(
   df <-
     df %>%
     # Handle NAs and "unknown"
-    mutate(pathway_level2 = ifelse(is.na(.data$pathway_level2) |
+    mutate(pathway_level2 = if_else(is.na(.data$pathway_level2) |
       .data$pathway_level2 == "",
     "unknown",
     .data$pathway_level2
@@ -469,7 +469,7 @@ visualize_pathways_year_level2 <- function(
     df %>%
     mutate(pathway_level2 = factor(.data$pathway_level2, levels = pathways))
 
-  # Plot number of taxa per pathway_level1 over time
+  # Count number of taxa per pathway_level2 over time
   df_top_graph <-
     df %>%
     group_by(
@@ -478,37 +478,12 @@ visualize_pathways_year_level2 <- function(
     ) %>%
     count() %>%
     ungroup()
-  top_graph <-
-    ggplot(df_top_graph) +
-    geom_line(aes(
-      x = .data$bins_first_observed,
-      y = .data$n,
-      group = .data$pathway_level2,
-      color = .data$pathway_level2
-    )) +
-    geom_point(aes(
-      x = .data$bins_first_observed,
-      y = .data$n,
-      group = .data$pathway_level2,
-      color = .data$pathway_level2
-    )) +
-    xlab(x_lab) +
-    ylab(y_lab) +
-    ggtitle(title)
-  if (is.null(facet_column)) {
-    return(top_graph)
-  } else {
-    df_facet_graph <-
-      df %>%
-      group_by(
-        .data$bins_first_observed,
-        .data$pathway_level2,
-        !!sym(facet_column)
-      ) %>%
-      count() %>%
-      ungroup()
-    facet_graph <-
-      ggplot(df_facet_graph) +
+  max_n <- max(df_top_graph$n)
+  # Plot number of taxa per pathway_level2 over time
+  top_graph <- NULL
+  if (nrow(df_top_graph) > 0) {
+    top_graph <-
+      ggplot(df_top_graph) +
       geom_line(aes(
         x = .data$bins_first_observed,
         y = .data$n,
@@ -521,10 +496,53 @@ visualize_pathways_year_level2 <- function(
         group = .data$pathway_level2,
         color = .data$pathway_level2
       )) +
+      ylim(0, max_n) +
       xlab(x_lab) +
       ylab(y_lab) +
-      ggtitle(title) +
-      facet_wrap(facet_column)
-    ggarrange(top_graph, facet_graph)
+      ggtitle(title)
+  }
+  if (is.null(facet_column)) {
+    return(top_graph)
+  } else {
+    # Count number of taxa per pathway_level2 per facet over time
+    df_facet_graph <-
+      df %>%
+      group_by(
+        .data$bins_first_observed,
+        .data$pathway_level2,
+        !!sym(facet_column)
+      ) %>%
+      count() %>%
+      ungroup()
+    max_n <- max(df_facet_graph$n)
+    # Plot number of taxa per pathway_level2 per facet over time
+    facet_graph <- NULL
+    if (nrow(df_facet_graph) > 0) {
+      facet_graph <-
+        ggplot(df_facet_graph) +
+        geom_line(aes(
+          x = .data$bins_first_observed,
+          y = .data$n,
+          group = .data$pathway_level2,
+          color = .data$pathway_level2
+        )) +
+        geom_point(aes(
+          x = .data$bins_first_observed,
+          y = .data$n,
+          group = .data$pathway_level2,
+          color = .data$pathway_level2
+        ))  +
+        ylim(0, max_n) +
+        xlab(x_lab) +
+        ylab(y_lab) +
+        ggtitle(title) +
+        facet_wrap(facet_column)
+    }
+    if (all(!is.null(top_graph), !is.null(facet_graph))) {
+      ggarrange(top_graph, facet_graph)
+    }
+    else {
+      NULL
+    }
   }
 }

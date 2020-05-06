@@ -32,9 +32,8 @@ grouped all together. Default: 1950.}
 
 \item{category}{NULL or character. One of the kingdoms as given in GBIF and
 \code{Chordata} (the phylum), \verb{Not Chordata} (all other phyla of \code{Animalia}): 1.
-\code{Plantae} 2. \code{Animalia} 3. \code{Fungi} 4. \code{Chromista} 5. \code{Archaea} 6.
-\code{Bacteria} 7. \code{Protozoa} 8. \code{Viruses} 9. \verb{incertae sedis} 10. \code{Chordata}
-11. \verb{Not Chordata} Default: \code{NULL}.}
+\code{Plantae} 2. \code{Animalia} 3. \code{Fungi} 4. \code{Chromista} 5. \code{Archaea} 6. \code{Bacteria}
+7. \code{Protozoa} 8. \code{Viruses} 9. \verb{incertae sedis} 10. \code{Chordata} 11. \verb{Not Chordata} Default: \code{NULL}.}
 
 \item{facet_column}{NULL or character. The column to use to create additional
 facet wrap bar graphs underneath the main graph. When NULL, no facet graph
@@ -46,8 +45,7 @@ calling this function. Default: \code{NULL}.}
 pathways are displayed following the order as in this vector.}
 
 \item{pathway_level1_names}{character. Name of the column of \code{df}
-containing information about pathways at level 1. Default:
-\code{pathway_level1}.}
+containing information about pathways at level 1. Default: \code{pathway_level1}.}
 
 \item{taxon_names}{character. Name of the column of \code{df} containing
 information about taxa. This parameter is used to uniquely identify taxa.}
@@ -63,10 +61,9 @@ one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default:
 \item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{"first_observed"}.}
 
-\item{cbd_standard}{logical. If TRUE the values of pathway level 1 are
-checked based on CBD standard as returned by \code{pathways_cbd()}. Error is
-returned if unmatched values are found. If FALSE, a warning is returned.
-Default: TRUE.}
+\item{cbd_standard}{logical. If TRUE the values of pathway level 1 are checked
+based on CBD standard as returned by \code{pathways_cbd()}. Error is returned if
+unmatched values are found. If FALSE, a warning is returned. Default: TRUE.}
 
 \item{title}{NULL or character. Title of the graph. Default: NULL.}
 
@@ -76,12 +73,13 @@ taxa".}
 \item{y_lab}{NULL or character. Title of the graph. Default: "Pathways".}
 }
 \value{
-A ggplot2 object (or egg object if facets are used).
+A ggplot2 object (or egg object if facets are used). NULL if there are
+no data to plot.
 }
 \description{
-Function to plot a line graph with number of taxa introduced over time
-through different CBD pathways level 1. Time expressed in years. Possible
-breakpoints: taxonomic (kingdoms + vertebrates/invertebrates).
+Function to plot a line graph with number of taxa introduced over time through
+different CBD pathways level 1. Time expressed in years. Possible breakpoints:
+taxonomic (kingdoms + vertebrates/invertebrates).
 }
 \examples{
 \dontrun{
