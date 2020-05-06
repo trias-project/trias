@@ -121,7 +121,7 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
     map_df(gbif_info, ~ is.character(.) == FALSE)
   check_keys <-
     check_keys %>%
-    gather(key = key, value = is_taxonKey) %>%
+    gather(key = "key", value = "is_taxonKey") %>%
     mutate(key = as.numeric(.data$key))
   valid_keys_df <-
     check_keys %>%
