@@ -4,4 +4,4 @@ data_input_checklist_indicators <- read_delim("https://raw.githubusercontent.com
 
 source("./R/indicator_native_range_year.r")
 
-countYearNativerange(data_input_checklist_indicators, jaartallen = c(1950:2019), type = "native_range")
+countYearNativerange(data_input_checklist_indicators, jaartallen = c(1990:2019), type = "native_range", relative = FALSE)
