@@ -3,6 +3,9 @@
 #' Based on \code{\link{countYearProvince}} plot from grofwild
 #' @param type character, native_range level of interest should be one of 
 #' \code{c("native_continent", "native_range")} 
+#' @param xlab character string, label of the x-axis. Defaults to "year".
+#' @param ylab character string, label of the y-axis. Defaults to "number of 
+#' alien species".  
 #' @inheritParams countYearProvince
 #' @return list with:
 #' \itemize{
@@ -22,7 +25,10 @@
 #' @export
 countYearNativerange <- function(data, jaartallen = NULL, 
     type = c("native_continent", "native_range"),
-    width = NULL, height = NULL) {
+    width = NULL, height = NULL, 
+    x_lab = "year",
+    y_lab = "number of alien species") {
+  
   require(plotly)
   require(data.table)
   
@@ -63,9 +69,9 @@ countYearNativerange <- function(data, jaartallen = NULL,
  
   
   # Create plot
-          xaxis = list(title = "Jaar"), 
-          yaxis = list(title = "Aantal", tickformat = ",d"),
   pl <- plot_ly(data = summaryData, x = ~first_observed, y = ~value, color = ~locatie, type = "bar",  width = width, height = height) %>%
+      layout(xaxis = list(title = x_lab), 
+          yaxis = list(title = y_lab, tickformat = ",d"),
           margin = list(b = 80, t = 100), 
           barmode = ifelse(nlevels(summaryData$first_observed) == 1, "group", "stack"),
           annotations = list(x = levels(summaryData$first_observed), 
