@@ -27,7 +27,7 @@ countYearNativerange <- function(data, jaartallen = NULL,
                                  type = c("native_continent", "native_range"),
                                  width = NULL, height = NULL, 
                                  x_lab = "year",
-                                 y_lab = "number of alien species",
+                                 y_lab = "alien species",
                                  relative = FALSE) {
   
   require(plotly)
@@ -57,6 +57,10 @@ countYearNativerange <- function(data, jaartallen = NULL,
                                                      min(jaartallen):max(jaartallen)))
   
   summaryData <- melt(table(plotData), id.vars = "first_observed")
+  summaryData <- summaryData %>% 
+    group_by(first_observed) %>% 
+    mutate(total = sum(value),
+           perc = round((value/total)*100,2))
   
   # Summarize data per year
   totalCount <- table(plotData$first_observed)
@@ -73,23 +77,25 @@ countYearNativerange <- function(data, jaartallen = NULL,
   
   if(relative == TRUE){
     position <- "fill"
+    text <- paste0(summaryData$locatie, "<br>", summaryData$perc, "%")
   }else{
     position <- "stack"
+    text <- paste0(summaryData$locatie, "<br>", summaryData$value)
   }
   
-  pl <- ggplot(data = summaryData, aes(x = first_observed, y = value, fill = locatie)) +
+  pl <- ggplot(data = summaryData, aes(x = first_observed, y = value, fill = locatie, text = text)) +
     geom_bar(position = position, stat = "identity") 
   
   if(relative == TRUE){
     pl <- pl + scale_y_continuous(labels = scales::percent_format())
   }
   
-  pl <- ggplotly(data = summaryData, pl,  width = width, height = height) %>% 
+  pl <- ggplotly(data = summaryData, pl,  width = width, height = height, tooltip ="text") %>% 
     layout(xaxis = list(title = x_lab, tickangle = "auto"), 
            yaxis = list(title = y_lab, tickformat = ",d"),
            margin = list(b = 80, t = 100), 
-           barmode = ifelse(nlevels(summaryData$first_observed) == 1, "group", "stack")) 
-  
+           barmode = ifelse(nlevels(summaryData$first_observed) == 1, "group", "stack"))
+   
   # To prevent warnings in UI
   pl$elementId <- NULL
   
