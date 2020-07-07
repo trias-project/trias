@@ -23,6 +23,8 @@
 countYearNativerange <- function(data, jaartallen = NULL, 
     type = c("native_continent", "native_range"),
     width = NULL, height = NULL) {
+  require(plotly)
+  require(data.table)
   
   type <- match.arg(type)
   
@@ -58,15 +60,12 @@ countYearNativerange <- function(data, jaartallen = NULL,
   summaryData$locatie <- factor(summaryData$locatie, levels = rev(levels(summaryData$locatie)))
   summaryData$first_observed <- as.factor(summaryData$first_observed)
   
-  colors <- rev(inbo.2015.colours(n = nlevels(summaryData$locatie)))
-  title <- yearToTitleString(year = c(jaartallen[1], tail(jaartallen, 1)), brackets = FALSE)
+ 
   
   # Create plot
-  pl <- plot_ly(data = summaryData, x = ~first_observed, y = ~value, color = ~locatie,
-          colors = colors, type = "bar",  width = width, height = height) %>%
-      layout(title = title,
           xaxis = list(title = "Jaar"), 
           yaxis = list(title = "Aantal", tickformat = ",d"),
+  pl <- plot_ly(data = summaryData, x = ~first_observed, y = ~value, color = ~locatie, type = "bar",  width = width, height = height) %>%
           margin = list(b = 80, t = 100), 
           barmode = ifelse(nlevels(summaryData$first_observed) == 1, "group", "stack"),
           annotations = list(x = levels(summaryData$first_observed), 
