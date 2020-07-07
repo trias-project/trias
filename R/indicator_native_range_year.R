@@ -24,10 +24,11 @@
 #' @importFrom INBOtheme inbo.2015.colours
 #' @export
 countYearNativerange <- function(data, jaartallen = NULL, 
-    type = c("native_continent", "native_range"),
-    width = NULL, height = NULL, 
-    x_lab = "year",
-    y_lab = "number of alien species") {
+                                 type = c("native_continent", "native_range"),
+                                 width = NULL, height = NULL, 
+                                 x_lab = "year",
+                                 y_lab = "number of alien species",
+                                 relative = FALSE) {
   
   require(plotly)
   require(data.table)
@@ -39,8 +40,8 @@ countYearNativerange <- function(data, jaartallen = NULL,
   
   plotData <- data
   plotData$locatie <- switch(type,
-      native_range = plotData$native_range,
-      native_continent = plotData$native_continent
+                             native_range = plotData$native_range,
+                             native_continent = plotData$native_continent
   )
   
   # Select data
@@ -53,7 +54,7 @@ countYearNativerange <- function(data, jaartallen = NULL,
   
   # Summarize data per native_range and year
   plotData$first_observed <- with(plotData, factor(first_observed, levels = 
-              min(jaartallen):max(jaartallen)))
+                                                     min(jaartallen):max(jaartallen)))
   
   summaryData <- melt(table(plotData), id.vars = "first_observed")
   
@@ -66,20 +67,28 @@ countYearNativerange <- function(data, jaartallen = NULL,
   summaryData$locatie <- factor(summaryData$locatie, levels = rev(levels(summaryData$locatie)))
   summaryData$first_observed <- as.factor(summaryData$first_observed)
   
- 
+  
   
   # Create plot
-  pl <- plot_ly(data = summaryData, x = ~first_observed, y = ~value, color = ~locatie, type = "bar",  width = width, height = height) %>%
-      layout(xaxis = list(title = x_lab), 
-          yaxis = list(title = y_lab, tickformat = ",d"),
-          margin = list(b = 80, t = 100), 
-          barmode = ifelse(nlevels(summaryData$first_observed) == 1, "group", "stack"),
-          annotations = list(x = levels(summaryData$first_observed), 
-              y = totalCount, 
-              text = paste(ifelse(nlevels(summaryData$first_observed) == 1, "totaal:", ""), ifelse(totalCount > 0, totalCount, "")),
-              xanchor = 'center', yanchor = 'bottom',
-              showarrow = FALSE),
-          showlegend = TRUE)  
+  
+  if(relative == TRUE){
+    position <- "fill"
+  }else{
+    position <- "stack"
+  }
+  
+  pl <- ggplot(data = summaryData, aes(x = first_observed, y = value, fill = locatie)) +
+    geom_bar(position = position, stat = "identity") 
+  
+  if(relative == TRUE){
+    pl <- pl + scale_y_continuous(labels = scales::percent_format())
+  }
+  
+  pl <- ggplotly(data = summaryData, pl,  width = width, height = height) %>% 
+    layout(xaxis = list(title = x_lab, tickangle = "auto"), 
+           yaxis = list(title = y_lab, tickformat = ",d"),
+           margin = list(b = 80, t = 100), 
+           barmode = ifelse(nlevels(summaryData$first_observed) == 1, "group", "stack")) 
   
   # To prevent warnings in UI
   pl$elementId <- NULL
@@ -88,7 +97,7 @@ countYearNativerange <- function(data, jaartallen = NULL,
   names(summaryData)[names(summaryData) == "value"] <- "aantal"
   names(summaryData)[names(summaryData) == "first_observed"] <- "jaar"
   names(summaryData)[names(summaryData) == "locatie"] <- "regio van oorsprong"
-    
+  
   return(list(plot = pl, data = summaryData))
   
 }
