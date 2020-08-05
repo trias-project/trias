@@ -38,7 +38,15 @@ countYearNativerange <- function(data, jaartallen = NULL,
   if (is.null(jaartallen))
     jaartallen <- sort(unique(data$first_observed))
   
-  plotData <- data
+  plotData <- data %>% 
+    mutate(native_continent = case_when(grepl(pattern = "Africa", native_range, ignore.case = TRUE) ~ "Africa",
+                                        grepl(pattern = "America", native_range, ignore.case = TRUE) ~ "America",
+                                        grepl(pattern = "Asia", native_range, ignore.case = TRUE) ~ "Asia",
+                                        grepl(pattern = "Australia", native_range, ignore.case = TRUE) ~ "Oceania",
+                                        grepl(pattern = "nesia", native_range, ignore.case = TRUE) ~ "Oceania",
+                                        grepl(pattern = "Europe", native_range, ignore.case = TRUE) ~ "Europe",
+                                        TRUE ~ as.character(NA)))
+    
   plotData$locatie <- switch(type,
                              native_range = plotData$native_range,
                              native_continent = plotData$native_continent
