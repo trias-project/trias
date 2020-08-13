@@ -3,25 +3,26 @@
 #' Based on \code{\link{countYearProvince}} plot from grofwild
 #' @param type character, native_range level of interest should be one of 
 #' \code{c("native_continent", "native_range")} 
-#' @param xlab character string, label of the x-axis. Defaults to "year".
-#' @param ylab character string, label of the y-axis. Defaults to "number of 
+#' @param xlab character string, label of the x-axis. Default: "year".
+#' @param ylab character string, label of the y-axis. Default: "number of 
 #' alien species".  
-#' @inheritParams countYearProvince
+#' 
 #' @return list with:
 #' \itemize{
-#' \item{'plot': }{plotly object, for a given specie the observed number 
+#' \item{'plot': }{plotly object, for a given species the observed number 
 #' per year and per province is plotted in a stacked bar chart}
 #' \item{'data': }{data displayed in the plot, as data.frame with:
 #' \itemize{
 #' \item{'year': }{year at which the animal was introduced}
-#' \item{'nativeRange': }{native range of the introduced animal}
-#' \item{'aantal': }{counts of animals}
+#' \item{'native_range': }{native range of the introduced animal}
+#' \item{'n': }{counts of animals}
 #' }
 #' }
 #' }
-#' @import plotly
+#' @importForm plotly plotly, ggplotly, layout
 #' @importFrom reshape2 melt
-#' @importFrom INBOtheme inbo.2015.colours
+#' @importFrom ggplot2 ggplot, geom_bar, scale_y_continuous
+#' @importFrom scales percent_format
 #' @export
 indicator_count_year_nativerange <- function(data, years = NULL, 
                                  type = c("native_continent", "native_range"),
@@ -95,7 +96,7 @@ indicator_count_year_nativerange <- function(data, years = NULL,
     geom_bar(position = position, stat = "identity") 
   
   if(relative == TRUE){
-    pl <- pl + scale_y_continuous(labels = scales::percent_format())
+    pl <- pl + scale_y_continuous(labels = percent_format())
   }
   
   pl <- ggplotly(data = summaryData, pl,  width = width, height = height, tooltip ="text") %>% 
