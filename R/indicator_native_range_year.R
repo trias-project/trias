@@ -23,13 +23,13 @@
 #' }
 #' }
 #' }
+#' @export indicator_native_range_year
 #' @importFrom reshape2 melt
 #' @importFrom ggplot2 ggplot geom_bar scale_y_continuous
 #' @importForm plotly ggplotly layout
 #' @importFrom scales percent_format
 #' @importFrom dplyr mutate group_by case_when
 #' @importFrom magrittr %>%
-#' @export
 NULL
 
 indicator_native_range_year <- function(data, years = NULL, 
