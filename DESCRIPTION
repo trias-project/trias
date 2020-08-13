@@ -32,6 +32,8 @@ Imports:
     readr,
     rgbif,
     rlang,
+    reshape2,
+    scales,
     stringr,
     tibble,
     tidyr,
