@@ -9,7 +9,9 @@
 #' 
 #' @return list with:
 #' \itemize{
-#' \item{'plot': }{plotly object, for a given species the observed number 
+#' \item{'static_plot': }{ggplot object, for a given species the observed number 
+#' per year and per province is plotted in a stacked bar chart}
+#' \item{'interactive_plot': }{plotly object, for a given species the observed number 
 #' per year and per province is plotted in a stacked bar chart}
 #' \item{'data': }{data displayed in the plot, as data.frame with:
 #' \itemize{
@@ -100,7 +102,7 @@ indicator_native_range_year <- function(data, years = NULL,
     pl <- pl + scale_y_continuous(labels = percent_format())
   }
   
-  pl <- ggplotly(data = summaryData, pl,  width = width, height = height, tooltip ="text") %>% 
+  pl_2 <- ggplotly(data = summaryData, pl,  width = width, height = height, tooltip ="text") %>% 
     layout(xaxis = list(title = x_lab, tickangle = "auto"), 
            yaxis = list(title = y_lab, tickformat = ",d"),
            margin = list(b = 80, t = 100), 
@@ -114,6 +116,6 @@ indicator_native_range_year <- function(data, years = NULL,
   names(summaryData)[names(summaryData) == "first_observed"] <- "year"
   names(summaryData)[names(summaryData) == "location"] <- "region of origin"
   
-  return(list(plot = pl, data = summaryData))
+  return(list(static_plot = pl, interactive_plot = pl_2, data = summaryData))
   
 }
