@@ -10,14 +10,16 @@
 #' @return list with:
 #' \itemize{
 #' \item{'static_plot': }{ggplot object, for a given species the observed number 
-#' per year and per province is plotted in a stacked bar chart}
+#' per year and per native range is plotted in a stacked bar chart}
 #' \item{'interactive_plot': }{plotly object, for a given species the observed number 
-#' per year and per province is plotted in a stacked bar chart}
+#' per year and per native range is plotted in a stacked bar chart}
 #' \item{'data': }{data displayed in the plot, as data.frame with:
 #' \itemize{
-#' \item{'year': }{year at which the animal was introduced}
-#' \item{'native_range': }{native range of the introduced animal}
-#' \item{'n': }{counts of animals}
+#' \item{'year': }{year at which the species were introduced}
+#' \item{'native_range': }{native range of the introduced species}
+#' \item{'n': }{number of species introduced from the native range for a given year}
+#' \item{'total': }{total number of species, from all around the world, introduced during a given year}
+#' \item{'perc': }{percentage of species introduced from the native range for a given year. (n/total)*100}
 #' }
 #' }
 #' }
