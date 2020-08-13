@@ -24,7 +24,7 @@
 #' @importFrom ggplot2 ggplot, geom_bar, scale_y_continuous
 #' @importFrom scales percent_format
 #' @export
-indicator_count_year_nativerange <- function(data, years = NULL, 
+indicator_native_range_year <- function(data, years = NULL, 
                                  type = c("native_continent", "native_range"),
                                  width = NULL, height = NULL, 
                                  x_lab = "year",
