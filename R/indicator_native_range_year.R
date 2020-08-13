@@ -101,7 +101,7 @@ indicator_native_range_year <- function(data, years = NULL,
     pl <- pl + scale_y_continuous(labels = percent_format())
   }
   
-  pl_2 <- ggplotly(data = summaryData, pl,  width = width, height = height, tooltip ="text") %>% 
+  pl_2 <- ggplotly(data = summaryData, pl, tooltip ="text") %>% 
     layout(xaxis = list(title = x_lab, tickangle = "auto"), 
            yaxis = list(title = y_lab, tickformat = ",d"),
            margin = list(b = 80, t = 100), 
