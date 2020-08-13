@@ -111,9 +111,9 @@ indicator_native_range_year <- function(data, years = NULL,
   pl$elementId <- NULL
   
   # Change variable name
-  names(summaryData)[names(summaryData) == "value"] <- "number"
+  names(summaryData)[names(summaryData) == "value"] <- "n"
   names(summaryData)[names(summaryData) == "first_observed"] <- "year"
-  names(summaryData)[names(summaryData) == "location"] <- "region of origin"
+  names(summaryData)[names(summaryData) == "location"] <- "native_range"
   
   return(list(static_plot = pl, interactive_plot = pl_2, data = summaryData))
   
