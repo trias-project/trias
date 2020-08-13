@@ -23,7 +23,7 @@
 #' @importFrom reshape2 melt
 #' @importFrom INBOtheme inbo.2015.colours
 #' @export
-indicator_count_year_nativerange <- function(data, jaartallen = NULL, 
+indicator_count_year_nativerange <- function(data, years = NULL, 
                                  type = c("native_continent", "native_range"),
                                  width = NULL, height = NULL, 
                                  x_lab = "year",
@@ -35,8 +35,8 @@ indicator_count_year_nativerange <- function(data, jaartallen = NULL,
   
   type <- match.arg(type)
   
-  if (is.null(jaartallen))
-    jaartallen <- sort(unique(data$first_observed))
+  if (is.null(years))
+    years <- sort(unique(data$first_observed))
   
   plotData <- data %>% 
     mutate(native_continent = case_when(grepl(pattern = "Africa", native_range, ignore.case = TRUE) ~ "Africa",
@@ -47,22 +47,22 @@ indicator_count_year_nativerange <- function(data, jaartallen = NULL,
                                         grepl(pattern = "Europe", native_range, ignore.case = TRUE) ~ "Europe",
                                         TRUE ~ as.character(NA)))
     
-  plotData$locatie <- switch(type,
+  plotData$location <- switch(type,
                              native_range = plotData$native_range,
                              native_continent = plotData$native_continent
   )
   
   # Select data
-  plotData <- plotData[plotData$first_observed %in% jaartallen, c("first_observed", "locatie")]
-  plotData <- plotData[!is.na(plotData$first_observed) & !is.na(plotData$locatie), ]
+  plotData <- plotData[plotData$first_observed %in% years, c("first_observed", "location")]
+  plotData <- plotData[!is.na(plotData$first_observed) & !is.na(plotData$location), ]
   
   # Exclude unused provinces
-  plotData$locatie <- as.factor(plotData$locatie)    
-  plotData$locatie <- droplevels(plotData$locatie)
+  plotData$location <- as.factor(plotData$location)    
+  plotData$location <- droplevels(plotData$location)
   
   # Summarize data per native_range and year
   plotData$first_observed <- with(plotData, factor(first_observed, levels = 
-                                                     min(jaartallen):max(jaartallen)))
+                                                     min(years):max(years)))
   
   summaryData <- melt(table(plotData), id.vars = "first_observed")
   summaryData <- summaryData %>% 
@@ -75,8 +75,8 @@ indicator_count_year_nativerange <- function(data, jaartallen = NULL,
   
   
   # For optimal displaying in the plot
-  summaryData$locatie <- as.factor(summaryData$locatie)
-  summaryData$locatie <- factor(summaryData$locatie, levels = rev(levels(summaryData$locatie)))
+  summaryData$location <- as.factor(summaryData$location)
+  summaryData$location <- factor(summaryData$location, levels = rev(levels(summaryData$location)))
   summaryData$first_observed <- as.factor(summaryData$first_observed)
   
   
@@ -85,13 +85,13 @@ indicator_count_year_nativerange <- function(data, jaartallen = NULL,
   
   if(relative == TRUE){
     position <- "fill"
-    text <- paste0(summaryData$locatie, "<br>", summaryData$perc, "%")
+    text <- paste0(summaryData$location, "<br>", summaryData$perc, "%")
   }else{
     position <- "stack"
-    text <- paste0(summaryData$locatie, "<br>", summaryData$value)
+    text <- paste0(summaryData$location, "<br>", summaryData$value)
   }
   
-  pl <- ggplot(data = summaryData, aes(x = first_observed, y = value, fill = locatie, text = text)) +
+  pl <- ggplot(data = summaryData, aes(x = first_observed, y = value, fill = location, text = text)) +
     geom_bar(position = position, stat = "identity") 
   
   if(relative == TRUE){
@@ -108,9 +108,9 @@ indicator_count_year_nativerange <- function(data, jaartallen = NULL,
   pl$elementId <- NULL
   
   # Change variable name
-  names(summaryData)[names(summaryData) == "value"] <- "aantal"
-  names(summaryData)[names(summaryData) == "first_observed"] <- "jaar"
-  names(summaryData)[names(summaryData) == "locatie"] <- "regio van oorsprong"
+  names(summaryData)[names(summaryData) == "value"] <- "number"
+  names(summaryData)[names(summaryData) == "first_observed"] <- "year"
+  names(summaryData)[names(summaryData) == "location"] <- "region of origin"
   
   return(list(plot = pl, data = summaryData))
   
