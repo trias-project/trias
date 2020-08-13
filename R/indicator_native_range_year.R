@@ -23,7 +23,7 @@
 #' @importFrom reshape2 melt
 #' @importFrom INBOtheme inbo.2015.colours
 #' @export
-countYearNativerange <- function(data, jaartallen = NULL, 
+indicator_count_year_nativerange <- function(data, jaartallen = NULL, 
                                  type = c("native_continent", "native_range"),
                                  width = NULL, height = NULL, 
                                  x_lab = "year",
