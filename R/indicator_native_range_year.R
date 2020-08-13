@@ -49,10 +49,10 @@ indicator_native_range_year <- function(data, years = NULL,
                                         grepl(pattern = "nesia", native_range, ignore.case = TRUE) ~ "Oceania",
                                         grepl(pattern = "Europe", native_range, ignore.case = TRUE) ~ "Europe",
                                         TRUE ~ as.character(NA)))
-    
+  
   plotData$location <- switch(type,
-                             native_range = plotData$native_range,
-                             native_continent = plotData$native_continent
+                              native_range = plotData$native_range,
+                              native_continent = plotData$native_continent
   )
   
   # Select data
@@ -106,7 +106,7 @@ indicator_native_range_year <- function(data, years = NULL,
            yaxis = list(title = y_lab, tickformat = ",d"),
            margin = list(b = 80, t = 100), 
            barmode = ifelse(nlevels(summaryData$first_observed) == 1, "group", "stack"))
-   
+  
   # To prevent warnings in UI
   pl$elementId <- NULL
   
