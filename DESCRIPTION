@@ -17,6 +17,7 @@ Depends:
 Imports:
     assertthat,
     assertable,
+    data.table,
     dplyr,
     egg,
     forcats,
@@ -25,6 +26,7 @@ Imports:
     lazyeval,
     magrittr,
     mgcv,
+    plotly,
     purrr,
     readr,
     rgbif,
