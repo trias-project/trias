@@ -1,6 +1,6 @@
 #' Create interactive plot for counts per native region and year of introduction
 #' 
-#' Based on \code{\link{countYearProvince}} plot from grofwild
+#' Based on [countYearProvince][https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R] plot from reporting - rshiny - grofwildjacht
 #' @param type character, native_range level of interest should be one of 
 #' \code{c("native_continent", "native_range")} 
 #' @param xlab character string, label of the x-axis. Default: "year".
