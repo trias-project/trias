@@ -44,14 +44,7 @@ indicator_native_range_year <- function(data, years = NULL,
   if (is.null(years))
     years <- sort(unique(data$first_observed))
   
-  plotData <- data %>% 
-    mutate(native_continent = case_when(grepl(pattern = "Africa", native_range, ignore.case = TRUE) ~ "Africa",
-                                        grepl(pattern = "America", native_range, ignore.case = TRUE) ~ "America",
-                                        grepl(pattern = "Asia", native_range, ignore.case = TRUE) ~ "Asia",
-                                        grepl(pattern = "Australia", native_range, ignore.case = TRUE) ~ "Oceania",
-                                        grepl(pattern = "nesia", native_range, ignore.case = TRUE) ~ "Oceania",
-                                        grepl(pattern = "Europe", native_range, ignore.case = TRUE) ~ "Europe",
-                                        TRUE ~ as.character(NA)))
+  plotData <- data 
   
   plotData$location <- switch(type,
                               native_range = plotData$native_range,
