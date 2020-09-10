@@ -1,6 +1,6 @@
 Package: trias
 Title: Process Data for the Project Tracking Invasive Alien Species (TrIAS)
-Version: 1.3.0.9000
+Version: 1.4.0.9000
 Description: TrIAS provides functionality to facilitate the data processing 
     for the project Tracking Invasive Alien Species (TrIAS 
     <http://trias-project.be>).
