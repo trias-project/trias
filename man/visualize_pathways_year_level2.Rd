@@ -180,7 +180,7 @@ visualize_pathways_year_level2(
   data,
   chosen_pathway_level1 = "escape",
   x_lab = "Jaar",
-  y_lab = "Aantal geÃƒÂ¯ntroduceerde taxa"
+  y_lab = "Aantal geÃƒÆ’Ã‚Â¯ntroduceerde taxa"
 )
 }
 }
