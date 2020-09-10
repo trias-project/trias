@@ -1,56 +1,56 @@
-#'Plot number of introduced taxa over time for pathways level 1
+#' Plot number of introduced taxa over time for pathways level 1
 #'
-#'Function to plot a line graph with number of taxa introduced over time through
-#'different CBD pathways level 1. Time expressed in years. Possible breakpoints:
-#'taxonomic (kingdoms + vertebrates/invertebrates).
-#'@param df df.
-#'@param bin numeric. Time span in years to use for agggregation. Default: 10.
-#'@param from numeric. Year trade-off: taxa introduced before this year are
+#' Function to plot a line graph with number of taxa introduced over time through
+#' different CBD pathways level 1. Time expressed in years. Possible breakpoints:
+#' taxonomic (kingdoms + vertebrates/invertebrates).
+#' @param df df.
+#' @param bin numeric. Time span in years to use for agggregation. Default: 10.
+#' @param from numeric. Year trade-off: taxa introduced before this year are
 #'  grouped all together. Default: 1950.
-#'@param category NULL or character. One of the kingdoms as given in GBIF and
+#' @param category NULL or character. One of the kingdoms as given in GBIF and
 #'  `Chordata` (the phylum), `Not Chordata` (all other phyla of `Animalia`): 1.
 #'  `Plantae` 2. `Animalia` 3. `Fungi` 4. `Chromista` 5. `Archaea` 6. `Bacteria`
 #'  7. `Protozoa` 8. `Viruses` 9. `incertae sedis` 10. `Chordata` 11. `Not
 #'  Chordata` Default: `NULL`.
-#'@param facet_column NULL or character. The column to use to create additional
+#' @param facet_column NULL or character. The column to use to create additional
 #'  facet wrap bar graphs underneath the main graph. When NULL, no facet graph
 #'  are created. One of `family`, `order`, `class`, `phylum`, `locality`,
 #'  `native_range`, `habitat`. If column has another name, rename it before
 #'  calling this function. Default: `NULL`.
-#'@param pathway_level1_names character. Name of the column of \code{df}
+#' @param pathway_level1_names character. Name of the column of \code{df}
 #'  containing information about pathways at level 1. Default: `pathway_level1`.
-#'@param pathways character. Vector with pathways level 1 to visualize. The
+#' @param pathways character. Vector with pathways level 1 to visualize. The
 #'  pathways are displayed following the order as in this vector.
-#'@param taxon_names character. Name of the column of \code{df} containing
+#' @param taxon_names character. Name of the column of \code{df} containing
 #'  information about taxa. This parameter is used to uniquely identify taxa.
-#'@param kingdom_names character. Name of the column of \code{df} containing
+#' @param kingdom_names character. Name of the column of \code{df} containing
 #'  information about kingdom. Default: \code{"kingdom"}.
-#'@param phylum_names character. Name of the column of \code{df} containing
+#' @param phylum_names character. Name of the column of \code{df} containing
 #'  information about phylum. This parameter is used only if \code{category} is
 #'  one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default:
 #'  \code{"phylum"}.
-#'@param first_observed character. Name of the column of \code{df} containing
+#' @param first_observed character. Name of the column of \code{df} containing
 #'  information about year of introduction. Default: \code{"first_observed"}.
-#'@param cbd_standard logical. If TRUE the values of pathway level 1 are checked
+#' @param cbd_standard logical. If TRUE the values of pathway level 1 are checked
 #'  based on CBD standard as returned by `pathways_cbd()`. Error is returned if
 #'  unmatched values are found. If FALSE, a warning is returned. Default: TRUE.
-#'@param title NULL or character. Title of the graph. Default: NULL.
-#'@param x_lab NULL or character. x-axis label. Default: "Number of introduced
+#' @param title NULL or character. Title of the graph. Default: NULL.
+#' @param x_lab NULL or character. x-axis label. Default: "Number of introduced
 #'  taxa".
-#'@param y_lab NULL or character. Title of the graph. Default: "Pathways".
-#'@return A ggplot2 object (or egg object if facets are used). NULL if there are
+#' @param y_lab NULL or character. Title of the graph. Default: "Pathways".
+#' @return A ggplot2 object (or egg object if facets are used). NULL if there are
 #'  no data to plot.
 #'
-#'@export
-#'@importFrom assertthat assert_that
-#'@importFrom assertable assert_colnames
-#'@importFrom dplyr %>% .data anti_join count distinct filter group_by if_else
+#' @export
+#' @importFrom assertthat assert_that
+#' @importFrom assertable assert_colnames
+#' @importFrom dplyr %>% .data anti_join count distinct filter group_by if_else
 #'  mutate pull rename_at sym ungroup
-#'@importFrom egg ggarrange
-#'@importFrom ggplot2 facet_wrap geom_line geom_point ggplot ggtitle xlab ylab
+#' @importFrom egg ggarrange
+#' @importFrom ggplot2 facet_wrap geom_line geom_point ggplot ggtitle xlab ylab
 #'  ylim
-#'@importFrom rlang !!
-#'@importFrom tidyselect all_of
+#' @importFrom rlang !!
+#' @importFrom tidyselect all_of
 #'
 #' @examples
 #' \dontrun{
@@ -88,7 +88,8 @@
 #'
 #' # facet locality
 #' visualize_pathways_year_level1(
-#'   data, category = "Not Chordata",
+#'   data,
+#'   category = "Not Chordata",
 #'   facet_column = "locality"
 #' )
 #'
@@ -104,31 +105,31 @@
 #'   category = "Plantae",
 #'   from = 1950,
 #'   title = "Pathway level 1: Plantae"
-#')
+#' )
 #'
 #' # Personalize axis labels
 #' visualize_pathways_year_level1(
 #'   data,
 #'   x_lab = "Jaar",
-#'   y_lab = "Aantal geïntroduceerde taxa"
+#'   y_lab = "Aantal geÃ¯ntroduceerde taxa"
 #' )
 #' }
 visualize_pathways_year_level1 <- function(
-  df,
-  bin = 10,
-  from = 1950,
-  category = NULL,
-  facet_column = NULL,
-  pathways = NULL,
-  pathway_level1_names = "pathway_level1",
-  taxon_names = "key",
-  kingdom_names = "kingdom",
-  phylum_names = "phylum",
-  first_observed = "first_observed",
-  cbd_standard = TRUE,
-  title = NULL,
-  x_lab = "Time period",
-  y_lab = "Number of introduced taxa") {
+                                           df,
+                                           bin = 10,
+                                           from = 1950,
+                                           category = NULL,
+                                           facet_column = NULL,
+                                           pathways = NULL,
+                                           pathway_level1_names = "pathway_level1",
+                                           taxon_names = "key",
+                                           kingdom_names = "kingdom",
+                                           phylum_names = "phylum",
+                                           first_observed = "first_observed",
+                                           cbd_standard = TRUE,
+                                           title = NULL,
+                                           x_lab = "Time period",
+                                           y_lab = "Number of introduced taxa") {
   # initial input checks
   # Check df
   assert_that(is.data.frame(df), msg = "`df` must be a data frame.")
@@ -171,9 +172,9 @@ visualize_pathways_year_level1 <- function(
   )
   if (is.character(facet_column)) {
     facet_column <- match.arg(facet_column, valid_facet_options)
-    assert_that(is.null(category) || 
-                  !(category == "Chordata" & facet_column == "phylum"),
-      msg = "You cannot use phylum as facet with category Chordata."
+    assert_that(is.null(category) ||
+      !(category == "Chordata" & facet_column == "phylum"),
+    msg = "You cannot use phylum as facet with category Chordata."
     )
   }
   # Check pathways

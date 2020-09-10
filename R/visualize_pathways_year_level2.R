@@ -43,7 +43,7 @@
 #' @param x_lab NULL or character. x-axis label. Default: "Number of introduced
 #'   taxa".
 #' @param y_lab NULL or character. Title of the graph. Default: "Pathways".
-#'@return A ggplot2 object (or egg object if facets are used). NULL if there are
+#' @return A ggplot2 object (or egg object if facets are used). NULL if there are
 #'  no data to plot.
 #'
 #' @export
@@ -146,7 +146,7 @@
 #'   data,
 #'   chosen_pathway_level1 = "escape",
 #'   x_lab = "Jaar",
-#'   y_lab = "Aantal geÃ¯ntroduceerde taxa"
+#'   y_lab = "Aantal geÃƒÂ¯ntroduceerde taxa"
 #' )
 #' }
 visualize_pathways_year_level2 <- function(
@@ -531,7 +531,7 @@ visualize_pathways_year_level2 <- function(
           y = .data$n,
           group = .data$pathway_level2,
           color = .data$pathway_level2
-        ))  +
+        )) +
         ylim(0, max_n) +
         xlab(x_lab) +
         ylab(y_lab) +

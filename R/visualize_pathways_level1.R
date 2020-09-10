@@ -357,7 +357,8 @@ visualize_pathways_level1 <- function(df,
   if (nrow(df_top_graph) > 0) {
     top_graph <-
       ggplot(
-        df_top_graph) +
+        df_top_graph
+      ) +
       geom_bar(aes(x = fct_rev(.data$pathway_level1))) +
       xlab(y_lab) +
       ylab(x_lab) +

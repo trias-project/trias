@@ -195,7 +195,8 @@ indicator_total_year <- function(df, start_year_plot = 1940,
         start_year_plot,
         maxDate,
         x_minor_scale_stepsize
-      )) +
+      )
+    ) +
     coord_cartesian(xlim = c(start_year_plot, maxDate))
 
   if (is.null(facet_column)) {
@@ -220,7 +221,8 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       facet_wrap(facet_column) +
       scale_x_continuous(
         breaks = seq(start_year_plot, maxDate, x_major_scale_stepsize),
-        minor_breaks = seq(start_year_plot, maxDate, x_minor_scale_stepsize)) +
+        minor_breaks = seq(start_year_plot, maxDate, x_minor_scale_stepsize)
+      ) +
       coord_cartesian(xlim = c(start_year_plot, maxDate))
 
     ggarrange(top_graph, facet_graph)
