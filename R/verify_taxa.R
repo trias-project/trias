@@ -1040,9 +1040,8 @@ verify_taxa <- function(taxa,
       accepted_keys,
       function(bb_acceptedKey) {
         name_usage(
-          key = bb_acceptedKey,
-          return = "data"
-        )
+          key = bb_acceptedKey
+        )$data
       }
     ) %>%
       select(.data$key, .data$kingdom, .data$rank, .data$taxonomicStatus) %>%

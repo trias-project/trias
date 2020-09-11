@@ -134,7 +134,7 @@ gbif_get_taxa <- function(
     taxon_keys <- as.integer(taxon_keys[1:maxlimit])
     taxon_keys_df <- as.data.frame(taxon_keys)
     taxon_taxa <- map_dfr(
-      taxon_keys_df$taxon_keys, ~ name_usage(key = ., return = "data")
+      taxon_keys_df$taxon_keys, ~ name_usage(key = .)$data
     )
     taxon_taxa <- taxon_taxa %>%
       ungroup() %>%
@@ -167,17 +167,14 @@ gbif_get_taxa <- function(
           checklist_keys, ~ name_lookup(
             datasetKey = .,
             origin = origins,
-            limit = maxlimit,
-            return = "data"
-          )
+            limit = maxlimit)$data
         )
     } else {
       checklist_taxa <-
         map_dfr(checklist_keys, ~ name_lookup(
           datasetKey = .,
-          limit = maxlimit,
-          return = "data"
-        ))
+          limit = maxlimit)$data
+        )
     }
 
     checklist_taxa <-

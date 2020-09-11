@@ -97,9 +97,8 @@ gbif_has_distribution <- function(taxon_key, ...) {
   # retrieve distribution properties from GBIF
   distr_properties <- rgbif::name_usage(
     key = as.integer(taxon_key),
-    return = "data",
     data = "distribution"
-  )
+  )$data
 
   # no ditribution properties values specified by user
   if (is.null(names(user_properties))) {
