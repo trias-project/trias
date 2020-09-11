@@ -37,15 +37,14 @@ names(keys3) <- purrr::map_chr(
 keys4 <- as.numeric(keys1)
 
 # output expected
-output_keys <- data.frame(
+output_keys <- tibble(
   key = c(
     12323785387253, 128545334,
     1000693, 1000310
   ),
   is_taxonKey = c(FALSE, TRUE, TRUE, TRUE),
   is_from_gbif_backbone = c(NA, FALSE, TRUE, TRUE),
-  is_synonym = c(NA, NA, TRUE, FALSE),
-  stringsAsFactors = FALSE
+  is_synonym = c(NA, NA, TRUE, FALSE)
 )
 
 output1 <- gbif_verify_keys(keys1)

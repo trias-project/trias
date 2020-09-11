@@ -1,4 +1,4 @@
-input_test_df <- data.frame(
+input_test_df <- tibble(
   key = c(152543101, 152543102, 152543110, 152543115, 152543120),
   canonicalName = c(
     "Gyrodactylus proterorhini",
@@ -55,8 +55,7 @@ input_test_df <- data.frame(
     NA_character_,
     NA_character_,
     NA_character_
-  ),
-  stringsAsFactors = FALSE
+  )
 )
 
 # kingdom column is not the default value
@@ -86,19 +85,18 @@ input_test_df_large <- read.delim(
     "input_data_pathways.tsv"
   ),
   sep = "\t",
-  stringsAsFactors = FALSE
-)
+  stringsAsFactors = FALSE) %>%
+  as_tibble
 
 # Output basic usage : default values for all params
-output_test_df_basic <- data.frame(
+output_test_df_basic <-tibble(
   pathway_level1 = c("contaminant", "unknown"),
   pathway_level2 = c("animal_parasite", "unknown"),
   n = as.integer(c(2, 3)),
   examples = c(
     "Aphanomyces astaci, Gyrodactylus proterorhini",
     "Thecaphora oxalidis, Tricellaria inopinata, Scutigera coleoptrata"
-  ),
-  stringsAsFactors = FALSE
+  )
 )
 
 testthat::test_that("Basic usage: default values", {
@@ -141,32 +139,29 @@ testthat::test_that("Basic usage: default values", {
 })
 
 testthat::test_that("Use with 'category'", {
-  output_test_df_animals <- data.frame(
+  output_test_df_animals <- tibble(
     pathway_level1 = c("contaminant", "unknown"),
     pathway_level2 = c("animal_parasite", "unknown"),
     n = as.integer(c(1, 2)),
     examples = c(
       "Gyrodactylus proterorhini",
       "Scutigera coleoptrata, Tricellaria inopinata"
-    ),
-    stringsAsFactors = FALSE
+    )
   )
-  output_test_df_chordata <- data.frame(
+  output_test_df_chordata <- tibble(
     pathway_level1 = "unknown",
     pathway_level2 = "unknown",
     n = as.integer(1),
-    examples = "Scutigera coleoptrata, Tricellaria inopinata",
-    stringsAsFactors = FALSE
+    examples = "Scutigera coleoptrata, Tricellaria inopinata"
   )
-  output_test_df_not_chordata <- data.frame(
+  output_test_df_not_chordata <- tibble(
     pathway_level1 = c("contaminant", "unknown"),
     pathway_level2 = c("animal_parasite", "unknown"),
     n = as.integer(c(1, 1)),
     examples = c(
       "Gyrodactylus proterorhini",
       "Scutigera coleoptrata"
-    ),
-    stringsAsFactors = FALSE
+    )
   )
   pathways_plants <- get_table_pathways(input_test_df, category = "Plantae")
   pathways_animals <- get_table_pathways(input_test_df, category = "Animalia")
@@ -215,19 +210,17 @@ testthat::test_that("Use with 'category'", {
 })
 
 testthat::test_that("Use with 'from'", {
-  output_test_df_2012 <- data.frame(
+  output_test_df_2012 <- tibble(
     pathway_level1 = c("contaminant", "unknown"),
     pathway_level2 = c("animal_parasite", "unknown"),
     n = as.integer(c(1, 1)),
-    examples = c("Aphanomyces astaci", "Thecaphora oxalidis"),
-    stringsAsFactors = FALSE
+    examples = c("Aphanomyces astaci", "Thecaphora oxalidis")
   )
-  output_test_df_2018 <- data.frame(
+  output_test_df_2018 <- tibble(
     pathway_level1 = "contaminant",
     pathway_level2 = "animal_parasite",
     n = as.integer(1),
-    examples = "Aphanomyces astaci",
-    stringsAsFactors = FALSE
+    examples = "Aphanomyces astaci"
   )
   pathways_1000 <- get_table_pathways(input_test_df, from = 1000)
   pathways_2012 <- get_table_pathways(input_test_df, from = 2012)

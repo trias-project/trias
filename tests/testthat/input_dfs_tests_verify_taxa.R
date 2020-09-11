@@ -1,4 +1,4 @@
-my_taxa <- data.frame(
+my_taxa <- tibble(
   taxonKey = c(
     141117238,
     113794952,
@@ -174,14 +174,13 @@ my_taxa <- data.frame(
     "a80caa33-da9d-48ed-80e3-f76b0b3810f9",
     "alien-plants-belgium:taxon:56d6564f59d9092401c454849213366f",
     "193729"
-  ),
-  stringsAsFactors = FALSE
+  )
 )
 
 # Add column verificationKey which will be overwritten by verify_taxa
 my_taxa_vk <- dplyr::mutate(my_taxa, verificationKey = 1)
 
-my_verification <- data.frame(
+my_verification <- tibble(
   taxonKey = c(
     113794952,
     141264857,
@@ -422,8 +421,7 @@ my_verification <- data.frame(
     TRUE,
     TRUE,
     FALSE
-  ),
-  stringsAsFactors = FALSE
+  )
 )
 
 my_taxa_other_colnames <-
