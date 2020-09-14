@@ -16,21 +16,23 @@ indicator_native_range_year(
 )
 }
 \arguments{
-\item{data}{input data.frame}
+\item{data}{input data.frame.}
 
 \item{years}{(numeric) vector years we are interested to. If \code{NULL}
 (default) all years from minimum and maximum of years of first observation
 are taken into account.}
 
 \item{type}{character, native_range level of interest should be one of
-\code{c("native_continent", "native_range")}}
+\code{c("native_continent", "native_range")}.}
+
+\item{x_lab}{character string, label of the x-axis. Default: "year".}
+
+\item{y_lab}{character string, label of the y-axis. Default: "number of alien
+species".}
 
 \item{relative}{(logical) if TRUE, each bar is standardised before stacking}
 
-\item{xlab}{character string, label of the x-axis. Default: "year".}
-
-\item{ylab}{character string, label of the y-axis. Default: "number of alien
-species".}
+\item{first_observed}{(character) Name of the column in \code{data} containing temporal information about introduction of the alien species. Expressed as years.}
 }
 \value{
 list with: \itemize{ \item{'static_plot': }{ggplot object, for a

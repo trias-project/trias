@@ -4,17 +4,17 @@
 #' Based on
 #' [countYearProvince][https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R]
 #' plot from reporting - rshiny - grofwildjacht
-#' @param data input data.frame
+#' @param data input data.frame.
 #' @param years (numeric) vector years we are interested to. If \code{NULL}
 #'   (default) all years from minimum and maximum of years of first observation
 #'   are taken into account.
 #' @param type character, native_range level of interest should be one of
-#'   \code{c("native_continent", "native_range")}
-#' @param xlab character string, label of the x-axis. Default: "year".
-#' @param ylab character string, label of the y-axis. Default: "number of alien
+#'   \code{c("native_continent", "native_range")}.
+#' @param x_lab character string, label of the x-axis. Default: "year".
+#' @param y_lab character string, label of the y-axis. Default: "number of alien
 #'   species".
 #' @param relative (logical) if TRUE, each bar is standardised before stacking
-#'
+#' @param first_observed (character) Name of the column in \code{data} containing temporal information about introduction of the alien species. Expressed as years. 
 #' @return list with: \itemize{ \item{'static_plot': }{ggplot object, for a
 #'   given species the observed number per year and per native range is plotted
 #'   in a stacked bar chart} \item{'interactive_plot': }{plotly object, for a
