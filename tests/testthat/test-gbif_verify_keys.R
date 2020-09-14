@@ -20,10 +20,9 @@ keys1 <- c(
   NA, NA
 )
 # input is a df
-keys2 <- data.frame(
+keys2 <- tibble(
   key = keys1,
-  other = sample.int(40, size = length(keys1)),
-  stringsAsFactors = FALSE
+  other = sample.int(40, size = length(keys1))
 )
 # input is a named list
 keys3 <- keys1
