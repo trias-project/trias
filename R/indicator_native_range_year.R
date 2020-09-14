@@ -31,14 +31,15 @@
 #' @importFrom ggplot2 ggplot geom_bar scale_y_continuous
 #' @importFrom plotly ggplotly layout
 #' @importFrom scales percent_format
-#' @importFrom dplyr %>% mutate group_by case_when
+#' @importFrom dplyr %>% mutate group_by case_when rename_at
 
 indicator_native_range_year <- function(data, years = NULL,
                                         type = c("native_continent", "native_range"),
                                         width = NULL, height = NULL,
                                         x_lab = "year",
                                         y_lab = "alien species",
-                                        relative = FALSE) {
+                                        relative = FALSE,
+                                        first_observed = "first_observed") {
   type <- match.arg(type)
 
   # Rename to default column name
