@@ -1,4 +1,4 @@
-my_taxa <- tibble(
+my_taxa <- trias::tibble(
   taxonKey = c(
     141117238,
     113794952,
@@ -180,7 +180,7 @@ my_taxa <- tibble(
 # Add column verificationKey which will be overwritten by verify_taxa
 my_taxa_vk <- dplyr::mutate(my_taxa, verificationKey = 1)
 
-my_verification <- tibble(
+my_verification <- trias::tibble(
   taxonKey = c(
     113794952,
     141264857,
