@@ -439,3 +439,19 @@ my_verification_other_colnames <-
     is_outdated = outdated,
     author_verification = verifiedBy
   )
+
+my_taxa_duplicates <-
+  my_taxa[1:2,]
+my_taxa_duplicates$taxonKey[2] <- my_taxa_duplicates$taxonKey[1]
+
+my_verification_duplicates <-
+  my_verification[1:2,]
+my_verification_duplicates$taxonKey[2] <- my_verification_duplicates$taxonKey[1]
+
+my_taxa_nas <-
+  my_taxa_duplicates
+my_taxa_nas$taxonKey[2] <- NA_real_
+
+my_verification_nas <-
+  my_verification_duplicates
+my_verification_nas$taxonKey[2] <- NA_real_

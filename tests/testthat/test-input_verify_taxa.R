@@ -38,6 +38,36 @@ testthat::test_that("verification is a data frame", {
   )
 })
 
+
+# no missing taxon keys in both input taxa and verification df (if not NULL)
+testthat::test_that("No missing taxon keys in input taxa and verification dfs", {
+  expect_error(
+    verify_taxa(taxa = my_taxa_nas, verification = my_verification),
+    paste("Missing values found in taxon keys of input taxa.",
+          "Check values in column taxonKey.")
+  )
+  expect_error(
+    verify_taxa(taxa = my_taxa, verification = my_verification_nas),
+    paste("Missing values found in taxon keys of input taxa.",
+          "Check values in column taxonKey.")
+  )
+})
+
+# taxon keys are unique
+testthat::test_that("Taxon keys are unique in input taxa and verification dfs", {
+  expect_error(
+    verify_taxa(taxa = my_taxa_duplicates, verification = my_verification),
+    paste("Taxon keys of input taxa must be unique.",
+          "Check values in column taxonKey.")
+    )
+  expect_error(
+    verify_taxa(taxa = my_taxa, verification = my_verification_duplicates),
+    paste("Taxon keys of input taxa must be unique.",
+          "Check values in column taxonKey.")
+  )
+})
+
+
 # different taxa column names
 taxa_test1 <- data.frame(
   bad_checklist_taxonKey_colname = c(123452),
