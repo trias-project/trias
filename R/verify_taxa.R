@@ -98,8 +98,8 @@
 #' @export
 #' @importFrom assertthat assert_that is.date
 #' @importFrom dplyr desc filter filter_at select distinct mutate rename
-#'   rename_at arrange bind_rows inner_join anti_join left_join right_join %>%
-#'   pull vars as_tibble group_by count starts_with all_vars any_vars .data
+#'   rename_at arrange bind_rows inner_join anti_join left_join %>% pull vars
+#'   as_tibble group_by count starts_with all_vars any_vars .data
 #' @importFrom stringr str_remove str_split
 #' @importFrom tidyselect one_of ends_with
 #' @importFrom tibble tibble
@@ -1195,8 +1195,11 @@ verify_taxa <- function(taxa,
     left_join(taxa_input,
       by = name_col_taxa
     ) %>%
-    bind_rows(not_to_verify_taxa) %>%
-    right_join(ordered_taxon_keys, by = "taxonKey")
+    bind_rows(not_to_verify_taxa)
+  # set same order as in input df taxa
+  taxa <-
+    ordered_taxon_keys %>% 
+    left_join(taxa, by = "taxonKey")
 
   # Split outdated_taxa in outdated_unmatched_taxa and outdated_synonyms
   outdated_unmatched_taxa <-
