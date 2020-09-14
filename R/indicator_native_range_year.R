@@ -14,7 +14,7 @@
 #' @param y_lab character string, label of the y-axis. Default: "number of alien
 #'   species".
 #' @param relative (logical) if TRUE, each bar is standardised before stacking
-#' @param first_observed (character) Name of the column in \code{data} containing temporal information about introduction of the alien species. Expressed as years. 
+#' @param first_observed (character) Name of the column in \code{data} containing temporal information about introduction of the alien species. Expressed as years.
 #' @return list with: \itemize{ \item{'static_plot': }{ggplot object, for a
 #'   given species the observed number per year and per native range is plotted
 #'   in a stacked bar chart} \item{'interactive_plot': }{plotly object, for a
@@ -45,7 +45,7 @@ indicator_native_range_year <- function(data, years = NULL,
   data <-
     data %>%
     rename_at(vars(first_observed), ~"first_observed")
-  
+
   if (is.null(years)) {
     years <- sort(unique(data$first_observed))
   }
@@ -100,10 +100,12 @@ indicator_native_range_year <- function(data, years = NULL,
     text <- paste0(summaryData$location, "<br>", summaryData$value)
   }
 
-  pl <- ggplot(data = summaryData, aes(x = .data$first_observed,
-                                       y = .data$value,
-                                       fill = .data$location,
-                                       text = text)) +
+  pl <- ggplot(data = summaryData, aes(
+    x = .data$first_observed,
+    y = .data$value,
+    fill = .data$location,
+    text = text
+  )) +
     geom_bar(position = position, stat = "identity")
 
   if (relative == TRUE) {

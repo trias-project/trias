@@ -167,14 +167,15 @@ gbif_get_taxa <- function(
           checklist_keys, ~ name_lookup(
             datasetKey = .,
             origin = origins,
-            limit = maxlimit)$data
+            limit = maxlimit
+          )$data
         )
     } else {
       checklist_taxa <-
         map_dfr(checklist_keys, ~ name_lookup(
           datasetKey = .,
-          limit = maxlimit)$data
-        )
+          limit = maxlimit
+        )$data)
     }
 
     checklist_taxa <-

@@ -625,20 +625,26 @@ verify_taxa <- function(taxa,
 
   # Check that taxon keys are all set up, no NAs present in input taxa
   assertthat::assert_that(all(!is.na(taxa[[taxonKey]])),
-                        msg = sprintf(
-                          paste0("Missing values found in taxon keys of input ",
-                                 "taxa. Check values in column %s."),
-                          taxonKey)
+    msg = sprintf(
+      paste0(
+        "Missing values found in taxon keys of input ",
+        "taxa. Check values in column %s."
+      ),
+      taxonKey
+    )
   )
-  
+
   # Check that taxon keys are unique in taxa
   assertthat::assert_that(nrow(taxa) == length(unique(taxa[[taxonKey]])),
-                          msg = sprintf(
-                            paste0("Taxon keys of input taxa must be unique. ", 
-                                   "Check values in column %s."),
-                            taxonKey)
-                          )
-  
+    msg = sprintf(
+      paste0(
+        "Taxon keys of input taxa must be unique. ",
+        "Check values in column %s."
+      ),
+      taxonKey
+    )
+  )
+
   # Convert to default column names
   taxa <-
     taxa %>%
@@ -760,20 +766,27 @@ verify_taxa <- function(taxa,
 
     # Check that taxon keys are all set up, no NAs present in verification df
     assertthat::assert_that(all(!is.na(verification[[verification_taxonKey]])),
-                            msg = sprintf(
-                              paste0("Missing values found in taxon keys of input ",
-                                     "taxa. Check values in column %s."),
-                              verification_taxonKey)
+      msg = sprintf(
+        paste0(
+          "Missing values found in taxon keys of input ",
+          "taxa. Check values in column %s."
+        ),
+        verification_taxonKey
+      )
     )
-    
+
     # Check that taxon keys are unique in verification df
     assertthat::assert_that(
       nrow(verification) == length(unique(verification[[verification_taxonKey]])),
-      msg = sprintf(paste0("Taxon keys of input taxa must be unique. ", 
-                           "Check values in column %s."),
-                    taxonKey)
+      msg = sprintf(
+        paste0(
+          "Taxon keys of input taxa must be unique. ",
+          "Check values in column %s."
+        ),
+        taxonKey
+      )
     )
-    
+
     # Convert to standard column names
     verification <-
       verification %>%
@@ -1230,7 +1243,7 @@ verify_taxa <- function(taxa,
     bind_rows(not_to_verify_taxa)
   # set same order as in input df taxa
   taxa <-
-    ordered_taxon_keys %>% 
+    ordered_taxon_keys %>%
     left_join(taxa, by = "taxonKey")
 
   # Split outdated_taxa in outdated_unmatched_taxa and outdated_synonyms

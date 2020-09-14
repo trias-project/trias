@@ -1,4 +1,4 @@
-# Define inputs 
+# Define inputs
 
 my_taxa <- dplyr::tibble(
   taxonKey = c(
@@ -443,11 +443,11 @@ my_verification_other_colnames <-
   )
 
 my_taxa_duplicates <-
-  my_taxa[1:2,]
+  my_taxa[1:2, ]
 my_taxa_duplicates$taxonKey[2] <- my_taxa_duplicates$taxonKey[1]
 
 my_verification_duplicates <-
-  my_verification[1:2,]
+  my_verification[1:2, ]
 my_verification_duplicates$taxonKey[2] <- my_verification_duplicates$taxonKey[1]
 
 my_taxa_nas <-
@@ -501,13 +501,17 @@ testthat::test_that("verification is a data frame", {
 testthat::test_that("No missing taxon keys in input taxa and verification dfs", {
   expect_error(
     verify_taxa(taxa = my_taxa_nas, verification = my_verification),
-    paste("Missing values found in taxon keys of input taxa.",
-          "Check values in column taxonKey.")
+    paste(
+      "Missing values found in taxon keys of input taxa.",
+      "Check values in column taxonKey."
+    )
   )
   expect_error(
     verify_taxa(taxa = my_taxa, verification = my_verification_nas),
-    paste("Missing values found in taxon keys of input taxa.",
-          "Check values in column taxonKey.")
+    paste(
+      "Missing values found in taxon keys of input taxa.",
+      "Check values in column taxonKey."
+    )
   )
 })
 
@@ -515,13 +519,17 @@ testthat::test_that("No missing taxon keys in input taxa and verification dfs", 
 testthat::test_that("Taxon keys are unique in input taxa and verification dfs", {
   expect_error(
     verify_taxa(taxa = my_taxa_duplicates, verification = my_verification),
-    paste("Taxon keys of input taxa must be unique.",
-          "Check values in column taxonKey.")
+    paste(
+      "Taxon keys of input taxa must be unique.",
+      "Check values in column taxonKey."
     )
+  )
   expect_error(
     verify_taxa(taxa = my_taxa, verification = my_verification_duplicates),
-    paste("Taxon keys of input taxa must be unique.",
-          "Check values in column taxonKey.")
+    paste(
+      "Taxon keys of input taxa must be unique.",
+      "Check values in column taxonKey."
+    )
   )
 })
 
@@ -757,7 +765,7 @@ verification_test7 <- dplyr::tibble(
   remarks = NA_character_,
   verifiedBy = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
-  outdated = c(FALSE) 
+  outdated = c(FALSE)
 )
 
 testthat::test_that("verify_taxa column names are correct", {
@@ -903,22 +911,22 @@ testthat::test_that("output structure", {
     ))
   )
   expect_true(all(names(output4$info$new_synonyms) ==
-                    names(my_verification_other_colnames)))
+    names(my_verification_other_colnames)))
   expect_true(all(names(output4$info$new_unmatched_taxa) ==
-                    names(my_verification_other_colnames)))
+    names(my_verification_other_colnames)))
   expect_true(
     all(names(output4$info$updated_bb_scientificName) ==
-          c(
-            "taxonKey", "bb_key", "bb_acceptedKey",
-            "backbone_scientific_names", "updated_backbone_scientific_names"
-          ))
+      c(
+        "taxonKey", "bb_key", "bb_acceptedKey",
+        "backbone_scientific_names", "updated_backbone_scientific_names"
+      ))
   )
   expect_true(
     all(names(output4$info$updated_bb_acceptedName) ==
-          c(
-            "taxonKey", "bb_key", "bb_acceptedKey",
-            "backbone_accepted_names", "updated_backbone_accepted_names"
-          ))
+      c(
+        "taxonKey", "bb_key", "bb_acceptedKey",
+        "backbone_accepted_names", "updated_backbone_accepted_names"
+      ))
   )
 })
 
@@ -932,22 +940,22 @@ testthat::test_that("consitency input - output", {
   expect_true(
     nrow(output1$verification) ==
       nrow(my_verification) +
-      nrow(output1$info$new_synonyms) +
-      nrow(output1$info$new_unmatched_taxa)
+        nrow(output1$info$new_synonyms) +
+        nrow(output1$info$new_unmatched_taxa)
   )
   expect_true(
     nrow(output2$verification) ==
       nrow(output2$info$new_synonyms) +
-      nrow(output2$info$new_unmatched_taxa)
+        nrow(output2$info$new_unmatched_taxa)
   )
   expect_true(nrow(output1$verification %>%
-                     filter(!is.na(verificationKey))) <=
-                nrow(output1$info$check_verificationKey))
+    filter(!is.na(verificationKey))) <=
+    nrow(output1$info$check_verificationKey))
   expect_true(
     nrow(my_taxa %>%
-           filter(bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"))) ==
+      filter(bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"))) ==
       nrow(output2$taxa %>%
-             filter(!is.na(verificationKey)))
+        filter(!is.na(verificationKey)))
   )
   expect_true(all(output1$info$new_synonyms$outdated == FALSE))
   expect_true(all(output2$info$new_synonyms$outdated == FALSE))
@@ -1198,7 +1206,7 @@ testthat::test_that("output data.frames are correct", {
       # new synonyms and unmatched got paste date
       dplyr::select(-dateAdded)
   )
-  
+
   output4_default_names_new_synonyms <-
     output4$info$new_synonyms %>%
     dplyr::rename(
@@ -1227,7 +1235,7 @@ testthat::test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-  
+
   output4_default_names_new_unmatched_taxa <-
     output4$info$new_unmatched_taxa %>%
     dplyr::rename(
@@ -1256,7 +1264,7 @@ testthat::test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-  
+
   output4_default_names_outdated_unmatched_taxa <-
     output4$info$outdated_unmatched_taxa %>%
     dplyr::rename(
@@ -1277,7 +1285,7 @@ testthat::test_that("output data.frames are correct", {
     output2$info$outdated_unmatched_taxa,
     output2_outdated_unmatched_taxa
   )
-  
+
   output4_default_names_outdated_synonyms <-
     output4$info$outdated_synonyms %>%
     dplyr::rename(
@@ -1298,7 +1306,7 @@ testthat::test_that("output data.frames are correct", {
     output2$info$outdated_synonyms,
     output2_outdated_synonyms
   )
-  
+
   output4_default_names_updated_bb_scientificName <-
     output4$info$updated_bb_scientificName %>%
     dplyr::rename(
@@ -1317,7 +1325,7 @@ testthat::test_that("output data.frames are correct", {
     output2$info$updated_bb_scientificName,
     output2_updated_bb_scientificName
   )
-  
+
   output4_default_names_updated_bb_acceptedName <-
     output4$info$updated_bb_acceptedName %>%
     dplyr::rename(
@@ -1336,7 +1344,7 @@ testthat::test_that("output data.frames are correct", {
     output2$info$updated_bb_acceptedName,
     output2_updated_bb_acceptedName
   )
-  
+
   output4_default_names_duplicates <-
     output4$info$duplicates %>%
     dplyr::rename(bb_scientificName = backbone_scientific_names)

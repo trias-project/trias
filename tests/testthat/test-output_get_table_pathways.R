@@ -85,11 +85,12 @@ input_test_df_large <- read.delim(
     "input_data_pathways.tsv"
   ),
   sep = "\t",
-  stringsAsFactors = FALSE) %>%
-  as_tibble
+  stringsAsFactors = FALSE
+) %>%
+  as_tibble()
 
 # Output basic usage : default values for all params
-output_test_df_basic <-tibble(
+output_test_df_basic <- tibble(
   pathway_level1 = c("contaminant", "unknown"),
   pathway_level2 = c("animal_parasite", "unknown"),
   n = as.integer(c(2, 3)),
