@@ -1,6 +1,6 @@
 # Define inputs 
 
-my_taxa <- trias::tibble(
+my_taxa <- dplyr::tibble(
   taxonKey = c(
     141117238,
     113794952,
@@ -182,7 +182,7 @@ my_taxa <- trias::tibble(
 # Add column verificationKey which will be overwritten by verify_taxa
 my_taxa_vk <- dplyr::mutate(my_taxa, verificationKey = 1)
 
-my_verification <- trias::tibble(
+my_verification <- dplyr::tibble(
   taxonKey = c(
     113794952,
     141264857,
@@ -527,7 +527,7 @@ testthat::test_that("Taxon keys are unique in input taxa and verification dfs", 
 
 
 # different taxa column names
-taxa_test1 <- tibble(
+taxa_test1 <- dplyr::tibble(
   bad_checklist_taxonKey_colname = c(123452),
   bad_checklist_scientificName_colname = c("Aspius aspius"),
   bad_checklist_datasetKey_colname = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -541,7 +541,7 @@ taxa_test1 <- tibble(
 )
 
 # missing column
-taxa_test2 <- tibble(
+taxa_test2 <- dplyr::tibble(
   taxonKey = c(123452),
   scientificName = c("Aspius aspius"),
   datasetKey = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -582,7 +582,7 @@ testthat::test_that("taxa column names are correct", {
 })
 
 # inconsistency about unmatched taxa
-taxa_test3 <- tibble(
+taxa_test3 <- dplyr::tibble(
   taxonKey = c(123452),
   scientificName = c("Aspius aspius"),
   datasetKey = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -607,7 +607,7 @@ testthat::test_that("consistency of 'taxa' about GBIF backbone info columns", {
 })
 
 # different verification column names
-verification_test1 <- tibble(
+verification_test1 <- dplyr::tibble(
   bad_checklist_taxonKey = c(12341),
   bad_checklist_scientificName_colname = c("Aspius aspius"),
   bad_datasetKey_colname = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -629,7 +629,7 @@ verification_test1 <- tibble(
 )
 
 # missing columns
-verification_test2 <- tibble(
+verification_test2 <- dplyr::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   # datasetKey column missing
@@ -651,7 +651,7 @@ verification_test2 <- tibble(
 )
 
 # inconsistency bb_acceptedName - bb_acceptedKey
-verification_test3 <- tibble(
+verification_test3 <- dplyr::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
@@ -673,7 +673,7 @@ verification_test3 <- tibble(
 )
 
 # accepted taxa present (only synonyms and unmatched taxa allowed)
-verification_test4 <- tibble(
+verification_test4 <- dplyr::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
@@ -695,7 +695,7 @@ verification_test4 <- tibble(
 )
 
 # outdated must to be TRUE or FALSE.
-verification_test5 <- tibble(
+verification_test5 <- dplyr::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
@@ -717,7 +717,7 @@ verification_test5 <- tibble(
 )
 
 # datasetKey should be 36 characters long
-verification_test6 <- tibble(
+verification_test6 <- dplyr::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92,other stuff"),
@@ -739,7 +739,7 @@ verification_test6 <- tibble(
 )
 
 # commas not allowed in datasetKey
-verification_test7 <- tibble(
+verification_test7 <- dplyr::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474,ae80a4f18e92"),
