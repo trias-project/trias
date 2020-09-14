@@ -49,6 +49,6 @@ introduced from the native range for a given year. (n/total)*100} } } }
 }
 \description{
 Based on
-\link[=https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R]{countYearProvince}
+\href{https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R}{countYearProvince}
 plot from reporting - rshiny - grofwildjacht
 }
