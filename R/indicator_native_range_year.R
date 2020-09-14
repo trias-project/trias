@@ -35,7 +35,6 @@
 
 indicator_native_range_year <- function(data, years = NULL,
                                         type = c("native_continent", "native_range"),
-                                        width = NULL, height = NULL,
                                         x_lab = "year",
                                         y_lab = "alien species",
                                         relative = FALSE,
