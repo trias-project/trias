@@ -9,16 +9,23 @@ indicator_native_range_year(
   data,
   years = NULL,
   type = c("native_continent", "native_range"),
-  width = NULL,
-  height = NULL,
   x_lab = "year",
   y_lab = "alien species",
-  relative = FALSE
+  relative = FALSE,
+  first_observed = "first_observed"
 )
 }
 \arguments{
+\item{data}{input data.frame}
+
+\item{years}{(numeric) vector years we are interested to. If \code{NULL}
+(default) all years from minimum and maximum of years of first observation
+are taken into account.}
+
 \item{type}{character, native_range level of interest should be one of
 \code{c("native_continent", "native_range")}}
+
+\item{relative}{(logical) if TRUE, each bar is standardised before stacking}
 
 \item{xlab}{character string, label of the x-axis. Default: "year".}
 
