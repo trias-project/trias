@@ -112,7 +112,7 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   names(keys) <- as.character(keys)
   gbif_info <-
     keys %>%
-    map(~ tryCatch(name_usage(., return = "data")$data[1, ],
+    map(~ tryCatch(name_usage(.)$data[1, ],
       error = function(e) {
         print(paste("Key", ., "is an invalid GBIF taxon key."))
       }
