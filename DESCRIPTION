@@ -30,7 +30,7 @@ Imports:
     plotly,
     purrr,
     readr,
-    rgbif,
+    rgbif (>= 3.0),
     rlang,
     reshape2,
     scales,
