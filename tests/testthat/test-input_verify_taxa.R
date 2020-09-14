@@ -69,7 +69,7 @@ testthat::test_that("Taxon keys are unique in input taxa and verification dfs", 
 
 
 # different taxa column names
-taxa_test1 <- data.frame(
+taxa_test1 <- tibble(
   bad_checklist_taxonKey_colname = c(123452),
   bad_checklist_scientificName_colname = c("Aspius aspius"),
   bad_checklist_datasetKey_colname = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -79,12 +79,11 @@ taxa_test1 <- data.frame(
   bad_backbone_rank_colname = c("SPECIES"),
   bad_backbone_taxonomicStatus_colname = c("SYNONYM"),
   bad_backbone_acceptedKey_colname = c(5851603),
-  bad_backbone_acceptedName_colname = c("Leuciscus aspius (Linnaeus, 1758)"),
-  stringsAsFactors = FALSE
+  bad_backbone_acceptedName_colname = c("Leuciscus aspius (Linnaeus, 1758)")
 )
 
 # missing column
-taxa_test2 <- data.frame(
+taxa_test2 <- tibble(
   taxonKey = c(123452),
   scientificName = c("Aspius aspius"),
   datasetKey = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -94,8 +93,7 @@ taxa_test2 <- data.frame(
   bb_rank = c("SPECIES"),
   bb_taxonomicStatus = c("SYNONYM"),
   # bb_acceptedKey is missing
-  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
-  stringsAsFactors = FALSE
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)")
 )
 
 testthat::test_that("taxa column names are correct", {
@@ -126,7 +124,7 @@ testthat::test_that("taxa column names are correct", {
 })
 
 # inconsistency about unmatched taxa
-taxa_test3 <- data.frame(
+taxa_test3 <- tibble(
   taxonKey = c(123452),
   scientificName = c("Aspius aspius"),
   datasetKey = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -136,8 +134,7 @@ taxa_test3 <- data.frame(
   bb_rank = c("SPECIES"),
   bb_taxonomicStatus = c("SYNONYM"),
   bb_acceptedKey = c(3483948),
-  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)"),
-  stringsAsFactors = FALSE
+  bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)")
 )
 
 testthat::test_that("consistency of 'taxa' about GBIF backbone info columns", {
@@ -152,7 +149,7 @@ testthat::test_that("consistency of 'taxa' about GBIF backbone info columns", {
 })
 
 # different verification column names
-verification_test1 <- data.frame(
+verification_test1 <- tibble(
   bad_checklist_taxonKey = c(12341),
   bad_checklist_scientificName_colname = c("Aspius aspius"),
   bad_datasetKey_colname = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -170,12 +167,11 @@ verification_test1 <- data.frame(
   bad_remarks_colname = c("dummy example 1: backbone_accepted should be updated"),
   bad_verifiedBy_colname = c("Damiano Oldoni"),
   bad_dateAdded_colname = c(as.Date("2018-01-01")),
-  bad_outdated = c(FALSE),
-  stringsAsFactors = FALSE
+  bad_outdated = c(FALSE)
 )
 
 # missing columns
-verification_test2 <- data.frame(
+verification_test2 <- tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   # datasetKey column missing
@@ -193,12 +189,11 @@ verification_test2 <- data.frame(
   remarks = c("dummy example 1: backbone_accepted should be updated"),
   verifiedBy = c("Dami Oldi"),
   # dateAdded column missing
-  outdated = c(FALSE),
-  stringsAsFactors = FALSE
+  outdated = c(FALSE)
 )
 
 # inconsistency bb_acceptedName - bb_acceptedKey
-verification_test3 <- data.frame(
+verification_test3 <- tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
@@ -216,12 +211,11 @@ verification_test3 <- data.frame(
   remarks = c("dummy example 1: backbone_accepted should be updated"),
   verifiedBy = c("Damiano Oldoni"),
   dateAdded = c(as.Date("2010-01-01")),
-  outdated = c(FALSE),
-  stringsAsFactors = FALSE
+  outdated = c(FALSE)
 )
 
-# accepted taxa present (only synonyms and unmatched taxa allowed.)
-verification_test4 <- data.frame(
+# accepted taxa present (only synonyms and unmatched taxa allowed)
+verification_test4 <- tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
@@ -239,12 +233,11 @@ verification_test4 <- data.frame(
   remarks = NA_character_,
   verifiedBy = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
-  outdated = c(FALSE),
-  stringsAsFactors = FALSE
+  outdated = c(FALSE)
 )
 
 # outdated must to be TRUE or FALSE.
-verification_test5 <- data.frame(
+verification_test5 <- tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
@@ -262,12 +255,11 @@ verification_test5 <- data.frame(
   remarks = NA_character_,
   verifiedBy = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
-  outdated = c(NA),
-  stringsAsFactors = FALSE
+  outdated = c(NA)
 )
 
 # datasetKey should be 36 characters long
-verification_test6 <- data.frame(
+verification_test6 <- tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92,other stuff"),
@@ -285,12 +277,11 @@ verification_test6 <- data.frame(
   remarks = NA_character_,
   verifiedBy = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
-  outdated = c(FALSE),
-  stringsAsFactors = FALSE
+  outdated = c(FALSE)
 )
 
 # commas not allowed in datasetKey
-verification_test7 <- data.frame(
+verification_test7 <- tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474,ae80a4f18e92"),
@@ -308,8 +299,7 @@ verification_test7 <- data.frame(
   remarks = NA_character_,
   verifiedBy = NA_character_,
   dateAdded = c(as.Date("2010-01-01")),
-  outdated = c(FALSE),
-  stringsAsFactors = FALSE
+  outdated = c(FALSE) 
 )
 
 testthat::test_that("verify_taxa column names are correct", {
