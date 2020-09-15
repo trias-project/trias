@@ -108,8 +108,7 @@ indicator_native_range_year <- function(data, years = NULL,
   )) +
     geom_bar(position = position, stat = "identity") +
     xlab(x_lab) +
-    ylab(y_lab) +
-    ggtitle(text)
+    ylab(y_lab)
 
   if (relative == TRUE) {
     pl <- pl + scale_y_continuous(labels = percent_format())
