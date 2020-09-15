@@ -28,7 +28,7 @@
 #'   introduced from the native range for a given year. (n/total)*100} } } }
 #' @export
 #' @importFrom reshape2 melt
-#' @importFrom ggplot2 ggplot geom_bar scale_y_continuous xlab ylab ggtitle
+#' @importFrom ggplot2 ggplot geom_bar scale_y_continuous xlab ylab theme element_text
 #' @importFrom plotly ggplotly layout
 #' @importFrom scales percent_format
 #' @importFrom dplyr %>% mutate group_by case_when rename_at
@@ -108,7 +108,8 @@ indicator_native_range_year <- function(data, years = NULL,
   )) +
     geom_bar(position = position, stat = "identity") +
     xlab(x_lab) +
-    ylab(y_lab)
+    ylab(y_lab) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
 
   if (relative == TRUE) {
     pl <- pl + scale_y_continuous(labels = percent_format())
