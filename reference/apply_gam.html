@@ -81,7 +81,7 @@ status for a certain time window." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9000</span>
       </span>
     </div>
 
@@ -128,22 +128,22 @@ status for a certain time window.</p>
     </div>
 
     <pre class="usage"><span class='fu'>apply_gam</span>(
-  <span class='no'>df</span>,
-  <span class='no'>y_var</span>,
-  <span class='no'>eval_years</span>,
-  <span class='kw'>year</span> <span class='kw'>=</span> <span class='st'>"year"</span>,
-  <span class='kw'>taxonKey</span> <span class='kw'>=</span> <span class='st'>"taxonKey"</span>,
-  <span class='kw'>type_indicator</span> <span class='kw'>=</span> <span class='st'>"observations"</span>,
-  <span class='kw'>baseline_var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>p_max</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-  <span class='kw'>taxon_key</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>df_title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>x_label</span> <span class='kw'>=</span> <span class='st'>"year"</span>,
-  <span class='kw'>y_label</span> <span class='kw'>=</span> <span class='st'>"Observations"</span>,
-  <span class='kw'>saveplot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>dir_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>df</span>,
+  <span class='kw'>y_var</span>,
+  <span class='kw'>eval_years</span>,
+  year = <span class='st'>"year"</span>,
+  taxonKey = <span class='st'>"taxonKey"</span>,
+  type_indicator = <span class='st'>"observations"</span>,
+  baseline_var = <span class='kw'>NULL</span>,
+  p_max = <span class='fl'>0.1</span>,
+  taxon_key = <span class='kw'>NULL</span>,
+  name = <span class='kw'>NULL</span>,
+  df_title = <span class='kw'>NULL</span>,
+  x_label = <span class='st'>"year"</span>,
+  y_label = <span class='st'>"Observations"</span>,
+  saveplot = <span class='fl'>FALSE</span>,
+  dir_name = <span class='kw'>NULL</span>,
+  verbose = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -275,76 +275,78 @@ cannot be applied.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>df_gam</span> <span class='kw'>&lt;-</span> <span class='fu'>tibble</span>(
-  <span class='kw'>taxonKey</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>3003709</span>, <span class='fl'>24</span>),
-  <span class='kw'>canonicalName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Rosa glauca"</span>, <span class='fl'>24</span>),
-  <span class='kw'>year</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1995</span>, <span class='fl'>2018</span>),
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>df_gam</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span>(
+  taxonKey = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>3003709</span>, <span class='fl'>24</span>),
+  canonicalName = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>"Rosa glauca"</span>, <span class='fl'>24</span>),
+  year = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>1995</span>, <span class='fl'>2018</span>),
+  n = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
     <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>1</span>,
     <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='fl'>10</span>
   ),
-  <span class='kw'>n_class</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+  n_class = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
     <span class='fl'>229</span>, <span class='fl'>555</span>, <span class='fl'>1116</span>, <span class='fl'>939</span>, <span class='fl'>919</span>, <span class='fl'>853</span>, <span class='fl'>442</span>, <span class='fl'>532</span>, <span class='fl'>623</span>, <span class='fl'>1178</span>, <span class='fl'>732</span>, <span class='fl'>371</span>, <span class='fl'>1053</span>,
     <span class='fl'>1001</span>, <span class='fl'>1550</span>, <span class='fl'>1142</span>, <span class='fl'>1076</span>, <span class='fl'>1310</span>, <span class='fl'>922</span>, <span class='fl'>1773</span>, <span class='fl'>1637</span>,
     <span class='fl'>1866</span>, <span class='fl'>2234</span>, <span class='fl'>2013</span>
   )
 )
 <span class='co'># apply GAM to n without baseline as covariate</span>
-<span class='fu'>apply_gam</span>(<span class='no'>df_gam</span>,
-  <span class='kw'>y_var</span> <span class='kw'>=</span> <span class='st'>"n"</span>,
-  <span class='kw'>eval_years</span> <span class='kw'>=</span> <span class='fl'>2018</span>,
-  <span class='kw'>taxon_key</span> <span class='kw'>=</span> <span class='fl'>3003709</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Rosa glauca"</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'>apply_gam</span>(<span class='kw'>df_gam</span>,
+  y_var = <span class='st'>"n"</span>,
+  eval_years = <span class='fl'>2018</span>,
+  taxon_key = <span class='fl'>3003709</span>,
+  name = <span class='st'>"Rosa glauca"</span>,
+  verbose = <span class='fl'>TRUE</span>
 )
 <span class='co'># apply GAM using baseline data in column n_class as covariate</span>
-<span class='fu'>apply_gam</span>(<span class='no'>df_gam</span>,
-  <span class='kw'>y_var</span> <span class='kw'>=</span> <span class='st'>"n"</span>,
-  <span class='kw'>eval_years</span> <span class='kw'>=</span> <span class='fl'>2018</span>,
-  <span class='kw'>baseline_var</span> <span class='kw'>=</span> <span class='st'>"n_class"</span>,
-  <span class='kw'>taxon_key</span> <span class='kw'>=</span> <span class='fl'>3003709</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Rosa glauca"</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'>apply_gam</span>(<span class='kw'>df_gam</span>,
+  y_var = <span class='st'>"n"</span>,
+  eval_years = <span class='fl'>2018</span>,
+  baseline_var = <span class='st'>"n_class"</span>,
+  taxon_key = <span class='fl'>3003709</span>,
+  name = <span class='st'>"Rosa glauca"</span>,
+  verbose = <span class='fl'>TRUE</span>
 )
 <span class='co'># apply GAM using n as occupancy values, evaluate on two years. No baseline</span>
-<span class='fu'>apply_gam</span>(<span class='no'>df_gam</span>,
-  <span class='kw'>y_var</span> <span class='kw'>=</span> <span class='st'>"n"</span>,
-  <span class='kw'>eval_years</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2017</span>, <span class='fl'>2018</span>),
-  <span class='kw'>taxon_key</span> <span class='kw'>=</span> <span class='fl'>3003709</span>,
-  <span class='kw'>type_indicator</span> <span class='kw'>=</span> <span class='st'>"occupancy"</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Rosa glauca"</span>,
-  <span class='kw'>y_label</span> <span class='kw'>=</span> <span class='st'>"occupancy"</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'>apply_gam</span>(<span class='kw'>df_gam</span>,
+  y_var = <span class='st'>"n"</span>,
+  eval_years = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2017</span>, <span class='fl'>2018</span>),
+  taxon_key = <span class='fl'>3003709</span>,
+  type_indicator = <span class='st'>"occupancy"</span>,
+  name = <span class='st'>"Rosa glauca"</span>,
+  y_label = <span class='st'>"occupancy"</span>,
+  verbose = <span class='fl'>TRUE</span>
 )
 <span class='co'># apply GAM using n as occupancy values and n_class as covariate (baseline)</span>
-<span class='fu'>apply_gam</span>(<span class='no'>df_gam</span>,
-  <span class='kw'>y_var</span> <span class='kw'>=</span> <span class='st'>"n"</span>,
-  <span class='kw'>eval_years</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2017</span>, <span class='fl'>2018</span>),
-  <span class='kw'>baseline_var</span> <span class='kw'>=</span> <span class='st'>"n_class"</span>,
-  <span class='kw'>taxon_key</span> <span class='kw'>=</span> <span class='fl'>3003709</span>,
-  <span class='kw'>type_indicator</span> <span class='kw'>=</span> <span class='st'>"occupancy"</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Rosa glauca"</span>,
-  <span class='kw'>y_label</span> <span class='kw'>=</span> <span class='st'>"occupancy"</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'>apply_gam</span>(<span class='kw'>df_gam</span>,
+  y_var = <span class='st'>"n"</span>,
+  eval_years = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2017</span>, <span class='fl'>2018</span>),
+  baseline_var = <span class='st'>"n_class"</span>,
+  taxon_key = <span class='fl'>3003709</span>,
+  type_indicator = <span class='st'>"occupancy"</span>,
+  name = <span class='st'>"Rosa glauca"</span>,
+  y_label = <span class='st'>"occupancy"</span>,
+  verbose = <span class='fl'>TRUE</span>
 )
 <span class='co'># How to use other arguments</span>
-<span class='fu'>apply_gam</span>(<span class='no'>df_gam</span>,
-  <span class='kw'>y_var</span> <span class='kw'>=</span> <span class='st'>"n"</span>,
-  <span class='kw'>eval_years</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2017</span>, <span class='fl'>2018</span>),
-  <span class='kw'>baseline_var</span> <span class='kw'>=</span> <span class='st'>"n_class"</span>,
-  <span class='kw'>p_max</span> <span class='kw'>=</span> <span class='fl'>0.3</span>,
-  <span class='kw'>taxon_key</span> <span class='kw'>=</span> <span class='st'>"3003709"</span>,
-  <span class='kw'>type_indicator</span> <span class='kw'>=</span> <span class='st'>"occupancy"</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Rosa glauca"</span>,
-  <span class='kw'>df_title</span> <span class='kw'>=</span> <span class='st'>"Belgium"</span>,
-  <span class='kw'>x_label</span> <span class='kw'>=</span> <span class='st'>"time (years)"</span>,
-  <span class='kw'>y_label</span> <span class='kw'>=</span> <span class='st'>"area of occupancy (km2)"</span>,
-  <span class='kw'>saveplot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>dir_name</span> <span class='kw'>=</span> <span class='st'>"./data/"</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='fu'>apply_gam</span>(<span class='kw'>df_gam</span>,
+  y_var = <span class='st'>"n"</span>,
+  eval_years = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2017</span>, <span class='fl'>2018</span>),
+  baseline_var = <span class='st'>"n_class"</span>,
+  p_max = <span class='fl'>0.3</span>,
+  taxon_key = <span class='st'>"3003709"</span>,
+  type_indicator = <span class='st'>"occupancy"</span>,
+  name = <span class='st'>"Rosa glauca"</span>,
+  df_title = <span class='st'>"Belgium"</span>,
+  x_label = <span class='st'>"time (years)"</span>,
+  y_label = <span class='st'>"area of occupancy (km2)"</span>,
+  saveplot = <span class='fl'>TRUE</span>,
+  dir_name = <span class='st'>"./data/"</span>,
+  verbose = <span class='fl'>TRUE</span>
 )
-}</div></pre>
+}
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -360,7 +362,7 @@ cannot be applied.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

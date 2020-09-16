@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • trias</title>
+<title>Create an interactive plot for the number of alien species per native region
+and year of introduction — indicator_native_range_year • trias</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +47,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Create an interactive plot for the number of alien species per native region
+and year of introduction — indicator_native_range_year" />
+<meta property="og:description" content="Based on
+countYearProvince
+plot from reporting - rshiny - grofwildjacht" />
 <meta property="og:image" content="https://trias-project.github.io/trias/logo.png" />
 
 
@@ -66,7 +71,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -113,139 +118,92 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Create an interactive plot for the number of alien species per native region
+and year of introduction</h1>
+    <small class="dont-index">Source: <a href='https://github.com/trias-project/trias/blob/master/R/indicator_native_range_year.R'><code>R/indicator_native_range_year.R</code></a></small>
+    <div class="hidden name"><code>indicator_native_range_year.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Based on
+<a href='https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R'>countYearProvince</a>
+plot from reporting - rshiny - grofwildjacht</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>indicator_native_range_year</span>(
+  <span class='kw'>data</span>,
+  years = <span class='kw'>NULL</span>,
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"native_continent"</span>, <span class='st'>"native_range"</span>),
+  x_lab = <span class='st'>"year"</span>,
+  y_lab = <span class='st'>"alien species"</span>,
+  relative = <span class='fl'>FALSE</span>,
+  first_observed = <span class='st'>"first_observed"</span>
+)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="apply_decision_rules.html">apply_decision_rules()</a></code> </p>
-        </td>
-        <td><p>Apply decision rules to time series and assess emerging status</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="apply_gam.html">apply_gam()</a></code> </p>
-        </td>
-        <td><p>Apply GAM to time series and assess emerging status</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gbif_get_taxa.html">gbif_get_taxa()</a></code> </p>
-        </td>
-        <td><p>Get taxa information from GBIF</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gbif_has_distribution.html">gbif_has_distribution()</a></code> </p>
-        </td>
-        <td><p>Compare desired distribution information with actual one.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gbif_verify_keys.html">gbif_verify_keys()</a></code> </p>
-        </td>
-        <td><p>Check keys against GBIF Backbone Taxonomy</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_table_pathways.html">get_table_pathways()</a></code> </p>
-        </td>
-        <td><p>Pathway count indicator table</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="indicator_introduction_year.html">indicator_introduction_year()</a></code> </p>
-        </td>
-        <td><p>Plot number of new introductions per year.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="indicator_native_range_year.html">indicator_native_range_year()</a></code> </p>
-        </td>
-        <td><p>Create an interactive plot for the number of alien species per native region
-and year of introduction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="indicator_total_year.html">indicator_total_year()</a></code> </p>
-        </td>
-        <td><p>Create cumulative number of alien species indicator plot.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pathways_cbd.html">pathways_cbd()</a></code> </p>
-        </td>
-        <td><p>Pathways of introdcution as defined by CBD</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_ribbon_em.html">plot_ribbon_em()</a></code> </p>
-        </td>
-        <td><p>Plot time series with confidence limits and emerging status</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="update_download_list.html">update_download_list()</a></code> </p>
-        </td>
-        <td><p>Update the list with all downloads</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="verify_taxa.html">verify_taxa()</a></code> </p>
-        </td>
-        <td><p>Verify taxa that the GBIF Backbone Taxonomy does not recognize or will lump</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="visualize_pathways_level1.html">visualize_pathways_level1()</a></code> </p>
-        </td>
-        <td><p>Plot number of introduced taxa for CBD pathways level 1</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="visualize_pathways_level2.html">visualize_pathways_level2()</a></code> </p>
-        </td>
-        <td><p>Plot number of introduced taxa for CBD pathways level 2</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="visualize_pathways_year_level1.html">visualize_pathways_year_level1()</a></code> </p>
-        </td>
-        <td><p>Plot number of introduced taxa over time for pathways level 1</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="visualize_pathways_year_level2.html">visualize_pathways_year_level2()</a></code> </p>
-        </td>
-        <td><p>Plot number of introduced taxa over time for pathways level 2</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>input data.frame.</p></td>
+    </tr>
+    <tr>
+      <th>years</th>
+      <td><p>(numeric) vector years we are interested to. If <code>NULL</code>
+(default) all years from minimum and maximum of years of first observation
+are taken into account.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>character, native_range level of interest should be one of
+<code><a href='https://rdrr.io/r/base/c.html'>c("native_continent", "native_range")</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>x_lab</th>
+      <td><p>character string, label of the x-axis. Default: "year".</p></td>
+    </tr>
+    <tr>
+      <th>y_lab</th>
+      <td><p>character string, label of the y-axis. Default: "number of alien
+species".</p></td>
+    </tr>
+    <tr>
+      <th>relative</th>
+      <td><p>(logical) if TRUE, each bar is standardised before stacking</p></td>
+    </tr>
+    <tr>
+      <th>first_observed</th>
+      <td><p>(character) Name of the column in <code>data</code> containing temporal information about introduction of the alien species. Expressed as years.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>list with:</p><ul>
+<li><p>'static_plot': ggplot object, for a
+given species the observed number per year and per native range is plotted
+in a stacked bar chart</p></li>
+<li><p>'interactive_plot': plotly object, for a
+given species the observed number per year and per native range is plotted
+in a stacked bar chart</p></li>
+<li><p>'data': data displayed in the plot, as
+data.frame with: <ul>
+<li><p>'year': year at which the species were
+introduced</p></li>
+<li><p>'native_range': native range of the introduced species</p></li>
+<li><p>'n': number of species introduced from the native range for a given
+year</p></li>
+<li><p>'total': total number of species, from all around the world,
+introduced during a given year</p></li>
+<li><p>'perc': percentage of species
+introduced from the native range for a given year. (n/total)*100</p></li>
+</ul></p></li>
+</ul>
+
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

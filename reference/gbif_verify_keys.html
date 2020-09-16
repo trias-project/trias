@@ -90,7 +90,7 @@ ACCEPTED nor DOUBTFUL).
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9000</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@ GBIF Backbone.)</p></li>
 </ul><p>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gbif_verify_keys</span>(<span class='no'>keys</span>, <span class='kw'>col_keys</span> <span class='kw'>=</span> <span class='st'>"key"</span>)</pre>
+    <pre class="usage"><span class='fu'>gbif_verify_keys</span>(<span class='kw'>keys</span>, col_keys = <span class='st'>"key"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,7 +178,7 @@ key from GBIF Backbone Taxonomy checklist?</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># input is a vector</span>
-<span class='no'>keys1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+<span class='kw'>keys1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
   <span class='st'>"12323785387253"</span>, <span class='co'># invalid GBIF taxonKey</span>
   <span class='st'>"128545334"</span>, <span class='co'># valid taxonKey, not a GBIF Backbone key</span>
   <span class='st'>"1000693"</span>, <span class='co'># a GBIF Backbone key, synonym</span>
@@ -186,48 +186,52 @@ key from GBIF Backbone Taxonomy checklist?</p></li>
   <span class='fl'>NA</span>, <span class='fl'>NA</span>
 )
 <span class='co'># input is a df</span>
-<span class='no'>keys2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
-  <span class='kw'>keys</span> <span class='kw'>=</span> <span class='no'>keys1</span>,
-  <span class='kw'>other_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample.int</a></span>(<span class='fl'>40</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>keys1</span>)),
-  <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+<span class='kw'>keys2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(
+  keys = <span class='kw'>keys1</span>,
+  other_col = <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample.int</a></span>(<span class='fl'>40</span>, size = <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>keys1</span>)),
+  stringsAsFactors = <span class='fl'>FALSE</span>
 )
 <span class='co'># input is a named list</span>
-<span class='no'>keys3</span> <span class='kw'>&lt;-</span> <span class='no'>keys1</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>purrr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>keys3</span>) <span class='kw'>&lt;-</span> <span class='kw pkg'>purrr</span><span class='kw ns'>::</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_chr</a></span>(
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>keys3</span>)),
-  ~ <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>:<span class='fl'>9</span>, <span class='no'>letters</span>, <span class='no'>LETTERS</span>), <span class='fl'>3</span>),
-    <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>""</span>
+<span class='kw'>keys3</span> <span class='op'>&lt;-</span> <span class='kw'>keys1</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://purrr.tidyverse.org'>purrr</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>keys3</span>) <span class='op'>&lt;-</span> <span class='kw'>purrr</span>::<span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_chr</a></span>(
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='kw'>keys3</span>)),
+  <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span><span class='op'>:</span><span class='fl'>9</span>, <span class='kw'>letters</span>, <span class='kw'>LETTERS</span>), <span class='fl'>3</span>),
+    collapse = <span class='st'>""</span>
   )
 )
 <span class='co'># input keys are numeric</span>
-<span class='no'>keys4</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>keys1</span>)
+<span class='kw'>keys4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='kw'>keys1</span>)
 
-<span class='fu'>gbif_verify_keys</span>(<span class='no'>keys1</span>)</div><div class='output co'>#&gt; [1] "Key 12323785387253 is an invalid GBIF taxon key."</div><div class='output co'>#&gt; # A tibble: 4 x 4
+<span class='fu'>gbif_verify_keys</span>(<span class='kw'>keys1</span>)
+</div><div class='output co'>#&gt; [1] "Key 12323785387253 is an invalid GBIF taxon key."</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 4</span><span>
 #&gt;       key is_taxonKey is_from_gbif_backbone is_synonym
-#&gt;     &lt;dbl&gt; &lt;lgl&gt;       &lt;lgl&gt;                 &lt;lgl&gt;     
-#&gt; 1 1.23e13 FALSE       NA                    NA        
-#&gt; 2 1.29e 8 TRUE        FALSE                 NA        
-#&gt; 3 1.00e 6 TRUE        TRUE                  TRUE      
-#&gt; 4 1.00e 6 TRUE        TRUE                  FALSE     </div><div class='input'><span class='fu'>gbif_verify_keys</span>(<span class='no'>keys2</span>, <span class='kw'>col_keys</span> <span class='kw'>=</span> <span class='st'>"keys"</span>)</div><div class='output co'>#&gt; [1] "Key 12323785387253 is an invalid GBIF taxon key."</div><div class='output co'>#&gt; # A tibble: 4 x 4
+#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>     
+#&gt; </span><span style='color: #555555;'>1</span><span> 1.23</span><span style='color: #555555;'>e</span><span>13 FALSE       </span><span style='color: #BB0000;'>NA</span><span>                    </span><span style='color: #BB0000;'>NA</span><span>        
+#&gt; </span><span style='color: #555555;'>2</span><span> 1.29</span><span style='color: #555555;'>e</span><span> 8 TRUE        FALSE                 </span><span style='color: #BB0000;'>NA</span><span>        
+#&gt; </span><span style='color: #555555;'>3</span><span> 1.00</span><span style='color: #555555;'>e</span><span> 6 TRUE        TRUE                  TRUE      
+#&gt; </span><span style='color: #555555;'>4</span><span> 1.00</span><span style='color: #555555;'>e</span><span> 6 TRUE        TRUE                  FALSE     </div><div class='input'><span class='fu'>gbif_verify_keys</span>(<span class='kw'>keys2</span>, col_keys = <span class='st'>"keys"</span>)
+</div><div class='output co'>#&gt; [1] "Key 12323785387253 is an invalid GBIF taxon key."</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 4</span><span>
 #&gt;       key is_taxonKey is_from_gbif_backbone is_synonym
-#&gt;     &lt;dbl&gt; &lt;lgl&gt;       &lt;lgl&gt;                 &lt;lgl&gt;     
-#&gt; 1 1.23e13 FALSE       NA                    NA        
-#&gt; 2 1.29e 8 TRUE        FALSE                 NA        
-#&gt; 3 1.00e 6 TRUE        TRUE                  TRUE      
-#&gt; 4 1.00e 6 TRUE        TRUE                  FALSE     </div><div class='input'><span class='fu'>gbif_verify_keys</span>(<span class='no'>keys3</span>)</div><div class='output co'>#&gt; [1] "Key 12323785387253 is an invalid GBIF taxon key."</div><div class='output co'>#&gt; # A tibble: 4 x 4
+#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>     
+#&gt; </span><span style='color: #555555;'>1</span><span> 1.23</span><span style='color: #555555;'>e</span><span>13 FALSE       </span><span style='color: #BB0000;'>NA</span><span>                    </span><span style='color: #BB0000;'>NA</span><span>        
+#&gt; </span><span style='color: #555555;'>2</span><span> 1.29</span><span style='color: #555555;'>e</span><span> 8 TRUE        FALSE                 </span><span style='color: #BB0000;'>NA</span><span>        
+#&gt; </span><span style='color: #555555;'>3</span><span> 1.00</span><span style='color: #555555;'>e</span><span> 6 TRUE        TRUE                  TRUE      
+#&gt; </span><span style='color: #555555;'>4</span><span> 1.00</span><span style='color: #555555;'>e</span><span> 6 TRUE        TRUE                  FALSE     </div><div class='input'><span class='fu'>gbif_verify_keys</span>(<span class='kw'>keys3</span>)
+</div><div class='output co'>#&gt; [1] "Key 12323785387253 is an invalid GBIF taxon key."</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 4</span><span>
 #&gt;       key is_taxonKey is_from_gbif_backbone is_synonym
-#&gt;     &lt;dbl&gt; &lt;lgl&gt;       &lt;lgl&gt;                 &lt;lgl&gt;     
-#&gt; 1 1.23e13 FALSE       NA                    NA        
-#&gt; 2 1.29e 8 TRUE        FALSE                 NA        
-#&gt; 3 1.00e 6 TRUE        TRUE                  TRUE      
-#&gt; 4 1.00e 6 TRUE        TRUE                  FALSE     </div><div class='input'><span class='fu'>gbif_verify_keys</span>(<span class='no'>keys4</span>)</div><div class='output co'>#&gt; [1] "Key 12323785387253 is an invalid GBIF taxon key."</div><div class='output co'>#&gt; # A tibble: 4 x 4
+#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>     
+#&gt; </span><span style='color: #555555;'>1</span><span> 1.23</span><span style='color: #555555;'>e</span><span>13 FALSE       </span><span style='color: #BB0000;'>NA</span><span>                    </span><span style='color: #BB0000;'>NA</span><span>        
+#&gt; </span><span style='color: #555555;'>2</span><span> 1.29</span><span style='color: #555555;'>e</span><span> 8 TRUE        FALSE                 </span><span style='color: #BB0000;'>NA</span><span>        
+#&gt; </span><span style='color: #555555;'>3</span><span> 1.00</span><span style='color: #555555;'>e</span><span> 6 TRUE        TRUE                  TRUE      
+#&gt; </span><span style='color: #555555;'>4</span><span> 1.00</span><span style='color: #555555;'>e</span><span> 6 TRUE        TRUE                  FALSE     </div><div class='input'><span class='fu'>gbif_verify_keys</span>(<span class='kw'>keys4</span>)
+</div><div class='output co'>#&gt; [1] "Key 12323785387253 is an invalid GBIF taxon key."</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 4</span><span>
 #&gt;       key is_taxonKey is_from_gbif_backbone is_synonym
-#&gt;     &lt;dbl&gt; &lt;lgl&gt;       &lt;lgl&gt;                 &lt;lgl&gt;     
-#&gt; 1 1.23e13 FALSE       NA                    NA        
-#&gt; 2 1.29e 8 TRUE        FALSE                 NA        
-#&gt; 3 1.00e 6 TRUE        TRUE                  TRUE      
-#&gt; 4 1.00e 6 TRUE        TRUE                  FALSE     </div></pre>
+#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>     
+#&gt; </span><span style='color: #555555;'>1</span><span> 1.23</span><span style='color: #555555;'>e</span><span>13 FALSE       </span><span style='color: #BB0000;'>NA</span><span>                    </span><span style='color: #BB0000;'>NA</span><span>        
+#&gt; </span><span style='color: #555555;'>2</span><span> 1.29</span><span style='color: #555555;'>e</span><span> 8 TRUE        FALSE                 </span><span style='color: #BB0000;'>NA</span><span>        
+#&gt; </span><span style='color: #555555;'>3</span><span> 1.00</span><span style='color: #555555;'>e</span><span> 6 TRUE        TRUE                  TRUE      
+#&gt; </span><span style='color: #555555;'>4</span><span> 1.00</span><span style='color: #555555;'>e</span><span> 6 TRUE        TRUE                  FALSE     </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -243,7 +247,7 @@ key from GBIF Backbone Taxonomy checklist?</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
