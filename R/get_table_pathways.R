@@ -267,15 +267,19 @@ get_table_pathways <- function(df,
     )
   }
   # Join pathways and samples together
-  pathway_data <-
+  if (nrow(pathway_data) == 0) {
+    tibble(
+      pathway_level1 = character(0),
+      pathway_level2 = character(0),
+      n = integer(0),
+      examples = character(0)
+    )
+  } else {
     pathway_data %>%
-    # if pathway_data is empty
-    mutate_if(is.logical, as.character) %>%
-    left_join(samples,
-      by = c("pathway_level1", "pathway_level2")
-    ) %>%
-    select(-.data$size_sample) %>%
-    ungroup()
-
-  pathway_data
+      left_join(samples,
+        by = c("pathway_level1", "pathway_level2")
+      ) %>%
+      select(-.data$size_sample) %>%
+      ungroup()
+  }
 }

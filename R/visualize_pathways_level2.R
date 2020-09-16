@@ -47,7 +47,7 @@
 #' @param x_lab NULL or character. x-axis label. Default: "Number of introduced
 #'   taxa".
 #' @param y_lab NULL or character. Title of the graph. Default: "Pathways".
-#'@return A ggplot2 object (or egg object if facets are used). NULL if there are
+#' @return A ggplot2 object (or egg object if facets are used). NULL if there are
 #'  no data to plot.
 #'
 #' @export

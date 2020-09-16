@@ -201,7 +201,8 @@ indicator_introduction_year <- function(df,
         start_year_plot,
         maxDate,
         x_minor_scale_stepsize
-      )) +
+      )
+    ) +
     coord_cartesian(xlim = c(start_year_plot, maxDate))
 
   if (is.null(facet_column)) {
@@ -232,7 +233,8 @@ indicator_introduction_year <- function(df,
           start_year_plot,
           maxDate,
           x_minor_scale_stepsize
-        )) + 
+        )
+      ) +
       coord_cartesian(xlim = c(start_year_plot, maxDate))
 
     ggarrange(top_graph, facet_graph)

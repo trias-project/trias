@@ -117,7 +117,8 @@ visualize_pathways_year_level1(data, from = 1970)
 
 # facet locality
 visualize_pathways_year_level1(
-  data, category = "Not Chordata",
+  data,
+  category = "Not Chordata",
   facet_column = "locality"
 )
 
@@ -139,7 +140,7 @@ visualize_pathways_year_level1(
 visualize_pathways_year_level1(
   data,
   x_lab = "Jaar",
-  y_lab = "Aantal geÃ¯ntroduceerde taxa"
+  y_lab = "Aantal geÃƒÂ¯ntroduceerde taxa"
 )
 }
 }

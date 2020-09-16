@@ -98,8 +98,8 @@
 #' @export
 #' @importFrom assertthat assert_that is.date
 #' @importFrom dplyr desc filter filter_at select distinct mutate rename
-#'   rename_at arrange bind_rows inner_join anti_join left_join right_join %>%
-#'   pull vars as_tibble group_by count starts_with all_vars any_vars .data
+#'   rename_at arrange bind_rows inner_join anti_join left_join %>% pull vars
+#'   as_tibble group_by count starts_with all_vars any_vars .data
 #' @importFrom stringr str_remove str_split
 #' @importFrom tidyselect one_of ends_with
 #' @importFrom tibble tibble
@@ -623,6 +623,28 @@ verify_taxa <- function(taxa,
     )
   )
 
+  # Check that taxon keys are all set up, no NAs present in input taxa
+  assertthat::assert_that(all(!is.na(taxa[[taxonKey]])),
+    msg = sprintf(
+      paste0(
+        "Missing values found in taxon keys of input ",
+        "taxa. Check values in column %s."
+      ),
+      taxonKey
+    )
+  )
+
+  # Check that taxon keys are unique in taxa
+  assertthat::assert_that(nrow(taxa) == length(unique(taxa[[taxonKey]])),
+    msg = sprintf(
+      paste0(
+        "Taxon keys of input taxa must be unique. ",
+        "Check values in column %s."
+      ),
+      taxonKey
+    )
+  )
+
   # Convert to default column names
   taxa <-
     taxa %>%
@@ -739,6 +761,29 @@ verify_taxa <- function(taxa,
         paste0(paste(col_not_present, collapse = ", "), "."),
         "Did you maybe forget to provide the mapping of",
         "columns named differently than the default names?"
+      )
+    )
+
+    # Check that taxon keys are all set up, no NAs present in verification df
+    assertthat::assert_that(all(!is.na(verification[[verification_taxonKey]])),
+      msg = sprintf(
+        paste0(
+          "Missing values found in taxon keys of input ",
+          "taxa. Check values in column %s."
+        ),
+        verification_taxonKey
+      )
+    )
+
+    # Check that taxon keys are unique in verification df
+    assertthat::assert_that(
+      nrow(verification) == length(unique(verification[[verification_taxonKey]])),
+      msg = sprintf(
+        paste0(
+          "Taxon keys of input taxa must be unique. ",
+          "Check values in column %s."
+        ),
+        taxonKey
       )
     )
 
@@ -1040,9 +1085,8 @@ verify_taxa <- function(taxa,
       accepted_keys,
       function(bb_acceptedKey) {
         name_usage(
-          key = bb_acceptedKey,
-          return = "data"
-        )
+          key = bb_acceptedKey
+        )$data
       }
     ) %>%
       select(.data$key, .data$kingdom, .data$rank, .data$taxonomicStatus) %>%
@@ -1196,8 +1240,11 @@ verify_taxa <- function(taxa,
     left_join(taxa_input,
       by = name_col_taxa
     ) %>%
-    bind_rows(not_to_verify_taxa) %>%
-    right_join(ordered_taxon_keys, by = "taxonKey")
+    bind_rows(not_to_verify_taxa)
+  # set same order as in input df taxa
+  taxa <-
+    ordered_taxon_keys %>%
+    left_join(taxa, by = "taxonKey")
 
   # Split outdated_taxa in outdated_unmatched_taxa and outdated_synonyms
   outdated_unmatched_taxa <-
