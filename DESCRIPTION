@@ -41,8 +41,6 @@ Imports:
 Suggests:
     knitr,
     testthat
-Remotes:
-    ropensci/rgbif
 LazyData: true
 Encoding: UTF-8
 VignetteBuilder: knitr
