@@ -12,8 +12,7 @@ keys_err2 <- c("", "", "1")
 # input is a vector
 keys1 <- c(
   "12323785387253", # is not a taxonkey
-  "128545334", # not a taxonKey from Backbone, but Euglenes nitidifrons
-  # (Thomson, 1886) in "Checklist of Danish Beetles (Coleoptera)"
+  "172331902", # not a taxonKey from Backbone, but kingdom Animalia from CoL
   "1000693", # is a synonym: Pterodina calcaris Langer, 1909,
   # Synonym of Testudinella parva (Ternetz, 1892)
   "1000310", # accepted taxon: Pyrococcus woesei Zillig, 1988
@@ -38,7 +37,7 @@ keys4 <- as.numeric(keys1)
 # output expected
 output_keys <- tibble(
   key = c(
-    12323785387253, 128545334,
+    12323785387253, 172331902,
     1000693, 1000310
   ),
   is_taxonKey = c(FALSE, TRUE, TRUE, TRUE),
