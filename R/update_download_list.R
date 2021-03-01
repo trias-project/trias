@@ -17,14 +17,13 @@
 #'
 #' @export
 #' @importFrom rgbif occ_download_meta
-#' @importFrom readr read_delim
+#' @importFrom readr read_tsv write_tsv
 #' @importFrom stringr str_c
-#' @importFrom utils read.table write.table
 update_download_list <- function(file, download_to_add, input_checklist,
                                  url_doi_base = "https://doi.org/") {
-  downloads <- readr::read_delim(file, "\t",
-    escape_double = FALSE, trim_ws = TRUE
-  )
+  downloads <- readr::read_tsv(file, quote = FALSE,
+                               trim_ws = TRUE,
+                               na = "")
   # downloadKey not present
   if (is.element(download_to_add, downloads$gbif_download_key) == FALSE) {
     metadata <- rgbif::occ_download_meta(key = download_to_add)
@@ -32,22 +31,24 @@ update_download_list <- function(file, download_to_add, input_checklist,
     gbif_download_doi <- stringr::str_c(url_doi_base, metadata$doi)
     print(gbif_download_doi)
     gbif_download_created <- metadata$created
-    write.table(
+    readr::write_tsv(
       x = list(
         toString(download_to_add), input_checklist,
         gbif_download_created, gbif_download_status,
         gbif_download_doi
       ),
       file = file,
-      append = TRUE, sep = "\t", quote = FALSE,
-      row.names = FALSE, col.names = !file.exists(file)
+      na = "",
+      append = TRUE, 
+      col_names = !file.exists(file),
+      quote_escape = FALSE
     )
     print(paste(
       "gbif_download_Key", download_to_add,
       "added to", file, "; download status =", gbif_download_status
     ))
     # reload file
-    downloads <- read.table(file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+    downloads <- readr::read_tsv(file, na = "")
   } else {
     print(paste("gbif_download_Key", download_to_add, "already present in", file))
   }
@@ -76,9 +77,10 @@ update_download_list <- function(file, download_to_add, input_checklist,
   if (!changes) {
     print("No changes in download status detected")
   } else {
-    write.table(
-      x = downloads, file = file, sep = "\t",
-      quote = FALSE, row.names = FALSE
+    readr::write_tsv(
+      x = downloads,
+      file = file,
+      quote_escape = FALSE
     )
   }
 }
