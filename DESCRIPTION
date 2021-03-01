@@ -18,8 +18,7 @@ Depends:
 Imports:
     assertthat,
     assertable,
-    data.table,
-    dplyr,
+    dplyr (>= 1.0),
     egg,
     forcats,
     gratia,
