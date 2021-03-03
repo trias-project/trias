@@ -21,7 +21,7 @@
 #' @importFrom stringr str_c
 update_download_list <- function(file, download_to_add, input_checklist,
                                  url_doi_base = "https://doi.org/") {
-  downloads <- readr::read_tsv(file, quote = FALSE,
+  downloads <- readr::read_tsv(file,
                                trim_ws = TRUE,
                                na = "")
   # downloadKey not present
@@ -32,11 +32,13 @@ update_download_list <- function(file, download_to_add, input_checklist,
     print(gbif_download_doi)
     gbif_download_created <- metadata$created
     readr::write_tsv(
-      x = list(
-        toString(download_to_add), input_checklist,
-        gbif_download_created, gbif_download_status,
-        gbif_download_doi
-      ),
+      x = as.data.frame(list(
+        gbif_download_key = toString(download_to_add),
+        input_checklist = input_checklist,
+        gbif_download_created = gbif_download_created,
+        gbif_download_status = gbif_download_status,
+        gbif_download_doi = gbif_download_doi
+      )),
       file = file,
       na = "",
       append = TRUE, 

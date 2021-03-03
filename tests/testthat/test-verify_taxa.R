@@ -1193,10 +1193,10 @@ testthat::test_that("output data.frames are correct", {
   expect_equivalent(
     output1$verification %>%
       # new synonyms and unmatched get date of today
-      dplyr::select(-dateAdded),
+      dplyr::select(-c(dateAdded, remarks)),
     output1_verification %>%
       # new synonyms and unmatched got paste date
-      dplyr::select(-dateAdded)
+      dplyr::select(-c(dateAdded, remarks))
   )
   expect_equivalent(
     output2$verification %>%

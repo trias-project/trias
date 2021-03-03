@@ -1,0 +1,2 @@
+gbif_download_key	input_checklist	gbif_download_created	gbif_download_status	gbif_download_doi
+0012078-181003121212138	https://raw.githubusercontent.com/trias-project/pipeline/occ_indicators_downscaling/data/input/occ_indicator_emerging_species_AOO.tsv	2018-10-24 09:52:39	RUNNING	https://doi.org/10.15468/dl.kg0uxf
