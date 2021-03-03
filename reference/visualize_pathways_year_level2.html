@@ -91,7 +91,7 @@ vertebrates/invertebrates)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -102,7 +102,7 @@ vertebrates/invertebrates)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/trias-project/trias/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -131,25 +131,25 @@ Time expressed in years. Possible breakpoints: taxonomic (kingdoms +
 vertebrates/invertebrates).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>df</span>,
-  <span class='kw'>chosen_pathway_level1</span>,
-  bin = <span class='fl'>10</span>,
-  from = <span class='fl'>1950</span>,
-  category = <span class='kw'>NULL</span>,
-  facet_column = <span class='kw'>NULL</span>,
-  pathways = <span class='kw'>NULL</span>,
-  pathway_level1_names = <span class='st'>"pathway_level1"</span>,
-  pathway_level2_names = <span class='st'>"pathway_level2"</span>,
-  taxon_names = <span class='st'>"key"</span>,
-  kingdom_names = <span class='st'>"kingdom"</span>,
-  phylum_names = <span class='st'>"phylum"</span>,
-  first_observed = <span class='st'>"first_observed"</span>,
-  cbd_standard = <span class='fl'>TRUE</span>,
-  title = <span class='kw'>NULL</span>,
-  x_lab = <span class='st'>"Time period"</span>,
-  y_lab = <span class='st'>"Number of introduced taxa"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>df</span>,
+  <span class='va'>chosen_pathway_level1</span>,
+  bin <span class='op'>=</span> <span class='fl'>10</span>,
+  from <span class='op'>=</span> <span class='fl'>1950</span>,
+  category <span class='op'>=</span> <span class='cn'>NULL</span>,
+  facet_column <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pathways <span class='op'>=</span> <span class='cn'>NULL</span>,
+  pathway_level1_names <span class='op'>=</span> <span class='st'>"pathway_level1"</span>,
+  pathway_level2_names <span class='op'>=</span> <span class='st'>"pathway_level2"</span>,
+  taxon_names <span class='op'>=</span> <span class='st'>"key"</span>,
+  kingdom_names <span class='op'>=</span> <span class='st'>"kingdom"</span>,
+  phylum_names <span class='op'>=</span> <span class='st'>"phylum"</span>,
+  first_observed <span class='op'>=</span> <span class='st'>"first_observed"</span>,
+  cbd_standard <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  title <span class='op'>=</span> <span class='cn'>NULL</span>,
+  x_lab <span class='op'>=</span> <span class='st'>"Time period"</span>,
+  y_lab <span class='op'>=</span> <span class='st'>"Number of introduced taxa"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -252,97 +252,97 @@ taxa".</p></td>
 no data to plot.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://readr.tidyverse.org'>readr</a></span>)
-<span class='kw'>datafile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span>
+<span class='va'>datafile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span>
   <span class='st'>"https://raw.githubusercontent.com/trias-project/indicators/master/data/"</span>,
   <span class='st'>"interim/data_input_checklist_indicators.tsv"</span>
-)
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='kw'>datafile</span>,
-  na = <span class='st'>""</span>,
-  col_types = <span class='fu'><a href='https://readr.tidyverse.org/reference/cols.html'>cols</a></span>(
-    .default = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span>(),
-    key = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    nubKey = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    speciesKey = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    acceptedKey = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    first_observed = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    last_observed = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>()
-  )
-)
+<span class='op'>)</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span><span class='op'>(</span><span class='va'>datafile</span>,
+  na <span class='op'>=</span> <span class='st'>""</span>,
+  col_types <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/cols.html'>cols</a></span><span class='op'>(</span>
+    .default <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span><span class='op'>(</span><span class='op'>)</span>,
+    key <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    nubKey <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    speciesKey <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    acceptedKey <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    first_observed <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    last_observed <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='op'>)</span>
+<span class='op'>)</span>
 <span class='co'># All taxa</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>
-)
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>
+<span class='op'>)</span>
 
 <span class='co'># Animalia</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>,
-  category = <span class='st'>"Animalia"</span>
-)
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>,
+  category <span class='op'>=</span> <span class='st'>"Animalia"</span>
+<span class='op'>)</span>
 
 <span class='co'># Chordata</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>,
-  category = <span class='st'>"Chordata"</span>
-)
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>,
+  category <span class='op'>=</span> <span class='st'>"Chordata"</span>
+<span class='op'>)</span>
 
 <span class='co'># Group by 20 years</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>,
-  bin = <span class='fl'>20</span>
-)
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>,
+  bin <span class='op'>=</span> <span class='fl'>20</span>
+<span class='op'>)</span>
 
 <span class='co'># Group taxa introudced before 1970 alltogether</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>,
-  from = <span class='fl'>1970</span>
-)
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>,
+  from <span class='op'>=</span> <span class='fl'>1970</span>
+<span class='op'>)</span>
 
 <span class='co'># facet locality</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>,
-  category = <span class='st'>"Not Chordata"</span>,
-  facet_column = <span class='st'>"locality"</span>
-)
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>,
+  category <span class='op'>=</span> <span class='st'>"Not Chordata"</span>,
+  facet_column <span class='op'>=</span> <span class='st'>"locality"</span>
+<span class='op'>)</span>
 
 <span class='co'># facet habitat</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>,
-  facet_column = <span class='st'>"habitat"</span>
-)
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>,
+  facet_column <span class='op'>=</span> <span class='st'>"habitat"</span>
+<span class='op'>)</span>
 
 <span class='co'># Only taxa with pathways "horticulture" and "pet"</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>,
-  pathways = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"horticulture"</span>, <span class='st'>"pet"</span>)
-)
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>,
+  pathways <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"horticulture"</span>, <span class='st'>"pet"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
 <span class='co'># Add a title</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>,
-  category = <span class='st'>"Plantae"</span>,
-  from = <span class='fl'>1950</span>,
-  title = <span class='st'>"Plantae - Pathway level 1"</span>
-)
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>,
+  category <span class='op'>=</span> <span class='st'>"Plantae"</span>,
+  from <span class='op'>=</span> <span class='fl'>1950</span>,
+  title <span class='op'>=</span> <span class='st'>"Plantae - Pathway level 1"</span>
+<span class='op'>)</span>
 
 <span class='co'># Personalize axis labels</span>
-<span class='fu'>visualize_pathways_year_level2</span>(
-  <span class='kw'>data</span>,
-  chosen_pathway_level1 = <span class='st'>"escape"</span>,
-  x_lab = <span class='st'>"Jaar"</span>,
-  y_lab = <span class='st'>"Aantal geÃƒÆ’Ã‚Â¯ntroduceerde taxa"</span>
-)
-}
+<span class='fu'>visualize_pathways_year_level2</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  chosen_pathway_level1 <span class='op'>=</span> <span class='st'>"escape"</span>,
+  x_lab <span class='op'>=</span> <span class='st'>"Jaar"</span>,
+  y_lab <span class='op'>=</span> <span class='st'>"Aantal geÃƒÆ’Ã‚Â¯ntroduceerde taxa"</span>
+<span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -359,7 +359,7 @@ no data to plot.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

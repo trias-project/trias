@@ -90,7 +90,7 @@ year of introduction is required." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -101,7 +101,7 @@ year of introduction is required." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/trias-project/trias/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -129,17 +129,17 @@ To do this, a column of input dataframe containing temporal information about
 year of introduction is required.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>indicator_total_year</span>(
-  <span class='kw'>df</span>,
-  start_year_plot = <span class='fl'>1940</span>,
-  x_major_scale_stepsize = <span class='fl'>10</span>,
-  x_minor_scale_stepsize = <span class='fl'>5</span>,
-  facet_column = <span class='kw'>NULL</span>,
-  taxon_key_col = <span class='st'>"key"</span>,
-  first_observed = <span class='st'>"first_observed"</span>,
-  x_lab = <span class='st'>"Year"</span>,
-  y_lab = <span class='st'>"Cumulative number of alien species"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>indicator_total_year</span><span class='op'>(</span>
+  <span class='va'>df</span>,
+  start_year_plot <span class='op'>=</span> <span class='fl'>1940</span>,
+  x_major_scale_stepsize <span class='op'>=</span> <span class='fl'>10</span>,
+  x_minor_scale_stepsize <span class='op'>=</span> <span class='fl'>5</span>,
+  facet_column <span class='op'>=</span> <span class='cn'>NULL</span>,
+  taxon_key_col <span class='op'>=</span> <span class='st'>"key"</span>,
+  first_observed <span class='op'>=</span> <span class='st'>"first_observed"</span>,
+  x_lab <span class='op'>=</span> <span class='st'>"Year"</span>,
+  y_lab <span class='op'>=</span> <span class='st'>"Cumulative number of alien species"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -202,36 +202,36 @@ Default: "Cumulative number of alien species".</p></td>
     <p>ggplot2 object (or egg object if facets are used).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://readr.tidyverse.org'>readr</a></span>)
-<span class='kw'>datafile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://readr.tidyverse.org'>readr</a></span><span class='op'>)</span>
+<span class='va'>datafile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span>
   <span class='st'>"https://raw.githubusercontent.com/trias-project/indicators/master/data/"</span>,
   <span class='st'>"interim/data_input_checklist_indicators.tsv"</span>
-)
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span>(<span class='kw'>datafile</span>,
-  na = <span class='st'>"NA"</span>,
-  col_types = <span class='fu'><a href='https://readr.tidyverse.org/reference/cols.html'>cols</a></span>(
-    .default = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span>(),
-    key = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    nubKey = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    speciesKey = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    acceptedKey = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    first_observed = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>(),
-    last_observed = <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span>()
-  )
-)
-<span class='kw'>start_year_plot</span> <span class='op'>&lt;-</span> <span class='fl'>1900</span>
-<span class='kw'>x_major_scale_stepsize</span> <span class='op'>&lt;-</span> <span class='fl'>25</span>
-<span class='kw'>x_minor_scale_stepsize</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
+<span class='op'>)</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_tsv</a></span><span class='op'>(</span><span class='va'>datafile</span>,
+  na <span class='op'>=</span> <span class='st'>"NA"</span>,
+  col_types <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/cols.html'>cols</a></span><span class='op'>(</span>
+    .default <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_character</a></span><span class='op'>(</span><span class='op'>)</span>,
+    key <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    nubKey <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    speciesKey <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    acceptedKey <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    first_observed <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>,
+    last_observed <span class='op'>=</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/parse_atomic.html'>col_double</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='op'>)</span>
+<span class='op'>)</span>
+<span class='va'>start_year_plot</span> <span class='op'>&lt;-</span> <span class='fl'>1900</span>
+<span class='va'>x_major_scale_stepsize</span> <span class='op'>&lt;-</span> <span class='fl'>25</span>
+<span class='va'>x_minor_scale_stepsize</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
 <span class='co'># without facets</span>
-<span class='fu'>indicator_total_year</span>(<span class='kw'>data</span>, <span class='kw'>start_year_plot</span>, <span class='kw'>x_major_scale_stepsize</span>)
+<span class='fu'>indicator_total_year</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>start_year_plot</span>, <span class='va'>x_major_scale_stepsize</span><span class='op'>)</span>
 <span class='co'># with facets</span>
-<span class='fu'>indicator_total_year</span>(<span class='kw'>data</span>, <span class='kw'>start_year_plot</span>, facet_column = <span class='st'>"kingdom"</span>)
+<span class='fu'>indicator_total_year</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>start_year_plot</span>, facet_column <span class='op'>=</span> <span class='st'>"kingdom"</span><span class='op'>)</span>
 <span class='co'># specify name of column containing year of introduction (first_observed)</span>
-<span class='fu'>indicator_total_year</span>(<span class='kw'>data</span>, first_observed = <span class='st'>"first_observed"</span>)
+<span class='fu'>indicator_total_year</span><span class='op'>(</span><span class='va'>data</span>, first_observed <span class='op'>=</span> <span class='st'>"first_observed"</span><span class='op'>)</span>
 <span class='co'># specify axis labels</span>
-<span class='fu'>indicator_total_year</span>(<span class='kw'>data</span>, x_lab = <span class='st'>"YEAR"</span>, y_lab = <span class='kw'>NULL</span>)
-}
+<span class='fu'>indicator_total_year</span><span class='op'>(</span><span class='va'>data</span>, x_lab <span class='op'>=</span> <span class='st'>"YEAR"</span>, y_lab <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -248,7 +248,7 @@ Default: "Cumulative number of alien species".</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

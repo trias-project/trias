@@ -89,7 +89,7 @@ status at a specific time." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -100,7 +100,7 @@ status at a specific time." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/trias-project/trias/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -127,13 +127,13 @@ status at a specific time." />
 status at a specific time.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>apply_decision_rules</span>(
-  <span class='kw'>df</span>,
-  y_var = <span class='st'>"ncells"</span>,
-  <span class='kw'>eval_year</span>,
-  year = <span class='st'>"year"</span>,
-  taxonKey = <span class='st'>"taxonKey"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>apply_decision_rules</span><span class='op'>(</span>
+  <span class='va'>df</span>,
+  y_var <span class='op'>=</span> <span class='st'>"ncells"</span>,
+  <span class='va'>eval_year</span>,
+  year <span class='op'>=</span> <span class='st'>"year"</span>,
+  taxonKey <span class='op'>=</span> <span class='st'>"taxonKey"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -195,19 +195,19 @@ maximum ever observed up to <code>eval_year</code>?</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>df</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span>(
-  taxonID = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1008955</span>, <span class='fl'>10</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>2493598</span>, <span class='fl'>3</span>)),
-  y = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>2009</span>, <span class='fl'>2018</span>), <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>2016</span>, <span class='fl'>2018</span>)),
-  obs = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span>)
-)
-<span class='fu'>apply_decision_rules</span>(<span class='kw'>df</span>,
-  eval_year = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2016</span>, <span class='fl'>2017</span>, <span class='fl'>2018</span>),
-  y_var = <span class='st'>"obs"</span>,
-  taxonKey = <span class='st'>"taxonID"</span>,
-  year = <span class='kw'>y</span>
-)
-}
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='op'>(</span>
+  taxonID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1008955</span>, <span class='fl'>10</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>2493598</span>, <span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>,
+  y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>2009</span>, <span class='fl'>2018</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>2016</span>, <span class='fl'>2018</span><span class='op'>)</span><span class='op'>)</span>,
+  obs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>0</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='fu'>apply_decision_rules</span><span class='op'>(</span><span class='va'>df</span>,
+  eval_year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2016</span>, <span class='fl'>2017</span>, <span class='fl'>2018</span><span class='op'>)</span>,
+  y_var <span class='op'>=</span> <span class='st'>"obs"</span>,
+  taxonKey <span class='op'>=</span> <span class='st'>"taxonID"</span>,
+  year <span class='op'>=</span> <span class='va'>y</span>
+<span class='op'>)</span>
+<span class='op'>}</span>
 
 </div></pre>
   </div>
@@ -225,7 +225,7 @@ maximum ever observed up to <code>eval_year</code>?</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
