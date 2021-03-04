@@ -1,5 +1,13 @@
 # trias <img src="man/figures/logo.png" align="right" alt="" width="120">
 
+<!-- badges: start -->
+  [![Codecov test coverage](https://codecov.io/gh/trias-project/trias/branch/master/graph/badge.svg)](https://codecov.io/gh/trias-project/trias?branch=master)
+  <!-- badges: end -->
+
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/trias-project/trias/workflows/R-CMD-check/badge.svg)](https://github.com/trias-project/trias/actions)
+<!-- badges: end -->
+  
 R package with functions for TrIAS (Tracking Invasive Alien Species) project. 
 
 ## Installation
