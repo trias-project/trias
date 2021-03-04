@@ -32,8 +32,9 @@
 update_download_list <- function(file, download_to_add, input_checklist,
                                  url_doi_base = "https://doi.org/") {
   downloads <- readr::read_tsv(file,
-                               trim_ws = TRUE,
-                               na = "")
+    trim_ws = TRUE,
+    na = ""
+  )
   # downloadKey not present
   if (is.element(download_to_add, downloads$gbif_download_key) == FALSE) {
     metadata <- rgbif::occ_download_meta(key = download_to_add)
@@ -51,7 +52,7 @@ update_download_list <- function(file, download_to_add, input_checklist,
       )),
       file = file,
       na = "",
-      append = TRUE, 
+      append = TRUE,
       col_names = !file.exists(file),
       quote_escape = FALSE
     )
