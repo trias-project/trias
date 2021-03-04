@@ -14,7 +14,7 @@ License: MIT + file LICENSE
 URL: https://github.com/trias-project/trias, https://trias-project.github.io/trias
 BugReports: https://github.com/trias-project/trias/issues
 Depends:
-    R (>= 2.10)
+    R (>= 3.6)
 Imports:
     assertthat,
     assertable,
