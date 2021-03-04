@@ -82,7 +82,7 @@ RUNNING or PREPARING. If the specifid download is not present it will be add." /
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -141,7 +141,18 @@ downloads from GBIF and updates the status of all downloads with status
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p>text file containing all occurrence downloads from GBIF.</p></td>
+      <td><p>text file (tab separated) containing all occurrence downloads from GBIF. File should contain the following columns:</p><ul>
+<li><p><code>gbif_download_key</code>: GBIF download keys, e.g. 0012078-181003121212138</p></li>
+<li><p><code>input_checklist</code>: filename or link to readable text file containing the list of queried taxa</p></li>
+<li><p><code>gbif_download_created</code>: datetime of the GBIF download creation as
+returned by <code>rgbif</code> function  <code>occ_download_meta</code></p></li>
+<li><p><code>gbif_download_status</code>: status of the GBIF download as returned by as
+returned by <code>rgbif</code> function  <code>occ_download_meta</code>, e.g. <code>RUNNING</code>,
+<code>PREPARING</code>, <code>SUCCEDEED</code></p></li>
+<li><p><code>gbif_download_doi</code>: DOI link as returned by as returned by <code>rgbif</code>
+function  <code>occ_download_meta</code> (e.g. <code>10.15468/dl.kg0uxf</code>) + <code>url_doi_base</code>
+value (see below)</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>download_to_add</th>
