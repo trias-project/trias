@@ -1,7 +1,5 @@
 # trias <img src="man/figures/logo.png" align="right" alt="" width="120">
 
-[![Build Status](https://travis-ci.org/trias-project/trias.svg?branch=master)](https://travis-ci.org/trias-project/trias)
-
 R package with functions for TrIAS (Tracking Invasive Alien Species) project. 
 
 ## Installation
