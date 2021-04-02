@@ -109,6 +109,10 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
       )
     )
   }
+  # as keys could contain duplicates, we make a copy called input_keys_df
+  input_keys_df <- tibble(key = as.numeric(keys))
+  # make list of unique keys
+  keys <- unique(keys)
   names(keys) <- as.character(keys)
   gbif_info <-
     keys %>%
@@ -160,7 +164,11 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
         is_synonym = NA
       )
   }
-  return(check_keys)
+  
+  # recreate possible duplicates by joining input_keys_df with check_keys
+  input_keys_df %>%
+    left_join(check_keys,
+              by = "key")
 }
 
 is.error <- function(x) inherits(x, "try-error")
