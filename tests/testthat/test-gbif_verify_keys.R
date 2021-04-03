@@ -94,3 +94,33 @@ testthat::test_that("output content", {
   expect_equal(output3, output2)
   expect_equal(output4, output3)
 })
+
+testthat::test_that("function works even with duplicated taxon keys", {
+  
+  # basic vector with input keys for tests
+  keys_with_duplicates <- c(
+    "12323785387253", # is not a taxonkey
+    "172331902", # not a taxonKey from Backbone, but kingdom Animalia from CoL
+    "1000693", # is a synonym: Pterodina calcaris Langer, 1909,
+    # Synonym of Testudinella parva (Ternetz, 1892)
+    "1000310", # accepted taxon: Pyrococcus woesei Zillig, 1988
+    "12323785387253", # duplicate
+    "172331902", # duplicate
+    "1000693", # duplicate
+    "1000310" # duplicate
+  )
+  
+  # generate output
+  output_with_duplicates <- gbif_verify_keys(keys_with_duplicates)
+  
+  # expected output
+  expected_output_with_duplicates <- 
+    tibble(
+      key = as.numeric(keys_with_duplicates),
+      is_taxonKey = rep(c(FALSE, TRUE, TRUE, TRUE), 2),
+      is_from_gbif_backbone = rep(c(NA, FALSE, TRUE, TRUE), 2),
+      is_synonym = rep(c(NA, NA, TRUE, FALSE), 2)
+    )
+  
+  expect_equal(output_with_duplicates, expected_output_with_duplicates)
+})
