@@ -9,11 +9,9 @@ my_taxa <- dplyr::tibble(
     141264614,
     100220432,
     141264835,
-    140563014,
     140562956,
     145953989,
     148437916,
-    114445583,
     141264849,
     101790530
   ),
@@ -25,11 +23,9 @@ my_taxa <- dplyr::tibble(
     "Begonia x semperflorens hort.",
     "Rana catesbeiana",
     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
-    "Atyaephyra desmaresti",
     "Ferrissia fragilis",
     "Ferrissia fragilis",
     "Ferrissia fragilis",
-    "Rana blanfordii Boulenger",
     "Pterocarya x rhederiana C.K. Schneider",
     "Stenelmis williami Schmude"
   ),
@@ -42,10 +38,8 @@ my_taxa <- dplyr::tibble(
     "b351a324-77c4-41c9-a909-f30f77268bc4",
     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
     "289244ee-e1c1-49aa-b2d7-d379391ce265",
-    "289244ee-e1c1-49aa-b2d7-d379391ce265",
     "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
     "1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2",
-    "3772da2f-daa1-4f07-a438-15a881a2142c",
     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
     "9ca92552-f23a-41a8-a140-01abaa31c931"
   ),
@@ -57,11 +51,9 @@ my_taxa <- dplyr::tibble(
     NA,
     2427092,
     NA,
-    4309705,
     2291152,
     2291152,
     2291152,
-    2430304,
     NA,
     1033588
   ),
@@ -73,11 +65,9 @@ my_taxa <- dplyr::tibble(
     NA,
     "Rana catesbeiana Shaw, 1802",
     NA,
-    "Atyaephyra desmarestii (Millet, 1831)",
     "Ferrissia fragilis (Tryon, 1863)",
     "Ferrissia fragilis (Tryon, 1863)",
     "Ferrissia fragilis (Tryon, 1863)",
-    "Rana blanfordii Boulenger, 1882",
     NA,
     "Stenelmis williami Schmude"
   ),
@@ -89,8 +79,6 @@ my_taxa <- dplyr::tibble(
     NA,
     "Animalia",
     NA,
-    "Animalia",
-    "Animalia",
     "Animalia",
     "Animalia",
     "Animalia",
@@ -108,8 +96,6 @@ my_taxa <- dplyr::tibble(
     "SPECIES",
     "SPECIES",
     "SPECIES",
-    "SPECIES",
-    "SPECIES",
     NA,
     "SPECIES"
   ),
@@ -121,8 +107,6 @@ my_taxa <- dplyr::tibble(
     NA,
     "SYNONYM",
     NA,
-    "HOMOTYPIC_SYNONYM",
-    "SYNONYM",
     "SYNONYM",
     "SYNONYM",
     "SYNONYM",
@@ -137,11 +121,9 @@ my_taxa <- dplyr::tibble(
     NA,
     2427091,
     NA,
-    6454754,
     9520065,
     9520065,
     9520065,
-    2430301,
     NA,
     1033553
   ),
@@ -153,11 +135,9 @@ my_taxa <- dplyr::tibble(
     NA,
     "Lithobates catesbeianus (Shaw, 1802)",
     NA,
-    "Hippolyte desmarestii Millet, 1831",
     "Ferrissia californica (Rowell, 1863)",
     "Ferrissia californica (Rowell, 1863)",
     "Ferrissia californica (Rowell, 1863)",
-    "Nanorana blanfordii (Boulenger, 1882)",
     NA,
     "Stenelmis Dufour, 1835"
   ),
@@ -169,11 +149,9 @@ my_taxa <- dplyr::tibble(
     "alien-plants-belgium:taxon:9a6c5ed8907ff169433fe44fcbff0705",
     "80-syn",
     "alien-plants-belgium:taxon:29409d1e1adc88d6357dd0be13350d6c",
-    "alien-macroinvertebrates-checklist:taxon:54cca150e1e0b7c0b3f5b152ae64d62b",
     "alien-macroinvertebrates-checklist:taxon:73f271d93128a4e566e841ea6e3abff0",
     "rinse-checklist:taxon:7afe7b1fbdd06cbdfe97272567825c09",
     "ad-hoc-checklist:taxon:32dc2e18733fffa92ba4e1b35d03c4e2",
-    "a80caa33-da9d-48ed-80e3-f76b0b3810f9",
     "alien-plants-belgium:taxon:56d6564f59d9092401c454849213366f",
     "193729"
   )
@@ -191,7 +169,6 @@ my_verification <- dplyr::tibble(
     141264614,
     140562956,
     145953989,
-    114445583,
     128897752,
     101790530,
     141265523
@@ -204,7 +181,6 @@ my_verification <- dplyr::tibble(
     "Begonia x semperflorens hort.",
     "Ferrissia fragilis",
     "Ferrissia fragilis",
-    "Rana blanfordii Boulenger",
     "Python reticulatus Fitzinger, 1826",
     "Stenelmis williami Schmude",
     "Veronica austriaca Jacq."
@@ -217,7 +193,6 @@ my_verification <- dplyr::tibble(
     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
     "289244ee-e1c1-49aa-b2d7-d379391ce265",
     "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
-    "3772da2f-daa1-4f07-a438-15a881a2142c",
     "7ddf754f-d193-4cc9-b351-99906754a03b",
     "9ca92552-f23a-41a8-a140-01abaa31c931",
     "9ff7d317-609b-4c08-bd86-3bc404b77c42"
@@ -230,7 +205,6 @@ my_verification <- dplyr::tibble(
     NA,
     2291152,
     2291152,
-    2430304,
     7587934,
     1033588,
     NA
@@ -243,7 +217,6 @@ my_verification <- dplyr::tibble(
     NA,
     "Ferrissia fragilis (Tryon, 1863)",
     "Ferrissia fragilis (Tryon, 1863)",
-    "Rana blanfordii Boulenger, 1882",
     "Python reticulatus Fitzinger, 1826",
     "Stenelmis williami Schmude",
     NA
@@ -254,7 +227,6 @@ my_verification <- dplyr::tibble(
     "Plantae",
     NA,
     NA,
-    "Animalia",
     "Animalia",
     "Animalia",
     "Animalia",
@@ -271,7 +243,6 @@ my_verification <- dplyr::tibble(
     "SPECIES",
     "SPECIES",
     "SPECIES",
-    "SPECIES",
     NA
   ),
   bb_taxonomicStatus = c(
@@ -280,7 +251,6 @@ my_verification <- dplyr::tibble(
     "SYNONYM",
     NA,
     NA,
-    "SYNONYM",
     "SYNONYM",
     "SYNONYM",
     "SYNONYM",
@@ -295,7 +265,6 @@ my_verification <- dplyr::tibble(
     NA,
     9520065,
     9520065,
-    2427008,
     9260388,
     1033553,
     NA
@@ -308,7 +277,6 @@ my_verification <- dplyr::tibble(
     NA,
     "Ferrissia californica (Rowell, 1863)",
     "Ferrissia californica (Rowell, 1863)",
-    "Hylarana chalconota (Schlegel, 1837)",
     "Malayopython reticulatus (Schneider, 1801)",
     "Stenelmis Dufour, 1835",
     NA
@@ -323,7 +291,6 @@ my_verification <- dplyr::tibble(
     "Animalia",
     "Animalia",
     "Animalia",
-    "Animalia",
     NA
   ),
   bb_acceptedRank = c(
@@ -332,7 +299,6 @@ my_verification <- dplyr::tibble(
     "FAMILY",
     NA,
     NA,
-    "SPECIES",
     "SPECIES",
     "SPECIES",
     "SPECIES",
@@ -349,7 +315,6 @@ my_verification <- dplyr::tibble(
     "ACCEPTED",
     "ACCEPTED",
     "ACCEPTED",
-    "ACCEPTED",
     NA
   ),
   verificationKey = c(
@@ -357,7 +322,6 @@ my_verification <- dplyr::tibble(
     4046493,
     6979,
     "2805420,2805363",
-    NA,
     NA,
     NA,
     NA,
@@ -377,7 +341,6 @@ my_verification <- dplyr::tibble(
     "dummy example 7: datasetKey should not be modified. If new taxa come in
    with same name from other checklsits, they should be added as new rows.
    Report them as duplicates in duplicates_taxa",
-    "dummy example 8: outdated synonym. Set outdated = TRUE.",
     "dummy example 9: outdated synonym. outdated is already TRUE. No actions.",
     "dummy example 10: outdated synonym. Not outdated anymore. Change outdated
    back to FALSE.",
@@ -388,7 +351,6 @@ my_verification <- dplyr::tibble(
     "Peter Desmet",
     "Stijn Van Hoey",
     "Tanja Milotic",
-    NA,
     NA,
     NA,
     NA,
@@ -405,14 +367,12 @@ my_verification <- dplyr::tibble(
       "2018-07-16",
       "2018-07-01",
       "2018-11-20",
-      "2018-11-29",
       "2018-12-01",
       "2018-12-02",
       "2018-12-03"
     )
   ),
   outdated = c(
-    FALSE,
     FALSE,
     FALSE,
     FALSE,
