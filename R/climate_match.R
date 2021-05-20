@@ -26,19 +26,24 @@ climate_match <- function(region,
     
     worldmap <- getMap(resolution = "low")
     
-    valid_regions <- tolower(unique(worldmap$REGION))
+    valid_countries <- tolower(unique(worldmap$NAME))
     
-    if(region %in% valid_regions){
-      region_shape <- subset(worldmap, tolower(worldmap$REGION) == region) 
+    if(region %in% valid_countries){
+      region_shape <- subset(worldmap, tolower(worldmap$NAME) == region) 
     }else{
-      stop("the provided region is not valid")
+      valid_continents <- tolower(unique(worldmap$REGION))
+      if(region %in% valid_continents){
+        region_shape <- subset(worldmap, tolower(worldmap$REGION) == region) 
+      }else{
+        stop("the provided region is not valid")
+      }
     }
   }
   
   ## Species ##
-  taxonkey <- as.integer(taxonkey)
+  taxonkey <- as.numeric(unique(taxonkey))
   
-  if(is.na(taxonkey)){
+  if(length(taxonkey) == 1 & is.na(taxonkey)){
     stop("taxonkey is missing or not valid")
   }
   
@@ -59,8 +64,7 @@ climate_match <- function(region,
     Sys.sleep(time = 5)
     test_set1 <- occ_download_meta(set1)
     if(test_set1$status == "SUCCEEDED"){
-      data <- occ_download_get(set1, 
-                               path = tempdir(),
+      data <- occ_download_get(set1,
                                overwrite = TRUE) %>% 
         occ_download_import()
       break()
