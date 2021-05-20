@@ -15,6 +15,7 @@ climate_match <- function(region,
   library(tidyverse)
   
   crs_wgs <- CRS("+proj=longlat +datum=WGS84 +no_defs")
+  source(file = "./R/get_cred.R")
   
   # Checks ####
   ## Region ##
@@ -44,6 +45,27 @@ climate_match <- function(region,
   taxonkey_set1 <- pred_in("taxonKey", taxonkey)
   
   # Download data ####
+  gbif_user <- get_cred("gbif_user")
+  gbif_pwd <- get_cred("gbif_pwd")
+  gbif_email <- get_cred("gbif_email")
+  
+  set1 <- occ_download(taxonkey_set1, 
+                       pred("hasCoordinate", TRUE),
+                       user = gbif_user, 
+                       pwd = gbif_pwd, 
+                       email = gbif_email)
+  
+  repeat{
+    Sys.sleep(time = 5)
+    test_set1 <- occ_download_meta(set1)
+    if(test_set1$status == "SUCCEEDED"){
+      data <- occ_download_get(set1, overwrite = TRUE) %>% 
+        occ_download_import()
+      break()
+    }
+    print(test_set1$status)
+  }
+  
   # Climate matching occurrence data ####
   # Determine future scenarios ####
   # Per scenario filter ####
