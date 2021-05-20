@@ -7,6 +7,13 @@ climate_match <- function(region,
                           BasisOfRecord){
   
   # Setup ####
+  library(rgbif)
+  library(sp)
+  library(rgdal)
+  library(raster)
+  library(rworldmap)
+  library(tidyverse)
+  
   # Checks ####
   # Download data ####
   # Climate matching occurence data ####
