@@ -138,8 +138,22 @@ climate_match <- function(region,
       }else{
         data_overlay <- rbind(data_overlay, data_sub_overlay)
       }
+    }else{
+      warning(paste0("No data was present in the gbifdataset for ", t))
     }
   }
+  
+  ## Calculate threshold parameters ##
+  data_overlay_unfiltered <- data_overlay %>% 
+    group_by(acceptedTaxonKey, acceptedScientificName, Classification) %>% 
+    add_tally(name = "n_climate") %>% 
+    ungroup() %>% 
+    group_by(acceptedTaxonKey, acceptedScientificName) %>% 
+    add_tally(name = "n_totaal") %>% 
+    ungroup() %>% 
+    mutate(perc_climate = n_climate/n_totaal) %>% 
+    distinct(acceptedTaxonKey, acceptedScientificName, Classification, .keep_all = TRUE) %>% 
+    select(-decimalLatitude, -decimalLongitude, -GRIDCODE, -ID, -eventDate, -year)
   
   # Determine future scenarios ####
   # Per scenario filter ####
