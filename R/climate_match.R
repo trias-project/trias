@@ -14,6 +14,8 @@ climate_match <- function(region,
   library(rworldmap)
   library(tidyverse)
   
+  crs_wgs <- CRS("+proj=longlat +datum=WGS84 +no_defs")
+  
   # Checks ####
   ## Region ##
   if(is.na(region)){
