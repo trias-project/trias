@@ -19,6 +19,8 @@
 #' Legends are stored in the `legend` datapackage
 #' 
 #' @format Each is a large spatialpolygonsdataframe with 2 variables
+#' @format these variables are the ID of the polygon and the gridcode
+#' @format corresponding to the a climate zone. 
 #' @examples 
 #' observed
 #' future
