@@ -78,6 +78,15 @@ climate_match <- function(region,
          " were found on gbif")
   }
   
+  # Data prep ####
+  
+  coord <- data %>% 
+    dplyr::select(decimalLongitude, decimalLatitude)
+  
+  data_sp <- SpatialPointsDataFrame(coord,
+                                    data = data,
+                                    proj4string = crs_wgs)
+  
   # Climate matching occurrence data ####
   # Determine future scenarios ####
   # Per scenario filter ####
