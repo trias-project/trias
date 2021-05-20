@@ -59,11 +59,19 @@ climate_match <- function(region,
     Sys.sleep(time = 5)
     test_set1 <- occ_download_meta(set1)
     if(test_set1$status == "SUCCEEDED"){
-      data <- occ_download_get(set1, overwrite = TRUE) %>% 
+      data <- occ_download_get(set1, 
+                               path = tempdir(),
+                               overwrite = TRUE) %>% 
         occ_download_import()
       break()
     }
     print(test_set1$status)
+  }
+  
+  if(nrow(data) == 0){
+    stop("no occurrences of ", 
+         paste(taxonkey, collapse = ", "), 
+         " were found on gbif")
   }
   
   # Climate matching occurrence data ####
