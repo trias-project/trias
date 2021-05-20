@@ -1,5 +1,5 @@
 climate_match <- function(region, 
-                          species, 
+                          taxonkey, 
                           scenario = "all",
                           n_totaal,
                           perc_climate,
@@ -34,8 +34,17 @@ climate_match <- function(region,
     }
   }
   
+  ## Species ##
+  taxonkey <- as.integer(taxonkey)
+  
+  if(is.na(taxonkey)){
+    stop("taxonkey is missing or not valid")
+  }
+  
+  taxonkey_set1 <- pred_in("taxonKey", taxonkey)
+  
   # Download data ####
-  # Climate matching occurence data ####
+  # Climate matching occurrence data ####
   # Determine future scenarios ####
   # Per scenario filter ####
   # Thresholds ####
