@@ -88,6 +88,59 @@ climate_match <- function(region,
                                     proj4string = crs_wgs)
   
   # Climate matching occurrence data ####
+  ## Get observed shapes ##
+  load(file = "./data/observed.rda")
+  load(file = "./data/future.rda")
+  load(file = "./data/legend.rda")
+  
+  timeperiodes <- c("1901-1925", 
+                    "1926-1950",
+                    "1951-1975",
+                    "1976-2000",
+                    "2001-2025")
+  
+  data_overlay <- data.frame()
+  
+  for(t in timeperiodes){
+    
+    # Determine subset parameters
+    start <- as.numeric(substr(t, 0, 4))
+    end <- as.numeric(substr(t, 6, 9))
+    
+    # Subset spatial data
+    data_sp_sub <- subset(data_sp, 
+                          data_sp@data$year >= start & 
+                            data_sp@data$year <= end)
+    
+    # Overlay with observed climate
+    if(nrow(data_sp_sub)>0){
+      if(start <= 2000){
+        obs_shape <- get(t)
+        data_sub_over <- over(data_sp_sub, obs_shape)
+        data_sub_overlay <- bind_cols(data_sp_sub@data, data_sub_over) 
+        
+        data_sub_overlay <- data_sub_overlay %>% 
+          left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE")) 
+      }else{
+        obs_shape <- get("1980-2016")
+        data_sub_over <- over(data_sp_sub, obs_shape)
+        data_sub_overlay <- bind_cols(data_sp_sub@data, data_sub_over) 
+        
+        data_sub_overlay <- data_sub_overlay %>% 
+          rename(GRIDCODE = gridcode,
+                 ID = Id) %>% 
+          mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
+          left_join(KG_Beck_Legend, by = c("GRIDCODE"))
+      }
+      
+      if(nrow(data_overlay) == 0){
+        data_overlay <- data_sub_overlay
+      }else{
+        data_overlay <- rbind(data_overlay, data_sub_overlay)
+      }
+    }
+  }
+  
   # Determine future scenarios ####
   # Per scenario filter ####
   # Thresholds ####
