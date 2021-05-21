@@ -206,6 +206,9 @@ climate_match <- function(region,
     filter(!is.na(Classification))
   
   # Per scenario filter ####
+  
+  cm <- data.frame()
+  
   for(b in unique(future$scenario)){
     future_scenario <- future %>% 
       filter(scenario == b)
