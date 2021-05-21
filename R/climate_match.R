@@ -87,11 +87,12 @@ climate_match <- function(region,
                                     data = data,
                                     proj4string = crs_wgs)
   
-  # Climate matching occurrence data ####
-  ## Get observed shapes ##
+  # Load datapackages ####
   load(file = "./data/observed.rda")
   load(file = "./data/future.rda")
   load(file = "./data/legend.rda")
+  
+  # Climate matching occurrence data ####
   
   timeperiodes <- c("1901-1925", 
                     "1926-1950",
@@ -152,12 +153,36 @@ climate_match <- function(region,
     add_tally(name = "n_totaal") %>% 
     ungroup() %>% 
     mutate(perc_climate = n_climate/n_totaal) %>% 
-    distinct(acceptedTaxonKey, acceptedScientificName, Classification, .keep_all = TRUE) %>% 
-    select(-decimalLatitude, -decimalLongitude, -GRIDCODE, -ID, -eventDate, -year)
+    distinct(acceptedTaxonKey, acceptedScientificName, Classification, 
+             .keep_all = TRUE) %>% 
+    select(-decimalLatitude, -decimalLongitude, -GRIDCODE, -ID, -eventDate, 
+           -year)
   
   # Determine future scenarios ####
   # Per scenario filter ####
+  for(b in unique(future$scenario)){
+    future_scenario <- future %>% 
+      filter(scenario == b)
+    
+    cm_int <- data_overlay_unfiltered %>% 
+      filter(Classification %in% future_scenario$Classification) %>% 
+      mutate(scenario == b)
+    
+    if(nrow(cm) == 0){
+      cm <- cm_int
+    }else{
+      cm <- rbind(cm, cm_int)
+    }
+  }
   # Thresholds ####
-  # Return ####
   
+  data_overlay_scenario_filtered <- cm %>% 
+    filter(n_totaal >= n_totaal,
+           perc_climate >= perc_climate)
+  
+  # Return ####
+  return(list(unfiltered = data_overlay_unfiltered, 
+              filtered = data_overlay_scenario_filtered,
+              cm = cm,
+              future = future))
 }
