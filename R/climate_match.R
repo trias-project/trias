@@ -159,6 +159,52 @@ climate_match <- function(region,
            -year)
   
   # Determine future scenarios ####
+  scenarios <- c("2001-2025-A1FI",
+                 "2026-2050-A1FI",
+                 "2051-2075-A1FI",
+                 "2071-2100_Beck",
+                 "2076-2100-A1FI")
+  
+  # Create empty output 
+  
+  output <- data.frame() %>% 
+    mutate(scenario = "",
+           KG_GridCode = as.integer(""))
+  
+  # Calculate KG codes 
+  for(s in scenarios){
+    shape <- get(s)
+    
+    if(c("gridcode") %in% colnames(shape@data)){
+      shape@data <- shape@data %>% 
+        rename(GRIDCODE = gridcode) 
+    }
+    
+    shape@data <- shape@data %>% 
+      mutate(GRIDCODE = as.integer(GRIDCODE)) 
+    
+    girdcode_intersect <- raster::intersect(shape, region_shape)
+    
+    for(g in girdcode_intersect@data$GRIDCODE){
+      output <- output %>% 
+        add_row(scenario = s,
+                KG_GridCode = g)
+    }
+  }
+  
+  output_1 <- output %>% 
+    filter(grepl(pattern = "Beck", scenario)) %>% 
+    left_join(KG_Beck_Legend, by = c("KG_GridCode" = "GRIDCODE"))
+  
+  output_2 <- output %>% 
+    filter(!grepl(pattern = "Beck", scenario)) %>% 
+    left_join(KG_Rubel_Kotteks_Legend, by = c("KG_GridCode" = "GRIDCODE"))
+  
+  output_final <- rbind(output_1, output_2)
+  
+  future <- output_final %>% 
+    filter(!is.na(Classification))
+  
   # Per scenario filter ####
   for(b in unique(future$scenario)){
     future_scenario <- future %>% 
