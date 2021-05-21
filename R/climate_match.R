@@ -2,7 +2,7 @@ climate_match <- function(region,
                           taxonkey, 
                           scenario = "all",
                           n_totaal,
-                          perc_climate,
+                          perc_climate ,
                           coord_unc, 
                           BasisOfRecord){
   
@@ -79,12 +79,46 @@ climate_match <- function(region,
   }
   
   # Data prep ####
+  if(missing(coord_unc)){
+    coord_unc <- max(data$coordinateUncertaintyInMeters, na.rm = TRUE)
+  }
   
-  coord <- data %>% 
+  if(missing(BasisOfRecord)){
+    BasisOfRecord <- unique(data$basisOfRecord)
+  }
+  
+  SPECIES <- data %>% 
+    filter(taxonRank == "SPECIES", 
+           taxonomicStatus == "ACCEPTED") %>% 
+    distinct(acceptedTaxonKey, genus, specificEpithet) %>% 
+    mutate(ASN_2 = paste(genus, specificEpithet)) %>% 
+    rename(TK_2 = acceptedTaxonKey) %>% 
+    distinct(TK_2, ASN_2) %>% 
+    group_by(TK_2) %>% 
+    add_tally()
+  
+  data_redux <- data %>% 
+    mutate(acceptedScientificName= paste(genus, specificEpithet)) %>% 
+    left_join(SPECIES, by = c("acceptedScientificName" = "ASN_2")) %>% 
+    mutate(acceptedTaxonKey = TK_2) %>% 
+    filter(!is.na(acceptedTaxonKey),
+           !is.na(eventDate), 
+           !is.na(decimalLatitude),
+           eventDate >= "1950-01-01",
+           basisOfRecord %in% BasisOfRecord,
+           coordinateUncertaintyInMeters <= coord_unc,
+           occurrenceStatus == "PRESENT") %>% 
+    dplyr::select(gbifID, eventDate, year, month, day, taxonKey, acceptedTaxonKey, 
+                  acceptedScientificName, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters,
+                  countryCode) %>% 
+  
+  
+  
+  coord <- data_redux %>% 
     dplyr::select(decimalLongitude, decimalLatitude)
   
   data_sp <- SpatialPointsDataFrame(coord,
-                                    data = data,
+                                    data = data_redux,
                                     proj4string = crs_wgs)
   
   # Load datapackages ####
@@ -224,6 +258,14 @@ climate_match <- function(region,
     }
   }
   # Thresholds ####
+  if(missing(n_totaal)){
+    warning("no n_totaal threshold was provided. defaults to 0!")
+    n_totaal <- 0
+  }
+  if(missing(perc_climate)){
+    warning("no perc_climate threshold was provided. defaults to 0%!")
+    perc_climate <- 0
+  }
   
   data_overlay_scenario_filtered <- cm %>% 
     filter(n_totaal >= n_totaal,
