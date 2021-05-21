@@ -15,7 +15,7 @@ climate_match <- function(region,
   library(tidyverse)
   
   crs_wgs <- CRS("+proj=longlat +datum=WGS84 +no_defs")
-  source(file = "./R/get_cred.R")
+  devtools::load_all()
   
   # Checks ####
   ## Region ##
