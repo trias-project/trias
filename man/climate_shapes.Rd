@@ -39,11 +39,11 @@ Each spatialpolygonsdataframe contains 2 variables:
 }
 
 \code{legend} contains two data.frames, \code{KG_A1FI} and \code{KG_Beck_Legend},
-corresponding to A1FI and Beck scenarios respectively. Each data.fram
-contains two columns:
+matching \href{https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification}{Köppen-Geiger climate zones} to
+A1FI and Beck scenarios respectively. Each data.frame contains two columns:
 \itemize{
-\item \code{GRIDCODE}: grid value corresponding to a climate zone
-\item \code{Classification}: climate classification value
+\item \code{GRIDCODE}: (numeric) grid value corresponding to a climate zone
+\item \code{Classification}: (character) Köppen–Geiger climate classification value
 }
 }
 \usage{
@@ -58,10 +58,14 @@ These shapefiles contain worldwide climate classifications for a
 given period and are grouped according to their period.
 
 Historical/observed climate classification shapes are grouped in the
-\code{observed} datapackage. These shapes all originate from \href{http://dx.doi.org/10.1127/0941-2948/2010/0430}{Rubel & Kottek 2010}. Future scenarios are
-dependant on several variables like pollution levels. \href{http://dx.doi.org/10.1127/0941-2948/2010/0430}{Rubel & Kottek 2010.} and \href{https://doi.org/10.1038/sdata.2018.214}{Beck et al. 2018} describe several scenarios for
-the possible future climates. Currently the \code{future} datapackage contains the
-following scenarios:
+\code{observed} datapackage. These shapes originate from \href{http://dx.doi.org/10.1127/0941-2948/2010/0430}{Rubel & Kottek 2010}, except the last one,
+with data from 1980 to 2016, which is based on \href{https://doi.org/10.1038/sdata.2018.214}{Beck et al. 2018}.
+
+Future scenarios are dependant on several variables like pollution levels.
+\href{http://dx.doi.org/10.1127/0941-2948/2010/0430}{Rubel & Kottek 2010.} and
+\href{https://doi.org/10.1038/sdata.2018.214}{Beck et al. 2018} describe several
+scenarios for the possible future climates. Currently the \code{future}
+datapackage contains the following scenarios:
 \itemize{
 \item A1FI: from Rubel & Kottek 2010. Quick economic and technological growth
 through intensive use of fossil fuel

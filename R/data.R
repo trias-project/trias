@@ -4,13 +4,16 @@
 #'   given period and are grouped according to their period.
 #'   
 #' Historical/observed climate classification shapes are grouped in the
-#' `observed` datapackage. These shapes all originate from [Rubel & Kottek
-#' 2010](http://dx.doi.org/10.1127/0941-2948/2010/0430). Future scenarios are
-#' dependant on several variables like pollution levels. [Rubel & Kottek
-#' 2010.](http://dx.doi.org/10.1127/0941-2948/2010/0430) and [Beck et al.
-#' 2018](https://doi.org/10.1038/sdata.2018.214) describe several scenarios for
-#' the possible future climates. Currently the `future` datapackage contains the
-#' following scenarios:
+#' `observed` datapackage. These shapes originate from [Rubel & Kottek
+#' 2010](http://dx.doi.org/10.1127/0941-2948/2010/0430), except the last one,
+#' with data from 1980 to 2016, which is based on [Beck et al.
+#' 2018](https://doi.org/10.1038/sdata.2018.214). 
+#' 
+#' Future scenarios are dependant on several variables like pollution levels.
+#' [Rubel & Kottek 2010.](http://dx.doi.org/10.1127/0941-2948/2010/0430) and
+#' [Beck et al. 2018](https://doi.org/10.1038/sdata.2018.214) describe several
+#' scenarios for the possible future climates. Currently the `future`
+#' datapackage contains the following scenarios:
 #' - A1FI: from Rubel & Kottek 2010. Quick economic and technological growth
 #' through intensive use of fossil fuel
 #' - Beck: from Beck et al. 2018. high emissions
@@ -45,9 +48,10 @@
 #' @rdname climate_shapes
 #' @family climate_shapefiles
 #' @format `legend` contains two data.frames, `KG_A1FI` and `KG_Beck_Legend`,
-#'   corresponding to A1FI and Beck scenarios respectively. Each data.fram
-#'   contains two columns:
-#' - `GRIDCODE`: grid value corresponding to a climate zone
-#' - `Classification`: climate classification value
+#'   matching [Köppen-Geiger climate
+#'   zones](https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification) to
+#'   A1FI and Beck scenarios respectively. Each data.frame contains two columns:
+#' - `GRIDCODE`: (numeric) grid value corresponding to a climate zone
+#' - `Classification`: (character) Köppen–Geiger climate classification value
 
 "legend"
