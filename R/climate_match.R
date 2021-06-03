@@ -1,5 +1,6 @@
 climate_match <- function(region, 
                           taxonkey, 
+                          zipfile,
                           scenario = "all",
                           n_totaal,
                           perc_climate ,
@@ -50,32 +51,51 @@ climate_match <- function(region,
   taxonkey_set1 <- pred_in("taxonKey", taxonkey)
   
   # Download data ####
-  gbif_user <- get_cred("gbif_user")
-  gbif_pwd <- get_cred("gbif_pwd")
-  gbif_email <- get_cred("gbif_email")
   
-  set1 <- occ_download(taxonkey_set1, 
-                       pred("hasCoordinate", TRUE),
-                       user = gbif_user, 
-                       pwd = gbif_pwd, 
-                       email = gbif_email)
-  
-  repeat{
-    Sys.sleep(time = 5)
-    test_set1 <- occ_download_meta(set1)
-    if(test_set1$status == "SUCCEEDED"){
-      data <- occ_download_get(set1,
-                               overwrite = TRUE) %>% 
-        occ_download_import()
-      break()
+  if (!missing(zipfile)) {
+    
+    if (!file.exists(zipfile)) {
+      
+      warning(paste0(zipfile, " cannot be found. Rerunning gbif download"))
+      rerun <- 1
+    }else{
+      rerun <- menu(choices = c("yes", "no"), 
+                    title = "rerun gbif download?",
+                    graphics = TRUE)
     }
-    print(test_set1$status)
-  }
-  
-  if(nrow(data) == 0){
-    stop("no occurrences of ", 
-         paste(taxonkey, collapse = ", "), 
-         " were found on gbif")
+    if (rerun != 1) {
+      data <- read_tsv(unz(zipfile, "occurrence.txt"), 
+                       col_types = c(decimalLatitude = col_number(),
+                                     decimalLongitude = col_number()))
+    }else{
+      gbif_user <- get_cred("gbif_user")
+      gbif_pwd <- get_cred("gbif_pwd")
+      gbif_email <- get_cred("gbif_email")
+      
+      set1 <- occ_download(taxonkey_set1, 
+                           pred("hasCoordinate", TRUE),
+                           user = gbif_user, 
+                           pwd = gbif_pwd, 
+                           email = gbif_email)
+      
+      repeat{
+        Sys.sleep(time = 5)
+        test_set1 <- occ_download_meta(set1)
+        if(test_set1$status == "SUCCEEDED"){
+          data <- occ_download_get(set1,
+                                   overwrite = TRUE) %>% 
+            occ_download_import()
+          break()
+        }
+        print(test_set1$status)
+      }
+      
+      if(nrow(data) == 0){
+        stop("no occurrences of ", 
+             paste(taxonkey, collapse = ", "), 
+             " were found on gbif")
+      }
+    }
   }
   
   # Data prep ####
@@ -98,7 +118,7 @@ climate_match <- function(region,
     add_tally()
   
   data_redux <- data %>% 
-    mutate(acceptedScientificName= paste(genus, specificEpithet)) %>% 
+    mutate(acceptedScientificName = paste(genus, specificEpithet)) %>% 
     left_join(SPECIES, by = c("acceptedScientificName" = "ASN_2")) %>% 
     mutate(acceptedTaxonKey = TK_2) %>% 
     filter(!is.na(acceptedTaxonKey),
@@ -108,11 +128,9 @@ climate_match <- function(region,
            basisOfRecord %in% BasisOfRecord,
            coordinateUncertaintyInMeters <= coord_unc,
            occurrenceStatus == "PRESENT") %>% 
-    dplyr::select(gbifID, eventDate, year, month, day, taxonKey, acceptedTaxonKey, 
-                  acceptedScientificName, decimalLatitude, decimalLongitude, coordinateUncertaintyInMeters,
-                  countryCode) %>% 
-  
-  
+    dplyr::select(gbifID, eventDate, year, month, day, taxonKey, 
+                  acceptedTaxonKey, acceptedScientificName, decimalLatitude, 
+                  decimalLongitude, coordinateUncertaintyInMeters, countryCode) 
   
   coord <- data_redux %>% 
     dplyr::select(decimalLongitude, decimalLatitude)
