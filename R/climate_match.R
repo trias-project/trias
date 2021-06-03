@@ -155,6 +155,9 @@ climate_match <- function(region,
   data_overlay <- data.frame()
   
   for(t in timeperiodes){
+    # Import legends
+    KG_Rubel_Kotteks_Legend <- legend$KG_A1FI
+    KG_Beck_Legend <- legend$KG_Beck_Legend
     
     # Determine subset parameters
     start <- as.numeric(substr(t, 0, 4))
@@ -168,15 +171,16 @@ climate_match <- function(region,
     # Overlay with observed climate
     if(nrow(data_sp_sub)>0){
       if(start <= 2000){
-        obs_shape <- get(t)
-        data_sub_over <- over(data_sp_sub, obs_shape)
+        obs_shape <- observed[[t]]
+        data_sub_over <- sp::over(data_sp_sub, obs_shape)
         data_sub_overlay <- bind_cols(data_sp_sub@data, data_sub_over) 
         
         data_sub_overlay <- data_sub_overlay %>% 
+          mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
           left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE")) 
       }else{
-        obs_shape <- get("1980-2016")
-        data_sub_over <- over(data_sp_sub, obs_shape)
+        obs_shape <- observed$"1980-2016"
+        data_sub_over <- sp::over(data_sp_sub, obs_shape)
         data_sub_overlay <- bind_cols(data_sp_sub@data, data_sub_over) 
         
         data_sub_overlay <- data_sub_overlay %>% 
@@ -225,7 +229,7 @@ climate_match <- function(region,
   
   # Calculate KG codes 
   for(s in scenarios){
-    shape <- get(s)
+    shape <- future[[s]]
     
     if(c("gridcode") %in% colnames(shape@data)){
       shape@data <- shape@data %>% 
