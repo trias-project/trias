@@ -212,8 +212,12 @@ climate_match <- function(region,
     mutate(perc_climate = n_climate/n_totaal) %>% 
     distinct(acceptedTaxonKey, acceptedScientificName, Classification, 
              .keep_all = TRUE) %>% 
-    select(-decimalLatitude, -decimalLongitude, -GRIDCODE, -ID, -eventDate, 
-           -year)
+    select(taxonKey, 
+           acceptedScientificName, 
+           Classification, 
+           n_climate, 
+           n_totaal, 
+           perc_climate)
   
   # Determine future scenarios ####
   scenarios <- c("2001-2025-A1FI",
@@ -280,6 +284,7 @@ climate_match <- function(region,
       cm <- rbind(cm, cm_int)
     }
   }
+  
   # Thresholds ####
   if(missing(n_totaal)){
     warning("no n_totaal threshold was provided. defaults to 0!")
