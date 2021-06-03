@@ -66,7 +66,8 @@ climate_match <- function(region,
     if (rerun != 1) {
       data <- read_tsv(unz(zipfile, "occurrence.txt"), 
                        col_types = c(decimalLatitude = col_number(),
-                                     decimalLongitude = col_number()))
+                                     decimalLongitude = col_number())) %>% 
+        filter(acceptedTaxonKey %in% taxonkey)
     }else{
       gbif_user <- get_cred("gbif_user")
       gbif_pwd <- get_cred("gbif_pwd")
@@ -271,7 +272,7 @@ climate_match <- function(region,
     
     cm_int <- data_overlay_unfiltered %>% 
       filter(Classification %in% future_scenario$Classification) %>% 
-      mutate(scenario == b)
+      mutate(scenario = b)
     
     if(nrow(cm) == 0){
       cm <- cm_int
