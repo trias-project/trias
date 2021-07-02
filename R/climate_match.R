@@ -264,15 +264,15 @@ climate_match <- function(region,
   
   output_final <- rbind(output_1, output_2)
   
-  future <- output_final %>% 
+  future_climate <- output_final %>% 
     filter(!is.na(Classification))
   
   # Per scenario filter ####
   
   cm <- data.frame()
   
-  for(b in unique(future$scenario)){
-    future_scenario <- future %>% 
+  for(b in unique(future_climate$scenario)){
+    future_scenario <- future_climate %>% 
       filter(scenario == b)
     
     cm_int <- data_overlay_unfiltered %>% 
@@ -326,7 +326,6 @@ climate_match <- function(region,
   
   current_climate <- subset(current_climate, !is.na(current_climate$Classification))
   
-  
   # create color palette 
   pal_current <- colorNumeric("RdYlBu", 
                           domain = seq(from = 0, 
@@ -361,9 +360,21 @@ climate_match <- function(region,
     addPolygons(data = sea,
                 fillColor = "#e0e0e0",
                 weight = 0.5)
-  
-  
+    
   # map future climate suitability ####
+  
+  # Create basemap
+  
+  future_climate_map <- leaflet(sea) %>% 
+    addPolygons(data = sea,
+                fillColor = "#e0e0e0",
+                weight = 0.5)
+  
+  for (s in scenarios) {
+    
+    # Get scenario shape
+    temp_shape <- future[[s]]
+  }
   
   # Return ####
   return(list(unfiltered = data_overlay_unfiltered, 
