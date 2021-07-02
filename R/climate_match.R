@@ -315,10 +315,22 @@ climate_match <- function(region,
                                all.y = TRUE,
                                duplicateGeoms = TRUE)
   
+  current_climate@data <- current_climate@data %>% 
+    mutate(popup = paste0("<strong>Classification: </strong>", Classification, 
+                          "</br><strong>ScientificName: </strong>", 
+                          acceptedScientificName,
+                          "</br><strong>%obs in climate: </strong>", 
+                          round(perc_climate*100, 2), "%"))
+  
+  sea <- subset(current_climate, is.na(current_climate$Classification))
+  
+  current_climate <- subset(current_climate, !is.na(current_climate$Classification))
+  
+  
   # create color palette 
-  pal_current <- colorNumeric("RdBu", 
+  pal_current <- colorNumeric("RdYlBu", 
                           domain = current_climate$perc_climate,
-                          na.color =  "#e0e0e0",
+                          na.color =  "#f7f7f7",
                           reverse = TRUE)
   
   # create current climate map
@@ -328,9 +340,15 @@ climate_match <- function(region,
                 fillOpacity = 0.8,
                 stroke = TRUE,
                 weight = 0.5,
-                group = ~acceptedScientificName) %>% 
+                group = ~acceptedScientificName,
+                popup = ~popup) %>% 
     addLegend(pal = pal_current,
-              values = current_climate$perc_climate)
+              values = current_climate$perc_climate,
+              position = "bottomleft") %>% 
+    addLayersControl(overlayGroups = ~acceptedScientificName) %>% 
+    addPolygons(data = sea,
+                fillColor = "#e0e0e0",
+                weight = 0.5)
   
   
   # map future climate suitability ####
@@ -340,5 +358,6 @@ climate_match <- function(region,
               filtered = data_overlay_scenario_filtered,
               cm = cm,
               future = future,
-              spatial = data_sp_sub))
+              spatial = data_sp_sub,
+              current_map = current_climate_map))
 }
