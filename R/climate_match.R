@@ -345,7 +345,7 @@ climate_match <- function(region,
     addLegend(pal = pal_current,
               values = current_climate$perc_climate,
               position = "bottomleft") %>% 
-    addLayersControl(overlayGroups = ~acceptedScientificName) %>% 
+    addLayersControl(baseGroups = ~acceptedScientificName) %>% 
     addPolygons(data = sea,
                 fillColor = "#e0e0e0",
                 weight = 0.5)
