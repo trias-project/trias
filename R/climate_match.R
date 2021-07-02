@@ -329,7 +329,9 @@ climate_match <- function(region,
   
   # create color palette 
   pal_current <- colorNumeric("RdYlBu", 
-                          domain = current_climate$perc_climate,
+                          domain = seq(from = 0, 
+                                       to = 1, 
+                                       by = 0.1),
                           na.color =  "#f7f7f7",
                           reverse = TRUE)
   
@@ -342,9 +344,19 @@ climate_match <- function(region,
                 weight = 0.5,
                 group = ~acceptedScientificName,
                 popup = ~popup) %>% 
-    addLegend(pal = pal_current,
-              values = current_climate$perc_climate,
+    addCircleMarkers(data = data_sp_sub,
+                     group = ~acceptedScientificName,
+                     color = "red",
+                     radius = 1) %>% 
+    addLegend(colors = "red",
+              labels = "observations",
               position = "bottomleft") %>% 
+    addLegend(pal = pal_current,
+              values = seq(from = 0, 
+                           to = 1, 
+                           by = 0.1),
+              position = "bottomleft",
+              title = "Climate match") %>% 
     addLayersControl(baseGroups = ~acceptedScientificName) %>% 
     addPolygons(data = sea,
                 fillColor = "#e0e0e0",
@@ -357,7 +369,7 @@ climate_match <- function(region,
   return(list(unfiltered = data_overlay_unfiltered, 
               filtered = data_overlay_scenario_filtered,
               cm = cm,
-              future = future,
+              future = future_climate,
               spatial = data_sp_sub,
               current_map = current_climate_map))
 }
