@@ -368,12 +368,73 @@ climate_match <- function(region,
   future_climate_map <- leaflet(sea) %>% 
     addPolygons(data = sea,
                 fillColor = "#e0e0e0",
-                weight = 0.5)
+                weight = 0.5) %>% 
+    addLegend(colors = "red",
+              labels = "observations",
+              position = "bottomleft")
+    
   
-  for (s in scenarios) {
+  future_scenario_maps <- list_along(scenarios)
+  names(future_scenario_maps) <- scenarios
+  
+  for (i in 1:length(scenarios)) {
+    
+    s <- scenarios[i]
     
     # Get scenario shape
     temp_shape <- future[[s]]
+    
+    if (grepl("Beck", s)) {
+      temp_shape@data <- temp_shape@data %>% 
+        mutate(GRIDCODE = as.double(gridcode)) %>% 
+        select(-gridcode) %>% 
+        left_join(legend$KG_Beck_Legend, by = "GRIDCODE")
+    }else{
+      temp_shape@data <- temp_shape@data %>% 
+        mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
+        left_join(legend$KG_A1FI, by = "GRIDCODE")
+    }
+    
+    # Combine climate shape with climate matched observations
+    temp_shape <- sp::merge(temp_shape, data_overlay_unfiltered, 
+                                 by = "Classification",
+                                 all.y = TRUE,
+                                 duplicateGeoms = TRUE)
+    
+    temp_shape@data <- temp_shape@data %>% 
+      mutate(popup = paste0("<strong>Classification: </strong>", Classification, 
+                            "</br><strong>ScientificName: </strong>", 
+                            acceptedScientificName,
+                            "</br><strong>%obs in climate: </strong>", 
+                            round(perc_climate*100, 2), "%"))
+    
+    temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
+    
+    # Add layer to map
+    scenario_map <- future_climate_map %>% 
+      addPolygons(data = temp_shape,
+                  color = "#bababa",
+                  fillColor = ~pal_current(perc_climate),
+                  fillOpacity = 0.8,
+                  stroke = TRUE,
+                  weight = 0.5,
+                  group = ~acceptedScientificName,
+                  popup = ~popup) %>% 
+      addCircleMarkers(data = data_sp_sub,
+                       group = ~ acceptedScientificName,
+                       color = "red",
+                       radius = 1) %>% 
+      addLegend(pal = pal_current,
+                values = seq(from = 0, 
+                             to = 1, 
+                             by = 0.1),
+                position = "bottomleft",
+                title = paste0("<strong>Climate match</strong></br>",
+                               s)) %>% 
+      addLayersControl(baseGroups = ~acceptedScientificName)
+      
+    
+    future_scenario_maps[[i]] <- scenario_map
   }
   
   # Return ####
@@ -382,5 +443,6 @@ climate_match <- function(region,
               cm = cm,
               future = future_climate,
               spatial = data_sp_sub,
-              current_map = current_climate_map))
+              current_map = current_climate_map,
+              future_maps = future_scenario_maps))
 }
