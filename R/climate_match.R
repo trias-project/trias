@@ -13,6 +13,7 @@ climate_match <- function(region,
   library(rgdal)
   library(raster)
   library(rworldmap)
+  library(leaflet)
   library(tidyverse)
   
   crs_wgs <- CRS("+proj=longlat +datum=WGS84 +no_defs")
@@ -299,9 +300,45 @@ climate_match <- function(region,
     filter(n_totaal >= n_totaal,
            perc_climate >= perc_climate)
   
+  # map current climate suitability ####
+  
+  # Get Current climate
+  current_climate <- observed$`1980-2016`
+  
+  current_climate@data <- current_climate@data %>% 
+    mutate(gridcode = as.double(gridcode)) %>% 
+    left_join(legend$KG_Beck_Legend, by = c("gridcode" = "GRIDCODE"))
+  
+  # Combine climate shape with climate matched observations
+  current_climate <- sp::merge(current_climate, data_overlay_unfiltered, 
+                               by = "Classification",
+                               all.y = TRUE,
+                               duplicateGeoms = TRUE)
+  
+  # create color palette 
+  pal_current <- colorNumeric("RdBu", 
+                          domain = current_climate$perc_climate,
+                          na.color =  "#e0e0e0",
+                          reverse = TRUE)
+  
+  # create current climate map
+  current_climate_map <- leaflet(current_climate) %>% 
+    addPolygons(color = "#bababa",
+                fillColor = ~pal_current(perc_climate),
+                fillOpacity = 0.8,
+                stroke = TRUE,
+                weight = 0.5,
+                group = ~acceptedScientificName) %>% 
+    addLegend(pal = pal_current,
+              values = current_climate$perc_climate)
+  
+  
+  # map future climate suitability ####
+  
   # Return ####
   return(list(unfiltered = data_overlay_unfiltered, 
               filtered = data_overlay_scenario_filtered,
               cm = cm,
-              future = future))
+              future = future,
+              spatial = data_sp_sub))
 }
