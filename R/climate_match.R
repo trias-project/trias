@@ -1,3 +1,54 @@
+#' Create a set of climate matching outputs for a species or set of species for
+#' a region or nation.
+#' 
+#' @param region (character) the full name of the target nation or region
+#' @param taxonkey (character or vector) containing gbif - taxonkey(s)
+#' @param zipfile (optional character) The path (inclu. extension) of a zipfile 
+#' from a previous gbif-download. This zipfile should contain data of the 
+#' species specified by the taxonkey. 
+#' @param scenario (character) the future scenarios we are interested in.
+#'  (default) all future scenarios are used.
+#' @param n_totaal (optional numeric) the minimal number of total observations a 
+#' species must have to be included in the outputs.
+#' @param perc_climate (optional numeric) the minimal percentage of the total 
+#' number of observations within the climate zones of the region a species must 
+#' have to be included in the outputs
+#' @param coord_unc (optional numeric) the maximal coordinate uncertainty a 
+#' observation can have to be included in the analysis.
+#' @param BasisOfRecord (optional character) an additional filter for 
+#' observations based on the gbif - field "BasisOfRecord".
+#' 
+#' @return list with: 
+#' \itemize{ \item{'unfiltered':}{a dataframe containing a summary per species  
+#' and climate classification. The climate classification is a result of a 
+#' overlay of the observations, filtered by coord_unc & BasisOfRecord, with the 
+#' climate at the time of observation}
+#' \item{'filtered':}{the unfiltered dataframe on which the n_totaal & 
+#' perc_climate thresholds have been applied}
+#' \item{'cm':}{a dataframe containing the per scenario overlap with the future 
+#' climate scenarios for the target nation or region. 
+#' Based of the filtered dataframe}
+#' \item{'future':}{a dataframe containing a list per scenario of future climate 
+#' zones in the target nation or region}
+#' \item{'spatial':}{a spatialpointsdataframe containing the observations used 
+#' in the analysis.}
+#' \item{'current_map':}{a leaflet object displaying the degree of wordlwide 
+#' climate match with the climate from 1980 till 2016}
+#' \item{'future_maps':}{a list of leaflet objects for each future climate 
+#' scenario, displaying the degree of climate match}
+#' 
+#' @export
+#' @importFrom rgbif occ_download occ_download_meta occ_download_get pred occ_download_import
+#' @importFrom sp SpatialPointsDataFrame over merge
+#' @importFrom rgdal CRS
+#' @importFrom raster intersect
+#' @importFrom rworldmap getMap
+#' @importFrom leaflet leaflet addPolygons colorNumeric addCircleMarkers addLegend addLayersControl
+#' @importFrom dplyr %>% filter distinct mutate rename group_by add_tally bind_cols ungroup select left_join
+#' @importFrom readr read_tsv col_number
+#' @importFrom devtools load_all load
+#' @importFrom purrr list_along
+
 climate_match <- function(region, 
                           taxonkey, 
                           zipfile,
