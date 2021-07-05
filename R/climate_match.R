@@ -438,7 +438,7 @@ climate_match <- function(region,
               labels = "observations",
               position = "bottomleft")
     
-  
+  # Create scenario maps
   future_scenario_maps <- list_along(scenarios)
   names(future_scenario_maps) <- scenarios
   
@@ -447,24 +447,45 @@ climate_match <- function(region,
     s <- scenarios[i]
     
     # Get scenario shape
-    temp_shape <- future[[s]]
+    scenario_shape <- future[[s]]
     
     if (grepl("Beck", s)) {
-      temp_shape@data <- temp_shape@data %>% 
+      scenario_shape@data <- scenario_shape@data %>% 
         mutate(GRIDCODE = as.double(gridcode)) %>% 
         select(-gridcode) %>% 
         left_join(legend$KG_Beck_Legend, by = "GRIDCODE")
     }else{
-      temp_shape@data <- temp_shape@data %>% 
+      scenario_shape@data <- scenario_shape@data %>% 
         mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
         left_join(legend$KG_A1FI, by = "GRIDCODE")
     }
     
     # Combine climate shape with climate matched observations
-    temp_shape <- sp::merge(temp_shape, data_overlay_unfiltered, 
+    temp_shape <- scenario_shape
+    
+    for(t in taxonkey){
+      
+      temp_data <- data_overlay_unfiltered %>% 
+        filter(taxonKey == t)
+      
+      species <- unique(temp_data$acceptedScientificName)
+    
+      temp_climate <- sp::merge(scenario_shape, temp_data, 
                                  by = "Classification",
                                  all.y = TRUE,
                                  duplicateGeoms = TRUE)
+      
+      temp_climate@data <- temp_climate@data %>% 
+        mutate(taxonKey = t,
+               acceptedScientificName = species)
+      
+      if(ncol(temp_shape) != ncol(temp_climate)){
+        temp_shape <- temp_climate
+      }else{
+        temp_shape <- rbind.SpatialPolygonsDataFrame(temp_shape, 
+                                                          temp_climate)
+      }
+    }
     
     temp_shape@data <- temp_shape@data %>% 
       mutate(popup = paste0("<strong>Classification: </strong>", Classification, 
@@ -496,7 +517,7 @@ climate_match <- function(region,
                 position = "bottomleft",
                 title = paste0("<strong>Climate match</strong></br>",
                                s)) %>% 
-      addLayersControl(baseGroups = ~acceptedScientificName)
+      addLayersControl(baseGroups = ~temp_shape@data$acceptedScientificName)
       
     
     future_scenario_maps[[i]] <- scenario_map
