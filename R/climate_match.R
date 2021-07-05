@@ -346,17 +346,40 @@ climate_match <- function(region,
   # map current climate suitability ####
   
   # Get Current climate
-  current_climate <- observed$`1980-2016`
+  current_climate_shape <- observed$`1980-2016`
   
-  current_climate@data <- current_climate@data %>% 
+  current_climate_shape@data <- current_climate_shape@data %>% 
     mutate(gridcode = as.double(gridcode)) %>% 
     left_join(legend$KG_Beck_Legend, by = c("gridcode" = "GRIDCODE"))
   
+  sea <- subset(current_climate_shape, is.na(current_climate_shape$Classification))
+  
   # Combine climate shape with climate matched observations
-  current_climate <- sp::merge(current_climate, data_overlay_unfiltered, 
-                               by = "Classification",
-                               all.y = TRUE,
-                               duplicateGeoms = TRUE)
+  current_climate <- current_climate_shape
+  
+  for(t in taxonkey){
+    temp_data <- data_overlay_unfiltered %>% 
+      filter(taxonKey == t)
+    
+    species <- unique(temp_data$acceptedScientificName)
+    
+    temp_climate <- sp::merge(current_climate_shape, temp_data, 
+                              by = "Classification",
+                              all.y = TRUE,
+                              duplicateGeoms = TRUE)
+    
+    temp_climate@data <- temp_climate@data %>% 
+      mutate(taxonKey = t,
+             acceptedScientificName = species)
+    
+    if(ncol(current_climate)!=ncol(temp_climate)){
+      current_climate <- temp_climate
+    }else{
+      current_climate <- rbind.SpatialPolygonsDataFrame(current_climate, 
+                                                        temp_climate)
+    }
+    
+  }
   
   current_climate@data <- current_climate@data %>% 
     mutate(popup = paste0("<strong>Classification: </strong>", Classification, 
@@ -365,16 +388,15 @@ climate_match <- function(region,
                           "</br><strong>%obs in climate: </strong>", 
                           round(perc_climate*100, 2), "%"))
   
-  sea <- subset(current_climate, is.na(current_climate$Classification))
-  
   current_climate <- subset(current_climate, !is.na(current_climate$Classification))
   
   # create color palette 
-  pal_current <- colorNumeric("RdYlBu", 
+  pal_current <- colorBin("RdYlBu", 
                           domain = seq(from = 0, 
                                        to = 1, 
                                        by = 0.1),
                           na.color =  "#f7f7f7",
+                          bins = 10,
                           reverse = TRUE)
   
   # create current climate map
