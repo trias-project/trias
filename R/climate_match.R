@@ -59,14 +59,6 @@ climate_match <- function(region,
                           BasisOfRecord){
   
   # Setup ####
-  library(rgbif)
-  library(sp)
-  library(rgdal)
-  library(raster)
-  library(rworldmap)
-  library(leaflet)
-  library(tidyverse)
-  
   crs_wgs <- CRS("+proj=longlat +datum=WGS84 +no_defs")
   devtools::load_all()
   
