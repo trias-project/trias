@@ -530,7 +530,7 @@ climate_match <- function(region,
   
   # Create single species maps
   
-  scenarios_2 <- c(scenarios, "1980-2016")
+  scenarios_2 <- c("1980-2016", scenarios)
   
   single_species_maps <- list_along(taxonkey)
   names(single_species_maps) <- taxonkey
