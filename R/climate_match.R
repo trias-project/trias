@@ -110,7 +110,8 @@ climate_match <- function(region,
     if (rerun != 1) {
       data <- read_tsv(unz(zipfile, "occurrence.txt"), 
                        col_types = c(decimalLatitude = col_number(),
-                                     decimalLongitude = col_number())) %>% 
+                                     decimalLongitude = col_number(),
+                                     establishmentMeans = col_character())) %>% 
         filter(acceptedTaxonKey %in% taxonkey)
     }else{
       gbif_user <- get_cred("gbif_user")
@@ -391,13 +392,13 @@ climate_match <- function(region,
   current_climate <- subset(current_climate, !is.na(current_climate$Classification))
   
   # create color palette 
-  pal_current <- colorBin("RdYlBu", 
+  pal_current <- colorBin("OrRd", 
                           domain = seq(from = 0, 
                                        to = 1, 
                                        by = 0.1),
                           na.color =  "#f7f7f7",
                           bins = 10,
-                          reverse = TRUE)
+                          reverse = FALSE)
   
   # create current climate map
   current_climate_map <- leaflet(current_climate) %>% 
@@ -410,9 +411,9 @@ climate_match <- function(region,
                 popup = ~popup) %>% 
     addCircleMarkers(data = data_sp_sub,
                      group = ~acceptedScientificName,
-                     color = "red",
+                     color = "black",
                      radius = 1) %>% 
-    addLegend(colors = "red",
+    addLegend(colors = "black",
               labels = "observations",
               position = "bottomleft") %>% 
     addLegend(pal = pal_current,
@@ -434,7 +435,7 @@ climate_match <- function(region,
     addPolygons(data = sea,
                 fillColor = "#e0e0e0",
                 weight = 0.5) %>% 
-    addLegend(colors = "red",
+    addLegend(colors = "black",
               labels = "observations",
               position = "bottomleft")
     
@@ -508,7 +509,7 @@ climate_match <- function(region,
                   popup = ~popup) %>% 
       addCircleMarkers(data = data_sp_sub,
                        group = ~ acceptedScientificName,
-                       color = "red",
+                       color = "black",
                        radius = 1) %>% 
       addLegend(pal = pal_current,
                 values = seq(from = 0, 
