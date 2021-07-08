@@ -154,7 +154,7 @@ climate_match <- function(region,
   }
   
   SPECIES <- data %>% 
-    filter(taxonRank == "SPECIES", 
+    dplyr::filter(taxonRank == "SPECIES", 
            taxonomicStatus == "ACCEPTED") %>% 
     distinct(acceptedTaxonKey, genus, specificEpithet) %>% 
     mutate(ASN_2 = paste(genus, specificEpithet)) %>% 
@@ -167,7 +167,7 @@ climate_match <- function(region,
     mutate(acceptedScientificName = paste(genus, specificEpithet)) %>% 
     left_join(SPECIES, by = c("acceptedScientificName" = "ASN_2")) %>% 
     mutate(acceptedTaxonKey = TK_2) %>% 
-    filter(!is.na(acceptedTaxonKey),
+    dplyr::filter(!is.na(acceptedTaxonKey),
            !is.na(eventDate), 
            !is.na(decimalLatitude),
            eventDate >= "1950-01-01",
@@ -299,17 +299,17 @@ climate_match <- function(region,
   }
   
   output_1 <- output %>% 
-    filter(grepl(pattern = "Beck", scenario)) %>% 
+    dplyr::filter(grepl(pattern = "Beck", scenario)) %>% 
     left_join(KG_Beck_Legend, by = c("KG_GridCode" = "GRIDCODE"))
   
   output_2 <- output %>% 
-    filter(!grepl(pattern = "Beck", scenario)) %>% 
+    dplyr::filter(!grepl(pattern = "Beck", scenario)) %>% 
     left_join(KG_Rubel_Kotteks_Legend, by = c("KG_GridCode" = "GRIDCODE"))
   
   output_final <- rbind(output_1, output_2)
   
   future_climate <- output_final %>% 
-    filter(!is.na(Classification))
+    dplyr::filter(!is.na(Classification))
   
   # Per scenario filter ####
   
@@ -317,10 +317,10 @@ climate_match <- function(region,
   
   for(b in unique(future_climate$scenario)){
     future_scenario <- future_climate %>% 
-      filter(scenario == b)
+      dplyr::filter(scenario == b)
     
     cm_int <- data_overlay_unfiltered %>% 
-      filter(Classification %in% future_scenario$Classification) %>% 
+      dplyr::filter(Classification %in% future_scenario$Classification) %>% 
       mutate(scenario = b)
     
     if(nrow(cm) == 0){
@@ -341,7 +341,7 @@ climate_match <- function(region,
   }
   
   data_overlay_scenario_filtered <- cm %>% 
-    filter(n_totaal >= n_totaal,
+    dplyr::filter(n_totaal >= n_totaal,
            perc_climate >= perc_climate)
   
   # MAPS ####
@@ -361,7 +361,7 @@ climate_match <- function(region,
   
   for(t in taxonkey){
     temp_data <- data_overlay_unfiltered %>% 
-      filter(taxonKey == t)
+      dplyr::filter(taxonKey == t)
     
     species <- unique(temp_data$acceptedScientificName)
     
@@ -459,7 +459,7 @@ climate_match <- function(region,
     for(t in taxonkey){
       
       temp_data <- data_overlay_unfiltered %>% 
-        filter(taxonKey == t)
+        dplyr::filter(taxonKey == t)
       
       species <- unique(temp_data$acceptedScientificName)
     
@@ -540,7 +540,7 @@ climate_match <- function(region,
     t <- taxonkey[i]
     
     temp_data <- data_overlay_unfiltered %>% 
-      filter(taxonKey == t)
+      dplyr::filter(taxonKey == t)
     
     species <- unique(temp_data$acceptedScientificName)
     
