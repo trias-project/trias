@@ -60,7 +60,7 @@ climate_match <- function(region,
   
   # Setup ####
   crs_wgs <- CRS("+proj=longlat +datum=WGS84 +no_defs")
-  devtools::load_all()
+  
   
   # Checks ####
   ## Region ##
