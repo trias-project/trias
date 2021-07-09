@@ -36,6 +36,8 @@
 #' climate match with the climate from 1980 till 2016}
 #' \item{'future_maps':}{a list of leaflet objects for each future climate 
 #' scenario, displaying the degree of climate match}
+#' \item{'single_species_maps'}{a list of leaflet objects per taxonkey displaying 
+#' the current and future climate scenarios}
 #' 
 #' @export
 #' @importFrom rgbif occ_download occ_download_meta occ_download_get pred occ_download_import
@@ -453,7 +455,16 @@ for (i in 1:length(scenarios)) {
   # Get scenario shape
   scenario_shape <- future[[s]]
   
-  
+  # Attach legends
+  if(grepl("Beck", s)){
+    scenario_shape@data <- scenario_shape@data %>% 
+      mutate(gridcode = as.double(gridcode)) %>% 
+      left_join(legend$KG_Beck_Legend, by = c("gridcode" = "GRIDCODE"))
+  }else{
+    scenario_shape@data <- scenario_shape@data %>% 
+      mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
+      left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE"))
+  }
   
   # Combine climate shape with climate matched observations
   temp_shape <- scenario_shape
