@@ -1,5 +1,7 @@
-#' Create a set of climate matching outputs for a species or set of species for
-#' a region or nation.
+#' Create a set of climate matching outputs 
+#' 
+#' This function creates a set of climate matching outputs for a species or set
+#' of species for a region or nation.
 #' 
 #' @param region (character) the full name of the target nation or region
 #' @param taxonkey (character or vector) containing gbif - taxonkey(s)
@@ -41,8 +43,7 @@
 #' 
 #' @export
 #' @importFrom rgbif occ_download occ_download_meta occ_download_get pred occ_download_import
-#' @importFrom sp SpatialPointsDataFrame over merge
-#' @importFrom rgdal CRS
+#' @importFrom sp SpatialPointsDataFrame over merge CRS
 #' @importFrom raster intersect
 #' @importFrom rworldmap getMap
 #' @importFrom leaflet leaflet addPolygons colorNumeric addCircleMarkers addLegend addLayersControl
