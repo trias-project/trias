@@ -48,7 +48,6 @@
 #' @importFrom leaflet leaflet addPolygons colorNumeric addCircleMarkers addLegend addLayersControl
 #' @importFrom dplyr %>% filter distinct mutate rename group_by add_tally bind_cols ungroup select left_join add_row
 #' @importFrom readr read_tsv col_number
-#' @importFrom devtools load_all load
 #' @importFrom purrr list_along
 
 climate_match <- function(region, 
@@ -188,11 +187,6 @@ coord <- data_redux %>%
 data_sp <- SpatialPointsDataFrame(coord,
                                   data = data_redux,
                                   proj4string = crs_wgs)
-
-# Load datapackages ####
-load(file = "./data/observed.rda")
-load(file = "./data/future.rda")
-load(file = "./data/legend.rda")
 
 # Climate matching occurrence data ####
 
