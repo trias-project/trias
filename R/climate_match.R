@@ -288,7 +288,7 @@ for(s in scenarios){
   shape@data <- shape@data %>% 
     mutate(GRIDCODE = as.integer(GRIDCODE)) 
   
-  girdcode_intersect <- raster::intersect(shape, region_shape)
+  girdcode_intersect <- intersect(shape, region_shape)
   
   for(g in girdcode_intersect@data$GRIDCODE){
     output <- output %>% 
