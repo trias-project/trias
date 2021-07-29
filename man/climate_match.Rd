@@ -22,45 +22,47 @@ climate_match(
 
 \item{zipfile}{(optional character) The path (inclu. extension) of a zipfile
 from a previous gbif-download. This zipfile should contain data of the
-species specified by the taxonkey.}
+species specified by the taxonkey}
 
 \item{scenario}{(character) the future scenarios we are interested in.
-(default) all future scenarios are used.}
+(default) all future scenarios are used}
 
 \item{n_totaal}{(optional numeric) the minimal number of total observations a
-species must have to be included in the outputs.}
+species must have to be included in the outputs}
 
 \item{perc_climate}{(optional numeric) the minimal percentage of the total
 number of observations within the climate zones of the region a species must
 have to be included in the outputs}
 
 \item{coord_unc}{(optional numeric) the maximal coordinate uncertainty a
-observation can have to be included in the analysis.}
+observation can have to be included in the analysis}
 
 \item{BasisOfRecord}{(optional character) an additional filter for
-observations based on the gbif - field "BasisOfRecord".}
+observations based on the GBIF field "BasisOfRecord"}
 }
 \value{
 list with:
-\itemize{ \item{'unfiltered':}{a dataframe containing a summary per species
+\itemize{
+\item \code{unfiltered}: a dataframe containing a summary per species
 and climate classification. The climate classification is a result of a
 overlay of the observations, filtered by coord_unc & BasisOfRecord, with the
-climate at the time of observation}
-\item{'filtered':}{the unfiltered dataframe on which the n_totaal &
-perc_climate thresholds have been applied}
-\item{'cm':}{a dataframe containing the per scenario overlap with the future
-climate scenarios for the target nation or region.
-Based of the filtered dataframe}
-\item{'future':}{a dataframe containing a list per scenario of future climate
-zones in the target nation or region}
-\item{'spatial':}{a spatialpointsdataframe containing the observations used
-in the analysis.}
-\item{'current_map':}{a leaflet object displaying the degree of wordlwide
-climate match with the climate from 1980 till 2016}
-\item{'future_maps':}{a list of leaflet objects for each future climate
-scenario, displaying the degree of climate match}
-\item{'single_species_maps'}{a list of leaflet objects per taxonkey displaying
-the current and future climate scenarios}
+climate at the time of observation
+\item \code{filtered}: the unfiltered dataframe on which the n_totaal &
+perc_climate thresholds have been applied
+\item \code{cm}: a dataframe containing the per scenario overlap with the future
+climate scenarios for the target nation or region and based on the \code{filtered}
+dataframe
+\item \code{future}: a dataframe containing a list per scenario of future climate
+zones in the target nation or region
+\item \code{spatial} a spatialpointsdataframe containing the observations used
+in the analysis
+\item \code{current_map} a leaflet object displaying the degree of wordlwide
+climate match with the climate from 1980 till 2016
+\item \code{future_maps} a list of leaflet objects for each future climate
+scenario, displaying the degree of climate match
+\item \code{single_species_maps} a list of leaflet objects per taxonkey displaying
+the current and future climate scenarios
+}
 }
 \description{
 This function creates a set of climate matching outputs for a species or set
