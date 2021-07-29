@@ -5,14 +5,22 @@
 \alias{legend}
 \title{Legends for climate shapefiles}
 \format{
-\code{legend} contains two data.frames, \code{KG_A1FI} and \code{KG_Beck_Legend},
+\code{legend} contains two data.frames, \code{KG_A1FI} and \code{KG_Beck},
 matching Koppen-Geiger climate zones to A1FI and Beck scenarios
 respectively.
 
 Each data.frame contains two columns:
 \itemize{
 \item \code{GRIDCODE}: (numeric) grid value corresponding to a climate zone
-\item \code{Classification}: (character) Koppen–Geiger climate classification value
+\item \code{Classification}: (character) Koppen-{G}eiger climate classification value
+\item \code{Description}: (character) verbose description of the Koppen-{G}eiger
+climate zone, e.g. "Tropical rainforest climate"
+\item \code{Group}: (character) group the Koppen-{G}eiger climate zone belongs to,
+e.g. "Tropical"
+\item \verb{Precipitation Type}: (character) Type of precipitations associated to
+the climate zone, e.g. "Rainforest"
+\item \verb{Level of Heat}: (character) Heat level associated to the climate zone,
+e.g. "Cold"
 }
 }
 \source{
@@ -25,9 +33,9 @@ legend
 Legends for climate shapefiles
 }
 \seealso{
-Other climate_shapefiles: 
+Other climate data: 
 \code{\link{future}},
 \code{\link{observed}}
 }
-\concept{climate_shapefiles}
+\concept{climate data}
 \keyword{datasets}

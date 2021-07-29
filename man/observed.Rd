@@ -32,9 +32,9 @@ These shapefiles contain worldwide climate classifications for
 different year intervals.
 }
 \seealso{
-Other climate_shapefiles: 
+Other climate data: 
 \code{\link{future}},
 \code{\link{legend}}
 }
-\concept{climate_shapefiles}
+\concept{climate data}
 \keyword{datasets}

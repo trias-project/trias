@@ -21,5 +21,5 @@
 #' Each spatialpolygonsdataframe contains 2 variables:
 #' - `ID`: polygon identifier
 #' - `GRIDCODE`: grid value corresponding to a climate zone
-#' @family climate_shapefiles
+#' @family climate data
 "future"

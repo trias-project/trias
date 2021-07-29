@@ -41,9 +41,9 @@ through intensive use of fossil fuel
 }
 }
 \seealso{
-Other climate_shapefiles: 
+Other climate data: 
 \code{\link{legend}},
 \code{\link{observed}}
 }
-\concept{climate_shapefiles}
+\concept{climate data}
 \keyword{datasets}
