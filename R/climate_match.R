@@ -261,6 +261,7 @@ data_overlay_unfiltered <- data_overlay %>%
   select(taxonKey, 
          acceptedScientificName, 
          Classification, 
+         Description,
          n_climate, 
          n_totaal, 
          perc_climate)
@@ -362,7 +363,8 @@ current_climate <- current_climate_shape
 
 for(t in taxonkey){
   temp_data <- data_overlay_unfiltered %>% 
-    dplyr::filter(taxonKey == t)
+    dplyr::filter(taxonKey == t) %>% 
+    select(-Description)
   
   species <- unique(temp_data$acceptedScientificName)
   
@@ -469,7 +471,8 @@ for (i in 1:length(scenarios)) {
   for(t in taxonkey){
     
     temp_data <- data_overlay_unfiltered %>% 
-      dplyr::filter(taxonKey == t)
+      dplyr::filter(taxonKey == t) %>% 
+      select(-Description)
     
     species <- unique(temp_data$acceptedScientificName)
     
@@ -550,7 +553,8 @@ for (i in 1:length(taxonkey)) {
   t <- taxonkey[i]
   
   temp_data <- data_overlay_unfiltered %>% 
-    dplyr::filter(taxonKey == t)
+    dplyr::filter(taxonKey == t) %>% 
+    select(-Description)
   
   species <- unique(temp_data$acceptedScientificName)
   
