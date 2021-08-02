@@ -173,10 +173,9 @@ data_redux <- data %>%
   dplyr::filter(!is.na(acceptedTaxonKey),
                 !is.na(eventDate), 
                 !is.na(decimalLatitude),
-                eventDate >= "1950-01-01",
+                eventDate >= "1901-01-01",
                 basisOfRecord %in% BasisOfRecord,
-                coordinateUncertaintyInMeters <= coord_unc,
-                occurrenceStatus == "PRESENT") %>% 
+                coordinateUncertaintyInMeters <= coord_unc | is.na(coordinateUncertaintyInMeters)) %>% 
   dplyr::select(gbifID, eventDate, year, month, day, taxonKey, 
                 acceptedTaxonKey, acceptedScientificName, decimalLatitude, 
                 decimalLongitude, coordinateUncertaintyInMeters, countryCode) 
