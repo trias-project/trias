@@ -204,7 +204,7 @@ data_overlay <- data.frame()
 for(t in timeperiodes){
   # Import legends
   KG_Rubel_Kotteks_Legend <- legend$KG_A1FI
-  KG_Beck_Legend <- legend$KG_Beck
+  KG_Beck <- legend$KG_Beck
   
   # Determine subset parameters
   start <- as.numeric(substr(t, 0, 4))
@@ -234,7 +234,7 @@ for(t in timeperiodes){
         rename(GRIDCODE = gridcode,
                ID = Id) %>% 
         mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
-        left_join(KG_Beck_Legend, by = c("GRIDCODE"))
+        left_join(KG_Beck, by = c("GRIDCODE"))
     }
     
     if(nrow(data_overlay) == 0){
@@ -301,7 +301,7 @@ for(s in scenarios){
 
 output_1 <- output %>% 
   dplyr::filter(grepl(pattern = "Beck", scenario)) %>% 
-  left_join(KG_Beck_Legend, by = c("KG_GridCode" = "GRIDCODE"))
+  left_join(KG_Beck, by = c("KG_GridCode" = "GRIDCODE"))
 
 output_2 <- output %>% 
   dplyr::filter(!grepl(pattern = "Beck", scenario)) %>% 
@@ -353,7 +353,7 @@ current_climate_shape <- observed$`1980-2016`
 
 current_climate_shape@data <- current_climate_shape@data %>% 
   mutate(gridcode = as.double(gridcode)) %>% 
-  left_join(legend$KG_Beck_Legend, by = c("gridcode" = "GRIDCODE"))
+  left_join(legend$KG_Beck, by = c("gridcode" = "GRIDCODE"))
 
 sea <- subset(current_climate_shape, is.na(current_climate_shape$Classification))
 
@@ -456,7 +456,7 @@ for (i in 1:length(scenarios)) {
   if(grepl("Beck", s)){
     scenario_shape@data <- scenario_shape@data %>% 
       mutate(gridcode = as.double(gridcode)) %>% 
-      left_join(legend$KG_Beck_Legend, by = c("gridcode" = "GRIDCODE"))
+      left_join(legend$KG_Beck, by = c("gridcode" = "GRIDCODE"))
   }else{
     scenario_shape@data <- scenario_shape@data %>% 
       mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
@@ -568,7 +568,7 @@ for (i in 1:length(taxonkey)) {
         mutate(GRIDCODE = as.double(gridcode),
                ID = Id) %>% 
         select(-gridcode, -Id) %>% 
-        left_join(legend$KG_Beck_Legend, by = "GRIDCODE")
+        left_join(legend$KG_Beck, by = "GRIDCODE")
     }else{
       scenario_shape@data <- scenario_shape@data %>% 
         mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
