@@ -42,7 +42,7 @@
 #' the current and future climate scenarios
 #' 
 #' @export
-#' @importFrom rgbif occ_download occ_download_meta occ_download_get pred occ_download_import
+#' @importFrom rgbif occ_download occ_download_meta occ_download_get pred occ_download_import pred_in
 #' @importFrom sp SpatialPointsDataFrame over merge CRS
 #' @importFrom raster intersect
 #' @importFrom rworldmap getMap
