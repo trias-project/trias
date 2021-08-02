@@ -204,7 +204,7 @@ data_overlay <- data.frame()
 for(t in timeperiodes){
   # Import legends
   KG_Rubel_Kotteks_Legend <- legend$KG_A1FI
-  KG_Beck_Legend <- legend$KG_Beck_Legend
+  KG_Beck_Legend <- legend$KG_Beck
   
   # Determine subset parameters
   start <- as.numeric(substr(t, 0, 4))
