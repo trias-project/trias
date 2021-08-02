@@ -175,7 +175,8 @@ data_redux <- data %>%
                 !is.na(decimalLatitude),
                 eventDate >= "1901-01-01",
                 basisOfRecord %in% BasisOfRecord,
-                coordinateUncertaintyInMeters <= coord_unc | is.na(coordinateUncertaintyInMeters)) %>% 
+                coordinateUncertaintyInMeters <= coord_unc | is.na(coordinateUncertaintyInMeters),
+                occurrenceStatus == "PRESENT") %>% 
   dplyr::select(gbifID, eventDate, year, month, day, taxonKey, 
                 acceptedTaxonKey, acceptedScientificName, decimalLatitude, 
                 decimalLongitude, coordinateUncertaintyInMeters, countryCode) 
