@@ -179,7 +179,10 @@ data_redux <- data %>%
                 occurrenceStatus == "PRESENT") %>% 
   dplyr::select(gbifID, eventDate, year, month, day, taxonKey, 
                 acceptedTaxonKey, acceptedScientificName, decimalLatitude, 
-                decimalLongitude, coordinateUncertaintyInMeters, countryCode) 
+                decimalLongitude, coordinateUncertaintyInMeters, countryCode) %>% 
+  distinct(eventDate, year, month, day, taxonKey, 
+           acceptedTaxonKey, acceptedScientificName, decimalLatitude, 
+           decimalLongitude, coordinateUncertaintyInMeters, countryCode)
 
 coord <- data_redux %>% 
   dplyr::select(decimalLongitude, decimalLatitude)
