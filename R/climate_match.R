@@ -594,7 +594,7 @@ for (i in 1:length(taxonkey)) {
   }
   
   temp_shape@data <- temp_shape@data %>% 
-    mutate(popup = paste0("<strong>Classification: </strong>", Classification, 
+    mutate(popup = paste0("<strong>Classification: </strong>", Description, " (", Classification, ")", 
                           "</br><strong>ScientificName: </strong>", 
                           acceptedScientificName,
                           "</br><strong>%obs in climate: </strong>", 
