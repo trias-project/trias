@@ -385,7 +385,7 @@ for(t in taxonkey){
 }
 
 current_climate@data <- current_climate@data %>% 
-  mutate(popup = paste0("<strong>Classification: </strong>", description, " (", Classification, ")",
+  mutate(popup = paste0("<strong>Classification: </strong>", Description, " (", Classification, ")",
                         "</br><strong>ScientificName: </strong>", 
                         acceptedScientificName,
                         "</br><strong>%obs in climate: </strong>", 
@@ -491,7 +491,7 @@ for (i in 1:length(scenarios)) {
   }
   
   temp_shape@data <- temp_shape@data %>% 
-    mutate(popup = paste0("<strong>Classification: </strong>", description, " (", Classification, ")", 
+    mutate(popup = paste0("<strong>Classification: </strong>", Description, " (", Classification, ")", 
                           "</br><strong>ScientificName: </strong>", 
                           acceptedScientificName,
                           "</br><strong>%obs in climate: </strong>", 
