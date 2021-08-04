@@ -651,9 +651,10 @@ climate_match <- function(region,
       single_species_maps[[i]] <- scenario_map
     }  
   }else{
-    current_climate_map <- "maps were disabled"
-    future_scenario_maps <- "maps were disabled"
-    single_species_maps <- "maps were disabled"
+    message("maps are disabled")
+    current_climate_map <- NULL
+    future_scenario_maps <- NULL
+    single_species_maps <- NULL
   }
   
   
