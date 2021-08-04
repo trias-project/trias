@@ -653,7 +653,7 @@ climate_match <- function(region,
     }  
   }else{
     current_climate_map <- "maps were disabled"
-    future_maps <- "maps were disabled"
+    future_scenario_maps <- "maps were disabled"
     single_species_maps <- "maps were disabled"
   }
   
