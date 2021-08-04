@@ -10,9 +10,9 @@
 #' species specified by the taxonkey
 #' @param scenario (character) the future scenarios we are interested in.
 #'  (default) all future scenarios are used
-#' @param n_totaal (optional numeric) the minimal number of total observations a 
+#' @param n_limit (optional numeric) the minimal number of total observations a 
 #' species must have to be included in the outputs
-#' @param perc_climate (optional numeric) the minimal percentage of the total 
+#' @param cm_limit (optional numeric) the minimal percentage of the total 
 #' number of observations within the climate zones of the region a species must 
 #' have to be included in the outputs
 #' @param coord_unc (optional numeric) the maximal coordinate uncertainty a 
@@ -23,15 +23,14 @@
 #' (default) TRUE, the maps are created.
 #' 
 #' @return list with: 
-#' - `unfiltered`: a dataframe containing a summary per species  
-#' and climate classification. The climate classification is a result of a 
+#' - `unfiltered`: a dataframe containing a summary per species and climate classification. 
+#' The climate classification is a result of a 
 #' overlay of the observations, filtered by coord_unc & BasisOfRecord, with the 
 #' climate at the time of observation
-#' - `filtered`: the unfiltered dataframe on which the n_totaal & 
-#' perc_climate thresholds have been applied
 #' - `cm`: a dataframe containing the per scenario overlap with the future 
-#' climate scenarios for the target nation or region and based on the `filtered`
-#' dataframe
+#' climate scenarios for the target nation or region and based on the `unfiltered` dataframe
+#' - `filtered`: the climate match dataframe on which the n_limit & 
+#' climate_limit thresholds have been applied
 #' - `future`: a dataframe containing a list per scenario of future climate 
 #' zones in the target nation or region
 #' - `spatial` a spatialpointsdataframe containing the observations used 
@@ -56,8 +55,8 @@ climate_match <- function(region,
                           taxonkey, 
                           zipfile,
                           scenario = "all",
-                          n_totaal,
-                          perc_climate ,
+                          n_limit,
+                          cm_limit ,
                           coord_unc, 
                           BasisOfRecord,
                           maps = TRUE){
@@ -340,18 +339,18 @@ climate_match <- function(region,
   }
   
   # Thresholds ####
-  if(missing(n_totaal)){
+  if(missing(n_limit)){
     warning("no n_totaal threshold was provided. defaults to 0!")
-    n_totaal <- 0
+    n_limit <- 0
   }
-  if(missing(perc_climate)){
+  if(missing(cm_limit)){
     warning("no perc_climate threshold was provided. defaults to 0%!")
-    perc_climate <- 0
+    cm_limit <- 0
   }
   
   data_overlay_scenario_filtered <- cm %>% 
-    dplyr::filter(n_totaal >= n_totaal,
-                  perc_climate >= perc_climate)
+    dplyr::filter(n_totaal >= n_limit,
+                  perc_climate >= cm_limit)
   
   # MAPS ####
   if(maps == TRUE){
@@ -660,8 +659,8 @@ climate_match <- function(region,
   
   # Return ####
   return(list(unfiltered = data_overlay_unfiltered, 
-              filtered = data_overlay_scenario_filtered,
               cm = cm,
+              filtered = data_overlay_scenario_filtered,
               future = future_climate,
               spatial = data_sp_sub,
               current_map = current_climate_map,
