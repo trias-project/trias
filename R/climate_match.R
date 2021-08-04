@@ -344,14 +344,13 @@ climate_match <- function(region,
     warning("no n_totaal threshold was provided. defaults to 0!")
     n_totaal <- 0
   }
-  
   if(missing(perc_climate)){
     warning("no perc_climate threshold was provided. defaults to 0%!")
     perc_climate <- 0
   }
   
   data_overlay_scenario_filtered <- cm %>% 
-    dplyr::filter(n_totaal >= n_totaal &&
+    dplyr::filter(n_totaal >= n_totaal,
                   perc_climate >= perc_climate)
   
   # MAPS ####
