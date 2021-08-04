@@ -184,6 +184,10 @@ climate_match <- function(region,
              acceptedTaxonKey, acceptedScientificName, decimalLatitude, 
              decimalLongitude, coordinateUncertaintyInMeters, countryCode)
   
+  if(nrow(data_redux) == 0){
+    stop(paste0("No useable data for ", paste(taxonkey, collapse = ","), " left after filters. Try omiting or changing the filter setup."))
+  }
+  
   coord <- data_redux %>% 
     dplyr::select(decimalLongitude, decimalLatitude)
   
