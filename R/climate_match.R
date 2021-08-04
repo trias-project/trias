@@ -56,7 +56,7 @@ climate_match <- function(region,
                           zipfile,
                           scenario = "all",
                           n_limit,
-                          cm_limit ,
+                          cm_limit,
                           coord_unc, 
                           BasisOfRecord,
                           maps = TRUE){
