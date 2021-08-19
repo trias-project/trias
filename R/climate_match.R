@@ -165,39 +165,39 @@ climate_match <- function(region,
   }
   
   SPECIES <- data %>% 
-    dplyr::filter(taxonRank == "SPECIES", 
-                  taxonomicStatus == "ACCEPTED") %>% 
-    distinct(acceptedTaxonKey, genus, specificEpithet) %>% 
-    mutate(ASN_2 = paste(genus, specificEpithet)) %>% 
-    rename(TK_2 = acceptedTaxonKey) %>% 
-    distinct(TK_2, ASN_2) %>% 
-    group_by(TK_2) %>% 
+    dplyr::filter(.data$taxonRank == "SPECIES", 
+                  .data$taxonomicStatus == "ACCEPTED") %>% 
+    distinct(.data$acceptedTaxonKey, .data$genus, .data$specificEpithet) %>% 
+    mutate(ASN_2 = paste(.data$genus, .data$specificEpithet)) %>% 
+    rename(TK_2 = .data$acceptedTaxonKey) %>% 
+    distinct(.data$TK_2, .data$ASN_2) %>% 
+    group_by(.data$TK_2) %>% 
     add_tally()
   
   data_redux <- data %>% 
-    mutate(acceptedScientificName = paste(genus, specificEpithet)) %>% 
+    mutate(acceptedScientificName = paste(.data$genus, .data$specificEpithet)) %>% 
     left_join(SPECIES, by = c("acceptedScientificName" = "ASN_2")) %>% 
-    mutate(acceptedTaxonKey = TK_2) %>% 
-    dplyr::filter(!is.na(acceptedTaxonKey),
-                  !is.na(eventDate), 
-                  !is.na(decimalLatitude),
-                  eventDate >= "1901-01-01",
-                  basisOfRecord %in% BasisOfRecord,
-                  coordinateUncertaintyInMeters <= coord_unc | is.na(coordinateUncertaintyInMeters),
-                  occurrenceStatus == "PRESENT") %>% 
-    dplyr::select(gbifID, eventDate, year, month, day, taxonKey, 
-                  acceptedTaxonKey, acceptedScientificName, decimalLatitude, 
-                  decimalLongitude, coordinateUncertaintyInMeters, countryCode) %>% 
-    distinct(eventDate, year, month, day, taxonKey, 
-             acceptedTaxonKey, acceptedScientificName, decimalLatitude, 
-             decimalLongitude, coordinateUncertaintyInMeters, countryCode)
+    mutate(acceptedTaxonKey = .data$TK_2) %>% 
+    dplyr::filter(!is.na(.data$acceptedTaxonKey),
+                  !is.na(.data$eventDate), 
+                  !is.na(.data$decimalLatitude),
+                  .data$eventDate >= "1901-01-01",
+                  .data$basisOfRecord %in% BasisOfRecord,
+                  .data$coordinateUncertaintyInMeters <= coord_unc | is.na(.data$coordinateUncertaintyInMeters),
+                  .data$occurrenceStatus == "PRESENT") %>% 
+    dplyr::select(.data$gbifID, .data$eventDate, .data$year, .data$month, .data$day, .data$taxonKey, 
+                  .data$acceptedTaxonKey, .data$acceptedScientificName, .data$decimalLatitude, 
+                  .data$decimalLongitude, .data$coordinateUncertaintyInMeters, .data$countryCode) %>% 
+    distinct(.data$eventDate, .data$year, .data$month, .data$day, .data$taxonKey, 
+             .data$acceptedTaxonKey, .data$acceptedScientificName, .data$decimalLatitude, 
+             .data$decimalLongitude, .data$coordinateUncertaintyInMeters, .data$countryCode)
   
   if(nrow(data_redux) == 0){
     stop(paste0("No useable data for ", paste(taxonkey, collapse = ","), " left after filters. Try omiting or changing the filter setup."))
   }
   
   coord <- data_redux %>% 
-    dplyr::select(decimalLongitude, decimalLatitude)
+    dplyr::select(.data$decimalLongitude, .data$decimalLatitude)
   
   data_sp <- SpatialPointsDataFrame(coord,
                                     data = data_redux,
@@ -235,7 +235,7 @@ climate_match <- function(region,
         data_sub_overlay <- bind_cols(data_sp_sub@data, data_sub_over) 
         
         data_sub_overlay <- data_sub_overlay %>% 
-          mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
+          mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
           left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE")) 
       }else{
         obs_shape <- observed$"1980-2016"
@@ -243,9 +243,9 @@ climate_match <- function(region,
         data_sub_overlay <- bind_cols(data_sp_sub@data, data_sub_over) 
         
         data_sub_overlay <- data_sub_overlay %>% 
-          rename(GRIDCODE = gridcode,
-                 ID = Id) %>% 
-          mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
+          rename(GRIDCODE = .data$gridcode,
+                 ID = .data$Id) %>% 
+          mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
           left_join(KG_Beck, by = c("GRIDCODE"))
       }
       
@@ -261,22 +261,22 @@ climate_match <- function(region,
   
   ## Calculate threshold parameters ##
   data_overlay_unfiltered <- data_overlay %>% 
-    group_by(acceptedTaxonKey, acceptedScientificName, Classification) %>% 
+    group_by(.data$acceptedTaxonKey, .data$acceptedScientificName, .data$Classification) %>% 
     add_tally(name = "n_climate") %>% 
     ungroup() %>% 
-    group_by(acceptedTaxonKey, acceptedScientificName) %>% 
+    group_by(.data$acceptedTaxonKey, .data$acceptedScientificName) %>% 
     add_tally(name = "n_totaal") %>% 
     ungroup() %>% 
-    mutate(perc_climate = n_climate/n_totaal) %>% 
-    distinct(acceptedTaxonKey, acceptedScientificName, Classification, 
+    mutate(perc_climate = .data$n_climate/.data$n_totaal) %>% 
+    distinct(.data$acceptedTaxonKey, .data$acceptedScientificName, .data$Classification, 
              .keep_all = TRUE) %>% 
-    select(taxonKey, 
-           acceptedScientificName, 
-           Classification, 
-           Description,
-           n_climate, 
-           n_totaal, 
-           perc_climate)
+    select(.data$taxonKey, 
+           .data$acceptedScientificName, 
+           .data$Classification, 
+           .data$Description,
+           .data$n_climate, 
+           .data$n_totaal, 
+           .data$perc_climate)
   
   # Determine future scenarios ####
   scenarios <- c("2001-2025-A1FI",
@@ -297,11 +297,11 @@ climate_match <- function(region,
     
     if(c("gridcode") %in% colnames(shape@data)){
       shape@data <- shape@data %>% 
-        rename(GRIDCODE = gridcode) 
+        rename(GRIDCODE = .data$gridcode) 
     }
     
     shape@data <- shape@data %>% 
-      mutate(GRIDCODE = as.integer(GRIDCODE)) 
+      mutate(GRIDCODE = as.integer(.data$GRIDCODE)) 
     
     girdcode_intersect <- intersect(shape, region_shape)
     
@@ -313,17 +313,17 @@ climate_match <- function(region,
   }
   
   output_1 <- output %>% 
-    dplyr::filter(grepl(pattern = "Beck", scenario)) %>% 
+    dplyr::filter(grepl(pattern = "Beck", .data$scenario)) %>% 
     left_join(KG_Beck, by = c("KG_GridCode" = "GRIDCODE"))
   
   output_2 <- output %>% 
-    dplyr::filter(!grepl(pattern = "Beck", scenario)) %>% 
+    dplyr::filter(!grepl(pattern = "Beck", .data$scenario)) %>% 
     left_join(KG_Rubel_Kotteks_Legend, by = c("KG_GridCode" = "GRIDCODE"))
   
   output_final <- rbind(output_1, output_2)
   
   future_climate <- output_final %>% 
-    dplyr::filter(!is.na(Classification))
+    dplyr::filter(!is.na(.data$Classification))
   
   # Per scenario filter ####
   
@@ -331,10 +331,10 @@ climate_match <- function(region,
   
   for(b in unique(future_climate$scenario)){
     future_scenario <- future_climate %>% 
-      dplyr::filter(scenario == b)
+      dplyr::filter(.data$scenario == b)
     
     cm_int <- data_overlay_unfiltered %>% 
-      dplyr::filter(Classification %in% future_scenario$Classification) %>% 
+      dplyr::filter(.data$Classification %in% future_scenario$Classification) %>% 
       mutate(scenario = b)
     
     if(nrow(cm) == 0){
@@ -355,8 +355,8 @@ climate_match <- function(region,
   }
   
   data_overlay_scenario_filtered <- cm %>% 
-    dplyr::filter(n_totaal >= n_limit,
-                  perc_climate >= cm_limit)
+    dplyr::filter(.data$n_totaal >= n_limit,
+                  .data$perc_climate >= cm_limit)
   
   # MAPS ####
   if(maps == TRUE){
@@ -366,7 +366,7 @@ climate_match <- function(region,
     current_climate_shape <- observed$`1980-2016`
     
     current_climate_shape@data <- current_climate_shape@data %>% 
-      mutate(gridcode = as.double(gridcode)) %>% 
+      mutate(gridcode = as.double(.data$gridcode)) %>% 
       left_join(legend$KG_Beck, by = c("gridcode" = "GRIDCODE"))
     
     sea <- subset(current_climate_shape, is.na(current_climate_shape$Classification))
@@ -376,8 +376,8 @@ climate_match <- function(region,
     
     for(t in taxonkey){
       temp_data <- data_overlay_unfiltered %>% 
-        dplyr::filter(taxonKey == t) %>% 
-        select(-Description)
+        dplyr::filter(.data$taxonKey == t) %>% 
+        select(-.data$Description)
       
       species <- unique(temp_data$acceptedScientificName)
       
@@ -403,11 +403,11 @@ climate_match <- function(region,
     }
     
     current_climate@data <- current_climate@data %>% 
-      mutate(popup = paste0("<strong>Classification: </strong>", Description, " (", Classification, ")",
+      mutate(popup = paste0("<strong>Classification: </strong>", .data$Description, " (", .data$Classification, ")",
                             "</br><strong>ScientificName: </strong>", 
-                            acceptedScientificName,
+                            .data$acceptedScientificName,
                             "</br><strong>%obs in climate: </strong>", 
-                            round(perc_climate*100, 2), "%"))
+                            round(.data$perc_climate*100, 2), "%"))
     
     current_climate <- subset(current_climate, !is.na(current_climate$Classification))
     
@@ -423,14 +423,14 @@ climate_match <- function(region,
     # create current climate map
     current_climate_map <- leaflet(current_climate) %>% 
       addPolygons(color = "#bababa",
-                  fillColor = ~pal_current(perc_climate),
+                  fillColor = ~pal_current(.data$perc_climate),
                   fillOpacity = 0.8,
                   stroke = TRUE,
                   weight = 0.5,
-                  group = ~acceptedScientificName,
-                  popup = ~popup) %>% 
+                  group = ~.data$acceptedScientificName,
+                  popup = ~.data$popup) %>% 
       addCircleMarkers(data = data_sp_sub,
-                       group = ~acceptedScientificName,
+                       group = ~.data$acceptedScientificName,
                        color = "black",
                        radius = 1) %>% 
       addLegend(colors = "black",
@@ -442,7 +442,7 @@ climate_match <- function(region,
                              by = 0.1),
                 position = "bottomleft",
                 title = "Climate match") %>% 
-      addLayersControl(baseGroups = ~acceptedScientificName) %>% 
+      addLayersControl(baseGroups = ~.data$acceptedScientificName) %>% 
       addPolygons(data = sea,
                   fillColor = "#e0e0e0",
                   weight = 0.5)
@@ -473,11 +473,11 @@ climate_match <- function(region,
       # Attach legends
       if(grepl("Beck", s)){
         scenario_shape@data <- scenario_shape@data %>% 
-          mutate(gridcode = as.double(gridcode)) %>% 
+          mutate(gridcode = as.double(.data$gridcode)) %>% 
           left_join(legend$KG_Beck, by = c("gridcode" = "GRIDCODE"))
       }else{
         scenario_shape@data <- scenario_shape@data %>% 
-          mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
+          mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
           left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE"))
       }
       
@@ -487,8 +487,8 @@ climate_match <- function(region,
       for(t in taxonkey){
         
         temp_data <- data_overlay_unfiltered %>% 
-          dplyr::filter(taxonKey == t) %>% 
-          select(-Description)
+          dplyr::filter(.data$taxonKey == t) %>% 
+          select(-.data$Description)
         
         species <- unique(temp_data$acceptedScientificName)
         
@@ -514,11 +514,11 @@ climate_match <- function(region,
       }
       
       temp_shape@data <- temp_shape@data %>% 
-        mutate(popup = paste0("<strong>Classification: </strong>", Description, " (", Classification, ")", 
+        mutate(popup = paste0("<strong>Classification: </strong>", .data$Description, " (", .data$Classification, ")", 
                               "</br><strong>ScientificName: </strong>", 
-                              acceptedScientificName,
+                              .data$acceptedScientificName,
                               "</br><strong>%obs in climate: </strong>", 
-                              round(perc_climate*100, 2), "%"))
+                              round(.data$perc_climate*100, 2), "%"))
       
       temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
       
@@ -592,13 +592,13 @@ climate_match <- function(region,
           }
           if (grepl("Beck", s) | s == "1980-2016") {
             scenario_shape@data <- scenario_shape@data %>% 
-              mutate(GRIDCODE = as.double(gridcode),
-                     ID = Id) %>% 
+              mutate(GRIDCODE = as.double(.data$gridcode),
+                     ID = .data$Id) %>% 
               select(-gridcode, -Id) %>% 
               left_join(legend$KG_Beck, by = "GRIDCODE")
           }else{
             scenario_shape@data <- scenario_shape@data %>% 
-              mutate(GRIDCODE = as.double(GRIDCODE)) %>% 
+              mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
               left_join(legend$KG_A1FI, by = "GRIDCODE")
           }
           
@@ -622,13 +622,13 @@ climate_match <- function(region,
       }
       
       temp_shape@data <- temp_shape@data %>% 
-        mutate(popup = paste0("<strong>Classification: </strong>", Description, " (", Classification, ")", 
+        mutate(popup = paste0("<strong>Classification: </strong>", .data$Description, " (", .data$Classification, ")", 
                               "</br><strong>ScientificName: </strong>", 
-                              acceptedScientificName,
+                              .data$acceptedScientificName,
                               "</br><strong>%obs in climate: </strong>", 
-                              round(perc_climate*100, 2), "%",
+                              round(.data$perc_climate*100, 2), "%",
                               "</br><strong>scenario: </strong>",
-                              scenario))
+                              .data$scenario))
       
       temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
       
