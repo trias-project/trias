@@ -51,6 +51,9 @@
 #' @importFrom dplyr %>% filter distinct mutate rename group_by add_tally bind_cols ungroup select left_join add_row
 #' @importFrom readr read_tsv col_number col_character
 #' @importFrom purrr list_along
+#' @importFrom graphics legend
+#' @importFrom stats setNames
+#' @importFrom utils menu
 climate_match <- function(region, 
                           taxonkey, 
                           zipfile,
