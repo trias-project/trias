@@ -9,10 +9,11 @@ climate_match(
   taxonkey,
   zipfile,
   scenario = "all",
-  n_totaal,
-  perc_climate,
+  n_limit,
+  cm_limit,
   coord_unc,
-  BasisOfRecord
+  BasisOfRecord,
+  maps = TRUE
 )
 }
 \arguments{
@@ -27,10 +28,10 @@ species specified by the taxonkey}
 \item{scenario}{(character) the future scenarios we are interested in.
 (default) all future scenarios are used}
 
-\item{n_totaal}{(optional numeric) the minimal number of total observations a
+\item{n_limit}{(optional numeric) the minimal number of total observations a
 species must have to be included in the outputs}
 
-\item{perc_climate}{(optional numeric) the minimal percentage of the total
+\item{cm_limit}{(optional numeric) the minimal percentage of the total
 number of observations within the climate zones of the region a species must
 have to be included in the outputs}
 
@@ -39,19 +40,21 @@ observation can have to be included in the analysis}
 
 \item{BasisOfRecord}{(optional character) an additional filter for
 observations based on the GBIF field "BasisOfRecord"}
+
+\item{maps}{(boolean) indicating whether the maps should be created.
+(default) TRUE, the maps are created.}
 }
 \value{
 list with:
 \itemize{
-\item \code{unfiltered}: a dataframe containing a summary per species
-and climate classification. The climate classification is a result of a
+\item \code{unfiltered}: a dataframe containing a summary per species and climate classification.
+The climate classification is a result of a
 overlay of the observations, filtered by coord_unc & BasisOfRecord, with the
 climate at the time of observation
-\item \code{filtered}: the unfiltered dataframe on which the n_totaal &
-perc_climate thresholds have been applied
 \item \code{cm}: a dataframe containing the per scenario overlap with the future
-climate scenarios for the target nation or region and based on the \code{filtered}
-dataframe
+climate scenarios for the target nation or region and based on the \code{unfiltered} dataframe
+\item \code{filtered}: the climate match dataframe on which the n_limit &
+climate_limit thresholds have been applied
 \item \code{future}: a dataframe containing a list per scenario of future climate
 zones in the target nation or region
 \item \code{spatial} a spatialpointsdataframe containing the observations used
