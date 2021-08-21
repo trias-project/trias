@@ -55,7 +55,7 @@ Imports:
     scales,
     sp,
     stringr,
-	svDialogs,
+	  svDialogs,
     tibble,
     tidyr,
     tidyselect
