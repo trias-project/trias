@@ -56,7 +56,7 @@ update_download_list <- function(file, download_to_add, input_checklist,
       na = "",
       append = TRUE,
       col_names = !file.exists(file),
-      quote_escape = FALSE
+      escape = "none"
     )
     print(paste(
       "gbif_download_Key", download_to_add,
@@ -95,7 +95,7 @@ update_download_list <- function(file, download_to_add, input_checklist,
     write_tsv(
       x = downloads,
       file = file,
-      quote_escape = FALSE
+      append = FALSE,
     )
   }
 }
