@@ -35,7 +35,8 @@ update_download_list <- function(file, download_to_add, input_checklist,
                                  url_doi_base = "https://doi.org/") {
   downloads <- read_tsv(file,
     trim_ws = TRUE,
-    na = ""
+    na = "",
+    lazy = FALSE
   )
   # downloadKey not present
   if (is.element(download_to_add, downloads$gbif_download_key) == FALSE) {
@@ -63,7 +64,7 @@ update_download_list <- function(file, download_to_add, input_checklist,
       "added to", file, "; download status =", gbif_download_status
     ))
     # reload file
-    downloads <- read_tsv(file, na = "")
+    downloads <- read_tsv(file, na = "", lazy = FALSE)
   } else {
     print(paste("gbif_download_Key", download_to_add, "already present in", file))
   }
