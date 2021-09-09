@@ -68,8 +68,13 @@ climate_match <- function(region,
                           maps = TRUE){
   
   # Setup ####
+  
   crs_wgs <- CRS("+proj=longlat +datum=WGS84 +no_defs")
   
+  # load datapackages
+  load("./data/legend.rda")
+  load("./data/future.rda")
+  load("./data/observed.rda")
   
   # Checks ####
   ## Region ##
