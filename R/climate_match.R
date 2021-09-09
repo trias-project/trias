@@ -57,6 +57,7 @@
 #' @importFrom graphics legend
 #' @importFrom stats setNames
 #' @importFrom utils menu
+#' @importFrom rlang is_empty
 climate_match <- function(region, 
                           taxonkey, 
                           zipfile,
