@@ -45,7 +45,8 @@
 #' @export
 #' @importFrom rgbif occ_download occ_download_meta occ_download_get pred
 #'   occ_download_import pred_in
-#' @importFrom sp SpatialPointsDataFrame over merge CRS
+#' @importFrom sp SpatialPointsDataFrame over merge CRS 
+#'   rbind.SpatialPolygonsDataFrame
 #' @importFrom raster intersect
 #' @importFrom rworldmap getMap
 #' @importFrom leaflet leaflet addPolygons colorNumeric addCircleMarkers
