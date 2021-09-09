@@ -367,7 +367,7 @@ climate_match <- function(region,
     
     current_climate_shape@data <- current_climate_shape@data %>% 
       mutate(gridcode = as.double(.data$gridcode)) %>% 
-      left_join(legend$KG_Beck, by = c("gridcode" = "GRIDCODE"))
+      left_join(legends$KG_Beck, by = c("gridcode" = "GRIDCODE"))
     
     sea <- subset(current_climate_shape, is.na(current_climate_shape$Classification))
     
