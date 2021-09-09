@@ -303,7 +303,7 @@ climate_match <- function(region,
     shape@data <- shape@data %>% 
       mutate(GRIDCODE = as.integer(.data$GRIDCODE)) 
     
-    girdcode_intersect <- raster::intersect(shape, region_shape)
+    girdcode_intersect <- intersect(shape, region_shape)
     
     for(g in girdcode_intersect@data$GRIDCODE){
       output <- output %>% 
