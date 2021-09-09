@@ -50,7 +50,7 @@
 #' @importFrom raster intersect
 #' @importFrom rworldmap getMap
 #' @importFrom leaflet leaflet addPolygons colorNumeric addCircleMarkers
-#'   addLegend addLayersControl
+#'   addLegend addLayersControl colorBin
 #' @importFrom dplyr %>% filter distinct mutate rename group_by add_tally
 #'   bind_cols ungroup select left_join add_row
 #' @importFrom readr read_tsv col_number col_character
