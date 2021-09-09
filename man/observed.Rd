@@ -34,7 +34,7 @@ different year intervals.
 \seealso{
 Other climate data: 
 \code{\link{future}},
-\code{\link{legend}()}
+\code{\link{legends}}
 }
 \concept{climate data}
 \keyword{datasets}

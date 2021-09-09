@@ -1,6 +1,6 @@
 #' Legends for climate shapefiles
 #' 
-#' @format `legend` contains two data.frames, `KG_A1FI` and `KG_Beck`,
+#' @format `legends` contains two data.frames, `KG_A1FI` and `KG_Beck`,
 #'   matching Koppen-Geiger climate zones to A1FI and Beck scenarios
 #'   respectively. 
 #'   
