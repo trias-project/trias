@@ -377,7 +377,7 @@ climate_match <- function(region,
     for(t in taxonkey){
       temp_data <- data_overlay_unfiltered %>% 
         dplyr::filter(.data$taxonKey == t) %>% 
-        dplyr::select(-.data$Description)
+        select(-.data$Description)
       
       species <- unique(temp_data$acceptedScientificName)
       
@@ -488,7 +488,7 @@ climate_match <- function(region,
         
         temp_data <- data_overlay_unfiltered %>% 
           dplyr::filter(.data$taxonKey == t) %>% 
-          dplyr::select(-.data$Description)
+          select(-.data$Description)
         
         species <- unique(temp_data$acceptedScientificName)
         
@@ -574,7 +574,7 @@ climate_match <- function(region,
       
       temp_data <- data_overlay_unfiltered %>% 
         dplyr::filter(taxonKey == t) %>% 
-        dplyr::select(-Description)
+        select(-Description)
       
       species <- unique(temp_data$acceptedScientificName)
       
@@ -594,7 +594,7 @@ climate_match <- function(region,
             scenario_shape@data <- scenario_shape@data %>% 
               mutate(GRIDCODE = as.double(.data$gridcode),
                      ID = .data$Id) %>% 
-              dplyr::select(-gridcode, -Id) %>% 
+              select(-gridcode, -Id) %>% 
               left_join(legend$KG_Beck, by = "GRIDCODE")
           }else{
             scenario_shape@data <- scenario_shape@data %>% 
