@@ -71,11 +71,6 @@ climate_match <- function(region,
   
   crs_wgs <- CRS("+proj=longlat +datum=WGS84 +no_defs")
   
-  # load datapackages
-  load("./data/legend.rda")
-  load("./data/future.rda")
-  load("./data/observed.rda")
-  
   # Checks ####
   ## Region ##
   if(is.na(region)){
@@ -220,8 +215,8 @@ climate_match <- function(region,
   
   for(t in timeperiodes){
     # Import legends
-    KG_Rubel_Kotteks_Legend <- legend$KG_A1FI
-    KG_Beck <- legend$KG_Beck
+    KG_Rubel_Kotteks_Legend <- legends$KG_A1FI
+    KG_Beck <- legends$KG_Beck
     
     # Determine subset parameters
     start <- as.numeric(substr(t, 0, 4))
@@ -479,7 +474,7 @@ climate_match <- function(region,
       if(grepl("Beck", s)){
         scenario_shape@data <- scenario_shape@data %>% 
           mutate(gridcode = as.double(.data$gridcode)) %>% 
-          left_join(legend$KG_Beck, by = c("gridcode" = "GRIDCODE"))
+          left_join(legends$KG_Beck, by = c("gridcode" = "GRIDCODE"))
       }else{
         scenario_shape@data <- scenario_shape@data %>% 
           mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
@@ -600,11 +595,11 @@ climate_match <- function(region,
               mutate(GRIDCODE = as.double(.data$gridcode),
                      ID = .data$Id) %>% 
               select(-gridcode, -Id) %>% 
-              left_join(legend$KG_Beck, by = "GRIDCODE")
+              left_join(legends$KG_Beck, by = "GRIDCODE")
           }else{
             scenario_shape@data <- scenario_shape@data %>% 
               mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
-              left_join(legend$KG_A1FI, by = "GRIDCODE")
+              left_join(legends$KG_A1FI, by = "GRIDCODE")
           }
           
           temp_climate <- sp::merge(scenario_shape, temp_data, 

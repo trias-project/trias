@@ -17,4 +17,4 @@
 #'   e.g. "Cold"
 #' @source [Koppen-Geiger climate zones](https://hess.copernicus.org/articles/11/1633/2007/)
 #' @family climate data
-"legend"
+"legends"
