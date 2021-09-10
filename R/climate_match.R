@@ -431,7 +431,7 @@ climate_match <- function(region,
                   weight = 0.5,
                   group = ~.data$acceptedScientificName,
                   popup = ~.data$popup) %>% 
-      addCircleMarkers(data = data_sp_sub,
+      addCircleMarkers(data = data_sp,
                        group = ~.data$acceptedScientificName,
                        color = "black",
                        radius = 1) %>% 
@@ -534,7 +534,7 @@ climate_match <- function(region,
                     weight = 0.5,
                     group = ~acceptedScientificName,
                     popup = ~popup) %>% 
-        addCircleMarkers(data = data_sp_sub,
+        addCircleMarkers(data = data_sp,
                          group = ~ acceptedScientificName,
                          color = "black",
                          radius = 1) %>% 
@@ -634,6 +634,10 @@ climate_match <- function(region,
       
       temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
       
+      # Subset observations
+      data_sp_species_obs <- subset(data_sp, 
+                                    data_sp$taxonKey == t)
+      
       # Add layer to map
       scenario_map <- single_species_map %>% 
         addPolygons(data = temp_shape,
@@ -644,7 +648,7 @@ climate_match <- function(region,
                     weight = 0.5,
                     group = ~scenario,
                     popup = ~popup) %>% 
-        addCircleMarkers(data = data_sp_sub,
+        addCircleMarkers(data = data_sp_species_obs,
                          color = "black",
                          radius = 1) %>% 
         addLegend(pal = pal_current,
