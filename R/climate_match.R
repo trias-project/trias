@@ -108,19 +108,19 @@ climate_match <- function(region,
   # Download data ####
   
   if (base::missing(zipfile)) {
-    rerun <- 1
+    rerun <- 2
   }else{
     if (!file.exists(zipfile)) {
       warning(paste0(zipfile, " cannot be found. Rerunning gbif download"))
-      rerun <- 1
+      rerun <- 2
     }else{
-      rerun <- menu(choices = c("yes", "no"), 
+      rerun <- menu(choices = c("no", "yes"), 
                     title = "rerun gbif download?",
                     graphics = TRUE)
     }
   }
   
-  if (rerun != 1 ) {
+  if (rerun != 2 ) {
     data <- read_tsv(unz(zipfile, "occurrence.txt"), 
                      col_types = c(decimalLatitude = col_number(),
                                    decimalLongitude = col_number(),
