@@ -58,7 +58,8 @@ Imports:
 	  svDialogs,
     tibble,
     tidyr,
-    tidyselect
+    tidyselect,
+    methods
 Suggests:
     covr,
     knitr,
