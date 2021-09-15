@@ -17,7 +17,8 @@ climate_match(
 )
 }
 \arguments{
-\item{region}{(character) the full name of the target nation or region}
+\item{region}{(character) the full name of the target nation or region or
+(SpatialPolygon) of a custom region.}
 
 \item{taxonkey}{(character or vector) containing gbif - taxonkey(s)}
 
@@ -70,4 +71,46 @@ the current and future climate scenarios
 \description{
 This function creates a set of climate matching outputs for a species or set
 of species for a region or nation.
+}
+\examples{
+\dontrun{
+# use rworldmap shapes 
+region <- "europe"
+
+# provide gbif taxonkey (-list)
+taxonkey <- c(2865504, 5274858)
+
+# download zipfile from gbif
+# goto https://www.gbif.org/occurrence/download/0001221-210914110416597
+
+zipfile <- "./<path to zipfile>/0001221-210914110416597.zip"
+
+# calculate all climate match outputs
+# with gbif download
+climate_match(region,
+              taxonkey, 
+              n_limit = 0.2,
+              cm_limit = 90
+)
+# calculate only data climate match outputs
+# using a pre-downloaded zipfile
+climate_match(region,
+              taxonkey, 
+              zipfile,
+              n_limit = 0.2,
+              cm_limit = 90,
+              maps = FALSE
+)
+# calculate climate match outputs based 
+# on human observations with a 100m 
+# coordinate uncertainty
+climate_match(region,
+              taxonkey, 
+              zipfile,
+              n_limit = 0.2,
+              cm_limit = 90,
+              coord_unc = 100,
+              BasisOfRecord = "HUMAN_OBSERVATION",
+              maps = FALSE
+}
 }
