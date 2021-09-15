@@ -17,8 +17,9 @@ climate_match(
 )
 }
 \arguments{
-\item{region}{(character) the full name of the target nation or region or
-(SpatialPolygon) of a custom region.}
+\item{region}{(optional character) the full name of the target nation or
+region
+region can also be a custom region (SpatialPolygon or sf object).}
 
 \item{taxonkey}{(character or vector) containing gbif - taxonkey(s)}
 

@@ -3,8 +3,9 @@
 #' This function creates a set of climate matching outputs for a species or set
 #' of species for a region or nation.
 #' 
-#' @param region (character) the full name of the target nation or region or
-#' (SpatialPolygon) of a custom region.
+#' @param region (optional character) the full name of the target nation or 
+#' region 
+#' region can also be a custom region (SpatialPolygon or sf object).
 #' @param taxonkey (character or vector) containing gbif - taxonkey(s)
 #' @param zipfile (optional character) The path (inclu. extension) of a zipfile 
 #' from a previous gbif-download. This zipfile should contain data of the 
