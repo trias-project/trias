@@ -3,7 +3,8 @@
 #' This function creates a set of climate matching outputs for a species or set
 #' of species for a region or nation.
 #' 
-#' @param region (character) the full name of the target nation or region
+#' @param region (character) the full name of the target nation or region or
+#' (SpatialPolygon) of a custom region.
 #' @param taxonkey (character or vector) containing gbif - taxonkey(s)
 #' @param zipfile (optional character) The path (inclu. extension) of a zipfile 
 #' from a previous gbif-download. This zipfile should contain data of the 
@@ -46,7 +47,7 @@
 #' @importFrom rgbif occ_download occ_download_meta occ_download_get pred
 #'   occ_download_import pred_in
 #' @importFrom sp SpatialPointsDataFrame over merge CRS 
-#'   rbind.SpatialPolygonsDataFrame
+#'   rbind.SpatialPolygonsDataFrame spTransform
 #' @importFrom raster intersect
 #' @importFrom rworldmap getMap
 #' @importFrom leaflet leaflet addPolygons colorNumeric addCircleMarkers
@@ -59,7 +60,7 @@
 #' @importFrom stats setNames
 #' @importFrom utils menu
 #' @importFrom rlang is_empty
-#'  @examples
+#' @examples
 #' \dontrun{
 #' # use rworldmap shapes 
 #' region <- "europe"
@@ -116,25 +117,54 @@ climate_match <- function(region,
   
   # Checks ####
   ## Region ##
+  if (missing(region)) {
+    # no region is provided => worldwide
+    region_shape <- getMap(resolution = "low")
+  }else{
+    if (is.character(region)) {
+      # region is a character => select region from worldmap
+      region <- tolower(region)
+      
+      worldmap <- getMap(resolution = "low")
+      
+      valid_countries <- tolower(unique(worldmap$NAME))
+      
+      if(region %in% valid_countries){
+        region_shape <- subset(worldmap, tolower(worldmap$NAME) == region) 
+      }else{
+        valid_continents <- tolower(unique(worldmap$REGION))
+        if(region %in% valid_continents){
+          region_shape <- subset(worldmap, tolower(worldmap$REGION) == region) 
+        }else{
+          stop("the provided region is not valid")
+        }
+      }
+    }else{
+      # region is a environment object => get object into function 
+      region_shape <- region
+      
+      if (class(region_shape) == "sf") {
+        # region_shape is sf
+        region_shape <- as(region_shape, "spatial")
+      }
+      
+      if (class(region_shape) %in% c("SpatialPolygons", "SpatialPolygonsDataFrame")) {
+        # region_shape is sp or converted from sf into sp and is a spatialpolygon(dataframe)
+      }else{
+        # region_shape is sp or converted from sf into sp but is not spatialpolygon(dataframe)
+        stop("region is not a spatial object of the correct class")
+      }
+    }
+  }
+  
+  region_shape <- spTransform(region_shape, crs_wgs)
+  
+  
+  
   if(is.na(region)){
     stop("region is missing")
   }else{
-    region <- tolower(region)
     
-    worldmap <- getMap(resolution = "low")
-    
-    valid_countries <- tolower(unique(worldmap$NAME))
-    
-    if(region %in% valid_countries){
-      region_shape <- subset(worldmap, tolower(worldmap$NAME) == region) 
-    }else{
-      valid_continents <- tolower(unique(worldmap$REGION))
-      if(region %in% valid_continents){
-        region_shape <- subset(worldmap, tolower(worldmap$REGION) == region) 
-      }else{
-        stop("the provided region is not valid")
-      }
-    }
   }
   
   ## Species ##
