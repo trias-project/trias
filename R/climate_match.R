@@ -61,6 +61,7 @@
 #' @importFrom stats setNames
 #' @importFrom utils menu
 #' @importFrom rlang is_empty
+#' @importFrom methods as
 #' @examples
 #' \dontrun{
 #' # use rworldmap shapes 
