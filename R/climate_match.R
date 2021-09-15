@@ -675,7 +675,7 @@ climate_match <- function(region,
               cm = cm,
               filtered = data_overlay_scenario_filtered,
               future = future_climate,
-              spatial = data_sp_sub,
+              spatial = data_sp,
               current_map = current_climate_map,
               future_maps = future_scenario_maps,
               single_species_maps = single_species_maps))
