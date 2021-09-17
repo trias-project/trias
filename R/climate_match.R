@@ -161,14 +161,6 @@ climate_match <- function(region,
   
   region_shape <- spTransform(region_shape, crs_wgs)
   
-  
-  
-  if(is.na(region)){
-    stop("region is missing")
-  }else{
-    
-  }
-  
   ## Species ##
   taxonkey <- as.numeric(unique(taxonkey))
   
@@ -334,7 +326,7 @@ climate_match <- function(region,
     }
   }
   
-  ## Calculate threshold parameters ##
+  ## Calculate threshold parameters ####
   data_overlay_unfiltered <- data_overlay %>% 
     group_by(.data$acceptedTaxonKey, .data$acceptedScientificName, .data$Classification) %>% 
     add_tally(name = "n_climate") %>% 
