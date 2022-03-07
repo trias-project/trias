@@ -93,7 +93,7 @@ update_download_list <- function(file, download_to_add, input_checklist,
     readr::write_tsv(
       x = downloads,
       file = file,
-      quote_escape = FALSE
+      escape = "none"
     )
   }
 }
