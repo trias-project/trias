@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://trias-project.github.io/trias/404.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/authors.html</loc>
+  </url>
+  <url>
     <loc>https://trias-project.github.io/trias/index.html</loc>
   </url>
   <url>
@@ -23,6 +38,9 @@
   </url>
   <url>
     <loc>https://trias-project.github.io/trias/reference/get_table_pathways.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/index.html</loc>
   </url>
   <url>
     <loc>https://trias-project.github.io/trias/reference/indicator_introduction_year.html</loc>
