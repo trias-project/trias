@@ -96,9 +96,8 @@ update_download_list <- function(file, download_to_add, input_checklist,
     write_tsv(
       x = downloads,
       file = file,
-      append = FALSE,
       na = "",
-      quote_escape = "none"
+      escape = "none"
     )
   }
 }
