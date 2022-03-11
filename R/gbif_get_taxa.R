@@ -73,14 +73,14 @@ gbif_get_taxa <- function(
     )
   )
 
-  # test parameter taxon_keys
+  # test argument taxon_keys
   if (!is.null(taxon_keys)) {
     assert_that(is.numeric(taxon_keys) | is.character(taxon_keys),
       msg = "taxon_keys should be a numeric, character or a vector."
     )
   }
 
-  # test parameter checklist_keys
+  # test argument checklist_keys
   if (!is.null(checklist_keys)) {
     assert_that(is.character(checklist_keys),
       msg = "checklist_keys should be a character or a vector."
@@ -114,7 +114,7 @@ gbif_get_taxa <- function(
     )
     origins <- stringr::str_to_lower(origin)
     if (!is.null(taxon_keys)) {
-      warning("origin parameter ignored if used in combination with taxon_keys.")
+      warning("origin argument ignored if used in combination with taxon_keys.")
     }
   }
 
