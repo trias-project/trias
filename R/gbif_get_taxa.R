@@ -110,7 +110,7 @@ gbif_get_taxa <- function(
   # test origin and set to lower
   if (!is.null(origin)) {
     assert_that(is.character(origin),
-      msg = "origin should be a character or a vector."
+      msg = "origin must be a character or a vector."
     )
     origins <- stringr::str_to_lower(origin)
     if (!is.null(taxon_keys)) {
