@@ -6,10 +6,10 @@
 #' @param region (optional character) the full name of the target nation or 
 #' region 
 #' region can also be a custom region (SpatialPolygon or sf object).
-#' @param taxonkey (character or vector) containing gbif - taxonkey(s)
-#' @param zipfile (optional character) The path (inclu. extension) of a zipfile 
+#' @param taxon_key (character or vector) containing GBIF - taxonkey(s)
+#' @param zip_file (optional character) The path (inclu. extension) of a zipfile 
 #' from a previous GBIF-download. This zipfile should contain data of the 
-#' species specified by the taxonkey
+#' species specified by the taxon_key
 #' @param scenario (character) the future scenarios we are interested in.
 #'  (default) all future scenarios are used
 #' @param n_limit (optional numeric) the minimal number of total observations a 
@@ -41,7 +41,7 @@
 #' climate match with the climate from 1980 till 2016
 #' - `future_maps` a list of leaflet objects for each future climate 
 #' scenario, displaying the degree of climate match
-#' - `single_species_maps` a list of leaflet objects per taxonkey displaying 
+#' - `single_species_maps` a list of leaflet objects per taxon_key displaying 
 #' the current and future climate scenarios
 #' 
 #' @export
@@ -67,26 +67,26 @@
 #' # use rworldmap shapes 
 #' region <- "europe"
 #' 
-#' # provide GBIF taxonkey (-list)
-#' taxonkey <- c(2865504, 5274858)
+#' # provide GBIF taxon_key (-list)
+#' taxon_key <- c(2865504, 5274858)
 #' 
-#' # download zipfile from GBIF
+#' # download zip_file from GBIF
 #' # goto https://www.gbif.org/occurrence/download/0001221-210914110416597
 #' 
-#' zipfile <- "./<path to zipfile>/0001221-210914110416597.zip"
+#' zip_file <- "./<path to zip_file>/0001221-210914110416597.zip"
 #' 
 #' # calculate all climate match outputs
 #' # with GBIF download
 #' climate_match(region,
-#'               taxonkey, 
+#'               taxon_key, 
 #'               n_limit = 0.2,
 #'               cm_limit = 90
 #' )
 #' # calculate only data climate match outputs
-#' # using a pre-downloaded zipfile
+#' # using a pre-downloaded zip_file
 #' climate_match(region,
-#'               taxonkey, 
-#'               zipfile,
+#'               taxon_key, 
+#'               zip_file,
 #'               n_limit = 0.2,
 #'               cm_limit = 90,
 #'               maps = FALSE
@@ -95,8 +95,8 @@
 #' # on human observations with a 100m 
 #' # coordinate uncertainty
 #' climate_match(region,
-#'               taxonkey, 
-#'               zipfile,
+#'               taxon_key, 
+#'               zip_file,
 #'               n_limit = 0.2,
 #'               cm_limit = 90,
 #'               coord_unc = 100,
@@ -104,8 +104,8 @@
 #'               maps = FALSE
 #' }
 climate_match <- function(region, 
-                          taxonkey, 
-                          zipfile,
+                          taxon_key, 
+                          zip_file,
                           scenario = "all",
                           n_limit,
                           cm_limit,
@@ -162,21 +162,21 @@ climate_match <- function(region,
   region_shape <- spTransform(region_shape, crs_wgs)
   
   ## Species ##
-  taxonkey <- as.numeric(unique(taxonkey))
+  taxon_key <- as.numeric(unique(taxon_key))
   
-  if(length(taxonkey) == 1 & is.na(taxonkey)){
-    stop("taxonkey is missing or not valid")
+  if(length(taxon_key) == 1 & is.na(taxon_key)){
+    stop("taxon_key is missing or not valid")
   }
   
-  taxonkey_set1 <- pred_in("taxonKey", taxonkey)
+  taxon_key_set1 <- pred_in("taxonKey", taxon_key)
   
   # Download data ####
   
-  if (base::missing(zipfile)) {
+  if (base::missing(zip_file)) {
     rerun <- 2
   }else{
-    if (!file.exists(zipfile)) {
-      warning(paste0(zipfile, " cannot be found. Rerunning GBIF download"))
+    if (!file.exists(zip_file)) {
+      warning(paste0(zip_file, " cannot be found. Rerunning GBIF download"))
       rerun <- 2
     }else{
       rerun <- menu(choices = c("no", "yes"), 
@@ -186,17 +186,17 @@ climate_match <- function(region,
   }
   
   if (rerun != 2 ) {
-    data <- read_tsv(unz(zipfile, "occurrence.txt"), 
+    data <- read_tsv(unz(zip_file, "occurrence.txt"), 
                      col_types = c(decimalLatitude = col_number(),
                                    decimalLongitude = col_number(),
                                    establishmentMeans = col_character())) %>% 
-      filter(acceptedTaxonKey %in% taxonkey)
+      filter(acceptedTaxonKey %in% taxon_key)
   }else{
     gbif_user <- get_cred("gbif_user")
     gbif_pwd <- get_cred("gbif_pwd")
     gbif_email <- get_cred("gbif_email")
     
-    set1 <- occ_download(taxonkey_set1, 
+    set1 <- occ_download(taxon_key_set1, 
                          pred("hasCoordinate", TRUE),
                          user = gbif_user, 
                          pwd = gbif_pwd, 
@@ -216,8 +216,8 @@ climate_match <- function(region,
     
     if(nrow(data) == 0){
       stop("no occurrences of ", 
-           paste(taxonkey, collapse = ", "), 
-           " were found on gbif")
+           paste(taxon_key, collapse = ", "), 
+           " were found on GBIF")
     }
   }
   
@@ -260,7 +260,7 @@ climate_match <- function(region,
              .data$decimalLongitude, .data$coordinateUncertaintyInMeters, .data$countryCode)
   
   if(nrow(data_redux) == 0){
-    stop(paste0("No useable data for ", paste(taxonkey, collapse = ","), " left after filters. Try omiting or changing the filter setup."))
+    stop(paste0("No useable data for ", paste(taxon_key, collapse = ","), " left after filters. Try omiting or changing the filter setup."))
   }
   
   coord <- data_redux %>% 
@@ -322,7 +322,7 @@ climate_match <- function(region,
         data_overlay <- rbind(data_overlay, data_sub_overlay)
       }
     }else{
-      warning(paste0("No data was present in the gbifdataset for ", t))
+      warning(paste0("No data was present in the GBIF dataset for ", t))
     }
   }
   
@@ -441,7 +441,7 @@ climate_match <- function(region,
     # Combine climate shape with climate matched observations
     current_climate <- current_climate_shape
     
-    for(t in taxonkey){
+    for(t in taxon_key){
       temp_data <- data_overlay_unfiltered %>% 
         dplyr::filter(.data$taxonKey == t) %>% 
         select(-.data$Description)
@@ -457,7 +457,7 @@ climate_match <- function(region,
                                   duplicateGeoms = TRUE)
         
         temp_climate@data <- temp_climate@data %>% 
-          mutate(taxonKey = t,
+          mutate(taxon_key = t,
                  acceptedScientificName = species)
         
         if(ncol(current_climate)!=ncol(temp_climate)){
@@ -551,7 +551,7 @@ climate_match <- function(region,
       # Combine climate shape with climate matched observations
       temp_shape <- scenario_shape
       
-      for(t in taxonkey){
+      for(t in taxon_key){
         
         temp_data <- data_overlay_unfiltered %>% 
           dplyr::filter(.data$taxonKey == t) %>% 
@@ -568,7 +568,7 @@ climate_match <- function(region,
                                     duplicateGeoms = TRUE)
           
           temp_climate@data <- temp_climate@data %>% 
-            mutate(taxonKey = t,
+            mutate(taxon_key = t,
                    acceptedScientificName = species)
           
           if(ncol(temp_shape) != ncol(temp_climate)){
@@ -632,15 +632,15 @@ climate_match <- function(region,
     
     scenarios_2 <- c("1980-2016", scenarios)
     
-    single_species_maps <- list_along(taxonkey)
-    names(single_species_maps) <- taxonkey
+    single_species_maps <- list_along(taxon_key)
+    names(single_species_maps) <- taxon_key
     
-    for (i in 1:length(taxonkey)) {
+    for (i in 1:length(taxon_key)) {
       
-      t <- taxonkey[i]
+      t <- taxon_key[i]
       
       temp_data <- data_overlay_unfiltered %>% 
-        dplyr::filter(taxonKey == t) %>% 
+        dplyr::filter(taxon_key == t) %>% 
         select(-Description)
       
       species <- unique(temp_data$acceptedScientificName)
@@ -675,7 +675,7 @@ climate_match <- function(region,
                                     duplicateGeoms = TRUE)
           
           temp_climate@data <- temp_climate@data %>% 
-            mutate(taxonKey = t,
+            mutate(taxon_key = t,
                    acceptedScientificName = species,
                    scenario = s)
           
