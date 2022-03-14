@@ -28,6 +28,12 @@
     <loc>https://trias-project.github.io/trias/reference/apply_gam.html</loc>
   </url>
   <url>
+    <loc>https://trias-project.github.io/trias/reference/climate_match.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/future.html</loc>
+  </url>
+  <url>
     <loc>https://trias-project.github.io/trias/reference/gbif_get_taxa.html</loc>
   </url>
   <url>
@@ -35,6 +41,9 @@
   </url>
   <url>
     <loc>https://trias-project.github.io/trias/reference/gbif_verify_keys.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/get_cred.html</loc>
   </url>
   <url>
     <loc>https://trias-project.github.io/trias/reference/get_table_pathways.html</loc>
@@ -50,6 +59,12 @@
   </url>
   <url>
     <loc>https://trias-project.github.io/trias/reference/indicator_total_year.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/legends.html</loc>
+  </url>
+  <url>
+    <loc>https://trias-project.github.io/trias/reference/observed.html</loc>
   </url>
   <url>
     <loc>https://trias-project.github.io/trias/reference/pathways_cbd.html</loc>

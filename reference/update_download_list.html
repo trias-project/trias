@@ -19,7 +19,7 @@ RUNNING or PREPARING. If the specifid download is not present it will be add."><
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
       </span>
     </div>
 
@@ -65,8 +65,10 @@ downloads from GBIF and updates the status of all downloads with status
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>file</dt>
-<dd><p>text file (tab separated) containing all occurrence downloads from GBIF. File should contain the following columns:</p><ul><li><p><code>gbif_download_key</code>: GBIF download keys, e.g. 0012078-181003121212138</p></li>
-<li><p><code>input_checklist</code>: filename or link to readable text file containing the list of queried taxa</p></li>
+<dd><p>text file (tab separated) containing all occurrence downloads
+from GBIF. File should contain the following columns:</p><ul><li><p><code>gbif_download_key</code>: GBIF download keys, e.g. 0012078-181003121212138</p></li>
+<li><p><code>input_checklist</code>: filename or link to readable text file containing the
+list of queried taxa</p></li>
 <li><p><code>gbif_download_created</code>: datetime of the GBIF download creation as
 returned by <code>rgbif</code> function  <code>occ_download_meta</code></p></li>
 <li><p><code>gbif_download_status</code>: status of the GBIF download as returned by as
@@ -80,7 +82,7 @@ value (see below)</p></li>
 <dd><p>character. A GBIF download key to be added to file.</p></dd>
 <dt>input_checklist</dt>
 <dd><p>text file with taxon keys whose occurrences you want
-to download.</p></dd>
+to download</p></dd>
 <dt>url_doi_base</dt>
 <dd><p>character. doi base URL; <code>url_doi_base</code> + doi form a
 link to a page with download information. Default: "https://doi.org/".</p></dd>
