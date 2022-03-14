@@ -6,8 +6,8 @@
 \usage{
 climate_match(
   region,
-  taxonkey,
-  zipfile,
+  taxon_key,
+  zip_file,
   scenario = "all",
   n_limit,
   cm_limit,
@@ -21,11 +21,11 @@ climate_match(
 region
 region can also be a custom region (SpatialPolygon or sf object).}
 
-\item{taxonkey}{(character or vector) containing gbif - taxonkey(s)}
+\item{taxon_key}{(character or vector) containing GBIF - taxonkey(s)}
 
-\item{zipfile}{(optional character) The path (inclu. extension) of a zipfile
-from a previous gbif-download. This zipfile should contain data of the
-species specified by the taxonkey}
+\item{zip_file}{(optional character) The path (inclu. extension) of a zipfile
+from a previous GBIF-download. This zipfile should contain data of the
+species specified by the taxon_key}
 
 \item{scenario}{(character) the future scenarios we are interested in.
 (default) all future scenarios are used}
@@ -65,7 +65,7 @@ in the analysis
 climate match with the climate from 1980 till 2016
 \item \code{future_maps} a list of leaflet objects for each future climate
 scenario, displaying the degree of climate match
-\item \code{single_species_maps} a list of leaflet objects per taxonkey displaying
+\item \code{single_species_maps} a list of leaflet objects per taxon_key displaying
 the current and future climate scenarios
 }
 }
@@ -78,26 +78,26 @@ of species for a region or nation.
 # use rworldmap shapes 
 region <- "europe"
 
-# provide gbif taxonkey (-list)
-taxonkey <- c(2865504, 5274858)
+# provide GBIF taxon_key (-list)
+taxon_key <- c(2865504, 5274858)
 
-# download zipfile from gbif
+# download zip_file from GBIF
 # goto https://www.gbif.org/occurrence/download/0001221-210914110416597
 
-zipfile <- "./<path to zipfile>/0001221-210914110416597.zip"
+zip_file <- "./<path to zip_file>/0001221-210914110416597.zip"
 
 # calculate all climate match outputs
-# with gbif download
+# with GBIF download
 climate_match(region,
-              taxonkey, 
+              taxon_key, 
               n_limit = 0.2,
               cm_limit = 90
 )
 # calculate only data climate match outputs
-# using a pre-downloaded zipfile
+# using a pre-downloaded zip_file
 climate_match(region,
-              taxonkey, 
-              zipfile,
+              taxon_key, 
+              zip_file,
               n_limit = 0.2,
               cm_limit = 90,
               maps = FALSE
@@ -106,8 +106,8 @@ climate_match(region,
 # on human observations with a 100m 
 # coordinate uncertainty
 climate_match(region,
-              taxonkey, 
-              zipfile,
+              taxon_key, 
+              zip_file,
               n_limit = 0.2,
               cm_limit = 90,
               coord_unc = 100,
