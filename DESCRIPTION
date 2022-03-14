@@ -1,7 +1,7 @@
 Package: trias
 Title: Process Data for the Project Tracking Invasive Alien Species
     (TrIAS)
-Version: 1.5.1
+Version: 1.6.0
 Authors@R: 
     c(person(given = "Damiano",
              family = "Oldoni",
