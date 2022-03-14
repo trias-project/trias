@@ -13,7 +13,7 @@
 #' @export
 #' @importFrom assertthat assert_that
 #' @importFrom rgbif name_usage
-#' @importFrom dplyr select %>% intersect distinct_ mutate_all
+#' @importFrom dplyr select %>% distinct_ mutate_all
 #' @importFrom purrr map cross_df
 #' @examples
 #' # numeric taxonKey, atomic parameters
@@ -117,7 +117,7 @@ gbif_has_distribution <- function(taxon_key, ...) {
         # Avoid mismatch due to any upper/lowercase difference
         user_properties <- map(user_properties, ~ toupper(.))
         # Check whether at least
-        has_distr <- intersect(
+        has_distr <- dplyr::intersect(
           user_properties %>%
             cross_df(),
           distr_properties %>%

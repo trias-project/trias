@@ -12,10 +12,12 @@ update_download_list(
 )
 }
 \arguments{
-\item{file}{text file (tab separated) containing all occurrence downloads from GBIF. File should contain the following columns:
+\item{file}{text file (tab separated) containing all occurrence downloads
+from GBIF. File should contain the following columns:
 \itemize{
 \item \code{gbif_download_key}: GBIF download keys, e.g. 0012078-181003121212138
-\item \code{input_checklist}: filename or link to readable text file containing the list of queried taxa
+\item \code{input_checklist}: filename or link to readable text file containing the
+list of queried taxa
 \item \code{gbif_download_created}: datetime of the GBIF download creation as
 returned by \code{rgbif} function  \code{occ_download_meta}
 \item \code{gbif_download_status}: status of the GBIF download as returned by as
@@ -29,7 +31,7 @@ value (see below)
 \item{download_to_add}{character. A GBIF download key to be added to file.}
 
 \item{input_checklist}{text file with taxon keys whose occurrences you want
-to download.}
+to download}
 
 \item{url_doi_base}{character. doi base URL; \code{url_doi_base} + doi form a
 link to a page with download information. Default: "https://doi.org/".}

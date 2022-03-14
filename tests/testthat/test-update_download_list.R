@@ -14,7 +14,9 @@ testthat::test_that("gbif download added correctly to list GBIF downloads and ot
     overwrite = TRUE
   )
 
-  input_df <- readr::read_tsv(gbif_downloads_file, trim_ws = TRUE, na = "")
+  input_df <- readr::read_tsv(gbif_downloads_file, trim_ws = TRUE,
+                              na = "",
+                              lazy = FALSE)
 
   #' define arguments related to new GBIF download
   gbif_download_key_to_add <- "0003300-181003121212138"
@@ -28,7 +30,8 @@ testthat::test_that("gbif download added correctly to list GBIF downloads and ot
     input_checklist = checklist
   )
 
-  output_df <- readr::read_tsv(gbif_downloads_file, trim_ws = TRUE, na = "")
+  output_df <- readr::read_tsv(gbif_downloads_file, trim_ws = TRUE, na = "",
+                               lazy = FALSE)
 
   # new download is added
   expect_equal(nrow(output_df), nrow(input_df) + 1)
