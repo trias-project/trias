@@ -8,7 +8,7 @@
 #' region can also be a custom region (SpatialPolygon or sf object).
 #' @param taxonkey (character or vector) containing gbif - taxonkey(s)
 #' @param zipfile (optional character) The path (inclu. extension) of a zipfile 
-#' from a previous gbif-download. This zipfile should contain data of the 
+#' from a previous GBIF-download. This zipfile should contain data of the 
 #' species specified by the taxonkey
 #' @param scenario (character) the future scenarios we are interested in.
 #'  (default) all future scenarios are used
@@ -67,16 +67,16 @@
 #' # use rworldmap shapes 
 #' region <- "europe"
 #' 
-#' # provide gbif taxonkey (-list)
+#' # provide GBIF taxonkey (-list)
 #' taxonkey <- c(2865504, 5274858)
 #' 
-#' # download zipfile from gbif
+#' # download zipfile from GBIF
 #' # goto https://www.gbif.org/occurrence/download/0001221-210914110416597
 #' 
 #' zipfile <- "./<path to zipfile>/0001221-210914110416597.zip"
 #' 
 #' # calculate all climate match outputs
-#' # with gbif download
+#' # with GBIF download
 #' climate_match(region,
 #'               taxonkey, 
 #'               n_limit = 0.2,
@@ -176,11 +176,11 @@ climate_match <- function(region,
     rerun <- 2
   }else{
     if (!file.exists(zipfile)) {
-      warning(paste0(zipfile, " cannot be found. Rerunning gbif download"))
+      warning(paste0(zipfile, " cannot be found. Rerunning GBIF download"))
       rerun <- 2
     }else{
       rerun <- menu(choices = c("no", "yes"), 
-                    title = "rerun gbif download?",
+                    title = "rerun GBIF download?",
                     graphics = TRUE)
     }
   }
