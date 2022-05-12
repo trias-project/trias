@@ -24,7 +24,7 @@ indicator_introduction_year(
 
 \item{smooth_span}{(numeric) Parameter for the applied
 \code{\link[stats]{loess}} smoother. For more information on the
-appropriate value, see \code{\link[ggplot2]{geom_smooth}}. Default: 0.85.}
+appropriate value, see \code{\link[ggplot2]{ggplot2::geom_smooth}}. Default: 0.85.}
 
 \item{x_major_scale_stepsize}{(integer) Parameter that indicates the breaks
 of the x axis. Default: 10.}
@@ -50,7 +50,13 @@ information about year of introduction. Default: \code{first_observed}.}
 \item{y_lab}{NULL or character. to set or remove the y-axis label.}
 }
 \value{
-A ggplot2 object (or egg object if facets are used).
+A list with two slots:
+\itemize{
+\item \code{plot}: ggplot2 object (or egg object if facets are used).
+\item \code{data_top_graph}: data.frame (tibble) with data used for the main plot (top graph) in \code{plot}.
+\item \code{data_facet_graph}: data.frame (tibble) with data used for the faceting
+plot in \code{plot}. If \code{facet_column} is NULL, NULL is returned.
+}
 }
 \description{
 Calculate how many new species has been introduced in a year.
