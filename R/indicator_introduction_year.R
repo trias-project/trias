@@ -205,7 +205,9 @@ indicator_introduction_year <- function(df,
     ggplot2::coord_cartesian(xlim = c(start_year_plot, maxDate))
 
   if (is.null(facet_column)) {
-    return(list(plot = top_graph, data_top_graph = data_top_graph))
+    return(list(plot = top_graph,
+                data_top_graph = data_top_graph,
+                data_facet_graph = NULL))
   } else {
     data_facet_graph <- data %>%
       dplyr::group_by(!!!dplyr::syms(c("first_observed", facet_column))) %>%
