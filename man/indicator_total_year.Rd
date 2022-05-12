@@ -51,7 +51,13 @@ Default: "Year.}
 Default: "Cumulative number of alien species".}
 }
 \value{
-ggplot2 object (or egg object if facets are used).
+A list with two slots:
+\itemize{
+\item \code{plot}: ggplot2 object (or egg object if facets are used).
+\item \code{data_top_graph}: data.frame (tibble) with data used for the main plot (top graph) in \code{plot}.
+\item \code{data_facet_graph}: data.frame (tibble) with data used for the faceting
+plot in \code{plot}. If \code{facet_column} is NULL, NULL is returned.
+}
 }
 \description{
 This function calculates the cumulative number of taxa introduced per year.

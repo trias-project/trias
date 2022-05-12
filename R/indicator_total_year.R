@@ -28,7 +28,11 @@
 #' @param y_lab NULL or character. To personalize or remove the y-axis label.
 #'   Default: "Cumulative number of alien species".
 #'
-#' @return ggplot2 object (or egg object if facets are used).
+#' @return A list with two slots:
+#' - `plot`: ggplot2 object (or egg object if facets are used).
+#' - `data_top_graph`: data.frame (tibble) with data used for the main plot (top graph) in `plot`.
+#' - `data_facet_graph`: data.frame (tibble) with data used for the faceting
+#' plot in `plot`. If `facet_column` is NULL, NULL is returned.
 #'
 #' @export
 #' @importFrom assertthat assert_that
@@ -200,7 +204,9 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     coord_cartesian(xlim = c(start_year_plot, maxDate))
 
   if (is.null(facet_column)) {
-    return(top_graph)
+    return(list(plot = top_graph,
+                data_top_graph = df_extended,
+                data_facet_graph = NULL))
   } else {
 
     # calculate numbers
@@ -225,6 +231,9 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       ) +
       coord_cartesian(xlim = c(start_year_plot, maxDate))
 
-    ggarrange(top_graph, facet_graph)
+    return(list(plot = ggarrange(top_graph, facet_graph),
+                data_top_graph = df_extended,
+                data_facet_graph = counts_ias_grouped)
+    )
   }
 }
