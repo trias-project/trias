@@ -32,7 +32,6 @@
 #'
 #' @export
 #' @importFrom dplyr %>%
-#'   ggplot2::geom_smooth
 #' @importFrom rlang !!!
 #'
 #' @examples
