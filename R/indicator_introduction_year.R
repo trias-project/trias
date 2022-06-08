@@ -42,13 +42,12 @@
 #'   "interim/data_input_checklist_indicators.tsv"
 #' )
 #' data <- read_tsv(datafile,
-#'   na = "NA",
+#'   na = "",
 #'   col_types = cols(
 #'     .default = col_character(),
 #'     key = col_double(),
 #'     nubKey = col_double(),
 #'     speciesKey = col_double(),
-#'     acceptedKey = col_double(),
 #'     first_observed = col_double(),
 #'     last_observed = col_double()
 #'   )
