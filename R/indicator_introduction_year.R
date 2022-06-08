@@ -239,6 +239,6 @@ indicator_introduction_year <- function(df,
 
     return(list(plot = egg::ggarrange(top_graph, facet_graph),
                 data_top_graph = data_top_graph,
-                date_facet_graph = data_facet_graph))
+                data_facet_graph = data_facet_graph))
   }
 }
