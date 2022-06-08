@@ -50,7 +50,7 @@ information about year of introduction. Default: \code{first_observed}.}
 \item{y_lab}{NULL or character. to set or remove the y-axis label.}
 }
 \value{
-A list with two slots:
+A list with three slots:
 \itemize{
 \item \code{plot}: ggplot2 object (or egg object if facets are used).
 \item \code{data_top_graph}: data.frame (tibble) with data used for the main plot (top graph) in \code{plot}.
