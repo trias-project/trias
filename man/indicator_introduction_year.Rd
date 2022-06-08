@@ -88,7 +88,7 @@ indicator_introduction_year(data,
 )
 # with facets
 indicator_introduction_year(data, facet_column = "kingdom")
-# specifiy columns with year of first observed
+# specify columns with year of first observed
 indicator_introduction_year(data,
   first_observed = "first_observed"
 )
