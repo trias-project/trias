@@ -31,13 +31,8 @@
 #'   \code{NA} for other two columns. If a key didn't pass the second check
 #'   (\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
 #' @export
-#' @importFrom assertthat assert_that
-#' @importFrom dplyr pull mutate filter left_join full_join select .data enquo
-#' @importFrom purrr reduce map_df
-#' @importFrom rgbif name_usage
+#' @importFrom dplyr .data %>%
 #' @importFrom rlang !!
-#' @importFrom tidyr gather
-#' @importFrom tidyselect vars_pull
 #' @examples
 #' # input is a vector
 #' keys1 <- c(
@@ -70,28 +65,28 @@
 #' gbif_verify_keys(keys3)
 #' gbif_verify_keys(keys4)
 gbif_verify_keys <- function(keys, col_keys = "key") {
-  assert_that(is.data.frame(keys) | is.vector(keys),
+  assertthat::assert_that(is.data.frame(keys) | is.vector(keys),
     msg = "keys should be a vector, a named list or a data.frame."
   )
   if (is.data.frame(keys)) {
-    assert_that(col_keys %in% names(keys),
+    assertthat::assert_that(col_keys %in% names(keys),
       msg = paste(
         "Column with keys not found.",
         "Did you forget maybe to pass",
         "the right column name to col_keys?"
       )
     )
-    name_col <- vars_pull(names(keys), !!enquo(col_keys))
+    name_col <- tidyselect::vars_pull(names(keys), !!dplyr::enquo(col_keys))
     # extract vector of keys from df
     keys <-
       keys %>%
-      pull(name_col)
+      dplyr::pull(name_col)
   }
   keys <- keys[!is.na(keys)]
   if (length(keys) == 0 | isTRUE(all(keys == ""))) {
     return(NULL)
   } else {
-    assert_that(all(keys != "") == TRUE,
+    assertthat::assert_that(all(keys != "") == TRUE,
       msg = paste(
         "Invalid keys:",
         paste(rep("\"\"\"\"", length(keys[which(keys == "")])),
@@ -99,7 +94,7 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
         ), "."
       )
     )
-    assert_that(all(!grepl("\\D", keys)) == TRUE,
+    assertthat::assert_that(all(!grepl("\\D", keys)) == TRUE,
       msg = paste(
         "Invalid keys:",
         paste(keys[which(!grepl("\\D", keys) == FALSE)],
@@ -116,50 +111,50 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   names(keys) <- as.character(keys)
   gbif_info <-
     keys %>%
-    map(~ tryCatch(name_usage(.)$data[1, ],
+    purrr::map(~ tryCatch(rgbif::name_usage(.)$data[1, ],
       error = function(e) {
         print(paste("Key", ., "is an invalid GBIF taxon key."))
       }
     ))
   check_keys <-
-    map_df(gbif_info, ~ is.character(.) == FALSE)
+    purrr::map_df(gbif_info, ~ is.character(.) == FALSE)
   check_keys <-
     check_keys %>%
-    gather(key = "key", value = "is_taxonKey") %>%
-    mutate(key = as.numeric(.data$key))
+    tidyr::gather(key = "key", value = "is_taxonKey") %>%
+    dplyr::mutate(key = as.numeric(.data$key))
   valid_keys_df <-
     check_keys %>%
-    filter(.data$is_taxonKey == TRUE)
+    dplyr::filter(.data$is_taxonKey == TRUE)
   valid_keys <- gbif_info[which(names(gbif_info) %in% valid_keys_df$key)]
   if (length(valid_keys) > 0) {
     valid_keys_df <-
       valid_keys %>%
-      reduce(bind_rows) %>%
-      mutate(is_from_gbif_backbone = ifelse(.data$datasetKey == uuid_backbone,
+      purrr::reduce(bind_rows) %>%
+      dplyr::mutate(is_from_gbif_backbone = ifelse(.data$datasetKey == uuid_backbone,
         TRUE, FALSE
       ))
     check_keys <-
       check_keys %>%
-      left_join(valid_keys_df %>%
-        select(.data$key, .data$is_from_gbif_backbone),
+      dplyr::left_join(valid_keys_df %>%
+        dplyr::select(.data$key, .data$is_from_gbif_backbone),
       by = "key"
       )
     valid_keys_df <-
       valid_keys_df %>%
-      filter(.data$is_from_gbif_backbone == TRUE) %>%
-      mutate(is_synonym = ifelse(!.data$taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"),
+      dplyr::filter(.data$is_from_gbif_backbone == TRUE) %>%
+      dplyr::mutate(is_synonym = ifelse(!.data$taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"),
         TRUE, FALSE
       ))
     check_keys <-
       check_keys %>%
-      left_join(valid_keys_df %>%
-        select(.data$key, .data$is_synonym),
+      dplyr::left_join(valid_keys_df %>%
+        dplyr::select(.data$key, .data$is_synonym),
       by = "key"
       )
   } else {
     check_keys <-
       check_keys %>%
-      mutate(
+      dplyr::mutate(
         is_from_gbif_backbone = NA,
         is_synonym = NA
       )
@@ -167,7 +162,7 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   
   # recreate possible duplicates by joining input_keys_df with check_keys
   input_keys_df %>%
-    left_join(check_keys,
+    dplyr::left_join(check_keys,
               by = "key")
 }
 
