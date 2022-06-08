@@ -11,10 +11,7 @@
 #' occurrenceStatus) and establishmentMeans.
 #' @return a logical, TRUE or FALSE.
 #' @export
-#' @importFrom assertthat assert_that
-#' @importFrom rgbif name_usage
-#' @importFrom dplyr select %>% distinct_ mutate_all
-#' @importFrom purrr map cross_df
+#' @importFrom dplyr %>%
 #' @examples
 #' # numeric taxonKey, atomic parameters
 #' gbif_has_distribution(145953242,
@@ -115,13 +112,13 @@ gbif_has_distribution <- function(taxon_key, ...) {
         return(FALSE)
       } else {
         # Avoid mismatch due to any upper/lowercase difference
-        user_properties <- map(user_properties, ~ toupper(.))
-        # Check whether at least
+        user_properties <- purrr::map(user_properties, ~ toupper(.))
+        # Check whether at least one property defined by user is present
         has_distr <- dplyr::intersect(
           user_properties %>%
-            cross_df(),
+            purrr::cross_df(),
           distr_properties %>%
-            select(names(user_properties)) %>%
+            dplyr::select(names(user_properties)) %>%
             dplyr::distinct() %>%
             dplyr::mutate(dplyr::across(.cols = everything(), toupper))
         ) %>%
