@@ -6,7 +6,7 @@
 #' @param start_year_plot Year where the plot starts from. Default: 1920.
 #' @param smooth_span (numeric) Parameter for the applied
 #'   \code{\link[stats]{loess}} smoother. For more information on the
-#'   appropriate value, see \code{\link[ggplot2]{ggplot2::geom_smooth}}. Default: 0.85.
+#'   appropriate value, see [ggplot2::geom_smooth()]. Default: 0.85.
 #' @param x_major_scale_stepsize (integer) Parameter that indicates the breaks
 #'   of the x axis. Default: 10.
 #' @param x_minor_scale_stepsize (integer) Parameter that indicates the minor

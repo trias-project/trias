@@ -24,7 +24,7 @@ indicator_introduction_year(
 
 \item{smooth_span}{(numeric) Parameter for the applied
 \code{\link[stats]{loess}} smoother. For more information on the
-appropriate value, see \code{\link[ggplot2]{ggplot2::geom_smooth}}. Default: 0.85.}
+appropriate value, see \code{\link[ggplot2:geom_smooth]{ggplot2::geom_smooth()}}. Default: 0.85.}
 
 \item{x_major_scale_stepsize}{(integer) Parameter that indicates the breaks
 of the x axis. Default: 10.}
