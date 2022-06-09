@@ -138,8 +138,8 @@ indicator_introduction_year <- function(df,
   # Rename to default column name
   df <-
     df %>%
-    dplyr::rename_at(vars(first_observed), ~"first_observed") %>%
-    dplyr::rename_at(vars(taxon_key_col), ~"key")
+    dplyr::rename_with(.fn = ~"first_observed", .cols = one_of(first_observed)) %>%
+    dplyr::rename_with(.fn = ~"key", .cols= one_of(taxon_key_col))
 
   # Provide warning messages for first_observed NA values
   n_first_observed_not_present <-
