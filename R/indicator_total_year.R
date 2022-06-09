@@ -35,15 +35,8 @@
 #' plot in `plot`. If `facet_column` is NULL, NULL is returned.
 #'
 #' @export
-#' @importFrom assertthat assert_that
-#' @importFrom assertable assert_colnames
-#' @importFrom dplyr %>% filter rowwise do bind_cols group_by count ungroup
-#'   rename_at distinct .data syms
-#' @importFrom tidyr unnest
+#' @importFrom dplyr %>% .data
 #' @importFrom rlang !!!
-#' @importFrom ggplot2 coord_cartesian ggplot geom_line aes xlab ylab scale_x_continuous
-#'   facet_wrap
-#' @importFrom egg ggarrange
 #'
 #' @examples
 #' \dontrun{
@@ -85,33 +78,33 @@ indicator_total_year <- function(df, start_year_plot = 1940,
                                  y_lab = "Cumulative number of alien species") {
 
   # initial input checks
-  assert_that(is.data.frame(df))
-  assert_that(is.numeric(start_year_plot),
+  assertthat::assert_that(is.data.frame(df))
+  assertthat::assert_that(is.numeric(start_year_plot),
     msg = "Argument start_year_plot has to be a number."
   )
-  assert_that(start_year_plot < as.integer(format(Sys.Date(), "%Y")),
+  assertthat::assert_that(start_year_plot < as.integer(format(Sys.Date(), "%Y")),
     msg = paste(
       "Argument start_year_plot has to be less than",
       format(Sys.Date(), "%Y")
     )
   )
-  assert_that(is.numeric(x_major_scale_stepsize),
+  assertthat::assert_that(is.numeric(x_major_scale_stepsize),
     msg = "Argument x_major_scale_stepsize has to be a number."
   )
-  assert_that(is.numeric(x_minor_scale_stepsize),
+  assertthat::assert_that(is.numeric(x_minor_scale_stepsize),
     msg = "Argument x_minor_scale_stepsize has to be a number."
   )
-  assert_that(x_major_scale_stepsize >= x_minor_scale_stepsize,
+  assertthat::assert_that(x_major_scale_stepsize >= x_minor_scale_stepsize,
     msg = paste0(
       "x_major_scale_stepsize should be greater ",
       "than x_minor_scale_stepsize."
     )
   )
-  assert_that(is.null(facet_column) | is.character(facet_column),
+  assertthat::assert_that(is.null(facet_column) | is.character(facet_column),
     msg = "Argument facet_column has to be NULL or a character."
   )
   if (is.character(facet_column)) {
-    assert_colnames(df, facet_column, only_colnames = FALSE)
+    assertable::assert_colnames(df, facet_column, only_colnames = FALSE)
   }
 
   # check for valid facet options
@@ -124,19 +117,19 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     facet_column <- match.arg(facet_column, valid_facet_options)
   }
 
-  assert_that(is.character(taxon_key_col),
+  assertthat::assert_that(is.character(taxon_key_col),
     msg = "Argument taxon_key_col has to be a character."
   )
-  assert_colnames(df, taxon_key_col, only_colnames = FALSE)
-  assert_that(is.character(first_observed),
+  assertable::assert_colnames(df, taxon_key_col, only_colnames = FALSE)
+  assertthat::assert_that(is.character(first_observed),
     msg = "Argument first_observed has to be a character."
   )
-  assert_colnames(df, first_observed, only_colnames = FALSE)
+  assertable::assert_colnames(df, first_observed, only_colnames = FALSE)
 
-  assert_that(is.null(x_lab) | is.character(x_lab),
+  assertthat::assert_that(is.null(x_lab) | is.character(x_lab),
     msg = "Argument x_lab has to be a character or NULL."
   )
-  assert_that(is.null(y_lab) | is.character(y_lab),
+  assertthat::assert_that(is.null(y_lab) | is.character(y_lab),
     msg = "Argument y_lab has to be a character or NULL."
   )
   # rename to default column name
@@ -148,7 +141,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   # Provide warning messages for first_observed NA values
   n_first_observed_not_present <-
     df %>%
-    filter(is.na(.data$first_observed)) %>%
+    dplyr::filter(is.na(.data$first_observed)) %>%
     nrow()
   if (n_first_observed_not_present) {
     warning(paste0(
@@ -160,35 +153,35 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     ))
   }
 
-  # Filter the incoming data
+  # filter the incoming data
   df <-
     df %>%
-    filter(!is.na(.data$first_observed))
+    dplyr::filter(!is.na(.data$first_observed))
 
   # Distinct values in columns of interest
   if (is.null(facet_column)) {
     df <-
       df %>%
-      distinct(.data$key, .data$first_observed)
+      dplyr::distinct(.data$key, .data$first_observed)
   } else {
     df <-
       df %>%
-      distinct(.data$key, .data$first_observed, .data[[facet_column]])
+      dplyr::distinct(.data$key, .data$first_observed, .data[[facet_column]])
   }
 
   # Make individual records for each year up to now
   maxDate <- as.integer(format(Sys.Date(), "%Y"))
   df_extended <- df %>%
-    rowwise() %>%
-    do(year = .data$first_observed:maxDate) %>%
-    bind_cols(df) %>%
-    unnest(.data$year)
+    dplyr::rowwise() %>%
+    dplyr::do(year = .data$first_observed:maxDate) %>%
+    dplyr::bind_cols(df) %>%
+    tidyr::unnest(.data$year)
 
-  top_graph <- ggplot(df_extended, aes(x = .data$year)) +
-    geom_line(stat = "count") +
-    xlab(x_lab) +
-    ylab(y_lab) +
-    scale_x_continuous(
+  top_graph <- ggplot2::ggplot(df_extended, ggplot2::aes(x = .data$year)) +
+    ggplot2::geom_line(stat = "count") +
+    ggplot2::xlab(x_lab) +
+    ggplot2::ylab(y_lab) +
+    ggplot2::scale_x_continuous(
       breaks = seq(
         start_year_plot,
         maxDate,
@@ -200,7 +193,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
         x_minor_scale_stepsize
       )
     ) +
-    coord_cartesian(xlim = c(start_year_plot, maxDate))
+    ggplot2::coord_cartesian(xlim = c(start_year_plot, maxDate))
 
   if (is.null(facet_column)) {
     return(list(plot = top_graph,
@@ -211,26 +204,26 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     # calculate numbers
     counts_ias_grouped <-
       df_extended %>%
-      group_by(!!!syms(c("year", facet_column))) %>%
-      count() %>%
-      ungroup()
+      dplyr::group_by(!!!dplyr::syms(c("year", facet_column))) %>%
+      dplyr::count() %>%
+      dplyr::ungroup()
 
     facet_graph <-
-      ggplot(
+      ggplot2::ggplot(
         counts_ias_grouped,
-        aes(x = .data$year, y = .data$n)
+        ggplot2::aes(x = .data$year, y = .data$n)
       ) +
-      geom_line(stat = "identity") +
-      xlab(x_lab) +
-      ylab(y_lab) +
-      facet_wrap(facet_column) +
-      scale_x_continuous(
+      ggplot2::geom_line(stat = "identity") +
+      ggplot2::xlab(x_lab) +
+      ggplot2::ylab(y_lab) +
+      ggplot2::facet_wrap(facet_column) +
+      ggplot2::scale_x_continuous(
         breaks = seq(start_year_plot, maxDate, x_major_scale_stepsize),
         minor_breaks = seq(start_year_plot, maxDate, x_minor_scale_stepsize)
       ) +
-      coord_cartesian(xlim = c(start_year_plot, maxDate))
+      ggplot2::coord_cartesian(xlim = c(start_year_plot, maxDate))
 
-    return(list(plot = ggarrange(top_graph, facet_graph),
+    return(list(plot = egg::ggarrange(top_graph, facet_graph),
                 data_top_graph = df_extended,
                 data_facet_graph = counts_ias_grouped)
     )

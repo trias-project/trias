@@ -31,7 +31,7 @@
 #' plot in `plot`. If `facet_column` is NULL, NULL is returned.
 #'
 #' @export
-#' @importFrom dplyr %>%
+#' @importFrom dplyr %>% .data
 #' @importFrom rlang !!!
 #'
 #' @examples
