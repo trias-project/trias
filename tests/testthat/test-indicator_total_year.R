@@ -150,7 +150,16 @@ testthat::test_that("Test output class", {
   testthat::expect_s3_class(plot_output_without_facets$data_top_graph,
                             class = "tbl_df")
   
-  # data_facet_graph is NULL if faceting is activated
+  # data_top_graph contains only columns year and n in this order
+  testthat::expect_equal(
+    names(plot_output_without_facets$data_top_graph),
+    c("year", "n"))
+  # data_top_graph contains only columns year and n in this order
+  testthat::expect_equal(
+    names(plot_output_with_facets$data_top_graph),
+    c("year", "n"))
+  
+  # data_facet_graph is NULL if faceting is deactivated
   testthat::expect_null(plot_output_without_facets$date_facet_graph)
   
   # data_facet_graph is a data.frame (tibble) if faceting is activated

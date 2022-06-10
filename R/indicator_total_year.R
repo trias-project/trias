@@ -176,9 +176,18 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     dplyr::do(year = .data$first_observed:maxDate) %>%
     dplyr::bind_cols(df) %>%
     tidyr::unnest(.data$year)
-
-  top_graph <- ggplot2::ggplot(df_extended, ggplot2::aes(x = .data$year)) +
-    ggplot2::geom_line(stat = "count") +
+  
+  # calculate numbers to plot
+  counts_ias_grouped_by_year <- 
+    df_extended %>%
+    dplyr::group_by(.data$year) %>%
+    dplyr::count() %>%
+    dplyr::ungroup()
+  top_graph <- 
+    ggplot2::ggplot(counts_ias_grouped_by_year,
+                    ggplot2::aes(x = .data$year, y = .data$n)
+    ) +
+    ggplot2::geom_line(stat = "identity") +
     ggplot2::xlab(x_lab) +
     ggplot2::ylab(y_lab) +
     ggplot2::scale_x_continuous(
@@ -197,7 +206,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
 
   if (is.null(facet_column)) {
     return(list(plot = top_graph,
-                data_top_graph = df_extended,
+                data_top_graph = counts_ias_grouped_by_year,
                 data_facet_graph = NULL))
   } else {
 
@@ -224,7 +233,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       ggplot2::coord_cartesian(xlim = c(start_year_plot, maxDate))
 
     return(list(plot = egg::ggarrange(top_graph, facet_graph),
-                data_top_graph = df_extended,
+                data_top_graph = counts_ias_grouped_by_year,
                 data_facet_graph = counts_ias_grouped)
     )
   }

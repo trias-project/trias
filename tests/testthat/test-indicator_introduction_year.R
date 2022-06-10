@@ -18,10 +18,12 @@ plot_output_without_facets <-
   indicator_introduction_year(cleaned_input_test_df,
     facet_column = NULL
   )
+
 plot_output_with_facets <-
   indicator_introduction_year(cleaned_input_test_df,
     facet_column = "kingdom"
   )
+
 testthat::test_that("Param: df", {
   testthat::expect_error(
     indicator_introduction_year(3),
@@ -153,7 +155,15 @@ testthat::test_that("Test output class", {
   testthat::expect_s3_class(plot_output_without_facets$data_top_graph,
                             class = "tbl_df")
   
-  # data_facet_graph is NULL if faceting is activated
+  # data_top_graph contains only columns year and n in this order
+  testthat::expect_equal(
+    names(plot_output_with_facets$data_top_graph),
+    c("first_observed", "n"))
+  testthat::expect_equal(
+    names(plot_output_without_facets$data_top_graph),
+    c("first_observed", "n"))
+  
+  # data_facet_graph is NULL if faceting is deactivated
   testthat::expect_null(plot_output_without_facets$date_facet_graph)
   
   # data_facet_graph is a data.frame (tibble) if faceting is activated
@@ -162,4 +172,9 @@ testthat::test_that("Test output class", {
                             class = "data.frame")
   testthat::expect_s3_class(plot_output_with_facets$data_facet_graph,
                             class = "tbl_df")
+  
+  # data_facet_graph contains only columns year, kingdom (the facet) and n
+  testthat::expect_equal(
+    names(plot_output_with_facets$data_facet_graph),
+    c("first_observed", "kingdom", "n"))
 })
