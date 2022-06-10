@@ -46,7 +46,7 @@ gbif_has_distribution("145953242",
 
 # Case insensitive
 gbif_has_distribution("145953242",
-  countryCode = "be",
+  country = "be",
   status = "PRESENT",
   establishmentMeans = "InTrOdUcEd"
 )
