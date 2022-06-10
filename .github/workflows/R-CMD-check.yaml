@@ -65,13 +65,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          if [ "$RUNNER_OS" == "Linux" ]; then
+          if "$RUNNER_OS" == "Linux" then
             remotes::install_deps(dependencies = TRUE)
             remotes::install_cran("rcmdcheck")
-          elif [ "$RUNNER_OS" == "Windows" ]; then
+          elif "$RUNNER_OS" == "Windows" then
             remotes::install_deps(dependencies = TRUE, type = "win.binary")
             remotes::install_cran("rcmdcheck")
-          elif [ "$RUNNER_OS" == "macOS" ]; then
+          elif "$RUNNER_OS" == "macOS" then
             remotes::install_deps(dependencies = TRUE, type = "mac.binary")
             remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
