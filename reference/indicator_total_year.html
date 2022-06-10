@@ -19,7 +19,7 @@ year of introduction is required."><meta property="og:image" content="https://tr
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -105,8 +105,11 @@ Default: "Cumulative number of alien species".</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ggplot2 object (or egg object if facets are used).</p>
-    </div>
+    <p>A list with three slots:</p><ul><li><p><code>plot</code>: ggplot2 object (or egg object if facets are used).</p></li>
+<li><p><code>data_top_graph</code>: data.frame (tibble) with data used for the main plot (top graph) in <code>plot</code>.</p></li>
+<li><p><code>data_facet_graph</code>: data.frame (tibble) with data used for the faceting
+plot in <code>plot</code>. If <code>facet_column</code> is NULL, NULL is returned.</p></li>
+</ul></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
@@ -117,13 +120,12 @@ Default: "Cumulative number of alien species".</p></dd>
 <span class="r-in">  <span class="st">"interim/data_input_checklist_indicators.tsv"</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="va">datafile</span>,</span>
-<span class="r-in">  na <span class="op">=</span> <span class="st">"NA"</span>,</span>
+<span class="r-in">  na <span class="op">=</span> <span class="st">""</span>,</span>
 <span class="r-in">  col_types <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html" class="external-link">cols</a></span><span class="op">(</span></span>
 <span class="r-in">    .default <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_character</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span class="r-in">    key <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span class="r-in">    nubKey <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span class="r-in">    speciesKey <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">    acceptedKey <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span class="r-in">    first_observed <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span class="r-in">    last_observed <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in">  <span class="op">)</span></span>
@@ -154,7 +156,7 @@ Default: "Cumulative number of alien species".</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

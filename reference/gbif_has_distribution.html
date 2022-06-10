@@ -20,7 +20,7 @@ It is a function built on rgbif function name_usage()."><meta property="og:image
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">trias</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -82,11 +82,6 @@ occurrenceStatus) and establishmentMeans.</p></dd>
 <span class="r-in">  status <span class="op">=</span> <span class="st">"PRESENT"</span>,</span>
 <span class="r-in">  establishmentMeans <span class="op">=</span> <span class="st">"INTRODUCED"</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`distinct_()` was deprecated in dplyr 0.7.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Please use `distinct()` instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See vignette('programming') for more help</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># character taxonKey, distribution properties as vectors, treated as OR</span></span>
@@ -108,11 +103,10 @@ occurrenceStatus) and establishmentMeans.</p></dd>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Case insensitive</span></span>
 <span class="r-in"><span class="fu">gbif_has_distribution</span><span class="op">(</span><span class="st">"145953242"</span>,</span>
-<span class="r-in">  countryCode <span class="op">=</span> <span class="st">"be"</span>,</span>
+<span class="r-in">  country <span class="op">=</span> <span class="st">"be"</span>,</span>
 <span class="r-in">  status <span class="op">=</span> <span class="st">"PRESENT"</span>,</span>
 <span class="r-in">  establishmentMeans <span class="op">=</span> <span class="st">"InTrOdUcEd"</span></span>
 <span class="r-in"><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>countryCode renamed to country</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>
@@ -128,7 +122,7 @@ occurrenceStatus) and establishmentMeans.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>
