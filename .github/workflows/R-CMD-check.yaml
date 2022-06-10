@@ -54,14 +54,6 @@ jobs:
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
 
-      # - name: Cache R packages
-      #   if: runner.os != 'Windows'
-      #   uses: actions/cache@v1
-      #   with:
-      #     path: ${{ env.R_LIBS_USER }}
-      #     key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-      #     restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
       - name: Install system dependencies
         if: runner.os == 'Linux'
         env:
@@ -73,8 +65,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            remotes::install_deps(dependencies = TRUE)
+            remotes::install_cran("rcmdcheck")
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            remotes::install_deps(dependencies = TRUE, type = "win.binary")
+            remotes::install_cran("rcmdcheck")
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            remotes::install_deps(dependencies = TRUE, type = "mac.binary")
+            remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
       - name: Session info
