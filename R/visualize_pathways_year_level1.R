@@ -205,29 +205,34 @@ visualize_pathways_year_level1 <- function(
   assertthat::assert_that(is.character(taxon_names),
     msg = "`taxon_names` must be a character."
   )
+  assertthat::assert_that(length(taxon_names) == 1)
   assertable::assert_colnames(df, taxon_names, only_colnames = FALSE)
   # Check kingdom_names
   assertthat::assert_that(is.character(kingdom_names),
     msg = "`kingdom_names` must be a character."
   )
+  assertthat::assert_that(length(kingdom_names) == 1)
   assertable::assert_colnames(df, kingdom_names, only_colnames = FALSE)
   # check parameter phylum
   assertthat::assert_that(is.character(phylum_names),
     msg = "`phylum_names` must be a character."
   )
+  assertthat::assert_that(length(phylum_names) == 1)
   assertable::assert_colnames(df, phylum_names, only_colnames = FALSE)
   # Check from
   if (!is.null(from)) {
     assertthat::assert_that(is.numeric(from),
       msg = "`from` must be a number (year)."
     )
+    assertthat::assert_that(length(from) == 1)
     assertthat::assert_that(from > 0,
       msg = "`from` must be a positive number."
     )
     assertthat::assert_that(from == as.integer(from),
       msg = "`from` must be an integer."
     )
-    assertthat::assert_that(from <= as.numeric(substr(Sys.Date(), start = 1, stop = 4)),
+    assertthat::assert_that(
+      from <= as.numeric(substr(Sys.Date(), start = 1, stop = 4)),
       msg = paste0(
         "`from` must be less than ",
         format(Sys.Date(), "%Y"),
@@ -239,22 +244,26 @@ visualize_pathways_year_level1 <- function(
   assertthat::assert_that(is.character(first_observed),
     msg = "`first_observed` must be a character."
   )
+  assertthat::assert_that(length(first_observed) == 1)
   assertable::assert_colnames(df, first_observed, only_colnames = FALSE)
   # Check title and labels
   if (!is.null(title)) {
     assertthat::assert_that(is.character(title),
       msg = "`title` must be a character or NULL."
     )
+    assertthat::assert_that(length(title) == 1)
   }
   if (!is.null(x_lab)) {
     assertthat::assert_that(is.character(x_lab),
       msg = "`x_lab` must be a character or NULL."
     )
+    assertthat::assert_that(length(x_lab) == 1)
   }
   if (!is.null(y_lab)) {
     assertthat::assert_that(is.character(y_lab),
       msg = "`y_lab` must be a character or NULL."
     )
+    assertthat::assert_that(length(y_lab) == 1)
   }
   # rename to default column name
   df <-
