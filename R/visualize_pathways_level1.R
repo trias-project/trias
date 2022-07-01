@@ -397,9 +397,7 @@ visualize_pathways_level1 <- function(df,
                   data_facet_graph = df))
     }
     else {
-      return(list(plot = NULL,
-                  data_top_graph = NULL,
-                  data_facet_graph = NULL))
+      return(list(plot = NULL, data_top_graph = NULL, data_facet_graph = NULL))
     }
   }
 }
