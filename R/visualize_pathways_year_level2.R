@@ -530,7 +530,7 @@ visualize_pathways_year_level2 <- function(
                 data_facet_graph = NULL))
   } else {
     # dplyr::count number of taxa per pathway_level2 per facet over time
-    df_facet_graph <-
+    data_facet_graph <-
       df %>%
       dplyr::group_by(
         .data$bins_first_observed,
@@ -539,12 +539,12 @@ visualize_pathways_year_level2 <- function(
       ) %>%
       dplyr::count() %>%
       dplyr::ungroup()
-    max_n <- max(df_facet_graph$n)
+    max_n <- max(data_facet_graph$n)
     # Plot number of taxa per pathway_level2 per facet over time
     facet_graph <- NULL
-    if (nrow(df_facet_graph) > 0) {
+    if (nrow(data_facet_graph) > 0) {
       facet_graph <-
-        ggplot2::ggplot(df_facet_graph) +
+        ggplot2::ggplot(data_facet_graph) +
         ggplot2::geom_line(aes(
           x = .data$bins_first_observed,
           y = .data$n,
