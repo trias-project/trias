@@ -50,7 +50,7 @@
 #' plot in `plot`. `NULL` is returned if `facet_column` is `NULL`.
 #'
 #' @export
-#' @importFrom dplyr %>%
+#' @importFrom dplyr %>% .data
 #' @importFrom rlang !!
 #'
 #' @examples

@@ -66,7 +66,7 @@
 #'
 #' @export
 #' 
-#' @importFrom dplyr %>%
+#' @importFrom dplyr %>% .data
 #' @importFrom rlang !!
 #'
 #' @examples
