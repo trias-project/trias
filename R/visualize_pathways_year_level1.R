@@ -463,6 +463,8 @@ visualize_pathways_year_level1 <- function(
       ggplot2::xlab(x_lab) +
       ggplot2::ylab(y_lab) +
       ggplot2::ggtitle(title)
+  } else {
+    data_top_graph <- NULL
   }
   if (is.null(facet_column)) {
     return(list(plot = top_graph,
@@ -502,6 +504,8 @@ visualize_pathways_year_level1 <- function(
         ggplot2::ylab(y_lab) +
         ggplot2::ggtitle(title) +
         ggplot2::facet_wrap(facet_column)
+    } else {
+      data_facet_graph <- NULL
     }
     if (all(!is.null(top_graph), !is.null(facet_graph))) {
       return(list(plot = egg::ggarrange(top_graph, facet_graph),

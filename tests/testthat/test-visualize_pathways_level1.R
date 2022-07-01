@@ -93,6 +93,11 @@ testthat::test_that("Argument: from", {
     "`from` must be a number."
   )
   expect_error(
+    visualize_pathways_level1(input_test_df, from = c(1920,1930)),
+    "length(from) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level1(input_test_df,
       from = 2900
     ),
@@ -114,6 +119,13 @@ testthat::test_that("Argument: category", {
     )
   )
   expect_error(
+    visualize_pathways_level1(input_test_df, 
+                                   category = c("Animalia", "Protozoa")
+    ),
+    "length(category) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level1(input_test_df,
       category = "not nice"
     ),
@@ -131,6 +143,13 @@ testthat::test_that("Argument: facet_column", {
       facet_column = 5
     ),
     "Argument facet_column has to be NULL or a character."
+  )
+  expect_error(
+    visualize_pathways_level1(input_test_df,
+                                   facet_column = c("habitat", "phylum")
+    ),
+    "length(facet_column) not equal to 1",
+    fixed = TRUE
   )
   expect_error(visualize_pathways_level1(input_test_df,
     facet_column = "strange_col"
@@ -168,6 +187,13 @@ testthat::test_that("Argument: taxon_names", {
     "`taxon_names` must be a character."
   )
   expect_error(
+    visualize_pathways_level1(input_test_df,
+                                   taxon_names = c("taxon", "taxonKey")
+    ),
+    "length(taxon_names) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level1(input_test_df, taxon_names = "blablabla")
   )
 })
@@ -178,6 +204,13 @@ testthat::test_that("Argument: kingdom_names", {
     "`kingdom_names` must be a character."
   )
   expect_error(
+    visualize_pathways_level1(input_test_df,
+                              kingdom_names = c("kingdom", "kingdom_col")
+    ),
+    "length(kingdom_names) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level1(input_test_df, kingdom_names = "blablabla")
   )
 })
@@ -186,6 +219,13 @@ testthat::test_that("Argument: phylum_names", {
   expect_error(
     visualize_pathways_level1(input_test_df, phylum_names = TRUE),
     "`phylum_names` must be a character."
+  )
+  expect_error(
+    visualize_pathways_level1(input_test_df,
+                              phylum_names = c("phylum", "phylum_col")
+    ),
+    "length(phylum_names) not equal to 1",
+    fixed = TRUE
   )
   expect_error(
     visualize_pathways_level1(input_test_df,
@@ -202,6 +242,13 @@ testthat::test_that("Argument: first_observed", {
   )
   expect_error(
     visualize_pathways_level1(input_test_df,
+                                   first_observed = c("year", "year_intro")
+    ),
+    "length(first_observed) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
+    visualize_pathways_level1(input_test_df,
       first_observed = "strange_colname"
     )
   )
@@ -212,12 +259,33 @@ testthat::test_that("Argument: title labels", {
     "`title` must be a character or NULL."
   )
   expect_error(
+    visualize_pathways_level1(input_test_df,
+                              title = c("my title", "my 2nd title")
+    ),
+    "length(title) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level1(input_test_df, x_lab = input_test_df),
     "`x_lab` must be a character or NULL."
   )
   expect_error(
+    visualize_pathways_level1(input_test_df,
+                              x_lab = c("x_label", "my x_label")
+    ),
+    "length(x_lab) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level1(input_test_df, y_lab = 4),
     "`y_lab` must be a character or NULL."
+  )
+  expect_error(
+    visualize_pathways_level1(input_test_df,
+                              y_lab = c("y_label", "my y_label")
+    ),
+    "length(y_lab) not equal to 1",
+    fixed = TRUE
   )
 })
 
@@ -272,21 +340,67 @@ testthat::test_that("Test empty pathway_level1 transformation to unknown", {
 })
 
 testthat::test_that("Test output class", {
+  # output is a list
   expect_type(output_general, type = "list")
   expect_type(output_with_facet, type = "list")
-  expect_null(empty_output)
-  expect_s3_class(output_general, class = "gg")
-  expect_s3_class(output_with_facet, class = "egg")
+  expect_type(empty_output, type = "list")
+  
+  # plot slot is a list with gg as class if not NULL
+  testthat::expect_type(output_general$plot, type = "list")
+  testthat::expect_type(output_with_facet$plot, type = "list")
+  testthat::expect_s3_class(output_general$plot, class = "gg")
+  testthat::expect_s3_class(output_with_facet$plot, class = "egg")
+  testthat::expect_null(empty_output$plot)
+  
+  # data_top_graph is a data.frame (tibble) if not NULL
+  testthat::expect_type(output_general$data_top_graph, type = "list")
+  testthat::expect_s3_class(output_general$data_top_graph,
+                            class = "data.frame")
+  testthat::expect_s3_class(output_general$data_top_graph,
+                            class = "tbl_df")
+  testthat::expect_type(output_with_facet$data_top_graph,
+                        type = "list")
+  testthat::expect_s3_class(output_with_facet$data_top_graph,
+                            class = "data.frame")
+  testthat::expect_s3_class(output_with_facet$data_top_graph,
+                            class = "tbl_df")
+  testthat::expect_null(empty_output$data_top_graph)
+  
+  # data_top_graph contains only columns taxonKey, and pathway_level1 in this
+  # order
+  testthat::expect_equal(
+    names(output_general$data_top_graph),
+    c("taxonKey", "pathway_level1"))
+  testthat::expect_equal(
+    names(output_with_facet$data_top_graph),
+    c("taxonKey", "pathway_level1"))
+  
+  # data_facet_graph is NULL if faceting is deactivated
+  testthat::expect_null(output_general$date_facet_graph)
+  
+  # data_facet_graph is a data.frame (tibble) if faceting is activated
+  testthat::expect_type(output_with_facet$data_facet_graph, type = "list")
+  testthat::expect_s3_class(output_with_facet$data_facet_graph,
+                            class = "data.frame")
+  testthat::expect_s3_class(output_with_facet$data_facet_graph,
+                            class = "tbl_df")
+  
+  # data_facet_graph contains only columns taxonKey, habitat (the facet) and
+  # pathway_level1
+  testthat::expect_equal(
+    names(output_with_facet$data_facet_graph),
+    c("taxonKey", "habitat", "pathway_level1"))
 })
 
 testthat::test_that("test pathway factors and their order", {
-  expect_true(is.factor(output_general$data$pathway_level1))
-  expect_true(is.factor(output_less_pathways$data$pathway_level1))
-  expect_true(is.factor(output_less_pathways_inverted$data$pathway_level1))
-  expect_true(all(levels(output_general$data$pathway_level1) ==
+  expect_true(is.factor(output_general$data_top_graph$pathway_level1))
+  expect_true(is.factor(output_less_pathways$data_top_graph$pathway_level1))
+  expect_true(is.factor(output_less_pathways_inverted$data_top_graph$pathway_level1))
+  expect_true(all(levels(output_general$data_top_graph$pathway_level1) ==
     valid_pathways))
-  expect_true(all(levels(output_less_pathways$data$pathway_level1) ==
+  expect_true(all(levels(output_less_pathways$data_top_graph$pathway_level1) ==
     pathways_selection))
-  expect_true(all(levels(output_less_pathways_inverted$data$pathway_level1) ==
+  expect_true(all(
+    levels(output_less_pathways_inverted$data_top_graph$pathway_level1) ==
     pathways_selection_inverted))
 })

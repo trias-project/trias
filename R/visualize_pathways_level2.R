@@ -437,6 +437,8 @@ visualize_pathways_level2 <- function(df,
       ggplot2::ylab(x_lab) +
       ggplot2::coord_flip() +
       ggplot2::ggtitle(title)
+  } else {
+    data_top_graph <- NULL
   }
   if (is.null(facet_column)) {
     return(list(plot = top_graph,
@@ -456,6 +458,8 @@ visualize_pathways_level2 <- function(df,
         ggplot2::coord_flip() +
         ggplot2::ggtitle(title) +
         ggplot2::facet_wrap(facet_column)
+    } else {
+      df <- NULL
     }
     if (all(!is.null(top_graph), !is.null(facet_graph))) {
       return(list(plot = egg::ggarrange(top_graph, facet_graph),

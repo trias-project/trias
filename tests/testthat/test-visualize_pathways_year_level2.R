@@ -154,7 +154,7 @@ output_later_from <- visualize_pathways_year_level2(
   chosen_pathway_level1 = "escape",
   from = later_from
 )
-empty_output <- visualize_pathways_level2(
+empty_output <- visualize_pathways_year_level2(
   input_test_df %>% # filter to be sure to produce empty bar plot
     filter(kingdom != "Protozoa" | pathway_level1 != "corridor"),
   chosen_pathway_level1 = "corridor",
@@ -542,10 +542,7 @@ testthat::test_that("Test output class", {
                             class = "data.frame")
   testthat::expect_s3_class(output_with_facet$data_top_graph,
                             class = "tbl_df")
-  testthat::expect_type(empty_output$data_top_graph, type = "list")
-  testthat::expect_s3_class(empty_output$data_top_graph,
-                            class = "data.frame")
-  testthat::expect_true(nrow(empty_output$data_top_graph) == 0)
+  testthat::expect_null(empty_output$data_top_graph)
   
   # data_top_graph contains only columns bins_first_observed, pathway_level2 and
   # n in this order

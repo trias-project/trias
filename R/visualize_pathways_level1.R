@@ -210,6 +210,7 @@ visualize_pathways_level1 <- function(df,
     assertthat::assert_that(is.numeric(from),
       msg = "`from` must be a number (year)."
     )
+    assertthat::assert_that(length(from) == 1)
     assertthat::assert_that(from > 0,
       msg = "`from` must be a positive number."
     )
@@ -355,8 +356,10 @@ visualize_pathways_level1 <- function(df,
   # Transform pathway level 1 column to factor to make ordering in graph easily
   df <-
     df %>%
-    dplyr::mutate(pathway_level1 = factor(.data$pathway_level1, levels = pathways))
-  # dplyr::distinct taxa without facet
+    dplyr::mutate(
+      pathway_level1 = factor(.data$pathway_level1, levels = pathways)) %>%
+    dplyr::as_tibble()
+  # Distinct taxa without facet
   data_top_graph <-
     df %>%
     dplyr::distinct(.data$taxonKey, .data$pathway_level1)
@@ -372,6 +375,8 @@ visualize_pathways_level1 <- function(df,
       ggplot2::ylab(x_lab) +
       ggplot2::coord_flip() +
       ggplot2::ggtitle(title)
+  } else {
+    data_top_graph <- NULL
   }
   if (is.null(facet_column)) {
     return(list(plot = top_graph,
@@ -391,6 +396,8 @@ visualize_pathways_level1 <- function(df,
         ggplot2::coord_flip() +
         ggplot2::ggtitle(title) +
         ggplot2::facet_wrap(facet_column)
+    } else {
+      df <- NULL
     }
     if (all(!is.null(top_graph), !is.null(facet_graph))) {
       return(list(plot = egg::ggarrange(top_graph, facet_graph),

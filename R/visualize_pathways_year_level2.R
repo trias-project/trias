@@ -523,6 +523,8 @@ visualize_pathways_year_level2 <- function(
       ggplot2::xlab(x_lab) +
       ggplot2::ylab(y_lab) +
       ggplot2::ggtitle(title)
+  } else {
+    data_top_graph <- NULL
   }
   if (is.null(facet_column)) {
     return(list(plot = top_graph,
