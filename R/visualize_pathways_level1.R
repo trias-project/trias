@@ -6,44 +6,48 @@
 #' added (see argument `facet_column`).
 #'
 #' @param df A data frame.
-#' @param category NULL or character. One of the kingdoms as given in GBIF and
+#' @param category `NULL` or character. One of the kingdoms as given in GBIF and
 #'   `Chordata` (the phylum), `Not Chordata` (all other phyla of `Animalia`): 1.
 #'   `Plantae` 2. `Animalia` 3. `Fungi` 4. `Chromista` 5. `Archaea` 6.
 #'   `Bacteria` 7. `Protozoa` 8. `Viruses` 9. `incertae sedis` 10. `Chordata`
 #'   11. `Not Chordata` Default: `NULL`.
-#' @param from NULL or numeric. Year trade-off: if not \code{NULL} select only
-#'   pathways related to taxa introduced during or after this year. Default:
-#'   `NULL`.
-#' @param facet_column NULL or character. The column to use to create additional
-#'   facet wrap bar graphs underneath the main graph. When NULL, no facet graph
+#' @param from `NULL` or numeric. Year trade-off: select only pathways related
+#'   to taxa introduced during or after this year. Default: `NULL`.
+#' @param facet_column `NULL` or character. The column to use to create additional
+#'   facet wrap bar graphs underneath the main graph. When `NULL`, no facet graph
 #'   are created. One of `family`, `order`, `class`, `phylum`, `locality`,
 #'   `native_range`, `habitat`. If column has another name, rename it before
 #'   calling this function. Default: `NULL`.
-#' @param pathway_level1_names character. Name of the column of \code{df}
+#' @param pathway_level1_names character. Name of the column of `df`
 #'   containing information about pathways at level 1. Default:
 #'   `pathway_level1`.
 #' @param pathways character. Vector with pathways level 1 to visualize. The
 #'   pathways are displayed following the order as in this vector.
-#' @param taxon_names character. Name of the column of \code{df} containing
+#' @param taxon_names character. Name of the column of `df` containing
 #'   information about taxa. This parameter is used to uniquely identify taxa.
-#' @param kingdom_names character. Name of the column of \code{df} containing
-#'   information about kingdom. Default: \code{"kingdom"}.
-#' @param phylum_names character. Name of the column of \code{df} containing
-#'   information about phylum. This parameter is used only if \code{category} is
-#'   one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default:
-#'   \code{"phylum"}.
-#' @param first_observed character. Name of the column of \code{df} containing
-#'   information about year of introduction. Default: \code{"first_observed"}.
+#' @param kingdom_names character. Name of the column of `df` containing
+#'   information about kingdom. Default: `"kingdom"`.
+#' @param phylum_names character. Name of the column of `df` containing
+#'   information about phylum. This parameter is used only if `category` is
+#'   one of:  `"Chordata"`, `"Not Chordata"`.  Default:
+#'   `"phylum"`.
+#' @param first_observed character. Name of the column of `df` containing
+#'   information about year of introduction. Default: `"first_observed"`.
 #' @param cbd_standard logical. If TRUE the values of pathway level 1 are
 #'   checked based on CBD standard as returned by `pathways_cbd()`. Error is
 #'   returned if unmatched values are found. If FALSE, a warning is returned.
 #'   Default: TRUE.
-#' @param title NULL or character. Title of the graph. Default: NULL.
-#' @param x_lab NULL or character. x-axis label. Default: "Number of introduced
+#' @param title `NULL` or character. Title of the graph. Default: `NULL`.
+#' @param x_lab `NULL` or character. x-axis label. Default: "Number of introduced
 #'   taxa".
-#' @param y_lab NULL or character. Title of the graph. Default: "Pathways".
-#' @return A ggplot2 object (or egg object if facets are used). NULL if there
-#'   are no data to plot.
+#' @param y_lab `NULL` or character. Title of the graph. Default: "Pathways".
+#' @return A list with three slots:
+#' - `plot`: ggplot2 object (or egg object if facets are used). `NULL` if there
+#' are no data to plot.
+#' - `data_top_graph`: data.frame (tibble) with data used for the main plot (top
+#' graph) in `plot`.
+#' - `data_facet_graph`: data.frame (tibble) with data used for the faceting
+#' plot in `plot`. `NULL` is returned if `facet_column` is `NULL`.
 #'
 #' @export
 #' @importFrom dplyr %>%
