@@ -143,11 +143,13 @@ visualize_pathways_year_level1 <- function(
   assertthat::assert_that(is.data.frame(df), msg = "`df` must be a data frame.")
   # Check bin
   assertthat::assert_that(is.numeric(bin), msg = "`bin` must be a number.")
+  assertthat::assert_that(length(bin) == 1)
   assertthat::assert_that(bin == as.integer(bin), msg = "`bin` must be an integer.")
   # Check pathway_level1_names
   assertthat::assert_that(is.character(pathway_level1_names),
     msg = "`pathway_level1_names` must be a character."
   )
+  assertthat::assert_that(length(pathway_level1_names) == 1)
   assertable::assert_colnames(df, pathway_level1_names, only_colnames = FALSE)
 
   # Check category
@@ -159,6 +161,7 @@ visualize_pathways_year_level1 <- function(
         "."
       )
     )
+    assertthat::assert_that(length(category) == 1)
     assertthat::assert_that(category %in% categories,
       msg = paste0(
         "`category` is not correct. Choose one of: ",
@@ -171,6 +174,7 @@ visualize_pathways_year_level1 <- function(
     msg = "Argument facet_column has to be NULL or a character."
   )
   if (is.character(facet_column)) {
+    assertthat::assert_that(length(facet_column) == 1)
     assertable::assert_colnames(df, facet_column, only_colnames = FALSE)
   }
   # Check for valid facet options
