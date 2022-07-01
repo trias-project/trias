@@ -38,9 +38,9 @@
 #'   returned if unmatched values are found. If FALSE, a warning is returned.
 #'   Default: TRUE.
 #' @param title `NULL` or character. Title of the graph. Default: `NULL`.
-#' @param x_lab `NULL` or character. x-axis label. Default: "Number of introduced
-#'   taxa".
-#' @param y_lab `NULL` or character. Title of the graph. Default: "Pathways".
+#' @param x_lab `NULL` or character. x-axis label. Default: `"Number of
+#'   introduced taxa"`.
+#' @param y_lab `NULL` or character. Title of the graph. Default: `"Pathways"`.
 #' @return A list with three slots:
 #' - `plot`: ggplot2 object (or egg object if facets are used). `NULL` if there
 #' are no data to plot.
@@ -356,15 +356,15 @@ visualize_pathways_level1 <- function(df,
     df %>%
     dplyr::mutate(pathway_level1 = factor(.data$pathway_level1, levels = pathways))
   # dplyr::distinct taxa without facet
-  df_top_graph <-
+  data_top_graph <-
     df %>%
     dplyr::distinct(.data$taxonKey, .data$pathway_level1)
   # Plot number of taxa per pathway_level1
   top_graph <- NULL
-  if (nrow(df_top_graph) > 0) {
+  if (nrow(data_top_graph) > 0) {
     top_graph <-
       ggplot2::ggplot(
-        df_top_graph
+        data_top_graph
       ) +
       ggplot2::geom_bar(aes(x = forcats::fct_rev(.data$pathway_level1))) +
       ggplot2::xlab(y_lab) +
@@ -373,7 +373,9 @@ visualize_pathways_level1 <- function(df,
       ggplot2::ggtitle(title)
   }
   if (is.null(facet_column)) {
-    return(top_graph)
+    return(list(plot = top_graph,
+                data_top_graph = data_top_graph,
+                data_facet_graph = NULL))
   } else {
     facet_graph <- NULL
     if (nrow(df) > 0) {
@@ -390,10 +392,14 @@ visualize_pathways_level1 <- function(df,
         ggplot2::facet_wrap(facet_column)
     }
     if (all(!is.null(top_graph), !is.null(facet_graph))) {
-      egg::ggarrange(top_graph, facet_graph)
+      return(list(plot = egg::ggarrange(top_graph, facet_graph),
+                  data_top_graph = data_top_graph,
+                  data_facet_graph = df))
     }
     else {
-      NULL
+      return(list(plot = NULL,
+                  data_top_graph = NULL,
+                  data_facet_graph = NULL))
     }
   }
 }

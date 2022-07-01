@@ -67,10 +67,9 @@ Default: TRUE.}
 
 \item{title}{\code{NULL} or character. Title of the graph. Default: \code{NULL}.}
 
-\item{x_lab}{\code{NULL} or character. x-axis label. Default: "Number of introduced
-taxa".}
+\item{x_lab}{\code{NULL} or character. x-axis label. Default: \code{"Number of introduced taxa"}.}
 
-\item{y_lab}{\code{NULL} or character. Title of the graph. Default: "Pathways".}
+\item{y_lab}{\code{NULL} or character. Title of the graph. Default: \code{"Pathways"}.}
 }
 \value{
 A list with three slots:
