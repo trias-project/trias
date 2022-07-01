@@ -250,7 +250,6 @@ visualize_pathways_year_level2 <- function(
     assertthat::assert_that(is.character(pathways),
       msg = "`pathways` must be a vector of characters."
     )
-    assertthat::assert_that(length(pathways) == 1)
     invalid_pathways <- pathways[!pathways %in%
       df[[pathway_level2_names]]]
     assertthat::assert_that(length(invalid_pathways) == 0,
