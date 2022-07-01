@@ -117,36 +117,35 @@ datafile <- paste0(
   "interim/data_input_checklist_indicators.tsv"
 )
 data <- read_tsv(datafile,
-  na = "NA",
+  na = "",
   col_types = cols(
     .default = col_character(),
     key = col_double(),
     nubKey = col_double(),
     speciesKey = col_double(),
-    acceptedKey = col_double(),
     first_observed = col_double(),
     last_observed = col_double()
   )
 )
 # All taxa
-visualize_pathways_level2(t, chosen_pathway_level1 = "escape")
+visualize_pathways_level2(data, chosen_pathway_level1 = "escape")
 
 # Animalia
-visualize_pathways_level2(t,
+visualize_pathways_level2(data,
   chosen_pathway_level1 = "escape",
   category = "Animalia"
 )
 
 # Chordata
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   category = "Chordata"
 )
 
 # facet phylum
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   category = "Animalia",
   facet_column = "phylum"
@@ -154,21 +153,21 @@ visualize_pathways_level2(
 
 # facet habitat
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   facet_column = "habitat"
 )
 
 # Only taxa introduced from 1950
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   from = 1950
 )
 
 # Add a title
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   category = "Plantae",
   from = 1950,
@@ -177,7 +176,7 @@ visualize_pathways_level2(
 
 # Personalize axis labels
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   x_lab = "Aantal taxa",
   y_lab = "pathways"
