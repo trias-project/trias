@@ -22,7 +22,7 @@ visualize_pathways_level1(
 )
 }
 \arguments{
-\item{df}{df.}
+\item{df}{A data frame.}
 
 \item{category}{NULL or character. One of the kingdoms as given in GBIF and
 \code{Chordata} (the phylum), \verb{Not Chordata} (all other phyla of \code{Animalia}): 1.
