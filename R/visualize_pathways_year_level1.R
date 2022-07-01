@@ -49,7 +49,7 @@
 #' @param x_lab `NULL` or character. x-axis label. Default: `"Number of
 #'   introduced taxa"`.
 #' @param y_lab `NULL` or character. Title of the graph. Default: `"Pathways"`.
-#' #' @return A list with three slots:
+#' @return A list with three slots:
 #' - `plot`: ggplot2 object (or egg object if facets are used). `NULL` if there
 #' are no data to plot.
 #' - `data_top_graph`: data.frame (tibble) with data used for the main plot (top

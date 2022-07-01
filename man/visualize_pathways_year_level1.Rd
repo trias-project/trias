@@ -82,8 +82,10 @@ Default: \code{TRUE.}}
 
 \item{x_lab}{\code{NULL} or character. x-axis label. Default: \code{"Number of introduced taxa"}.}
 
-\item{y_lab}{\code{NULL} or character. Title of the graph. Default: \code{"Pathways"}.
-#' @return A list with three slots:
+\item{y_lab}{\code{NULL} or character. Title of the graph. Default: \code{"Pathways"}.}
+}
+\value{
+A list with three slots:
 \itemize{
 \item \code{plot}: ggplot2 object (or egg object if facets are used). \code{NULL} if there
 are no data to plot.
@@ -91,7 +93,7 @@ are no data to plot.
 graph) in \code{plot}.
 \item \code{data_facet_graph}: data.frame (tibble) with data used for the faceting
 plot in \code{plot}. \code{NULL} is returned if \code{facet_column} is \code{NULL}.
-}}
+}
 }
 \description{
 Function to plot a line graph with number of taxa introduced over time

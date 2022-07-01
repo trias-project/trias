@@ -176,21 +176,18 @@ visualize_pathways_level2 <- function(df,
   assertable::assert_colnames(df, pathway_level2_names, only_colnames = FALSE)
   # Check category
   if (!is.null(category)) {
-    valid_categories <- c("Chordata", "Not Chordata", "Plantae", "Animalia",
-                          "Fungi", "Chromista", "Archaea", "Bacteria",
-                          "Protozoa", "Viruses", "incertae sedis")
     assertthat::assert_that(is.character(category),
       msg = paste0(
         "`category` must be NULL or a character. One of: ",
-        paste(valid_categories, collapse = ", "),
+        paste(categories, collapse = ", "),
         "."
       )
     )
     assertthat::assert_that(length(category) == 1)
-    assertthat::assert_that(category %in% valid_categories,
+    assertthat::assert_that(category %in% categories,
       msg = paste0(
         "`category` is not correct. Choose one of: ",
-        paste0(valid_categories, collapse = ", "),
+        paste0(categories, collapse = ", "),
         "."
       )
     )

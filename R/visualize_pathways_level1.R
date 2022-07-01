@@ -141,6 +141,7 @@ visualize_pathways_level1 <- function(df,
         "."
       )
     )
+    assertthat::assert_that(length(category) == 1)
     assertthat::assert_that(category %in% categories,
       msg = paste0(
         "`category` is not correct. Choose one of: ",
