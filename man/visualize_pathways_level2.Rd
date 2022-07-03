@@ -143,6 +143,13 @@ visualize_pathways_level2(
   category = "Chordata"
 )
 
+# select some pathways only
+visualize_pathways_level2(
+  df = data, 
+  chosen_pathway_level1 = "escape",
+  pathways = c("pet", "horticulture")
+)
+
 # facet phylum
 visualize_pathways_level2(
   df = data,

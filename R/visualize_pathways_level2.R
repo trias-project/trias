@@ -102,6 +102,13 @@
 #'   chosen_pathway_level1 = "escape",
 #'   category = "Chordata"
 #' )
+#' 
+#' # select some pathways only
+#' visualize_pathways_level2(
+#'   df = data, 
+#'   chosen_pathway_level1 = "escape",
+#'   pathways = c("pet", "horticulture")
+#' )
 #'
 #' # facet phylum
 #' visualize_pathways_level2(
@@ -230,7 +237,6 @@ visualize_pathways_level2 <- function(df,
     assertthat::assert_that(is.character(pathways),
       msg = "`pathways` must be a vector of characters."
     )
-    assertthat::assert_that(length(pathways) == 1)
     invalid_pathways <- pathways[!pathways %in%
       df[[pathway_level2_names]]]
     assertthat::assert_that(length(invalid_pathways) == 0,
@@ -298,6 +304,7 @@ visualize_pathways_level2 <- function(df,
     assertthat::assert_that(is.character(x_lab),
       msg = "`x_lab` must be a character or NULL."
     )
+    assertthat::assert_that(length(x_lab) == 1)
   }
   if (!is.null(y_lab)) {
     assertthat::assert_that(is.character(y_lab),
@@ -416,7 +423,10 @@ visualize_pathways_level2 <- function(df,
   # Transform pathway level 2 column to factor to make ordering in graph easily
   df <-
     df %>%
-    dplyr::mutate(pathway_level2 = factor(.data$pathway_level2, levels = pathways))
+    dplyr::mutate(
+      pathway_level2 = factor(.data$pathway_level2, levels = pathways)
+    ) %>%
+    dplyr::as_tibble()
   # dplyr::distinct taxa without facet
   data_top_graph <-
     df %>%

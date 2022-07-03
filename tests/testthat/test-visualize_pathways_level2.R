@@ -107,9 +107,16 @@ testthat::test_that("Argument: df", {
 testthat::test_that("Argument: chosen_pathway_level1", {
   expect_error(
     visualize_pathways_level2(invalid_pathways_df,
-      chosen_pathway_level1 = TRUE
+                              chosen_pathway_level1 = TRUE
     ),
     "Argument `chosen_pathway_level1` must be a character."
+  )
+  expect_error(
+    visualize_pathways_level2(
+      input_test_df, 
+      chosen_pathway_level1  = c("escape", "corridor")),
+    "length(chosen_pathway_level1) not equal to 1",
+    fixed = TRUE
   )
   expect_error(
     visualize_pathways_level2(
@@ -132,6 +139,13 @@ testthat::test_that("Argument: from", {
     "`from` must be a number."
   )
   expect_error(
+    visualize_pathways_level2(input_test_df, 
+                              from = c(1950, 1960),
+                              chosen_pathway_level1 = "escape"),
+    "length(from) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level2(input_test_df,
       chosen_pathway_level1 = "escape",
       from = 2900
@@ -151,10 +165,17 @@ testthat::test_that("Argument: category", {
       category = 3
     ),
     paste0(
-      "`category` must be a character. One of: ",
+      "`category` must be NULL or a character. One of: ",
       paste0(categories, collapse = ", "),
       "."
     )
+  )
+  expect_error(
+    visualize_pathways_level2(input_test_df,
+                              chosen_pathway_level1 = "escape",
+                              category = c("Animalia", "Plantae")),
+    "length(category) not equal to 1",
+    fixed = TRUE
   )
   expect_error(
     visualize_pathways_level2(input_test_df,
@@ -177,10 +198,19 @@ testthat::test_that("Argument: facet_column", {
     ),
     "Argument facet_column has to be NULL or a character."
   )
-  expect_error(visualize_pathways_level2(input_test_df,
-    chosen_pathway_level1 = "escape",
-    facet_column = "strange_col"
-  ))
+  expect_error(
+    visualize_pathways_level2(input_test_df,
+                              chosen_pathway_level1 = "escape",
+                              facet_column = c("habitat", "kingdom")),
+    "length(facet_column) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
+    visualize_pathways_level2(input_test_df,
+                              chosen_pathway_level1 = "escape",
+                              facet_column = "strange_col"
+    )
+  )
   expect_error(
     visualize_pathways_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -221,6 +251,13 @@ testthat::test_that("Argument: taxon_names", {
   )
   expect_error(
     visualize_pathways_level2(input_test_df,
+                              chosen_pathway_level1 = "escape",
+                              taxon_names = c("taxonKey", "key")),
+    "length(taxon_names) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
+    visualize_pathways_level2(input_test_df,
       chosen_pathway_level1 = "escape",
       taxon_names = "blablabla"
     )
@@ -230,15 +267,22 @@ testthat::test_that("Argument: taxon_names", {
 testthat::test_that("Argument: kingdom_names", {
   expect_error(
     visualize_pathways_level2(input_test_df,
-      chosen_pathway_level1 = "escape",
-      kingdom_names = input_test_df
+                              chosen_pathway_level1 = "escape",
+                              kingdom_names = input_test_df
     ),
     "`kingdom_names` must be a character."
   )
   expect_error(
+    visualize_pathways_level2(input_test_df, 
+                              chosen_pathway_level1 = "escape",
+                              kingdom_names = c("kingdomKey", "kingdom")),
+    "length(kingdom_names) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level2(input_test_df,
-      chosen_pathway_level1 = "escape",
-      kingdom_names = "blablabla"
+                              chosen_pathway_level1 = "escape",
+                              kingdom_names = "blablabla"
     )
   )
 })
@@ -246,16 +290,24 @@ testthat::test_that("Argument: kingdom_names", {
 testthat::test_that("Argument: phylum_names", {
   expect_error(
     visualize_pathways_level2(input_test_df,
-      chosen_pathway_level1 = "escape",
-      phylum_names = TRUE
+                              chosen_pathway_level1 = "escape",
+                              phylum_names = TRUE
     ),
     "`phylum_names` must be a character."
   )
   expect_error(
+    visualize_pathways_level2(input_test_df, 
+                              chosen_pathway_level1 = "escape",
+                              phylum_names = c("phylumKey", "phylum")
+    ),
+    "length(phylum_names) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level2(input_test_df,
-      chosen_pathway_level1 = "escape",
-      category = "Chordata",
-      phylum_names = "blablabla"
+                              chosen_pathway_level1 = "escape",
+                              category = "Chordata",
+                              phylum_names = "blablabla"
     )
   )
 })
@@ -270,18 +322,32 @@ testthat::test_that("Argument: first_observed", {
   )
   expect_error(
     visualize_pathways_level2(input_test_df,
-      chosen_pathway_level1 = "escape",
-      first_observed = "strange_colname"
+                              chosen_pathway_level1 = "escape",
+                              first_observed = c("year", "first_observed")),
+    "length(first_observed) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
+    visualize_pathways_level2(input_test_df,
+                              chosen_pathway_level1 = "escape",
+                              first_observed = "strange_colname"
     )
   )
 })
 testthat::test_that("Argument: title labels", {
   expect_error(
     visualize_pathways_level2(input_test_df,
-      chosen_pathway_level1 = "escape",
-      title = TRUE
+                              chosen_pathway_level1 = "escape",
+                              title = TRUE
     ),
     "`title` must be a character or NULL."
+  )
+  expect_error(
+    visualize_pathways_level2(input_test_df, 
+                              chosen_pathway_level1 = "escape",
+                              title = c("title", "my title")),
+    "length(title) not equal to 1",
+    fixed = TRUE
   )
   expect_error(
     visualize_pathways_level2(input_test_df,
@@ -291,11 +357,27 @@ testthat::test_that("Argument: title labels", {
     "`x_lab` must be a character or NULL."
   )
   expect_error(
+    visualize_pathways_level2(input_test_df, 
+                              chosen_pathway_level1 = "escape",
+                              x_lab = c("x", "x lab")
+    ),
+    "length(x_lab) not equal to 1",
+    fixed = TRUE
+  )
+  expect_error(
     visualize_pathways_level2(input_test_df,
-      chosen_pathway_level1 = "escape",
-      y_lab = 4
+                              chosen_pathway_level1 = "escape",
+                              y_lab = 4
     ),
     "`y_lab` must be a character or NULL."
+  )
+  expect_error(
+    visualize_pathways_level2(input_test_df, 
+                              chosen_pathway_level1 = "escape",
+                              y_lab = c("y", "y lab")
+    ),
+    "length(y_lab) not equal to 1",
+    fixed = TRUE
   )
 })
 
@@ -311,23 +393,22 @@ testthat::test_that("Test CBD standard compliance", {
   expect_warning(visualize_pathways_level2(invalid_pathways_df,
     chosen_pathway_level1 = "escape",
     cbd_standard = FALSE
-  ),
-  message_invalid_pathways,
-  fixed = TRUE
+    ),
+    message_invalid_pathways,
+    fixed = TRUE
   )
   expect_error(visualize_pathways_level2(invalid_pathways_df,
     chosen_pathway_level1 = "escape",
     cbd_standard = TRUE
-  ),
-  message_invalid_pathways,
-  fixed = TRUE
+    ),
+    message_invalid_pathways,
+    fixed = TRUE
   )
 })
 
 testthat::test_that("Test empty pathway_level1 transformation to unknown", {
-  expect_warning(visualize_pathways_level2(
-    na_pathways,
-    chosen_pathway_level1 = "escape"
+  expect_warning(visualize_pathways_level2(na_pathways,
+                                           chosen_pathway_level1 = "escape"
   ),
   paste(
     nrow(taxa_na),
@@ -337,7 +418,7 @@ testthat::test_that("Test empty pathway_level1 transformation to unknown", {
   fixed = TRUE
   )
   expect_warning(visualize_pathways_level2(empty_pathways,
-    chosen_pathway_level1 = "escape"
+                                           chosen_pathway_level1 = "escape"
   ),
   paste(
     nrow(taxa_empty),
@@ -347,7 +428,7 @@ testthat::test_that("Test empty pathway_level1 transformation to unknown", {
   fixed = TRUE
   )
   expect_warning(visualize_pathways_level2(na_empty_pathways,
-    chosen_pathway_level1 = "escape"
+                                           chosen_pathway_level1 = "escape"
   ),
   paste(
     nrow(taxa_na_empty),
@@ -359,21 +440,77 @@ testthat::test_that("Test empty pathway_level1 transformation to unknown", {
 })
 
 testthat::test_that("Test output class", {
+  # output is a list
   expect_type(output_general, type = "list")
   expect_type(output_with_facet, type = "list")
-  expect_null(empty_output)
-  expect_s3_class(output_general, class = "gg")
-  expect_s3_class(output_with_facet, class = "egg")
+  expect_type(empty_output, type = "list")
+  
+  # plot slot is a list with gg as class if not NULL
+  testthat::expect_type(output_general$plot, type = "list")
+  testthat::expect_type(output_with_facet$plot, type = "list")
+  testthat::expect_s3_class(output_general$plot, class = "gg")
+  testthat::expect_s3_class(output_with_facet$plot, class = "egg")
+  testthat::expect_null(empty_output$plot)
+  
+  # data_top_graph is a data.frame (tibble) if not NULL
+  testthat::expect_type(output_general$data_top_graph, type = "list")
+  testthat::expect_s3_class(output_general$data_top_graph,
+                            class = "data.frame")
+  testthat::expect_s3_class(output_general$data_top_graph,
+                            class = "tbl_df")
+  testthat::expect_type(output_with_facet$data_top_graph,
+                        type = "list")
+  testthat::expect_s3_class(output_with_facet$data_top_graph,
+                            class = "data.frame")
+  testthat::expect_s3_class(output_with_facet$data_top_graph,
+                            class = "tbl_df")
+  testthat::expect_null(empty_output$data_top_graph)
+  
+  # data_top_graph contains only columns taxonKey, pathway_level2 in this order
+  testthat::expect_equal(
+    names(output_general$data_top_graph),
+    c("taxonKey", "pathway_level2"))
+  testthat::expect_equal(
+    names(output_with_facet$data_top_graph),
+    c("taxonKey", "pathway_level2"))
+  
+  # data_facet_graph is NULL if faceting is deactivated
+  testthat::expect_null(output_general$date_facet_graph)
+  
+  # data_facet_graph is a data.frame (tibble) if faceting is activated
+  testthat::expect_type(output_with_facet$data_facet_graph, type = "list")
+  testthat::expect_s3_class(output_with_facet$data_facet_graph,
+                            class = "data.frame")
+  testthat::expect_s3_class(output_with_facet$data_facet_graph,
+                            class = "tbl_df")
+  
+  # data_facet_graph contains only columns taxonKey, habitat (the facet),
+  # pathway_level2, in this order
+  testthat::expect_equal(
+    names(output_with_facet$data_facet_graph),
+    c("taxonKey", "habitat", "pathway_level2"))
 })
 
 testthat::test_that("test pathway factors and their order", {
-  expect_true(is.factor(output_general$data$pathway_level2))
-  expect_true(is.factor(output_less_pathways_escape$data$pathway_level2))
-  expect_true(is.factor(output_less_pathways_inverted_escape$data$pathway_level2))
-  expect_true(all(levels(output_general$data$pathway_level2) ==
-    valid_pathways_escape))
-  expect_true(all(levels(output_less_pathways_escape$data$pathway_level2) ==
-    pathways_selection_escape))
-  expect_true(all(levels(output_less_pathways_inverted_escape$data$pathway_level2) ==
-    pathways_selection_inverted_escape))
+  expect_true(is.factor(output_general$data_top_graph$pathway_level2))
+  expect_true(
+    is.factor(output_less_pathways_escape$data_top_graph$pathway_level2)
+  )
+  expect_true(
+    is.factor(output_less_pathways_inverted_escape$data_top_graph$pathway_level2)
+  )
+  expect_true(
+    all(levels(output_general$data_top_graph$pathway_level2) ==
+    valid_pathways_escape)
+  )
+  expect_true(
+    all(levels(output_less_pathways_escape$data_top_graph$pathway_level2) ==
+    pathways_selection_escape)
+  )
+  expect_true(
+    all(
+      levels(output_less_pathways_inverted_escape$data_top_graph$pathway_level2) ==
+    pathways_selection_inverted_escape
+    )
+  )
 })
