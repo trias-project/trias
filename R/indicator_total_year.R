@@ -232,7 +232,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
       ) +
       ggplot2::coord_cartesian(xlim = c(start_year_plot, maxDate))
 
-    return(list(plot = egg::ggarrange(top_graph, facet_graph),
+    return(list(plot = egg::ggarrange(top_graph, facet_graph, draw = FALSE),
                 data_top_graph = counts_ias_grouped_by_year,
                 data_facet_graph = counts_ias_grouped)
     )
