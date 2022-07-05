@@ -208,7 +208,7 @@ testthat::test_that("Argument: facet_column", {
     fixed = TRUE
   )
   expect_error(visualize_pathways_year_level1(input_test_df,
-    facet_column = "strange_col"
+                                              facet_column = "strange_col"
   ))
   expect_error(
     visualize_pathways_year_level1(input_test_df,
@@ -217,19 +217,29 @@ testthat::test_that("Argument: facet_column", {
     ),
     "You cannot use phylum as facet with category Chordata."
   )
+  expect_error(
+    visualize_pathways_year_level1(input_test_df,
+                                   category = "Not Chordata",
+                                   facet_column = "phylum"
+    ),
+    "You cannot use phylum as facet with category Not Chordata."
+  )
+  expect_error(
+    visualize_pathways_year_level1(input_test_df,
+                                   category = "Animalia",
+                                   facet_column = "kingdom"
+    ),
+    "You cannot use kingdom as facet if category is selected."
+  )
 })
 
 testthat::test_that("Argument pathways", {
   expect_error(
-    visualize_pathways_year_level1(input_test_df,
-      pathways = TRUE
-    ),
+    visualize_pathways_year_level1(input_test_df, pathways = TRUE),
     "`pathways` must be a vector of characters."
   )
   expect_error(
-    visualize_pathways_year_level1(input_test_df,
-      pathways = no_cbd_values
-    ),
+    visualize_pathways_year_level1(input_test_df, pathways = no_cbd_values),
     paste0(
       "Pathways in `pathways` not present in data.frame: ",
       paste(no_cbd_values, collapse = ","),

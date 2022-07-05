@@ -51,11 +51,13 @@ in GBIF or \code{Chordata} (the phylum) or \verb{Not Chordata} (all other phyla 
 pathways related to taxa introduced during or after this year. Default:
 \code{NULL}.}
 
-\item{facet_column}{\code{NULL} or character. The column to use to create
-additional facet wrap bar graphs underneath the main graph. When \code{NULL}, no
-facet graph are created. One of \code{family}, \code{order}, \code{class}, \code{phylum},
-\code{locality}, \code{native_range}, \code{habitat}. If column has another name, rename
-it before calling this function. Default: \code{NULL}.}
+\item{facet_column}{\code{NULL} (default) or character. The column to use to
+create additional facet wrap bar graphs underneath the main graph. When
+\code{NULL}, no facet graph are created. One of \code{family}, \code{order}, \code{class},
+\code{phylum}, \code{locality}, \code{native_range}, \code{habitat}. If column has another
+name, rename it before calling this function. Facet \code{phylum} is not allowed
+in combination with \code{category} equal to \code{"Chordata"} or \code{"Not Chordata"}.
+Facet \code{kingdom} is allowed only with category equal to \code{NULL}.}
 
 \item{pathways}{character. Vector with pathways level 2 to visualize. The
 pathways are displayed following the order as in this vector.}

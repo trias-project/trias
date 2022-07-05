@@ -25,11 +25,13 @@
 #' @param from `NULL` or numeric. Year trade-off: if not `NULL` select only
 #'   pathways related to taxa introduced during or after this year. Default:
 #'   `NULL`.
-#' @param facet_column `NULL` or character. The column to use to create
-#'   additional facet wrap bar graphs underneath the main graph. When `NULL`, no
-#'   facet graph are created. One of `family`, `order`, `class`, `phylum`,
-#'   `locality`, `native_range`, `habitat`. If column has another name, rename
-#'   it before calling this function. Default: `NULL`.
+#' @param facet_column `NULL` (default) or character. The column to use to
+#'   create additional facet wrap bar graphs underneath the main graph. When
+#'   `NULL`, no facet graph are created. One of `family`, `order`, `class`,
+#'   `phylum`, `locality`, `native_range`, `habitat`. If column has another
+#'   name, rename it before calling this function. Facet `phylum` is not allowed
+#'   in combination with `category` equal to `"Chordata"` or `"Not Chordata"`.
+#'   Facet `kingdom` is allowed only with category equal to `NULL`.
 #' @param pathway_level1_names character. Name of the column of `df`
 #'   containing information about pathways at level 1. Default:
 #'   `pathway_level1`.
@@ -208,13 +210,23 @@ visualize_pathways_level2 <- function(df,
     assertable::assert_colnames(df, facet_column, only_colnames = FALSE)
     # check facet column
     valid_facets <- c(
-      "family", "order", "class", "phylum",
+      "family", "order", "class", "phylum", "kingdom",
       "locality", "native_range", "habitat"
     )
     facet_column <- match.arg(facet_column, valid_facets)
-    assertthat::assert_that(is.null(category) || !(category == "Chordata" &
-      facet_column == "phylum"),
-    msg = "You cannot use phylum as facet with category Chordata."
+    assertthat::assert_that(
+      is.null(category) || !(category == "Chordata" & facet_column == "phylum"),
+      msg = "You cannot use phylum as facet with category Chordata."
+    )
+    assertthat::assert_that(
+      is.null(category) || 
+        !(category == "Not Chordata" & facet_column == "phylum"),
+      msg = "You cannot use phylum as facet with category Not Chordata."
+    )
+    assertthat::assert_that(
+      is.null(category) || 
+        !(!is.null(category) & facet_column == "kingdom"),
+      msg = "You cannot use kingdom as facet if category is selected."
     )
   }
   # Check chosen_pathway_level1

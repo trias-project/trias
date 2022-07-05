@@ -33,11 +33,13 @@ visualize_pathways_level1(
 \item{from}{\code{NULL} or numeric. Year trade-off: select only pathways related
 to taxa introduced during or after this year. Default: \code{NULL}.}
 
-\item{facet_column}{\code{NULL} or character. The column to use to create additional
-facet wrap bar graphs underneath the main graph. When \code{NULL}, no facet graph
-are created. One of \code{family}, \code{order}, \code{class}, \code{phylum}, \code{locality},
-\code{native_range}, \code{habitat}. If column has another name, rename it before
-calling this function. Default: \code{NULL}.}
+\item{facet_column}{\code{NULL} (default) or character. The column to use to
+create additional facet wrap bar graphs underneath the main graph. When
+\code{NULL}, no facet graph are created. One of \code{family}, \code{order}, \code{class},
+\code{phylum}, \code{locality}, \code{native_range}, \code{habitat}. If column has another
+name, rename it before calling this function. Facet \code{phylum} is not allowed
+in combination with \code{category} equal to \code{"Chordata"} or \code{"Not Chordata"}.
+Facet \code{kingdom} is allowed only with category equal to \code{NULL}.}
 
 \item{pathways}{character. Vector with pathways level 1 to visualize. The
 pathways are displayed following the order as in this vector.}
@@ -54,7 +56,7 @@ information about kingdom. Default: \code{"kingdom"}.}
 
 \item{phylum_names}{character. Name of the column of \code{df} containing
 information about phylum. This parameter is used only if \code{category} is
-one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default:
+one of: \code{"Chordata"}, \code{"Not Chordata"}.  Default:
 \code{"phylum"}.}
 
 \item{first_observed}{character. Name of the column of \code{df} containing

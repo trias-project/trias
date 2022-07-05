@@ -281,6 +281,22 @@ testthat::test_that("Argument: facet_column", {
     ),
     "You cannot use phylum as facet with category Chordata."
   )
+  expect_error(
+    visualize_pathways_year_level2(input_test_df,
+                                   chosen_pathway_level1 = "escape",
+                                   category = "Not Chordata",
+                                   facet_column = "phylum"
+    ),
+    "You cannot use phylum as facet with category Not Chordata."
+  )
+  expect_error(
+    visualize_pathways_year_level2(input_test_df,
+                                   chosen_pathway_level1 = "escape",
+                                   category = "Animalia",
+                                   facet_column = "kingdom"
+    ),
+    "You cannot use kingdom as facet if category is selected."
+  )
 })
 
 testthat::test_that("Argument pathways", {

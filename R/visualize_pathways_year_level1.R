@@ -23,11 +23,13 @@
 #'   9. `incertae sedis`
 #'   10. `Chordata`
 #'   11. `Not Chordata`
-#' @param facet_column `NULL` or character. The column to use to create additional
-#'  facet wrap bar graphs underneath the main graph. When `NULL`, no facet graph
-#'  are created. One of `family`, `order`, `class`, `phylum`, `locality`,
-#'  `native_range`, `habitat`. If column has another name, rename it before
-#'  calling this function. Default: `NULL`.
+#' @param facet_column `NULL` (default) or character. The column to use to
+#'   create additional facet wrap bar graphs underneath the main graph. When
+#'   `NULL`, no facet graph are created. One of `family`, `order`, `class`,
+#'   `phylum`, `kingdom`, `locality`, `native_range`, `habitat`. If column has
+#'   another name, rename it before calling this function. Facet `phylum` is not
+#'   allowed in combination with `category` equal to `"Chordata"` or `"Not
+#'   Chordata"`. Facet `kingdom` is allowed only with category equal to `NULL`.
 #' @param pathway_level1_names character. Name of the column of `df`
 #'  containing information about pathways at level 1. Default: `pathway_level1`.
 #' @param pathways character. Vector with pathways level 1 to visualize. The
@@ -179,14 +181,25 @@ visualize_pathways_year_level1 <- function(
   }
   # Check for valid facet options
   valid_facet_options <- c(
-    "family", "order", "class", "phylum",
+    "family", "order", "class", "phylum", "kingdom",
     "locality", "native_range", "habitat"
   )
   if (is.character(facet_column)) {
     facet_column <- match.arg(facet_column, valid_facet_options)
-    assertthat::assert_that(is.null(category) ||
-      !(category == "Chordata" & facet_column == "phylum"),
-    msg = "You cannot use phylum as facet with category Chordata."
+    assertthat::assert_that(
+      is.null(category) || 
+        !(category == "Chordata" & facet_column == "phylum"),
+      msg = "You cannot use phylum as facet with category Chordata."
+    )
+    assertthat::assert_that(
+      is.null(category) || 
+        !(category == "Not Chordata" & facet_column == "phylum"),
+      msg = "You cannot use phylum as facet with category Not Chordata."
+    )
+    assertthat::assert_that(
+      is.null(category) || 
+        !(!is.null(category) & facet_column == "kingdom"),
+      msg = "You cannot use kingdom as facet if category is selected."
     )
   }
   # Check pathways
@@ -276,7 +289,8 @@ visualize_pathways_year_level1 <- function(
     dplyr::rename_at(vars(tidyselect::all_of(taxon_names)), ~"taxonKey") %>%
     dplyr::rename_at(vars(tidyselect::all_of(first_observed)), ~"first_observed") %>%
     dplyr::rename_at(vars(tidyselect::all_of(pathway_level1_names)), ~"pathway_level1")
-  # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
+  
+  # handle asymmetric category system (Chordata, Not Chordata are not kingdoms)
   if (!is.null(category)) {
     if (!category %in% c("Chordata", "Not Chordata")) {
       df <- df %>% dplyr::filter(.data$group == category)
