@@ -579,7 +579,7 @@ visualize_pathways_year_level2 <- function(
         ggplot2::facet_wrap(facet_column)
     }
     if (all(!is.null(top_graph), !is.null(facet_graph))) {
-      return(list(plot = egg::ggarrange(top_graph, facet_graph),
+      return(list(plot = egg::ggarrange(top_graph, facet_graph, draw = FALSE),
                   data_top_graph = data_top_graph,
                   data_facet_graph = data_facet_graph))
     }
