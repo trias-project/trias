@@ -1,11 +1,16 @@
-url: https://trias-project.github.io/trias
+url: ~
 
 template:
-  params:
-    bootswatch: yeti
+  bootstrap: 5
+
+navbar:
+  bg: dark
 
 authors:
   Damiano Oldoni:
     href: "https://twitter.com/damianozingaro"
   Peter Desmet:
     href: "https://twitter.com/peterdesmet"
+  TrIAS:
+    href: "https://trias-project.be"
+    html: "<img src='https://osf.io/dqvfk/?action=download' width=72>"
