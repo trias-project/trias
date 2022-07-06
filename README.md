@@ -12,7 +12,8 @@ status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 <!-- badges: end -->
 
 Trias is an R package providing functionality for the [Tracking Invasive
-Alien Species (TrIAS)](https://trias-project.be) project.
+Alien Species (TrIAS)](https://trias-project.be) and [LIFE
+RIPARIAS](https://www.riparias.be) projects.
 
 To get started, see:
 

@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 [![repo status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)]
 <!-- badges: end -->
 
-Trias is an R package providing functionality for the [Tracking Invasive Alien Species (TrIAS)](https://trias-project.be) project.
+Trias is an R package providing functionality for the [Tracking Invasive Alien Species (TrIAS)](https://trias-project.be) and [LIFE RIPARIAS](https://www.riparias.be) projects.
 
 To get started, see:
 
