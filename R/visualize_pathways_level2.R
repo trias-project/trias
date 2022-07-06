@@ -361,10 +361,13 @@ visualize_pathways_level2 <- function(df,
       dplyr::filter(.data$first_observed >= from)
   }
   
-  if (facet_column == "kingdom") {
-    # category NULL by assertion
-    df$kingdom <- df$group
-  }
+  if (!is.null(facet_column)) {
+    if (facet_column == "kingdom") {
+      # category NULL by assertion
+      df$kingdom <- df$group
+    }
+  } 
+  
   
   # Handle NAs and ""
   nas_or_empty_pathway_level2 <-
