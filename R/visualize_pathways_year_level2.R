@@ -458,7 +458,7 @@ visualize_pathways_year_level2 <- function(
       df %>%
       dplyr::filter(!is.na(first_observed))
   }
-  # dplyr::distinct taxa
+  # Distinct taxa
   if (is.null(facet_column)) {
     df <-
       df %>%
@@ -550,7 +550,7 @@ visualize_pathways_year_level2 <- function(
                 data_top_graph = data_top_graph,
                 data_facet_graph = NULL))
   } else {
-    # dplyr::count number of taxa per pathway_level2 per facet over time
+    # Count number of taxa per pathway_level2 per facet over time
     data_facet_graph <-
       df %>%
       dplyr::group_by(
