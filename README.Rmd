@@ -1,0 +1,37 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# trias <img src="man/figures/logo.png" align="right" alt="" width="120">
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/trias-project/trias/workflows/R-CMD-check/badge.svg)](https://github.com/trias-project/trias/actions)
+[![codecov](https://codecov.io/gh/trias-project/trias/branch/main/graph/badge.svg)](https://app.codecov.io/gh/trias-project/trias/)]
+[![repo status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)]
+<!-- badges: end -->
+
+Trias is an R package providing functionality for the [Tracking Invasive Alien Species (TrIAS)](https://trias-project.be) project.
+
+To get started, see:
+
+- [Function reference](https://trias-project.github.io/trias/reference/index.html): overview of all functions.
+
+## Installation
+
+You can install the development version of trias from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("trias-project/trias")
+```

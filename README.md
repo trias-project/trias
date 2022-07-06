@@ -1,41 +1,31 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # trias <img src="man/figures/logo.png" align="right" alt="" width="120">
 
 <!-- badges: start -->
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+
+[![R-CMD-check](https://github.com/trias-project/trias/workflows/R-CMD-check/badge.svg)](https://github.com/trias-project/trias/actions)
+[![codecov](https://codecov.io/gh/trias-project/trias/branch/main/graph/badge.svg)](https://app.codecov.io/gh/trias-project/trias/)\]
+[![repo
+status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)\]
 <!-- badges: end -->
 
-<!-- badges: start -->
-  [![Codecov test coverage](https://codecov.io/gh/trias-project/trias/branch/master/graph/badge.svg)](https://codecov.io/gh/trias-project/trias?branch=master)
-<!-- badges: end -->
-
-<!-- badges: start -->
-  [![R-CMD-check](https://github.com/trias-project/trias/workflows/R-CMD-check/badge.svg)](https://github.com/trias-project/trias/actions)
-<!-- badges: end -->
-
-R package with functions for TrIAS (Tracking Invasive Alien Species) project. 
-
-## Installation
-
-Install development version via `devtools`.
-
-```r
-devtools::install_github("trias-project/trias")
-```
-
-If you don't have installed `devtools` before, install it:
-
-```r
-install.packages("devtools")
-```
-
-After installing `trias`, you can use it by loading the package in your R session:
-
-```r
-library("trias")
-```
-
-## Get started
+Trias is an R package providing functionality for the [Tracking Invasive
+Alien Species (TrIAS)](https://trias-project.be) project.
 
 To get started, see:
 
-* [Function reference](https://trias-project.github.io/trias/reference/index.html): an overview of all `trias` functions.
+-   [Function
+    reference](https://trias-project.github.io/trias/reference/index.html):
+    overview of all functions.
+
+## Installation
+
+You can install the development version of trias from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("trias-project/trias")
+```
