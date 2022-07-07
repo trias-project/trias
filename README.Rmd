@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/trias)](https://CRAN.R-project.org/package=trias)
-[![R-CMD-check](https://github.com/trias-project/trias/workflows/R-CMD-check/badge.svg)](https://github.com/trias-project/trias/actions)
+[![R-CMD-check](https://github.com/trias-project/trias/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/trias-project/trias/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/trias-project/trias/branch/main/graph/badge.svg)](https://app.codecov.io/gh/trias-project/trias/)
 [![repo status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- badges: end -->
