@@ -35,3 +35,10 @@ You can install the development version of trias from [GitHub](https://github.co
 # install.packages("devtools")
 devtools::install_github("trias-project/trias")
 ```
+
+## Meta
+
+- We welcome [contributions](.github/CONTRIBUTING.md) including bug reports.
+- License: MIT
+- Get citation information for trias in R doing `citation("trias")`.
+- Please note that this project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
