@@ -6,9 +6,9 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/trias-project/trias/workflows/R-CMD-check/badge.svg)](https://github.com/trias-project/trias/actions)
-[![codecov](https://codecov.io/gh/trias-project/trias/branch/main/graph/badge.svg)](https://app.codecov.io/gh/trias-project/trias/)\]
+[![codecov](https://codecov.io/gh/trias-project/trias/branch/main/graph/badge.svg)](https://app.codecov.io/gh/trias-project/trias/)
 [![repo
-status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)\]
+status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 <!-- badges: end -->
 
 Trias is an R package providing functionality for the [Tracking Invasive
