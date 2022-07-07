@@ -14,7 +14,9 @@ Authors@R: c(
     person("Research Institute for Nature and Forest (INBO)",
            role = "cph", comment = "https://www.vlaanderen.be/inbo/en-gb/"),
     person("TrIAS",
-           role = "fnd", comment = "https://trias-project.be")
+           role = "fnd", comment = "https://trias-project.be"),
+    person("LIFE RIPARIAS",
+           role = "fnd", comment = "https://www.riparias.be")
   )
 Description: This package provides functionality to facilitate the data
     processing for the project Tracking Invasive Alien Species (TrIAS

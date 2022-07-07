@@ -12,7 +12,8 @@ status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 <!-- badges: end -->
 
 Trias is an R package providing functionality for the [Tracking Invasive
-Alien Species (TrIAS)](https://trias-project.be) project.
+Alien Species (TrIAS)](https://trias-project.be) and [LIFE
+RIPARIAS](https://www.riparias.be) projects.
 
 To get started, see:
 
@@ -29,3 +30,13 @@ You can install the development version of trias from
 # install.packages("devtools")
 devtools::install_github("trias-project/trias")
 ```
+
+## Meta
+
+-   We welcome [contributions](.github/CONTRIBUTING.md) including bug
+    reports.
+-   License: MIT
+-   Get citation information for trias in R doing `citation("trias")`.
+-   Please note that this project is released with a [Contributor Code
+    of Conduct](.github/CODE_OF_CONDUCT.md). By participating in this
+    project you agree to abide by its terms.
