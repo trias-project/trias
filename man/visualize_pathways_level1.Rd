@@ -22,23 +22,24 @@ visualize_pathways_level1(
 )
 }
 \arguments{
-\item{df}{df.}
+\item{df}{A data frame.}
 
-\item{category}{NULL or character. One of the kingdoms as given in GBIF and
+\item{category}{\code{NULL} or character. One of the kingdoms as given in GBIF and
 \code{Chordata} (the phylum), \verb{Not Chordata} (all other phyla of \code{Animalia}): 1.
 \code{Plantae} 2. \code{Animalia} 3. \code{Fungi} 4. \code{Chromista} 5. \code{Archaea} 6.
 \code{Bacteria} 7. \code{Protozoa} 8. \code{Viruses} 9. \verb{incertae sedis} 10. \code{Chordata}
 11. \verb{Not Chordata} Default: \code{NULL}.}
 
-\item{from}{NULL or numeric. Year trade-off: if not \code{NULL} select only
-pathways related to taxa introduced during or after this year. Default:
-\code{NULL}.}
+\item{from}{\code{NULL} or numeric. Year trade-off: select only pathways related
+to taxa introduced during or after this year. Default: \code{NULL}.}
 
-\item{facet_column}{NULL or character. The column to use to create additional
-facet wrap bar graphs underneath the main graph. When NULL, no facet graph
-are created. One of \code{family}, \code{order}, \code{class}, \code{phylum}, \code{locality},
-\code{native_range}, \code{habitat}. If column has another name, rename it before
-calling this function. Default: \code{NULL}.}
+\item{facet_column}{\code{NULL} (default) or character. The column to use to
+create additional facet wrap bar graphs underneath the main graph. When
+\code{NULL}, no facet graph are created. One of \code{family}, \code{order}, \code{class},
+\code{phylum}, \code{locality}, \code{native_range}, \code{habitat}. If column has another
+name, rename it before calling this function. Facet \code{phylum} is not allowed
+in combination with \code{category} equal to \code{"Chordata"} or \code{"Not Chordata"}.
+Facet \code{kingdom} is allowed only with category equal to \code{NULL}.}
 
 \item{pathways}{character. Vector with pathways level 1 to visualize. The
 pathways are displayed following the order as in this vector.}
@@ -55,7 +56,7 @@ information about kingdom. Default: \code{"kingdom"}.}
 
 \item{phylum_names}{character. Name of the column of \code{df} containing
 information about phylum. This parameter is used only if \code{category} is
-one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default:
+one of: \code{"Chordata"}, \code{"Not Chordata"}.  Default:
 \code{"phylum"}.}
 
 \item{first_observed}{character. Name of the column of \code{df} containing
@@ -66,16 +67,22 @@ checked based on CBD standard as returned by \code{pathways_cbd()}. Error is
 returned if unmatched values are found. If FALSE, a warning is returned.
 Default: TRUE.}
 
-\item{title}{NULL or character. Title of the graph. Default: NULL.}
+\item{title}{\code{NULL} or character. Title of the graph. Default: \code{NULL}.}
 
-\item{x_lab}{NULL or character. x-axis label. Default: "Number of introduced
-taxa".}
+\item{x_lab}{\code{NULL} or character. x-axis label. Default: \code{"Number of introduced taxa"}.}
 
-\item{y_lab}{NULL or character. Title of the graph. Default: "Pathways".}
+\item{y_lab}{\code{NULL} or character. Title of the graph. Default: \code{"Pathways"}.}
 }
 \value{
-A ggplot2 object (or egg object if facets are used). NULL if there
+A list with three slots:
+\itemize{
+\item \code{plot}: ggplot2 object (or egg object if facets are used). \code{NULL} if there
 are no data to plot.
+\item \code{data_top_graph}: data.frame (tibble) with data used for the main plot (top
+graph) in \code{plot}.
+\item \code{data_facet_graph}: data.frame (tibble) with data used for the faceting
+plot in \code{plot}. \code{NULL} is returned if \code{facet_column} is \code{NULL}.
+}
 }
 \description{
 Function to plot bar graph with number of taxa introduced by different

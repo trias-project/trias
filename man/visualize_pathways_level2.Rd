@@ -30,21 +30,34 @@ visualize_pathways_level2(
 followed (see argument \code{cbd_standard}), one of the level 1 pathways from
 \code{pathways_cbd()}.}
 
-\item{category}{NULL or character. One of the kingdoms as given in GBIF and
-\code{Chordata} (the phylum), \verb{Not Chordata} (all other phyla of \code{Animalia}): 1.
-\code{Plantae} 2. \code{Animalia} 3. \code{Fungi} 4. \code{Chromista} 5. \code{Archaea} 6.
-\code{Bacteria} 7. \code{Protozoa} 8. \code{Viruses} 9. \verb{incertae sedis} 10. \code{Chordata}
-11. \verb{Not Chordata} Default: \code{NULL}.}
+\item{category}{\code{NULL} (default) or character. One of the kingdoms as given
+in GBIF or \code{Chordata} (the phylum) or \verb{Not Chordata} (all other phyla of
+\code{Animalia}):
+\enumerate{
+\item \code{Plantae}
+\item \code{Animalia}
+\item \code{Fungi}
+\item \code{Chromista}
+\item \code{Archaea}
+\item \code{Bacteria}
+\item \code{Protozoa}
+\item \code{Viruses}
+\item \verb{incertae sedis}
+\item \code{Chordata}
+\item \verb{Not Chordata}
+}}
 
-\item{from}{NULL or numeric. Year trade-off: if not \code{NULL} select only
+\item{from}{\code{NULL} or numeric. Year trade-off: if not \code{NULL} select only
 pathways related to taxa introduced during or after this year. Default:
 \code{NULL}.}
 
-\item{facet_column}{NULL or character. The column to use to create additional
-facet wrap bar graphs underneath the main graph. When NULL, no facet graph
-are created. One of \code{family}, \code{order}, \code{class}, \code{phylum}, \code{locality},
-\code{native_range}, \code{habitat}. If column has another name, rename it before
-calling this function. Default: \code{NULL}.}
+\item{facet_column}{\code{NULL} (default) or character. The column to use to
+create additional facet wrap bar graphs underneath the main graph. When
+\code{NULL}, no facet graph are created. One of \code{family}, \code{order}, \code{class},
+\code{phylum}, \code{locality}, \code{native_range}, \code{habitat}. If column has another
+name, rename it before calling this function. Facet \code{phylum} is not allowed
+in combination with \code{category} equal to \code{"Chordata"} or \code{"Not Chordata"}.
+Facet \code{kingdom} is allowed only with category equal to \code{NULL}.}
 
 \item{pathways}{character. Vector with pathways level 2 to visualize. The
 pathways are displayed following the order as in this vector.}
@@ -65,27 +78,33 @@ information about kingdom. Default: \code{"kingdom"}.}
 
 \item{phylum_names}{character. Name of the column of \code{df} containing
 information about phylum. This parameter is used only if \code{category} is
-one of:  \code{"Chordata"}, \code{"Not Chordata"}.  Default:
+one of: \code{"Chordata"}, \code{"Not Chordata"}.  Default:
 \code{"phylum"}.}
 
 \item{first_observed}{character. Name of the column of \code{df} containing
 information about year of introduction. Default: \code{"first_observed"}.}
 
-\item{cbd_standard}{logical. If TRUE the values of pathway level 2 are
+\item{cbd_standard}{logical. If \code{TRUE} the values of pathway level 2 are
 checked based on CBD standard as returned by \code{pathways_cbd()}. Error is
-returned if unmatched values are found. If FALSE, a warning is returned.
-Default: TRUE.}
+returned if unmatched values are found. If \code{FALSE}, a warning is returned.
+Default: \code{TRUE}.}
 
-\item{title}{NULL or character. Title of the graph. Default: NULL.}
+\item{title}{\code{NULL} or character. Title of the graph. Default: \code{NULL}.}
 
-\item{x_lab}{NULL or character. x-axis label. Default: "Number of introduced
-taxa".}
+\item{x_lab}{\code{NULL} or character. x-axis label. Default: \code{"Number of introduced taxa"}.}
 
-\item{y_lab}{NULL or character. Title of the graph. Default: "Pathways".}
+\item{y_lab}{\code{NULL} or character. Title of the graph. Default: \code{"Pathways"}.}
 }
 \value{
-A ggplot2 object (or egg object if facets are used). NULL if there are
-no data to plot.
+A list with three slots:
+\itemize{
+\item \code{plot}: ggplot2 object (or egg object if facets are used). \code{NULL} if there
+are no data to plot.
+\item \code{data_top_graph}: data.frame (tibble) with data used for the main plot (top
+graph) in \code{plot}.
+\item \code{data_facet_graph}: data.frame (tibble) with data used for the faceting
+plot in \code{plot}. \code{NULL} is returned if \code{facet_column} is \code{NULL}.
+}
 }
 \description{
 Function to plot bar graph with number of taxa introduced by different
@@ -100,36 +119,42 @@ datafile <- paste0(
   "interim/data_input_checklist_indicators.tsv"
 )
 data <- read_tsv(datafile,
-  na = "NA",
+  na = "",
   col_types = cols(
     .default = col_character(),
     key = col_double(),
     nubKey = col_double(),
     speciesKey = col_double(),
-    acceptedKey = col_double(),
     first_observed = col_double(),
     last_observed = col_double()
   )
 )
 # All taxa
-visualize_pathways_level2(t, chosen_pathway_level1 = "escape")
+visualize_pathways_level2(data, chosen_pathway_level1 = "escape")
 
 # Animalia
-visualize_pathways_level2(t,
+visualize_pathways_level2(data,
   chosen_pathway_level1 = "escape",
   category = "Animalia"
 )
 
 # Chordata
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   category = "Chordata"
 )
 
+# select some pathways only
+visualize_pathways_level2(
+  df = data, 
+  chosen_pathway_level1 = "escape",
+  pathways = c("pet", "horticulture")
+)
+
 # facet phylum
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   category = "Animalia",
   facet_column = "phylum"
@@ -137,21 +162,21 @@ visualize_pathways_level2(
 
 # facet habitat
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   facet_column = "habitat"
 )
 
 # Only taxa introduced from 1950
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   from = 1950
 )
 
 # Add a title
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   category = "Plantae",
   from = 1950,
@@ -160,7 +185,7 @@ visualize_pathways_level2(
 
 # Personalize axis labels
 visualize_pathways_level2(
-  df = t,
+  df = data,
   chosen_pathway_level1 = "escape",
   x_lab = "Aantal taxa",
   y_lab = "pathways"

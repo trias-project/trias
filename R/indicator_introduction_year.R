@@ -236,7 +236,7 @@ indicator_introduction_year <- function(df,
       ) +
       ggplot2::coord_cartesian(xlim = c(start_year_plot, maxDate))
 
-    return(list(plot = egg::ggarrange(top_graph, facet_graph),
+    return(list(plot = egg::ggarrange(top_graph, facet_graph, draw = FALSE),
                 data_top_graph = data_top_graph,
                 data_facet_graph = data_facet_graph))
   }
