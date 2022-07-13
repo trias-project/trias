@@ -16,7 +16,7 @@ vertebrates/invertebrates)."><meta property="og:image" content="/logo.png"><!-- 
     
     <a class="navbar-brand me-2" href="../index.html">trias</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,7 @@ vertebrates/invertebrates).</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>df</dt>
-<dd><p>df.</p></dd>
+<dd><p>A data frame.</p></dd>
 
 
 <dt>chosen_pathway_level1</dt>
@@ -89,28 +89,39 @@ vertebrates/invertebrates).</p>
 
 
 <dt>bin</dt>
-<dd><p>numeric. Time span in years to use for agggregation. Default: 10.</p></dd>
+<dd><p>numeric. Time span in years to use for agggregation. Default:
+<code>10</code>.</p></dd>
 
 
 <dt>from</dt>
 <dd><p>numeric. Year trade-off: taxa introduced before this year are
-grouped all together. Default: 1950.</p></dd>
+grouped all together. Default: <code>1950</code>.</p></dd>
 
 
 <dt>category</dt>
-<dd><p>NULL or character. One of the kingdoms as given in GBIF and
-<code>Chordata</code> (the phylum), <code>Not Chordata</code> (all other phyla of <code>Animalia</code>): 1.
-<code>Plantae</code> 2. <code>Animalia</code> 3. <code>Fungi</code> 4. <code>Chromista</code> 5. <code>Archaea</code> 6.
-<code>Bacteria</code> 7. <code>Protozoa</code> 8. <code>Viruses</code> 9. <code>incertae sedis</code> 10. <code>Chordata</code>
-11. <code>Not Chordata</code> Default: <code>NULL</code>.</p></dd>
+<dd><p><code>NULL</code> (default) or character. One of the kingdoms as given
+in GBIF or <code>Chordata</code> (the phylum) or <code>Not Chordata</code> (all other phyla of
+<code>Animalia</code>):</p><ol><li><p><code>Plantae</code></p></li>
+<li><p><code>Animalia</code></p></li>
+<li><p><code>Fungi</code></p></li>
+<li><p><code>Chromista</code></p></li>
+<li><p><code>Archaea</code></p></li>
+<li><p><code>Bacteria</code></p></li>
+<li><p><code>Protozoa</code></p></li>
+<li><p><code>Viruses</code></p></li>
+<li><p><code>incertae sedis</code></p></li>
+<li><p><code>Chordata</code></p></li>
+<li><p><code>Not Chordata</code></p></li>
+</ol></dd>
 
 
 <dt>facet_column</dt>
-<dd><p>NULL or character. The column to use to create additional
-facet wrap bar graphs underneath the main graph. When NULL, no facet graph
-are created. One of <code>family</code>, <code>order</code>, <code>class</code>, <code>phylum</code>, <code>locality</code>,
-<code>native_range</code>, <code>habitat</code>. If column has another name, rename it before
-calling this function. Default: <code>NULL</code>.</p></dd>
+<dd><p><code>NULL</code> (default) or character. The column to use to
+create additional facet wrap bar graphs underneath the main graph. When
+<code>NULL</code>, no facet graph are created. One of <code>family</code>, <code>order</code>, <code>class</code>,
+<code>phylum</code>, <code>kingdom</code>, <code>locality</code>, <code>native_range</code>, <code>habitat</code>. If column has
+another name, rename it before calling this function. Facet <code>phylum</code> is not
+allowed in combination with <code>category</code> equal to <code>"Chordata"</code> or <code>"Not Chordata"</code>. Facet <code>kingdom</code> is allowed only with category equal to <code>NULL</code>.</p></dd>
 
 
 <dt>pathways</dt>
@@ -120,12 +131,12 @@ pathways are displayed following the order as in this vector.</p></dd>
 
 <dt>pathway_level1_names</dt>
 <dd><p>character. Name of the column of <code>df</code> containing
-information about pathways at level 1. Default: <code>pathway_level1</code>.</p></dd>
+information about pathways at level 1. Default: <code>"pathway_level1"</code>.</p></dd>
 
 
 <dt>pathway_level2_names</dt>
 <dd><p>character. Name of the column of <code>df</code> containing
-information about pathways at level 2. Default: <code>pathway_level2</code>.</p></dd>
+information about pathways at level 2. Default: <code>"pathway_level2"</code>.</p></dd>
 
 
 <dt>taxon_names</dt>
@@ -141,8 +152,7 @@ information about kingdom. Default: <code>"kingdom"</code>.</p></dd>
 <dt>phylum_names</dt>
 <dd><p>character. Name of the column of <code>df</code> containing
 information about phylum. This parameter is used only if <code>category</code> is
-one of:  <code>"Chordata"</code>, <code>"Not Chordata"</code>.  Default:
-<code>"phylum"</code>.</p></dd>
+one of: <code>"Chordata"</code>, <code>"Not Chordata"</code>.  Default: <code>"phylum"</code>.</p></dd>
 
 
 <dt>first_observed</dt>
@@ -151,32 +161,35 @@ information about year of introduction. Default: <code>"first_observed"</code>.<
 
 
 <dt>cbd_standard</dt>
-<dd><p>logical. If TRUE the values of pathway level 1 are
+<dd><p>logical. If <code>TRUE</code> the values of pathway level 1 are
 checked based on CBD standard as returned by <code><a href="pathways_cbd.html">pathways_cbd()</a></code>. Error is
-returned if unmatched values are found. If FALSE, a warning is returned.
-Default: TRUE.</p></dd>
+returned if unmatched values are found. If <code>FALSE</code>, a warning is returned.
+Default: <code>TRUE</code>.</p></dd>
 
 
 <dt>title</dt>
-<dd><p>NULL or character. Title of the graph. Default: NULL.</p></dd>
+<dd><p><code>NULL</code> or character. Title of the graph. Default: <code>NULL</code>.</p></dd>
 
 
 <dt>x_lab</dt>
-<dd><p>NULL or character. x-axis label. Default: "Number of introduced
-taxa".</p></dd>
+<dd><p><code>NULL</code> or character. x-axis label. Default: <code>"Number of introduced taxa"</code>.</p></dd>
 
 
 <dt>y_lab</dt>
-<dd><p>NULL or character. Title of the graph. Default: "Pathways".</p></dd>
+<dd><p><code>NULL</code> or character. Title of the graph. Default: <code>"Pathways"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A ggplot2 object (or egg object if facets are used). NULL if there are
-no data to plot.</p>
-    </div>
+<p>A list with three slots:</p><ul><li><p><code>plot</code>: ggplot2 object (or egg object if facets are used). <code>NULL</code> if there
+are no data to plot.</p></li>
+<li><p><code>data_top_graph</code>: data.frame (tibble) with data used for the main plot (top
+graph) in <code>plot</code>.</p></li>
+<li><p><code>data_facet_graph</code>: data.frame (tibble) with data used for the faceting
+plot in <code>plot</code>. <code>NULL</code> is returned if <code>facet_column</code> is <code>NULL</code>.</p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -193,7 +206,6 @@ no data to plot.</p>
 <span class="r-in"><span>    key <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    nubKey <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    speciesKey <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    acceptedKey <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    first_observed <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    last_observed <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
@@ -268,7 +280,7 @@ no data to plot.</p>
 <span class="r-in"><span>  <span class="va">data</span>,</span></span>
 <span class="r-in"><span>  chosen_pathway_level1 <span class="op">=</span> <span class="st">"escape"</span>,</span></span>
 <span class="r-in"><span>  x_lab <span class="op">=</span> <span class="st">"Jaar"</span>,</span></span>
-<span class="r-in"><span>  y_lab <span class="op">=</span> <span class="st">"Aantal geÃƒÂ¯ntroduceerde taxa"</span></span></span>
+<span class="r-in"><span>  y_lab <span class="op">=</span> <span class="st">"Aantal geintroduceerde taxa"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>

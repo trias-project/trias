@@ -16,7 +16,7 @@ It is a function built on rgbif function name_usage()."><meta property="og:image
     
     <a class="navbar-brand me-2" href="../index.html">trias</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,14 +88,14 @@ occurrenceStatus) and establishmentMeans.</p></dd>
 <span class="r-in"><span>  status <span class="op">=</span> <span class="st">"PRESENT"</span>,</span></span>
 <span class="r-in"><span>  establishmentMeans <span class="op">=</span> <span class="st">"INTRODUCED"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># character taxonKey, distribution properties as vectors, treated as OR</span></span></span>
 <span class="r-in"><span><span class="fu">gbif_has_distribution</span><span class="op">(</span><span class="st">"145953242"</span>,</span></span>
 <span class="r-in"><span>  country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NL"</span>, <span class="st">"BE"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PRESENT"</span>, <span class="st">"DOUBTFUL"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># use alternative names: countryCode, occurrenceStatus.</span></span></span>
 <span class="r-in"><span><span class="co"># Function works. Warning is given.</span></span></span>
@@ -105,7 +105,7 @@ occurrenceStatus) and establishmentMeans.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>countryCode renamed to country</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>occurrenceStatus renamed to status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Case insensitive</span></span></span>
 <span class="r-in"><span><span class="fu">gbif_has_distribution</span><span class="op">(</span><span class="st">"145953242"</span>,</span></span>
@@ -113,7 +113,7 @@ occurrenceStatus) and establishmentMeans.</p></dd>
 <span class="r-in"><span>  status <span class="op">=</span> <span class="st">"PRESENT"</span>,</span></span>
 <span class="r-in"><span>  establishmentMeans <span class="op">=</span> <span class="st">"InTrOdUcEd"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
