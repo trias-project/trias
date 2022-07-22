@@ -202,6 +202,7 @@ climate_match <- function(region,
     
     set1 <- occ_download(taxon_key_set1, 
                          pred("hasCoordinate", TRUE),
+                         pred_gt("year", 1900),
                          user = gbif_user, 
                          pwd = gbif_pwd, 
                          email = gbif_email)
