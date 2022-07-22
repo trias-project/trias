@@ -164,9 +164,13 @@ climate_match <- function(region,
   ## Species ##
   taxon_key <- as.numeric(unique(taxon_key))
   
-  if(length(taxon_key) == 1 & is.na(taxon_key)){
-    stop("taxon_key is missing or not valid")
+  if(length(taxon_key) == 1){
+    if(is.na(taxon_key)){
+      stop("taxon_key is missing or not valid")
+    }
   }
+  
+  taxon_key <- subset(taxon_key, !is.na(taxon_key))
   
   taxon_key_set1 <- pred_in("taxonKey", taxon_key)
   
