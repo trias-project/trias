@@ -299,7 +299,13 @@ climate_match <- function(region,
                   .data$decimalLongitude, 
                   .data$coordinateUncertaintyInMeters, 
                   .data$countryCode) %>% 
-    group_by(.data$year, 
+    mutate(year_cat = case_when(year <= 1925 ~ "1901-1925",
+                                year <= 1950 ~ "1926-1950",
+                                year <= 1975 ~ "1951-1975",
+                                year <= 2000 ~ "1976-2000",
+                                year > 2000 ~ "2001-2025",
+                                TRUE ~ NA_character_)) %>% 
+    group_by(.data$year_cat, 
              .data$acceptedTaxonKey, 
              .data$decimalLatitude, 
              .data$decimalLongitude) %>% 
@@ -341,12 +347,11 @@ climate_match <- function(region,
     
     # Determine subset parameters
     start <- as.numeric(substr(t, 0, 4))
-    end <- as.numeric(substr(t, 6, 9))
+    #end <- as.numeric(substr(t, 6, 9))
     
     # Subset spatial data
     data_sf_sub <- data_sf %>% 
-      filter(.data$year >= start &
-               .data$year <= end)
+      filter(.data$year_cat == t)
     
     print(nrow(data_sf_sub))
     
@@ -360,6 +365,8 @@ climate_match <- function(region,
                                       function(col) {obs_shape[which(col), ]$GRIDCODE})
         
         for(i in 1:length(data_sf_sub$GRIDCODE)){
+          j <- length(data_sf_sub$GRIDCODE)
+          print(i/j)
           data_sf_sub$GRIDCODE2[i] <- as.double(data_sf_sub$GRIDCODE[[i]][1])
         }
         
@@ -377,6 +384,8 @@ climate_match <- function(region,
                                       function(col) {obs_shape[which(col),]$gridcode})
         
         for(i in 1:length(data_sf_sub$GRIDCODE)){
+          j <- length(data_sf_sub$GRIDCODE)
+          print(i/j)
           data_sf_sub$GRIDCODE2[i] <- as.double(data_sf_sub$GRIDCODE[[i]][1])
         }
         
@@ -391,13 +400,13 @@ climate_match <- function(region,
       }else{
         data_overlay <- rbind(data_overlay, data_sf_sub)
       }
+      # Cleanup
+      remove(obs_shape)
+      remove(data_sf_sub)
+      gc()
     }else{
       warning(paste0("No data was present in the GBIF dataset for ", t))
     }
-    # Cleanup
-    remove(obs_shape)
-    remove(data_sf_sub)
-    gc()
   }
   
   ## Calculate threshold parameters ####
