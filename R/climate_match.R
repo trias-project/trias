@@ -193,7 +193,23 @@ climate_match <- function(region,
     data <- read_tsv(unz(zip_file, "occurrence.txt"), 
                      col_types = c(decimalLatitude = col_number(),
                                    decimalLongitude = col_number(),
-                                   establishmentMeans = col_character())) %>% 
+                                   establishmentMeans = col_character()),
+                     col_select = c("acceptedTaxonKey",
+                                    "decimalLatitude",
+                                    "decimalLongitude",
+                                    "establishmentMeans",
+                                    "coordinateUncertaintyInMeters",
+                                    "basisOfRecord",
+                                    "taxonRank",
+                                    "taxonomicStatus",
+                                    "genus",
+                                    "specificEpithet",
+                                    "eventDate",
+                                    "occurrenceStatus",
+                                    "gbifID",
+                                    "year",
+                                    "countryCode"
+                     )) %>% 
       filter(acceptedTaxonKey %in% taxon_key)
   }else{
     gbif_user <- get_cred("gbif_user")
@@ -215,6 +231,23 @@ climate_match <- function(region,
                                  overwrite = TRUE) %>% 
           occ_download_import()
         break()
+        
+        data <- data %>% 
+          select("acceptedTaxonKey",
+                 "decimalLatitude",
+                 "decimalLongitude",
+                 "establishmentMeans",
+                 "coordinateUncertaintyInMeters",
+                 "basisOfRecord",
+                 "taxonRank",
+                 "taxonomicStatus",
+                 "genus",
+                 "specificEpithet",
+                 "eventDate",
+                 "occurrenceStatus",
+                 "gbifID",
+                 "year",
+                 "countryCode")
       }
       print(test_set1$status)
     }
@@ -226,7 +259,7 @@ climate_match <- function(region,
     }
   }
   
-
+  
   # Data prep ####
   if(base::missing(coord_unc)){
     coord_unc <- max(data$coordinateUncertaintyInMeters, na.rm = TRUE)
@@ -244,7 +277,7 @@ climate_match <- function(region,
     rename(TK_2 = .data$acceptedTaxonKey) %>% 
     distinct(.data$TK_2, .data$ASN_2) %>% 
     group_by(.data$TK_2) %>% 
-    add_tally()
+    ungroup()
   
   data_redux <- data %>% 
     mutate(acceptedScientificName = paste(.data$genus, .data$specificEpithet)) %>% 
@@ -259,7 +292,7 @@ climate_match <- function(region,
                   .data$occurrenceStatus == "PRESENT") %>% 
     dplyr::select(.data$gbifID, 
                   .data$year, 
-                  .data$taxonKey, 
+                  .data$acceptedTaxonKey, 
                   .data$acceptedTaxonKey, 
                   .data$acceptedScientificName, 
                   .data$decimalLatitude, 
@@ -270,11 +303,14 @@ climate_match <- function(region,
              .data$acceptedTaxonKey, 
              .data$decimalLatitude, 
              .data$decimalLongitude) %>% 
-    summarise(n_obs = n())
+    summarize(n_obs = n()) %>% 
+    ungroup()
   
   if(nrow(data_redux) == 0){
     stop(paste0("No useable data for ", paste(taxon_key, collapse = ","), " left after filters. Try omiting or changing the filter setup."))
   }
+  
+  remove(data)
   
   coord <- data_redux %>% 
     dplyr::select(.data$decimalLongitude, .data$decimalLatitude)
@@ -337,19 +373,26 @@ climate_match <- function(region,
     }else{
       warning(paste0("No data was present in the GBIF dataset for ", t))
     }
+    # Cleanup
+    remove(obs_shape)
+    remove(data_sp_sub)
+    remove(data_sub_over)
+    remove(data_sub_overlay)
+    gc()
   }
   
   ## Calculate threshold parameters ####
   data_overlay_unfiltered <- data_overlay %>% 
-    group_by(.data$acceptedTaxonKey, .data$acceptedScientificName, .data$Classification) %>% 
+    group_by(.data$acceptedTaxonKey, .data$Classification) %>% 
     add_tally(name = "n_climate") %>% 
     ungroup() %>% 
-    group_by(.data$acceptedTaxonKey, .data$acceptedScientificName) %>% 
+    group_by(.data$acceptedTaxonKey) %>% 
     add_tally(name = "n_totaal") %>% 
     ungroup() %>% 
     mutate(perc_climate = .data$n_climate/.data$n_totaal) %>% 
-    distinct(.data$acceptedTaxonKey, .data$acceptedScientificName, .data$Classification, 
+    distinct(.data$acceptedTaxonKey, .data$Classification, 
              .keep_all = TRUE) %>% 
+    left_join(SPECIES, by = c("acceptedTaxonKey" = "TK_2")) %>% 
     select(.data$taxonKey, 
            .data$acceptedScientificName, 
            .data$Classification, 
