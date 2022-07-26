@@ -319,6 +319,10 @@ climate_match <- function(region,
                                     data = data_redux,
                                     proj4string = crs_wgs)
   
+  data_sf <- sf::st_as_sf(data_sp, 4326)
+  
+  remove(data_sp)
+  
   # Climate matching occurrence data ####
   
   timeperiodes <- c("1901-1925", 
@@ -330,6 +334,7 @@ climate_match <- function(region,
   data_overlay <- data.frame()
   
   for(t in timeperiodes){
+    print(t)
     # Import legends
     KG_Rubel_Kotteks_Legend <- legends$KG_A1FI
     KG_Beck <- legends$KG_Beck
@@ -339,45 +344,59 @@ climate_match <- function(region,
     end <- as.numeric(substr(t, 6, 9))
     
     # Subset spatial data
-    data_sp_sub <- subset(data_sp, 
-                          data_sp@data$year >= start & 
-                            data_sp@data$year <= end)
+    data_sf_sub <- data_sf %>% 
+      filter(.data$year >= start &
+               .data$year <= end)
+    
+    print(nrow(data_sf_sub))
     
     # Overlay with observed climate
-    if(nrow(data_sp_sub)>0){
+    if(nrow(data_sf_sub)>0){
       if(start <= 2000){
-        obs_shape <- observed[[t]]
-        data_sub_over <- sp::over(data_sp_sub, obs_shape)
-        data_sub_overlay <- bind_cols(data_sp_sub@data, data_sub_over) 
+        obs_shape <- sf::st_as_sf(observed[[t]])
+        data_sf_sub$GRIDCODE <- apply(sf::st_intersects(obs_shape, 
+                                                        data_sf_sub, 
+                                                        sparse = FALSE), 2, 
+                                      function(col) {obs_shape[which(col), ]$GRIDCODE})
         
-        data_sub_overlay <- data_sub_overlay %>% 
-          mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
+        for(i in 1:length(data_sf_sub$GRIDCODE)){
+          data_sf_sub$GRIDCODE2[i] <- as.double(data_sf_sub$GRIDCODE[[i]][1])
+        }
+        
+        data_sf_sub <- data_sf_sub %>% 
+          mutate(GRIDCODE = as.double(GRIDCODE2)) %>% 
+          select(-GRIDCODE2) %>% 
           left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE")) 
       }else{
-        obs_shape <- observed$"1980-2016"
-        data_sub_over <- sp::over(data_sp_sub, obs_shape)
-        data_sub_overlay <- bind_cols(data_sp_sub@data, data_sub_over) 
+        obs_shape <- sf::st_as_sf(observed$"1980-2016", crs = 4326)
+        obs_shape <- sf::st_cast(obs_shape, to = "POLYGON")
+        obs_shape <- sf::st_make_valid(obs_shape)
+        data_sf_sub$GRIDCODE <- apply(sf::st_intersects(obs_shape, 
+                                                        data_sf_sub, 
+                                                        sparse = FALSE), 2, 
+                                      function(col) {obs_shape[which(col),]$gridcode})
         
-        data_sub_overlay <- data_sub_overlay %>% 
-          rename(GRIDCODE = .data$gridcode,
-                 ID = .data$Id) %>% 
-          mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
-          left_join(KG_Beck, by = c("GRIDCODE"))
+        for(i in 1:length(data_sf_sub$GRIDCODE)){
+          data_sf_sub$GRIDCODE2[i] <- as.double(data_sf_sub$GRIDCODE[[i]][1])
+        }
+        
+        data_sf_sub <- data_sf_sub %>% 
+          mutate(GRIDCODE = as.double(GRIDCODE2)) %>% 
+          select(-GRIDCODE2) %>% 
+          left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE")) 
       }
       
       if(nrow(data_overlay) == 0){
-        data_overlay <- data_sub_overlay
+        data_overlay <- data_sf_sub
       }else{
-        data_overlay <- rbind(data_overlay, data_sub_overlay)
+        data_overlay <- rbind(data_overlay, data_sf_sub)
       }
     }else{
       warning(paste0("No data was present in the GBIF dataset for ", t))
     }
     # Cleanup
     remove(obs_shape)
-    remove(data_sp_sub)
-    remove(data_sub_over)
-    remove(data_sub_overlay)
+    remove(data_sf_sub)
     gc()
   }
   
