@@ -226,7 +226,7 @@ climate_match <- function(region,
     }
   }
   
-  
+
   # Data prep ####
   if(base::missing(coord_unc)){
     coord_unc <- max(data$coordinateUncertaintyInMeters, na.rm = TRUE)
@@ -257,12 +257,20 @@ climate_match <- function(region,
                   .data$basisOfRecord %in% BasisOfRecord,
                   .data$coordinateUncertaintyInMeters <= coord_unc | is.na(.data$coordinateUncertaintyInMeters),
                   .data$occurrenceStatus == "PRESENT") %>% 
-    dplyr::select(.data$gbifID, .data$eventDate, .data$year, .data$month, .data$day, .data$taxonKey, 
-                  .data$acceptedTaxonKey, .data$acceptedScientificName, .data$decimalLatitude, 
-                  .data$decimalLongitude, .data$coordinateUncertaintyInMeters, .data$countryCode) %>% 
-    distinct(.data$eventDate, .data$year, .data$month, .data$day, .data$taxonKey, 
-             .data$acceptedTaxonKey, .data$acceptedScientificName, .data$decimalLatitude, 
-             .data$decimalLongitude, .data$coordinateUncertaintyInMeters, .data$countryCode)
+    dplyr::select(.data$gbifID, 
+                  .data$year, 
+                  .data$taxonKey, 
+                  .data$acceptedTaxonKey, 
+                  .data$acceptedScientificName, 
+                  .data$decimalLatitude, 
+                  .data$decimalLongitude, 
+                  .data$coordinateUncertaintyInMeters, 
+                  .data$countryCode) %>% 
+    group_by(.data$year, 
+             .data$acceptedTaxonKey, 
+             .data$decimalLatitude, 
+             .data$decimalLongitude) %>% 
+    summarise(n_obs = n())
   
   if(nrow(data_redux) == 0){
     stop(paste0("No useable data for ", paste(taxon_key, collapse = ","), " left after filters. Try omiting or changing the filter setup."))
