@@ -357,8 +357,13 @@ climate_match <- function(region,
     
     # Overlay with observed climate
     if(nrow(data_sf_sub)>0){
+      if(start <= 2000){
         obs_shape <- sf::st_as_sf(observed[[t]])
+      }else{
+        t <- "2001-2025-A1FI"
+        obs_shape <- sf::st_as_sf(future[[t]])
       }
+      
       if(nrow(data_sf_sub) <= 11000){
         data_sf_sub$GRIDCODE <- apply(sf::st_intersects(obs_shape, 
                                                         data_sf_sub, 
@@ -445,16 +450,17 @@ climate_match <- function(region,
 ## Calculate threshold parameters ####
 data_overlay_unfiltered <- data_overlay %>% 
   group_by(.data$acceptedTaxonKey, .data$Classification) %>% 
-  add_tally(name = "n_climate") %>% 
+  mutate(n_climate = sum(n_obs, na.rm = TRUE)) %>% 
   ungroup() %>% 
   group_by(.data$acceptedTaxonKey) %>% 
-  add_tally(name = "n_totaal") %>% 
+  mutate(n_totaal = sum(n_obs, na.rm = TRUE)) %>% 
   ungroup() %>% 
   mutate(perc_climate = .data$n_climate/.data$n_totaal) %>% 
   distinct(.data$acceptedTaxonKey, .data$Classification, 
            .keep_all = TRUE) %>% 
   left_join(SPECIES, by = c("acceptedTaxonKey" = "TK_2")) %>% 
-  select(.data$taxonKey, 
+  rename(acceptedScientificName = ASN_2) %>% 
+  select(.data$acceptedTaxonKey, 
          .data$acceptedScientificName, 
          .data$Classification, 
          .data$Description,
