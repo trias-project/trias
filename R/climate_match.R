@@ -445,7 +445,7 @@ climate_match <- function(region,
     remove(data_sf_sub)
     gc()
   }
-}
+
 
 ## Calculate threshold parameters ####
 data_overlay_unfiltered <- data_overlay %>% 
