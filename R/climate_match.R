@@ -270,7 +270,7 @@ climate_match <- function(region,
   }
   
   SPECIES <- data %>% 
-    dplyr::filter(.data$taxonRank == "SPECIES", 
+    dplyr::filter(.data$taxonRank %in% c("SPECIES", "VARIETY"), 
                   .data$taxonomicStatus == "ACCEPTED") %>% 
     distinct(.data$acceptedTaxonKey, .data$genus, .data$specificEpithet) %>% 
     mutate(ASN_2 = paste(.data$genus, .data$specificEpithet)) %>% 
