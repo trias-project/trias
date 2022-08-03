@@ -218,7 +218,7 @@ climate_match <- function(region,
     
     set1 <- occ_download(taxon_key_set1, 
                          pred("hasCoordinate", TRUE),
-                         pred_gt("year", 1900),
+                         rgbif::pred_gt("year", 1900),
                          user = gbif_user, 
                          pwd = gbif_pwd, 
                          email = gbif_email)
@@ -764,7 +764,7 @@ if(maps == TRUE){
     t <- taxon_key[i]
     
     temp_data <- data_overlay_unfiltered %>% 
-      dplyr::filter(taxon_key == t) %>% 
+      dplyr::filter(acceptedTaxonKey == t) %>% 
       select(-Description)
     
     species <- unique(temp_data$acceptedScientificName)
@@ -840,7 +840,7 @@ if(maps == TRUE){
                   group = ~scenario,
                   popup = ~popup,
                   options = leaflet::pathOptions(pane = "background")) %>% 
-      addCircleMarkers(data = data_sp_species_obs,
+      addCircleMarkers(data = data_sf_species_obs,
                        color = "black",
                        radius = 1,
                        options = leaflet::pathOptions(pane = "foreground")) %>% 
