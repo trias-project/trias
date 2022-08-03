@@ -79,16 +79,16 @@
 #' # with GBIF download
 #' climate_match(region,
 #'               taxon_key, 
-#'               n_limit = 0.2,
-#'               cm_limit = 90
+#'               n_limit = 90,
+#'               cm_limit = 0.2
 #' )
 #' # calculate only data climate match outputs
 #' # using a pre-downloaded zip_file
 #' climate_match(region,
 #'               taxon_key, 
 #'               zip_file,
-#'               n_limit = 0.2,
-#'               cm_limit = 90,
+#'               n_limit = 90,
+#'               cm_limit = 0.2,
 #'               maps = FALSE
 #' )
 #' # calculate climate match outputs based 
@@ -97,8 +97,8 @@
 #' climate_match(region,
 #'               taxon_key, 
 #'               zip_file,
-#'               n_limit = 0.2,
-#'               cm_limit = 90,
+#'               n_limit = 90,
+#'               cm_limit = 0.2,
 #'               coord_unc = 100,
 #'               BasisOfRecord = "HUMAN_OBSERVATION",
 #'               maps = FALSE
@@ -293,7 +293,6 @@ climate_match <- function(region,
     dplyr::select(.data$gbifID, 
                   .data$year, 
                   .data$acceptedTaxonKey, 
-                  .data$acceptedTaxonKey, 
                   .data$acceptedScientificName, 
                   .data$decimalLatitude, 
                   .data$decimalLongitude, 
@@ -310,7 +309,9 @@ climate_match <- function(region,
              .data$decimalLatitude, 
              .data$decimalLongitude) %>% 
     summarize(n_obs = n()) %>% 
-    ungroup()
+    ungroup() %>% 
+    left_join(SPECIES, by = c("acceptedTaxonKey" = "TK_2")) %>% 
+    rename(acceptedScientificName = ASN_2)
   
   if(nrow(data_redux) == 0){
     stop(paste0("No useable data for ", paste(taxon_key, collapse = ","), " left after filters. Try omiting or changing the filter setup."))
@@ -457,9 +458,7 @@ data_overlay_unfiltered <- data_overlay %>%
   ungroup() %>% 
   mutate(perc_climate = .data$n_climate/.data$n_totaal) %>% 
   distinct(.data$acceptedTaxonKey, .data$Classification, 
-           .keep_all = TRUE) %>% 
-  left_join(SPECIES, by = c("acceptedTaxonKey" = "TK_2")) %>% 
-  rename(acceptedScientificName = ASN_2) %>% 
+           .keep_all = TRUE)  %>% 
   select(.data$acceptedTaxonKey, 
          .data$acceptedScientificName, 
          .data$Classification, 
@@ -566,7 +565,7 @@ if(maps == TRUE){
   
   for(t in taxon_key){
     temp_data <- data_overlay_unfiltered %>% 
-      dplyr::filter(.data$taxonKey == t) %>% 
+      dplyr::filter(.data$acceptedTaxonKey == t) %>% 
       select(-.data$Description)
     
     species <- unique(temp_data$acceptedScientificName)
@@ -574,7 +573,7 @@ if(maps == TRUE){
     if(is_empty(species)){
       next
     }else{
-      temp_climate <- sp::merge(current_climate_shape, temp_data, 
+      temp_climate <- sp::merge(current_climate_shape, as.data.frame(temp_data), 
                                 by = "Classification",
                                 all.y = TRUE,
                                 duplicateGeoms = TRUE)
@@ -613,14 +612,14 @@ if(maps == TRUE){
   # create current climate map
   current_climate_map <- leaflet(current_climate) %>% 
     addPolygons(color = "#bababa",
-                fillColor = ~pal_current(.data$perc_climate),
+                fillColor = ~pal_current(perc_climate),
                 fillOpacity = 0.8,
                 stroke = TRUE,
                 weight = 0.5,
-                group = ~.data$acceptedScientificName,
-                popup = ~.data$popup) %>% 
-    addCircleMarkers(data = data_sp,
-                     group = ~.data$acceptedScientificName,
+                group = ~current_climate$acceptedScientificName,
+                popup = ~current_climate$popup) %>% 
+    addCircleMarkers(data = data_sf,
+                     group = ~data_sf$acceptedScientificName,
                      color = "black",
                      radius = 1) %>% 
     addLegend(colors = "black",
@@ -632,7 +631,7 @@ if(maps == TRUE){
                            by = 0.1),
               position = "bottomleft",
               title = "Climate match") %>% 
-    addLayersControl(baseGroups = ~.data$acceptedScientificName) %>% 
+    addLayersControl(baseGroups = ~data_sf$acceptedScientificName) %>% 
     addPolygons(data = sea,
                 fillColor = "#e0e0e0",
                 weight = 0.5)
@@ -677,7 +676,7 @@ if(maps == TRUE){
     for(t in taxon_key){
       
       temp_data <- data_overlay_unfiltered %>% 
-        dplyr::filter(.data$taxonKey == t) %>% 
+        dplyr::filter(.data$acceptedTaxonKey == t) %>% 
         select(-.data$Description)
       
       species <- unique(temp_data$acceptedScientificName)
@@ -712,18 +711,20 @@ if(maps == TRUE){
     
     temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
     
+    temp_shape <- sf::st_as_sf(temp_shape)
+    
     # Add layer to map
     scenario_map <- future_climate_map %>% 
       addPolygons(data = temp_shape,
                   color = "#bababa",
-                  fillColor = ~pal_current(perc_climate),
+                  fillColor = ~pal_current(temp_shape$perc_climate),
                   fillOpacity = 0.8,
                   stroke = TRUE,
                   weight = 0.5,
-                  group = ~acceptedScientificName,
-                  popup = ~popup) %>% 
-      addCircleMarkers(data = data_sp,
-                       group = ~ acceptedScientificName,
+                  group = ~temp_shape$acceptedScientificName,
+                  popup = ~temp_shape$popup) %>% 
+      addCircleMarkers(data = data_sf,
+                       group = ~data_sf$acceptedScientificName,
                        color = "black",
                        radius = 1) %>% 
       addLegend(pal = pal_current,
@@ -733,7 +734,7 @@ if(maps == TRUE){
                 position = "bottomleft",
                 title = paste0("<strong>Climate match</strong></br>",
                                s)) %>% 
-      addLayersControl(baseGroups = ~temp_shape@data$acceptedScientificName)
+      addLayersControl(baseGroups = ~temp_shape$acceptedScientificName)
     
     
     future_scenario_maps[[i]] <- scenario_map
@@ -823,11 +824,13 @@ if(maps == TRUE){
     temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
     
     # Subset observations
-    data_sp_species_obs <- subset(data_sp, 
-                                  data_sp$taxonKey == t)
+    data_sf_species_obs <- data_sf %>% 
+      filter(acceptedTaxonKey == t)
     
     # Add layer to map
     scenario_map <- single_species_map %>% 
+      leaflet::addMapPane("background", zIndex = 400) %>%  
+      leaflet::addMapPane("foreground", zIndex = 500) %>% 
       addPolygons(data = temp_shape,
                   color = "#bababa",
                   fillColor = ~pal_current(perc_climate),
@@ -835,17 +838,19 @@ if(maps == TRUE){
                   stroke = TRUE,
                   weight = 0.5,
                   group = ~scenario,
-                  popup = ~popup) %>% 
+                  popup = ~popup,
+                  options = leaflet::pathOptions(pane = "background")) %>% 
       addCircleMarkers(data = data_sp_species_obs,
                        color = "black",
-                       radius = 1) %>% 
+                       radius = 1,
+                       options = leaflet::pathOptions(pane = "foreground")) %>% 
       addLegend(pal = pal_current,
                 values = seq(from = 0, 
                              to = 1, 
                              by = 0.1),
                 position = "bottomleft",
                 title = "<strong>Climate match</strong>") %>% 
-      addLayersControl(baseGroups = ~temp_shape@data$scenario)
+      addLayersControl(baseGroups = ~temp_shape@data$scenario) 
     
     
     single_species_maps[[i]] <- scenario_map
