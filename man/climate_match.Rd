@@ -90,16 +90,16 @@ zip_file <- "./<path to zip_file>/0001221-210914110416597.zip"
 # with GBIF download
 climate_match(region,
               taxon_key, 
-              n_limit = 0.2,
-              cm_limit = 90
+              n_limit = 90,
+              cm_limit = 0.2
 )
 # calculate only data climate match outputs
 # using a pre-downloaded zip_file
 climate_match(region,
               taxon_key, 
               zip_file,
-              n_limit = 0.2,
-              cm_limit = 90,
+              n_limit = 90,
+              cm_limit = 0.2,
               maps = FALSE
 )
 # calculate climate match outputs based 
@@ -108,8 +108,8 @@ climate_match(region,
 climate_match(region,
               taxon_key, 
               zip_file,
-              n_limit = 0.2,
-              cm_limit = 90,
+              n_limit = 90,
+              cm_limit = 0.2,
               coord_unc = 100,
               BasisOfRecord = "HUMAN_OBSERVATION",
               maps = FALSE
