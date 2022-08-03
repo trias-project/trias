@@ -46,13 +46,14 @@
 #' 
 #' @export
 #' @importFrom rgbif occ_download occ_download_meta occ_download_get pred
-#'   occ_download_import pred_in
+#'   occ_download_import pred_in pred_gt
 #' @importFrom sp SpatialPointsDataFrame over merge CRS 
 #'   rbind.SpatialPolygonsDataFrame spTransform
+#' @importFrom st_as_sf st_intersects  
 #' @importFrom raster intersect
 #' @importFrom rworldmap getMap
 #' @importFrom leaflet leaflet addPolygons colorNumeric addCircleMarkers
-#'   addLegend addLayersControl colorBin
+#'   addLegend addLayersControl colorBin addMapPane
 #' @importFrom dplyr %>% filter distinct mutate rename group_by add_tally
 #'   bind_cols ungroup select left_join add_row
 #' @importFrom readr read_tsv col_number col_character
@@ -218,7 +219,7 @@ climate_match <- function(region,
     
     set1 <- occ_download(taxon_key_set1, 
                          pred("hasCoordinate", TRUE),
-                         rgbif::pred_gt("year", 1900),
+                         pred_gt("year", 1900),
                          user = gbif_user, 
                          pwd = gbif_pwd, 
                          email = gbif_email)
@@ -326,7 +327,7 @@ climate_match <- function(region,
                                     data = data_redux,
                                     proj4string = crs_wgs)
   
-  data_sf <- sf::st_as_sf(data_sp, 4326)
+  data_sf <- st_as_sf(data_sp, 4326)
   
   remove(data_sp)
   
@@ -359,14 +360,14 @@ climate_match <- function(region,
     # Overlay with observed climate
     if(nrow(data_sf_sub)>0){
       if(start <= 2000){
-        obs_shape <- sf::st_as_sf(observed[[t]])
+        obs_shape <- st_as_sf(observed[[t]])
       }else{
         t <- "2001-2025-A1FI"
-        obs_shape <- sf::st_as_sf(future[[t]])
+        obs_shape <- st_as_sf(future[[t]])
       }
       
       if(nrow(data_sf_sub) <= 11000){
-        data_sf_sub$GRIDCODE <- apply(sf::st_intersects(obs_shape, 
+        data_sf_sub$GRIDCODE <- apply(st_intersects(obs_shape, 
                                                         data_sf_sub, 
                                                         sparse = FALSE), 2, 
                                       function(col) {obs_shape[which(col),
@@ -401,7 +402,7 @@ climate_match <- function(region,
           }else{
             data_sf_sub_sub <- data_sf_sub[y:nrow(data_sf_sub),]
           }
-          data_sf_sub_sub$GRIDCODE <- apply(sf::st_intersects(obs_shape, 
+          data_sf_sub_sub$GRIDCODE <- apply(st_intersects(obs_shape, 
                                                               data_sf_sub_sub, 
                                                               sparse = FALSE), 2, 
                                             function(col) {obs_shape[which(col),
@@ -446,235 +447,124 @@ climate_match <- function(region,
     remove(data_sf_sub)
     gc()
   }
-
-
-## Calculate threshold parameters ####
-data_overlay_unfiltered <- data_overlay %>% 
-  group_by(.data$acceptedTaxonKey, .data$Classification) %>% 
-  mutate(n_climate = sum(n_obs, na.rm = TRUE)) %>% 
-  ungroup() %>% 
-  group_by(.data$acceptedTaxonKey) %>% 
-  mutate(n_totaal = sum(n_obs, na.rm = TRUE)) %>% 
-  ungroup() %>% 
-  mutate(perc_climate = .data$n_climate/.data$n_totaal) %>% 
-  distinct(.data$acceptedTaxonKey, .data$Classification, 
-           .keep_all = TRUE)  %>% 
-  select(.data$acceptedTaxonKey, 
-         .data$acceptedScientificName, 
-         .data$Classification, 
-         .data$Description,
-         .data$n_climate, 
-         .data$n_totaal, 
-         .data$perc_climate)
-
-# Determine future scenarios ####
-scenarios <- c("2001-2025-A1FI",
-               "2026-2050-A1FI",
-               "2051-2075-A1FI",
-               "2071-2100_Beck",
-               "2076-2100-A1FI")
-
-# Create empty output 
-
-output <- data.frame() %>% 
-  mutate(scenario = "",
-         KG_GridCode = as.integer(""))
-
-# Calculate KG codes 
-for(s in scenarios){
-  shape <- future[[s]]
   
-  if(c("gridcode") %in% colnames(shape@data)){
+  
+  ## Calculate threshold parameters ####
+  data_overlay_unfiltered <- data_overlay %>% 
+    group_by(.data$acceptedTaxonKey, .data$Classification) %>% 
+    mutate(n_climate = sum(n_obs, na.rm = TRUE)) %>% 
+    ungroup() %>% 
+    group_by(.data$acceptedTaxonKey) %>% 
+    mutate(n_totaal = sum(n_obs, na.rm = TRUE)) %>% 
+    ungroup() %>% 
+    mutate(perc_climate = .data$n_climate/.data$n_totaal) %>% 
+    distinct(.data$acceptedTaxonKey, .data$Classification, 
+             .keep_all = TRUE)  %>% 
+    select(.data$acceptedTaxonKey, 
+           .data$acceptedScientificName, 
+           .data$Classification, 
+           .data$Description,
+           .data$n_climate, 
+           .data$n_totaal, 
+           .data$perc_climate)
+  
+  # Determine future scenarios ####
+  scenarios <- c("2001-2025-A1FI",
+                 "2026-2050-A1FI",
+                 "2051-2075-A1FI",
+                 "2071-2100_Beck",
+                 "2076-2100-A1FI")
+  
+  # Create empty output 
+  
+  output <- data.frame() %>% 
+    mutate(scenario = "",
+           KG_GridCode = as.integer(""))
+  
+  # Calculate KG codes 
+  for(s in scenarios){
+    shape <- future[[s]]
+    
+    if(c("gridcode") %in% colnames(shape@data)){
+      shape@data <- shape@data %>% 
+        rename(GRIDCODE = .data$gridcode) 
+    }
+    
     shape@data <- shape@data %>% 
-      rename(GRIDCODE = .data$gridcode) 
-  }
-  
-  shape@data <- shape@data %>% 
-    mutate(GRIDCODE = as.integer(.data$GRIDCODE)) 
-  
-  girdcode_intersect <- intersect(shape, region_shape)
-  
-  for(g in girdcode_intersect@data$GRIDCODE){
-    output <- output %>% 
-      add_row(scenario = s,
-              KG_GridCode = g)
-  }
-}
-
-output_1 <- output %>% 
-  dplyr::filter(grepl(pattern = "Beck", .data$scenario)) %>% 
-  left_join(KG_Beck, by = c("KG_GridCode" = "GRIDCODE"))
-
-output_2 <- output %>% 
-  dplyr::filter(!grepl(pattern = "Beck", .data$scenario)) %>% 
-  left_join(KG_Rubel_Kotteks_Legend, by = c("KG_GridCode" = "GRIDCODE"))
-
-output_final <- rbind(output_1, output_2)
-
-future_climate <- output_final %>% 
-  dplyr::filter(!is.na(.data$Classification))
-
-# Per scenario filter ####
-
-cm <- data.frame()
-
-for(b in unique(future_climate$scenario)){
-  future_scenario <- future_climate %>% 
-    dplyr::filter(.data$scenario == b)
-  
-  cm_int <- data_overlay_unfiltered %>% 
-    dplyr::filter(.data$Classification %in% future_scenario$Classification) %>% 
-    mutate(scenario = b)
-  
-  if(nrow(cm) == 0){
-    cm <- cm_int
-  }else{
-    cm <- rbind(cm, cm_int)
-  }
-}
-
-# Thresholds ####
-if(missing(n_limit)){
-  warning("no n_totaal threshold was provided. defaults to 0!")
-  n_limit <- 0
-}
-if(missing(cm_limit)){
-  warning("no perc_climate threshold was provided. defaults to 0%!")
-  cm_limit <- 0
-}
-
-data_overlay_scenario_filtered <- cm %>% 
-  dplyr::filter(.data$n_totaal >= n_limit,
-                .data$perc_climate >= cm_limit)
-
-# MAPS ####
-if(maps == TRUE){
-  ## map current climate suitability ####
-  
-  # Get Current climate
-  current_climate_shape <- observed$`1980-2016`
-  
-  current_climate_shape@data <- current_climate_shape@data %>% 
-    mutate(gridcode = as.double(.data$gridcode)) %>% 
-    left_join(legends$KG_Beck, by = c("gridcode" = "GRIDCODE"))
-  
-  sea <- subset(current_climate_shape, is.na(current_climate_shape$Classification))
-  
-  # Combine climate shape with climate matched observations
-  current_climate <- current_climate_shape
-  
-  for(t in taxon_key){
-    temp_data <- data_overlay_unfiltered %>% 
-      dplyr::filter(.data$acceptedTaxonKey == t) %>% 
-      select(-.data$Description)
+      mutate(GRIDCODE = as.integer(.data$GRIDCODE)) 
     
-    species <- unique(temp_data$acceptedScientificName)
+    girdcode_intersect <- intersect(shape, region_shape)
     
-    if(is_empty(species)){
-      next
-    }else{
-      temp_climate <- sp::merge(current_climate_shape, as.data.frame(temp_data), 
-                                by = "Classification",
-                                all.y = TRUE,
-                                duplicateGeoms = TRUE)
-      
-      temp_climate@data <- temp_climate@data %>% 
-        mutate(taxon_key = t,
-               acceptedScientificName = species)
-      
-      if(ncol(current_climate)!=ncol(temp_climate)){
-        current_climate <- temp_climate
-      }else{
-        current_climate <- rbind.SpatialPolygonsDataFrame(current_climate, 
-                                                          temp_climate)
-      }
+    for(g in girdcode_intersect@data$GRIDCODE){
+      output <- output %>% 
+        add_row(scenario = s,
+                KG_GridCode = g)
     }
   }
   
-  current_climate@data <- current_climate@data %>% 
-    mutate(popup = paste0("<strong>Classification: </strong>", .data$Description, " (", .data$Classification, ")",
-                          "</br><strong>ScientificName: </strong>", 
-                          .data$acceptedScientificName,
-                          "</br><strong>%obs in climate: </strong>", 
-                          round(.data$perc_climate*100, 2), "%"))
+  output_1 <- output %>% 
+    dplyr::filter(grepl(pattern = "Beck", .data$scenario)) %>% 
+    left_join(KG_Beck, by = c("KG_GridCode" = "GRIDCODE"))
   
-  current_climate <- subset(current_climate, !is.na(current_climate$Classification))
+  output_2 <- output %>% 
+    dplyr::filter(!grepl(pattern = "Beck", .data$scenario)) %>% 
+    left_join(KG_Rubel_Kotteks_Legend, by = c("KG_GridCode" = "GRIDCODE"))
   
-  # create color palette 
-  pal_current <- colorBin("OrRd", 
-                          domain = seq(from = 0, 
-                                       to = 1, 
-                                       by = 0.1),
-                          na.color =  "#f7f7f7",
-                          bins = 9,
-                          reverse = FALSE)
+  output_final <- rbind(output_1, output_2)
   
-  # create current climate map
-  current_climate_map <- leaflet(current_climate) %>% 
-    addPolygons(color = "#bababa",
-                fillColor = ~pal_current(perc_climate),
-                fillOpacity = 0.8,
-                stroke = TRUE,
-                weight = 0.5,
-                group = ~current_climate$acceptedScientificName,
-                popup = ~current_climate$popup) %>% 
-    addCircleMarkers(data = data_sf,
-                     group = ~data_sf$acceptedScientificName,
-                     color = "black",
-                     radius = 1) %>% 
-    addLegend(colors = "black",
-              labels = "observations",
-              position = "bottomleft") %>% 
-    addLegend(pal = pal_current,
-              values = seq(from = 0, 
-                           to = 1, 
-                           by = 0.1),
-              position = "bottomleft",
-              title = "Climate match") %>% 
-    addLayersControl(baseGroups = ~data_sf$acceptedScientificName) %>% 
-    addPolygons(data = sea,
-                fillColor = "#e0e0e0",
-                weight = 0.5)
+  future_climate <- output_final %>% 
+    dplyr::filter(!is.na(.data$Classification))
   
-  ## map future climate suitability ####
+  # Per scenario filter ####
   
-  # Create basemap
+  cm <- data.frame()
   
-  future_climate_map <- leaflet(sea) %>% 
-    addPolygons(data = sea,
-                fillColor = "#e0e0e0",
-                weight = 0.5) %>% 
-    addLegend(colors = "black",
-              labels = "observations",
-              position = "bottomleft")
-  
-  # Create scenario maps
-  future_scenario_maps <- list_along(scenarios)
-  names(future_scenario_maps) <- scenarios
-  
-  for (i in 1:length(scenarios)) {
+  for(b in unique(future_climate$scenario)){
+    future_scenario <- future_climate %>% 
+      dplyr::filter(.data$scenario == b)
     
-    s <- scenarios[i]
+    cm_int <- data_overlay_unfiltered %>% 
+      dplyr::filter(.data$Classification %in% future_scenario$Classification) %>% 
+      mutate(scenario = b)
     
-    # Get scenario shape
-    scenario_shape <- future[[s]]
-    
-    # Attach legends
-    if(grepl("Beck", s)){
-      scenario_shape@data <- scenario_shape@data %>% 
-        mutate(gridcode = as.double(.data$gridcode)) %>% 
-        left_join(legends$KG_Beck, by = c("gridcode" = "GRIDCODE"))
+    if(nrow(cm) == 0){
+      cm <- cm_int
     }else{
-      scenario_shape@data <- scenario_shape@data %>% 
-        mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
-        left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE"))
+      cm <- rbind(cm, cm_int)
     }
+  }
+  
+  # Thresholds ####
+  if(missing(n_limit)){
+    warning("no n_totaal threshold was provided. defaults to 0!")
+    n_limit <- 0
+  }
+  if(missing(cm_limit)){
+    warning("no perc_climate threshold was provided. defaults to 0%!")
+    cm_limit <- 0
+  }
+  
+  data_overlay_scenario_filtered <- cm %>% 
+    dplyr::filter(.data$n_totaal >= n_limit,
+                  .data$perc_climate >= cm_limit)
+  
+  # MAPS ####
+  if(maps == TRUE){
+    ## map current climate suitability ####
+    
+    # Get Current climate
+    current_climate_shape <- observed$`1980-2016`
+    
+    current_climate_shape@data <- current_climate_shape@data %>% 
+      mutate(gridcode = as.double(.data$gridcode)) %>% 
+      left_join(legends$KG_Beck, by = c("gridcode" = "GRIDCODE"))
+    
+    sea <- subset(current_climate_shape, is.na(current_climate_shape$Classification))
     
     # Combine climate shape with climate matched observations
-    temp_shape <- scenario_shape
+    current_climate <- current_climate_shape
     
     for(t in taxon_key){
-      
       temp_data <- data_overlay_unfiltered %>% 
         dplyr::filter(.data$acceptedTaxonKey == t) %>% 
         select(-.data$Description)
@@ -684,7 +574,7 @@ if(maps == TRUE){
       if(is_empty(species)){
         next
       }else{
-        temp_climate <- sp::merge(scenario_shape, temp_data, 
+        temp_climate <- sp::merge(current_climate_shape, as.data.frame(temp_data), 
                                   by = "Classification",
                                   all.y = TRUE,
                                   duplicateGeoms = TRUE)
@@ -693,183 +583,294 @@ if(maps == TRUE){
           mutate(taxon_key = t,
                  acceptedScientificName = species)
         
-        if(ncol(temp_shape) != ncol(temp_climate)){
-          temp_shape <- temp_climate
+        if(ncol(current_climate)!=ncol(temp_climate)){
+          current_climate <- temp_climate
         }else{
-          temp_shape <- rbind.SpatialPolygonsDataFrame(temp_shape, 
-                                                       temp_climate)
+          current_climate <- rbind.SpatialPolygonsDataFrame(current_climate, 
+                                                            temp_climate)
         }
       }
     }
     
-    temp_shape@data <- temp_shape@data %>% 
-      mutate(popup = paste0("<strong>Classification: </strong>", .data$Description, " (", .data$Classification, ")", 
+    current_climate@data <- current_climate@data %>% 
+      mutate(popup = paste0("<strong>Classification: </strong>", .data$Description, " (", .data$Classification, ")",
                             "</br><strong>ScientificName: </strong>", 
                             .data$acceptedScientificName,
                             "</br><strong>%obs in climate: </strong>", 
                             round(.data$perc_climate*100, 2), "%"))
     
-    temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
+    current_climate <- subset(current_climate, !is.na(current_climate$Classification))
     
-    temp_shape <- sf::st_as_sf(temp_shape)
+    # create color palette 
+    pal_current <- colorBin("OrRd", 
+                            domain = seq(from = 0, 
+                                         to = 1, 
+                                         by = 0.1),
+                            na.color =  "#f7f7f7",
+                            bins = 9,
+                            reverse = FALSE)
     
-    # Add layer to map
-    scenario_map <- future_climate_map %>% 
-      addPolygons(data = temp_shape,
-                  color = "#bababa",
-                  fillColor = ~pal_current(temp_shape$perc_climate),
-                  fillOpacity = 0.8,
-                  stroke = TRUE,
-                  weight = 0.5,
-                  group = ~temp_shape$acceptedScientificName,
-                  popup = ~temp_shape$popup) %>% 
-      addCircleMarkers(data = data_sf,
-                       group = ~data_sf$acceptedScientificName,
-                       color = "black",
-                       radius = 1) %>% 
-      addLegend(pal = pal_current,
-                values = seq(from = 0, 
-                             to = 1, 
-                             by = 0.1),
-                position = "bottomleft",
-                title = paste0("<strong>Climate match</strong></br>",
-                               s)) %>% 
-      addLayersControl(baseGroups = ~temp_shape$acceptedScientificName)
-    
-    
-    future_scenario_maps[[i]] <- scenario_map
-  }
-  
-  ## Single species - climate suitability maps ####
-  
-  # Create basemap
-  
-  single_species_map <- leaflet(sea) %>% 
-    addPolygons(data = sea,
-                fillColor = "#e0e0e0",
-                weight = 0.5) %>% 
-    addLegend(colors = "black",
-              labels = "observations",
-              position = "bottomleft")
-  
-  # Create single species maps
-  
-  scenarios_2 <- c("1980-2016", scenarios)
-  
-  single_species_maps <- list_along(taxon_key)
-  names(single_species_maps) <- taxon_key
-  
-  for (i in 1:length(taxon_key)) {
-    
-    t <- taxon_key[i]
-    
-    temp_data <- data_overlay_unfiltered %>% 
-      dplyr::filter(acceptedTaxonKey == t) %>% 
-      select(-Description)
-    
-    species <- unique(temp_data$acceptedScientificName)
-    
-    if(is_empty(species)){
-      next
-    }else{
-      temp_shape <- data.frame()
-      
-      for(s in scenarios_2){
-        
-        if(s == "1980-2016"){
-          scenario_shape <- observed[[s]]
-        }else{
-          scenario_shape <- future[[s]]
-        }
-        if (grepl("Beck", s) | s == "1980-2016") {
-          scenario_shape@data <- scenario_shape@data %>% 
-            mutate(GRIDCODE = as.double(.data$gridcode),
-                   ID = .data$Id) %>% 
-            select(-gridcode, -Id) %>% 
-            left_join(legends$KG_Beck, by = "GRIDCODE")
-        }else{
-          scenario_shape@data <- scenario_shape@data %>% 
-            mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
-            left_join(legends$KG_A1FI, by = "GRIDCODE")
-        }
-        
-        temp_climate <- sp::merge(scenario_shape, temp_data, 
-                                  by = "Classification",
-                                  all.y = TRUE,
-                                  duplicateGeoms = TRUE)
-        
-        temp_climate@data <- temp_climate@data %>% 
-          mutate(taxon_key = t,
-                 acceptedScientificName = species,
-                 scenario = s)
-        
-        if(class(temp_shape) == "data.frame"){
-          temp_shape <- temp_climate
-        }else{
-          temp_shape <- rbind.SpatialPolygonsDataFrame(temp_shape, 
-                                                       temp_climate)
-        }
-      }
-    }
-    
-    temp_shape@data <- temp_shape@data %>% 
-      mutate(popup = paste0("<strong>Classification: </strong>", .data$Description, " (", .data$Classification, ")", 
-                            "</br><strong>ScientificName: </strong>", 
-                            .data$acceptedScientificName,
-                            "</br><strong>%obs in climate: </strong>", 
-                            round(.data$perc_climate*100, 2), "%",
-                            "</br><strong>scenario: </strong>",
-                            .data$scenario))
-    
-    temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
-    
-    # Subset observations
-    data_sf_species_obs <- data_sf %>% 
-      filter(acceptedTaxonKey == t)
-    
-    # Add layer to map
-    scenario_map <- single_species_map %>% 
-      leaflet::addMapPane("background", zIndex = 400) %>%  
-      leaflet::addMapPane("foreground", zIndex = 500) %>% 
-      addPolygons(data = temp_shape,
-                  color = "#bababa",
+    # create current climate map
+    current_climate_map <- leaflet(current_climate) %>% 
+      addPolygons(color = "#bababa",
                   fillColor = ~pal_current(perc_climate),
                   fillOpacity = 0.8,
                   stroke = TRUE,
                   weight = 0.5,
-                  group = ~scenario,
-                  popup = ~popup,
-                  options = leaflet::pathOptions(pane = "background")) %>% 
-      addCircleMarkers(data = data_sf_species_obs,
+                  group = ~current_climate$acceptedScientificName,
+                  popup = ~current_climate$popup) %>% 
+      addCircleMarkers(data = data_sf,
+                       group = ~data_sf$acceptedScientificName,
                        color = "black",
-                       radius = 1,
-                       options = leaflet::pathOptions(pane = "foreground")) %>% 
+                       radius = 1) %>% 
+      addLegend(colors = "black",
+                labels = "observations",
+                position = "bottomleft") %>% 
       addLegend(pal = pal_current,
                 values = seq(from = 0, 
                              to = 1, 
                              by = 0.1),
                 position = "bottomleft",
-                title = "<strong>Climate match</strong>") %>% 
-      addLayersControl(baseGroups = ~temp_shape@data$scenario) 
+                title = "Climate match") %>% 
+      addLayersControl(baseGroups = ~data_sf$acceptedScientificName) %>% 
+      addPolygons(data = sea,
+                  fillColor = "#e0e0e0",
+                  weight = 0.5)
     
+    ## map future climate suitability ####
     
-    single_species_maps[[i]] <- scenario_map
-  }  
-}else{
-  message("maps are disabled")
-  current_climate_map <- NULL
-  future_scenario_maps <- NULL
-  single_species_maps <- NULL
-}
-
-
-# Return ####
-return(list(unfiltered = data_overlay_unfiltered, 
-            cm = cm,
-            filtered = data_overlay_scenario_filtered,
-            future = future_climate,
-            spatial = data_sf,
-            current_map = current_climate_map,
-            future_maps = future_scenario_maps,
-            single_species_maps = single_species_maps))
+    # Create basemap
+    
+    future_climate_map <- leaflet(sea) %>% 
+      addPolygons(data = sea,
+                  fillColor = "#e0e0e0",
+                  weight = 0.5) %>% 
+      addLegend(colors = "black",
+                labels = "observations",
+                position = "bottomleft")
+    
+    # Create scenario maps
+    future_scenario_maps <- list_along(scenarios)
+    names(future_scenario_maps) <- scenarios
+    
+    for (i in 1:length(scenarios)) {
+      
+      s <- scenarios[i]
+      
+      # Get scenario shape
+      scenario_shape <- future[[s]]
+      
+      # Attach legends
+      if(grepl("Beck", s)){
+        scenario_shape@data <- scenario_shape@data %>% 
+          mutate(gridcode = as.double(.data$gridcode)) %>% 
+          left_join(legends$KG_Beck, by = c("gridcode" = "GRIDCODE"))
+      }else{
+        scenario_shape@data <- scenario_shape@data %>% 
+          mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
+          left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE"))
+      }
+      
+      # Combine climate shape with climate matched observations
+      temp_shape <- scenario_shape
+      
+      for(t in taxon_key){
+        
+        temp_data <- data_overlay_unfiltered %>% 
+          dplyr::filter(.data$acceptedTaxonKey == t) %>% 
+          select(-.data$Description)
+        
+        species <- unique(temp_data$acceptedScientificName)
+        
+        if(is_empty(species)){
+          next
+        }else{
+          temp_climate <- sp::merge(scenario_shape, temp_data, 
+                                    by = "Classification",
+                                    all.y = TRUE,
+                                    duplicateGeoms = TRUE)
+          
+          temp_climate@data <- temp_climate@data %>% 
+            mutate(taxon_key = t,
+                   acceptedScientificName = species)
+          
+          if(ncol(temp_shape) != ncol(temp_climate)){
+            temp_shape <- temp_climate
+          }else{
+            temp_shape <- rbind.SpatialPolygonsDataFrame(temp_shape, 
+                                                         temp_climate)
+          }
+        }
+      }
+      
+      temp_shape@data <- temp_shape@data %>% 
+        mutate(popup = paste0("<strong>Classification: </strong>", .data$Description, " (", .data$Classification, ")", 
+                              "</br><strong>ScientificName: </strong>", 
+                              .data$acceptedScientificName,
+                              "</br><strong>%obs in climate: </strong>", 
+                              round(.data$perc_climate*100, 2), "%"))
+      
+      temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
+      
+      temp_shape <- st_as_sf(temp_shape)
+      
+      # Add layer to map
+      scenario_map <- future_climate_map %>% 
+        addPolygons(data = temp_shape,
+                    color = "#bababa",
+                    fillColor = ~pal_current(temp_shape$perc_climate),
+                    fillOpacity = 0.8,
+                    stroke = TRUE,
+                    weight = 0.5,
+                    group = ~temp_shape$acceptedScientificName,
+                    popup = ~temp_shape$popup) %>% 
+        addCircleMarkers(data = data_sf,
+                         group = ~data_sf$acceptedScientificName,
+                         color = "black",
+                         radius = 1) %>% 
+        addLegend(pal = pal_current,
+                  values = seq(from = 0, 
+                               to = 1, 
+                               by = 0.1),
+                  position = "bottomleft",
+                  title = paste0("<strong>Climate match</strong></br>",
+                                 s)) %>% 
+        addLayersControl(baseGroups = ~temp_shape$acceptedScientificName)
+      
+      
+      future_scenario_maps[[i]] <- scenario_map
+    }
+    
+    ## Single species - climate suitability maps ####
+    
+    # Create basemap
+    
+    single_species_map <- leaflet(sea) %>% 
+      addPolygons(data = sea,
+                  fillColor = "#e0e0e0",
+                  weight = 0.5) %>% 
+      addLegend(colors = "black",
+                labels = "observations",
+                position = "bottomleft")
+    
+    # Create single species maps
+    
+    scenarios_2 <- c("1980-2016", scenarios)
+    
+    single_species_maps <- list_along(taxon_key)
+    names(single_species_maps) <- taxon_key
+    
+    for (i in 1:length(taxon_key)) {
+      
+      t <- taxon_key[i]
+      
+      temp_data <- data_overlay_unfiltered %>% 
+        dplyr::filter(acceptedTaxonKey == t) %>% 
+        select(-Description)
+      
+      species <- unique(temp_data$acceptedScientificName)
+      
+      if(is_empty(species)){
+        next
+      }else{
+        temp_shape <- data.frame()
+        
+        for(s in scenarios_2){
+          
+          if(s == "1980-2016"){
+            scenario_shape <- observed[[s]]
+          }else{
+            scenario_shape <- future[[s]]
+          }
+          if (grepl("Beck", s) | s == "1980-2016") {
+            scenario_shape@data <- scenario_shape@data %>% 
+              mutate(GRIDCODE = as.double(.data$gridcode),
+                     ID = .data$Id) %>% 
+              select(-gridcode, -Id) %>% 
+              left_join(legends$KG_Beck, by = "GRIDCODE")
+          }else{
+            scenario_shape@data <- scenario_shape@data %>% 
+              mutate(GRIDCODE = as.double(.data$GRIDCODE)) %>% 
+              left_join(legends$KG_A1FI, by = "GRIDCODE")
+          }
+          
+          temp_climate <- sp::merge(scenario_shape, temp_data, 
+                                    by = "Classification",
+                                    all.y = TRUE,
+                                    duplicateGeoms = TRUE)
+          
+          temp_climate@data <- temp_climate@data %>% 
+            mutate(taxon_key = t,
+                   acceptedScientificName = species,
+                   scenario = s)
+          
+          if(class(temp_shape) == "data.frame"){
+            temp_shape <- temp_climate
+          }else{
+            temp_shape <- rbind.SpatialPolygonsDataFrame(temp_shape, 
+                                                         temp_climate)
+          }
+        }
+      }
+      
+      temp_shape@data <- temp_shape@data %>% 
+        mutate(popup = paste0("<strong>Classification: </strong>", .data$Description, " (", .data$Classification, ")", 
+                              "</br><strong>ScientificName: </strong>", 
+                              .data$acceptedScientificName,
+                              "</br><strong>%obs in climate: </strong>", 
+                              round(.data$perc_climate*100, 2), "%",
+                              "</br><strong>scenario: </strong>",
+                              .data$scenario))
+      
+      temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
+      
+      # Subset observations
+      data_sf_species_obs <- data_sf %>% 
+        filter(acceptedTaxonKey == t)
+      
+      # Add layer to map
+      scenario_map <- single_species_map %>% 
+        addMapPane("background", zIndex = 400) %>%  
+        addMapPane("foreground", zIndex = 500) %>% 
+        addPolygons(data = temp_shape,
+                    color = "#bababa",
+                    fillColor = ~pal_current(perc_climate),
+                    fillOpacity = 0.8,
+                    stroke = TRUE,
+                    weight = 0.5,
+                    group = ~scenario,
+                    popup = ~popup,
+                    options = leaflet::pathOptions(pane = "background")) %>% 
+        addCircleMarkers(data = data_sf_species_obs,
+                         color = "black",
+                         radius = 1,
+                         options = leaflet::pathOptions(pane = "foreground")) %>% 
+        addLegend(pal = pal_current,
+                  values = seq(from = 0, 
+                               to = 1, 
+                               by = 0.1),
+                  position = "bottomleft",
+                  title = "<strong>Climate match</strong>") %>% 
+        addLayersControl(baseGroups = ~temp_shape@data$scenario) 
+      
+      
+      single_species_maps[[i]] <- scenario_map
+    }  
+  }else{
+    message("maps are disabled")
+    current_climate_map <- NULL
+    future_scenario_maps <- NULL
+    single_species_maps <- NULL
+  }
+  
+  
+  # Return ####
+  return(list(unfiltered = data_overlay_unfiltered, 
+              cm = cm,
+              filtered = data_overlay_scenario_filtered,
+              future = future_climate,
+              spatial = data_sf,
+              current_map = current_climate_map,
+              future_maps = future_scenario_maps,
+              single_species_maps = single_species_maps))
 }
