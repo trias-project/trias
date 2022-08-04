@@ -47,7 +47,7 @@
 #' @export
 #' @importFrom rgbif occ_download occ_download_meta occ_download_get pred
 #'   occ_download_import pred_in pred_gt
-#' @importFrom sp SpatialPointsDataFrame over merge CRS 
+#' @importFrom sp SpatialPointsDataFrame merge CRS 
 #'   rbind.SpatialPolygonsDataFrame spTransform
 #' @importFrom sf st_as_sf st_intersects  
 #' @importFrom raster intersect
