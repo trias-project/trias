@@ -116,7 +116,7 @@ climate_match <- function(region,
   
   # Setup ####
   
-  crs_wgs <- CRS("+proj=longlat +datum=WGS84 +no_defs")
+  crs_wgs <- sp::CRS("+proj=longlat +datum=WGS84 +no_defs")
   
   # Checks ####
   ## Region ##
@@ -160,7 +160,7 @@ climate_match <- function(region,
     }
   }
   
-  region_shape <- spTransform(region_shape, crs_wgs)
+  region_shape <- sp::spTransform(region_shape, crs_wgs)
   
   ## Species ##
   taxon_key <- as.numeric(unique(taxon_key))
@@ -325,7 +325,7 @@ climate_match <- function(region,
   coord <- data_redux %>% 
     dplyr::select(.data$decimalLongitude, .data$decimalLatitude)
   
-  data_sp <- SpatialPointsDataFrame(coord,
+  data_sp <- sp::SpatialPointsDataFrame(coord,
                                     data = data_redux,
                                     proj4string = crs_wgs)
   
@@ -588,8 +588,8 @@ climate_match <- function(region,
         if(ncol(current_climate)!=ncol(temp_climate)){
           current_climate <- temp_climate
         }else{
-          current_climate <- rbind.SpatialPolygonsDataFrame(current_climate, 
-                                                            temp_climate)
+          current_climate <- sp::rbind.SpatialPolygonsDataFrame(current_climate, 
+                                                                temp_climate)
         }
       }
     }
