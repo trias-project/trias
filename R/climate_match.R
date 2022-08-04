@@ -196,6 +196,7 @@ climate_match <- function(region,
                                    decimalLongitude = col_number(),
                                    establishmentMeans = col_character()),
                      col_select = c("acceptedTaxonKey",
+                                    "species",
                                     "decimalLatitude",
                                     "decimalLongitude",
                                     "establishmentMeans",
@@ -235,6 +236,7 @@ climate_match <- function(region,
         
         data <- data %>% 
           select("acceptedTaxonKey",
+                 "species",
                  "decimalLatitude",
                  "decimalLongitude",
                  "establishmentMeans",
@@ -282,7 +284,7 @@ climate_match <- function(region,
   
   data_redux <- data %>% 
     mutate(acceptedScientificName = paste(.data$genus, .data$specificEpithet)) %>% 
-    left_join(SPECIES, by = c("acceptedScientificName" = "ASN_2")) %>% 
+    left_join(SPECIES, by = c("species" = "ASN_2")) %>% 
     mutate(acceptedTaxonKey = .data$TK_2) %>% 
     dplyr::filter(!is.na(.data$acceptedTaxonKey),
                   !is.na(.data$eventDate), 
