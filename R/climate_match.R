@@ -49,7 +49,7 @@
 #'   occ_download_import pred_in pred_gt
 #' @importFrom sp SpatialPointsDataFrame over merge CRS 
 #'   rbind.SpatialPolygonsDataFrame spTransform
-#' @importFrom st_as_sf st_intersects  
+#' @importFrom sf st_as_sf st_intersects  
 #' @importFrom raster intersect
 #' @importFrom rworldmap getMap
 #' @importFrom leaflet leaflet addPolygons colorNumeric addCircleMarkers
