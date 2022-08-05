@@ -3,14 +3,11 @@ context("output_gbif_has_distribution")
 testthat::test_that("gbif_has_distribution with user parameters", {
   expect_true(gbif_has_distribution(140563025, country = "BE"))
   expect_false(gbif_has_distribution(113794849, country = "BE", status = "DOUBTFUL"))
-  expect_true(gbif_has_distribution(140563025,
-    country = c("BE"),
-    status = c("PrESEnT")
-  ))
   expect_true(gbif_has_distribution(
     taxon_key = 140563025,
     country = "BE",
-    status = "PRESENT",
+    # uncomment after https://github.com/gbif/gbif-api/issues/94 is solved
+    # status = "PRESENT", 
     establishmentMeans = "introduced"
   ))
   expect_true(gbif_has_distribution(141265335,
@@ -51,5 +48,13 @@ testthat::test_that("gbif_has_distribution with multiple distributions", {
     country = "CA",
     status = "absent",
     establishmentMeans = "native"
+  ))
+})
+
+testthat::test_that(
+  "gbif_has_distribution is case insensitive", {
+  expect_true(gbif_has_distribution(140563025,
+                                    country = c("bE"),
+                                    establishmentMeans = "inTrODUceD"
   ))
 })
