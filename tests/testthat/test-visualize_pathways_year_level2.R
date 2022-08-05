@@ -12,16 +12,16 @@ input_test_df_with_nas <- read.delim(
 
 input_test_df_with_nas_escape <-
   input_test_df_with_nas %>%
-  filter(pathway_level1 == "escape")
+  dplyr::filter(pathway_level1 == "escape")
 
 n_first_observed_na_escape <-
   nrow(input_test_df_with_nas_escape) -
   nrow(input_test_df_with_nas_escape %>%
-    filter(!is.na(first_observed)))
+    dplyr::filter(!is.na(first_observed)))
 
 input_test_df <-
   input_test_df_with_nas %>%
-  filter(!is.na(first_observed))
+  dplyr::filter(!is.na(first_observed))
 
 input_test_df_other_colnames <-
   input_test_df %>%
@@ -156,7 +156,7 @@ output_later_from <- visualize_pathways_year_level2(
 )
 empty_output <- visualize_pathways_year_level2(
   input_test_df %>% # filter to be sure to produce empty bar plot
-    filter(kingdom != "Protozoa" | pathway_level1 != "corridor"),
+    dplyr::filter(kingdom != "Protozoa" | pathway_level1 != "corridor"),
   chosen_pathway_level1 = "corridor",
   category = "Protozoa"
 )
