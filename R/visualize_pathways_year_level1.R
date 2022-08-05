@@ -462,10 +462,10 @@ visualize_pathways_year_level1 <- function(
     ) %>%
     dplyr::count() %>%
     dplyr::ungroup()
-  max_n <- max(data_top_graph$n)
   # Plot number of taxa per pathwhay_level1 over time
   top_graph <- NULL
   if (nrow(data_top_graph) > 0) {
+    max_n <- max(data_top_graph$n)
     top_graph <-
       ggplot2::ggplot(data_top_graph) +
       ggplot2::geom_line(aes(
@@ -502,10 +502,10 @@ visualize_pathways_year_level1 <- function(
       ) %>%
       dplyr::count() %>%
       dplyr::ungroup()
-    max_n <- max(data_facet_graph$n)
     # Plot number of taxa per pathway_level1 per facet over time
     facet_graph <- NULL
     if (nrow(data_facet_graph) > 0) {
+      max_n <- max(data_facet_graph$n)
       facet_graph <-
         ggplot2::ggplot(data_facet_graph) +
         ggplot2::geom_line(aes(
