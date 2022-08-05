@@ -714,7 +714,7 @@ climate_match <- function(region,
           if(ncol(temp_shape) != ncol(temp_climate)){
             temp_shape <- temp_climate
           }else{
-            temp_shape <- rbind.SpatialPolygonsDataFrame(temp_shape, 
+            temp_shape <- sp::rbind.SpatialPolygonsDataFrame(temp_shape, 
                                                          temp_climate)
           }
         }
@@ -828,7 +828,7 @@ climate_match <- function(region,
           if(class(temp_shape) == "data.frame"){
             temp_shape <- temp_climate
           }else{
-            temp_shape <- rbind.SpatialPolygonsDataFrame(temp_shape, 
+            temp_shape <- sp::rbind.SpatialPolygonsDataFrame(temp_shape, 
                                                          temp_climate)
           }
         }
