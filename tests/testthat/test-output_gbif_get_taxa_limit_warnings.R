@@ -10,7 +10,9 @@ testthat::test_that("checklist is character, limit higher than n. of records", {
   )
 })
 
-testthat::test_that("checklist is vector, limit higher than n. of records in all datasets", {
+testthat::test_that(
+  paste("checklist is vector,", 
+        "limit higher than n. of records in all datasets"), {
   expect_warning(
     gbif_get_taxa(
       checklist_keys = c(
@@ -23,16 +25,16 @@ testthat::test_that("checklist is vector, limit higher than n. of records in all
   )
 })
 
-testthat::test_that(paste0(
-  "checklist is vector, limit higher than n. of records",
-  "in one of the datasets"
-), {
+testthat::test_that(
+  paste("checklist is vector, limit higher than n. of records",
+        "in one of the datasets"), {
   expect_warning(
     gbif_get_taxa(
       checklist_keys = c(
         "68f76539-8e5c-4967-a480-14d2d8e46637",
         "b3fa7329-a002-4243-a7a7-cd066092c9a6"
       ),
+      origin = "source",
       limit = 70
     ),
     "One of the datasets contains less records than limit."

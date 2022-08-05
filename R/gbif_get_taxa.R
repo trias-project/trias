@@ -15,13 +15,7 @@
 #' in the checklist_keys (if string) or any of the checklist_keys (if vector)
 #' @return A data.frame with all returned attributes for any taxa
 #' @export
-#' @importFrom assertthat assert_that
-#' @importFrom rgbif name_usage name_lookup
-#' @importFrom dplyr filter mutate ungroup %>% .data
-#' @importFrom purrr map_dfr
-#' @importFrom tibble tibble
-#' @importFrom lazyeval interp
-#' @importFrom stringr str_to_lower
+#' @importFrom dplyr %>% .data
 #' @examples
 #' \dontrun{
 #' # A single numeric taxon_keys
@@ -66,7 +60,7 @@ gbif_get_taxa <- function(
                           limit = NULL) {
 
   # test incoming arguments
-  assert_that(!all(!is.null(taxon_keys), !is.null(checklist_keys)),
+  assertthat::assert_that(!all(!is.null(taxon_keys), !is.null(checklist_keys)),
     msg = paste(
       "Both taxon_keys and checklist_keys not NULL.",
       "You should choose one of the two!"
@@ -75,27 +69,29 @@ gbif_get_taxa <- function(
 
   # test argument taxon_keys
   if (!is.null(taxon_keys)) {
-    assert_that(is.numeric(taxon_keys) | is.character(taxon_keys),
+    assertthat::assert_that(is.numeric(taxon_keys) | is.character(taxon_keys),
       msg = "taxon_keys should be a numeric, character or a vector."
     )
   }
 
   # test argument checklist_keys
   if (!is.null(checklist_keys)) {
-    assert_that(is.character(checklist_keys),
+    assertthat::assert_that(is.character(checklist_keys),
       msg = "checklist_keys should be a character or a vector."
     )
   }
 
   # test limit
   if (!is.null(limit)) {
-    assert_that(is.numeric(limit), msg = "Limit has to be numeric.")
-    assert_that(limit > 0, msg = "Limit has to be a positive number.")
+    assertthat::assert_that(is.numeric(limit), msg = "Limit has to be numeric.")
+    assertthat::assert_that(limit > 0,
+                            msg = "Limit has to be a positive number."
+    )
   }
 
   # test number of taxa
   if (!is.null(checklist_keys) & !is.null(limit)) {
-    assert_that(limit < 100000,
+    assertthat::assert_that(limit < 100000,
       msg = "Too many keys. API maximum is 99999."
     )
     if (limit * length(checklist_keys) > 100000) {
@@ -109,10 +105,10 @@ gbif_get_taxa <- function(
 
   # test origin and set to lower
   if (!is.null(origin)) {
-    assert_that(is.character(origin),
+    assertthat::assert_that(is.character(origin),
       msg = "origin must be a character or a vector."
     )
-    origins <- stringr::str_to_lower(origin)
+    origins <- tolower(origin)
     if (!is.null(taxon_keys)) {
       warning("origin argument ignored if used in combination with taxon_keys.")
     }
@@ -133,20 +129,20 @@ gbif_get_taxa <- function(
     }
     taxon_keys <- as.integer(taxon_keys[1:maxlimit])
     taxon_keys_df <- as.data.frame(taxon_keys)
-    taxon_taxa <- map_dfr(
-      taxon_keys_df$taxon_keys, ~ name_usage(key = .)$data
+    taxon_taxa <- purrr::map_dfr(
+      taxon_keys_df$taxon_keys, ~ rgbif::name_usage(key = .)$data
     )
     taxon_taxa <- taxon_taxa %>%
-      ungroup() %>%
-      mutate(origin = str_to_lower(.data$origin))
+      dplyr::ungroup() %>%
+      dplyr::mutate(origin = tolower(.data$origin))
     if (!is.null(origin)) {
-      taxon_taxa <- taxon_taxa %>% filter(.data$origin %in% origins)
+      taxon_taxa <- taxon_taxa %>% dplyr::filter(.data$origin %in% origins)
     }
 
     # GBIF Backbone matching
     number_key <- nrow(taxon_taxa)
     number_no_nubkey <- taxon_taxa %>%
-      filter(is.na(.data$nubKey)) %>%
+      dplyr::filter(is.na(.data$nubKey)) %>%
       nrow()
   }
 
@@ -163,8 +159,8 @@ gbif_get_taxa <- function(
 
     if (!is.null(origin)) {
       checklist_taxa <-
-        map_dfr(
-          checklist_keys, ~ name_lookup(
+        purrr::map_dfr(
+          checklist_keys, ~ rgbif::name_lookup(
             datasetKey = .,
             origin = origins,
             limit = maxlimit
@@ -172,7 +168,7 @@ gbif_get_taxa <- function(
         )
     } else {
       checklist_taxa <-
-        map_dfr(checklist_keys, ~ name_lookup(
+        purrr::map_dfr(checklist_keys, ~ rgbif::name_lookup(
           datasetKey = .,
           limit = maxlimit
         )$data)
@@ -180,8 +176,8 @@ gbif_get_taxa <- function(
 
     checklist_taxa <-
       checklist_taxa %>%
-      ungroup() %>%
-      mutate(origin = str_to_lower(.data$origin))
+      dplyr::ungroup() %>%
+      dplyr::mutate(origin = tolower(.data$origin))
 
     if (!is.null(limit) &
       (nrow(checklist_taxa) < maxlimit * length(checklist_keys))) {
@@ -196,7 +192,7 @@ gbif_get_taxa <- function(
     number_key <- nrow(checklist_taxa)
     number_no_nubkey <-
       checklist_taxa %>%
-      filter(is.na(.data$nubKey)) %>%
+      dplyr::filter(is.na(.data$nubKey)) %>%
       nrow()
   }
 
