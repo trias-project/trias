@@ -11,21 +11,21 @@ testthat::test_that("output if taxon_keys is numeric", {
       )
   )
   get_taxa_taxon_key_3 <- get_taxa_taxon_key_3 %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
   aa <- gbif_get_taxa(taxon_keys = 3, limit = 1)
   aa <- aa %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
-  expect_true(all(get_taxa_taxon_key_3 == aa, na.rm = TRUE))
+  testthat::expect_true(all(get_taxa_taxon_key_3 == aa, na.rm = TRUE))
 })
 
 testthat::test_that("output if taxon_keys is character", {
@@ -41,21 +41,21 @@ testthat::test_that("output if taxon_keys is character", {
       )
   )
   get_taxa_taxon_key_2 <- get_taxa_taxon_key_2 %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
   aa <- gbif_get_taxa(taxon_keys = "2", limit = 1)
   aa <- aa %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
-  expect_true(all(get_taxa_taxon_key_2 == aa, na.rm = TRUE))
+  testthat::expect_true(all(get_taxa_taxon_key_2 == aa, na.rm = TRUE))
 })
 
 testthat::test_that("taxon_keys is (numeric) vector", {
@@ -67,21 +67,21 @@ testthat::test_that("taxon_keys is (numeric) vector", {
       )
   )
   get_taxa_taxon_key_1_6 <- get_taxa_taxon_key_1_6 %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
   aa <- gbif_get_taxa(taxon_keys = c(1, 2, 3, 4, 5, 6))
   aa <- aa %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
-  expect_true(all(get_taxa_taxon_key_1_6 == aa, na.rm = TRUE))
+  testthat::expect_true(all(get_taxa_taxon_key_1_6 == aa, na.rm = TRUE))
 })
 
 testthat::test_that("taxon_keys is (character) vector", {
@@ -94,21 +94,21 @@ testthat::test_that("taxon_keys is (character) vector", {
       )
   )
   get_taxa_taxon_key_char_vector <- get_taxa_taxon_key_char_vector %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
   aa <- gbif_get_taxa(taxon_keys = keys)
   aa <- aa %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
-  expect_true(all(
+  testthat::expect_true(all(
     get_taxa_taxon_key_char_vector == aa,
     na.rm = TRUE
   ))
@@ -124,21 +124,21 @@ testthat::test_that("limit < number of taxon_keys", {
       )
   )
   get_taxa_taxon_key_lim_2 <- get_taxa_taxon_key_lim_2 %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
   aa <- gbif_get_taxa(taxon_keys = keys, limit = 2)
   aa <- aa %>%
-    mutate(origin = str_to_lower(origin)) %>%
-    select(
+    dplyr::mutate(origin = tolower(origin)) %>%
+    dplyr::select(
       key, scientificName, nubKey, taxonID, kingdom,
       kingdomKey, datasetKey, constituentKey, origin
     )
 
-  expect_true(all(get_taxa_taxon_key_lim_2 == aa, na.rm = TRUE))
+  testthat::expect_true(all(get_taxa_taxon_key_lim_2 == aa, na.rm = TRUE))
 })
 
 testthat::test_that("checklist is a character, valid limit", {
@@ -147,7 +147,7 @@ testthat::test_that("checklist is a character, valid limit", {
     checklist_keys = "3f8a1297-3259-4700-91fc-acc4170b27ce",
     limit = limit
   )
-  expect_true(nrow(aa) == limit)
+  testthat::expect_true(nrow(aa) == limit)
 })
 
 testthat::test_that("checklist is a vector, valid limit", {
@@ -160,7 +160,7 @@ testthat::test_that("checklist is a vector, valid limit", {
     checklist_keys = checklist_keys,
     limit = limit
   )
-  expect_true(nrow(aa) == limit * length(checklist_keys))
+  testthat::expect_true(nrow(aa) == limit * length(checklist_keys))
 })
 
 testthat::test_that("check single origin", {
@@ -169,11 +169,11 @@ testthat::test_that("check single origin", {
     origin = "denormed_classification", limit = 10
   )
 
-  expect_true(nrow(aa_denormed) == 10)
+  testthat::expect_true(nrow(aa_denormed) == 10)
 })
 
 testthat::test_that("check multiple origins", {
-  expect_warning(
+  testthat::expect_warning(
     aa_origin <- gbif_get_taxa(
       checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
       origin = c("denormed_classification", "source"),
@@ -181,12 +181,12 @@ testthat::test_that("check multiple origins", {
     )
   )
 
-  expect_warning(
+  testthat::expect_warning(
     aa <- gbif_get_taxa(
       checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
       limit = 3000
     )
   )
 
-  expect_true(nrow(aa) == nrow(aa_origin))
+  testthat::expect_true(nrow(aa) == nrow(aa_origin))
 })
