@@ -406,8 +406,9 @@ apply_gam <- function(df,
       growth = NA_real_,
       method = method_em
     )
-  model <- deriv1 <- deriv2 <- summary_pv <- p_ok <- ptitle <- NULL
-  # Initialize the plot with observations only
+  model <- deriv1 <- deriv2 <- summary_pv <- p_ok <- NULL
+  # Compose plot title
+  ptitle <- paste("GAM", type_indicator, method_em, sep = "_")
   if (!is.null(taxon_key)) {
     ptitle <- paste(ptitle, taxon_key, sep = "_")
   }
@@ -417,6 +418,7 @@ apply_gam <- function(df,
   if (!is.null(df_title)) {
     ptitle <- paste(ptitle, df_title, sep = "_")
   }
+  # Initialize the plot with observations only
   plot_gam <- df %>%
     ggplot2::ggplot(ggplot2::aes(x = .data$year, y = get(y_var))) +
     ggplot2::geom_point(color = "black") +
@@ -456,7 +458,9 @@ apply_gam <- function(df,
         ))
       }
       # add annotation saying that emergence status cannot be assessed
-      plot_gam <- add_annotation(plot_obs = plot_gam, df = df)
+      plot_gam <- add_annotation(plot_obs = plot_gam,
+                                 df = df,
+                                 y_axis = y_var)
     } else {
       if (isFALSE(p_ok)) {
         if (verbose) {
@@ -467,7 +471,9 @@ apply_gam <- function(df,
           ))
         }
         # add annotation saying that emergence status cannot be assessed
-        plot_gam <- add_annotation(plot_obs = plot_gam, df = df)
+        plot_gam <- add_annotation(plot_obs = plot_gam,
+                                   df = df,
+                                   y_axis = y_var)
       } else {
         output_model <- df
         # Add method
@@ -580,14 +586,7 @@ apply_gam <- function(df,
             .data$growth,
             .data$method
           )
-
         # Create plot with conf. interval + colour for status
-        ptitle <- paste("GAM",
-          type_indicator,
-          method_em,
-          p_title,
-          sep = "_"
-        )
         plot_gam <- plot_ribbon_em(
           df_plot = output_model,
           x_axis = year,
@@ -629,7 +628,9 @@ apply_gam <- function(df,
       }
     }
     # add annotation saying that emergence status cannot be assessed
-    plot_gam <- add_annotation(plot_obs = plot_gam, df = df)
+    plot_gam <- add_annotation(plot_obs = plot_gam,
+                               df = df,
+                               y_axis = y_var)
   }
   
   # save plot if asked
@@ -739,6 +740,7 @@ plot_ribbon_em <- function(df_plot,
 #' 
 #' @param plot_obs ggplot2 plot object showing the observations.
 #' @param df tibble data.frame with observations.
+#' @param y_axis character. The name of the column containing the data to plot
 #' @param text character to show as annotation. Default: "The emergence status
 #'   cannot be assessed".
 #' @param colour colour of the annotation. Default: red.
@@ -747,11 +749,12 @@ plot_ribbon_em <- function(df_plot,
 add_annotation <- function(
     plot_obs,
     df,
+    y_axis,
     text = "The emergence status \ncannot be assessed",
     colour = "red") {
   annotated_plot <- plot_obs +
     ggplot2::annotate("text",
-                      y = max(df$obs),
+                      y = max(df[[y_axis]]),
                       x = max(df$year),
                       hjust = 1,
                       vjust = 1,
