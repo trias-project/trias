@@ -35,9 +35,7 @@ Imports:
     forcats,
     ggplot2,
     gratia,
-    lazyeval,
     leaflet,
-    magrittr,
     mgcv,
     plotly,
     purrr,
@@ -54,8 +52,7 @@ Imports:
 	  svDialogs,
     tibble,
     tidyr,
-    tidyselect,
-    methods
+    tidyselect
 Suggests:
     covr,
     knitr,
