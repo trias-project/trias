@@ -196,7 +196,7 @@ climate_match <- function(region,
                                     "year",
                                     "countryCode"
                      )) %>% 
-      dplyr::filter(acceptedTaxonKey %in% taxon_key)
+      dplyr::filter(.data$acceptedTaxonKey %in% taxon_key)
   }else{
     gbif_user <- get_cred("gbif_user")
     gbif_pwd <- get_cred("gbif_pwd")
@@ -303,7 +303,7 @@ climate_match <- function(region,
     summarize(n_obs = n()) %>% 
     dplyr::ungroup() %>% 
     dplyr::left_join(SPECIES, by = c("acceptedTaxonKey" = "TK_2")) %>% 
-    dplyr::rename(acceptedScientificName = ASN_2)
+    dplyr::rename(acceptedScientificName = .data$ASN_2)
   
   if(nrow(data_redux) == 0){
     stop(
@@ -410,8 +410,8 @@ climate_match <- function(region,
                                  max = length(data_sf_sub_sub$GRIDCODE), 
                                  style = 3)
           
-          for(i in 1:length(data_sf_sub_sub$GRIDCODE)){
-            setTxtProgressBar(pb_3, i)
+          for (i in 1:length(data_sf_sub_sub$GRIDCODE)) {
+            utils::setTxtProgressBar(pb_3, i)
             data_sf_sub_sub$GRIDCODE2[i] <- as.double(
               data_sf_sub_sub$GRIDCODE[[i]][1]
             )
@@ -432,14 +432,14 @@ climate_match <- function(region,
         }
         data_sf_sub <- data_overlay_sub
       }
-    }else{
+    } else {
       warning(paste0("No data was present in the GBIF dataset for ", t))
       next
     }
     # Recombine timeperiodes
-    if(nrow(data_overlay) == 0){
+    if (nrow(data_overlay) == 0) {
       data_overlay <- data_sf_sub
-    }else{
+    } else {
       data_overlay <- rbind(data_overlay, data_sf_sub)
     }
     # Cleanup
@@ -458,8 +458,8 @@ climate_match <- function(region,
     dplyr::mutate(n_totaal = sum(n_obs, na.rm = TRUE)) %>% 
     dplyr::ungroup() %>% 
     dplyr::mutate(perc_climate = .data$n_climate/.data$n_totaal) %>% 
-    dplyr::distinct(.data$acceptedTaxonKey, .data$Classification, 
-             .keep_all = TRUE)  %>% 
+    dplyr::distinct(.data$acceptedTaxonKey, .data$Classification,
+                    .keep_all = TRUE)  %>% 
     dplyr::select(.data$acceptedTaxonKey, 
                   .data$acceptedScientificName, 
                   .data$Classification, 
@@ -482,10 +482,10 @@ climate_match <- function(region,
                   KG_GridCode = as.integer(""))
   
   # Calculate KG codes 
-  for(s in scenarios){
+  for (s in scenarios) {
     shape <- future[[s]]
     
-    if(c("gridcode") %in% colnames(shape@data)){
+    if (c("gridcode") %in% colnames(shape@data)) {
       shape@data <- shape@data %>% 
         dplyr::rename(GRIDCODE = .data$gridcode) 
     }
@@ -495,7 +495,7 @@ climate_match <- function(region,
     
     girdcode_intersect <- raster::intersect(shape, region_shape)
     
-    for(g in girdcode_intersect@data$GRIDCODE){
+    for (g in girdcode_intersect@data$GRIDCODE) {
       output <- output %>% 
         dplyr::add_row(scenario = s,
                        KG_GridCode = g)
@@ -521,7 +521,7 @@ climate_match <- function(region,
   
   cm <- data.frame()
   
-  for(b in unique(future_climate$scenario)){
+  for (b in unique(future_climate$scenario)) {
     future_scenario <- future_climate %>% 
       dplyr::filter(.data$scenario == b)
     
@@ -531,19 +531,19 @@ climate_match <- function(region,
       ) %>% 
       dplyr::mutate(scenario = b)
     
-    if(nrow(cm) == 0){
+    if (nrow(cm) == 0) {
       cm <- cm_int
-    }else{
+    } else {
       cm <- rbind(cm, cm_int)
     }
   }
   
   # Thresholds ####
-  if(missing(n_limit)){
+  if (missing(n_limit)) {
     warning("no n_totaal threshold was provided. defaults to 0!")
     n_limit <- 0
   }
-  if(missing(cm_limit)){
+  if (missing(cm_limit)) {
     warning("no perc_climate threshold was provided. defaults to 0%!")
     cm_limit <- 0
   }
@@ -553,7 +553,7 @@ climate_match <- function(region,
                   .data$perc_climate >= cm_limit)
   
   # MAPS ####
-  if(maps == TRUE){
+  if (maps == TRUE) {
     ## map current climate suitability ####
     
     # Get Current climate
