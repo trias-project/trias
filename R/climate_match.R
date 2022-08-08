@@ -168,7 +168,7 @@ climate_match <- function(region,
       warning(paste0(zip_file, " cannot be found. Rerunning GBIF download"))
       rerun <- 2
     } else {
-      rerun <- svDialogs::menu(choices = c("no", "yes"), 
+      rerun <- utils::menu(choices = c("no", "yes"), 
                                title = "rerun GBIF download?",
                                graphics = TRUE)
     }
@@ -373,7 +373,7 @@ climate_match <- function(region,
                              max = length(data_sf_sub$GRIDCODE), 
                              style = 3)
         for(i in 1:length(data_sf_sub$GRIDCODE)){
-          setTxtProgressBar(pb, i)
+          utils::setTxtProgressBar(pb, i)
           data_sf_sub$GRIDCODE2[i] <- as.double(data_sf_sub$GRIDCODE[[i]][1])
         }
         
@@ -383,7 +383,7 @@ climate_match <- function(region,
           dplyr::left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE")) 
       }else{
         cuts <- ceiling(nrow(data_sf_sub)/10000)
-        pb_2 <- txtProgressBar(min = 0, 
+        pb_2 <- utils::txtProgressBar(min = 0, 
                                max = cuts, 
                                style = 3)
         
