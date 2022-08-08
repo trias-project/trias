@@ -129,7 +129,7 @@ climate_match <- function(region,
       # region is a environment object => get object into function 
       region_shape <- region
       
-      if (class(region_shape) == "sf") {
+      if (inherits(region_shape, "sf")) {
         # region_shape is sf
         region_shape <- as(region_shape, "spatial")
       }
@@ -825,7 +825,7 @@ climate_match <- function(region,
                           acceptedScientificName = species,
                           scenario = s)
           
-          if(class(temp_shape) == "data.frame"){
+          if (inherits(temp_shape, "data.frame")){
             temp_shape <- temp_climate
           }else{
             temp_shape <- sp::rbind.SpatialPolygonsDataFrame(temp_shape, 
