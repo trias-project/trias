@@ -468,13 +468,13 @@ visualize_pathways_year_level1 <- function(
     max_n <- max(data_top_graph$n)
     top_graph <-
       ggplot2::ggplot(data_top_graph) +
-      ggplot2::geom_line(aes(
+      ggplot2::geom_line(ggplot2::aes(
         x = .data$bins_first_observed,
         y = .data$n,
         group = .data$pathway_level1,
         color = .data$pathway_level1
       )) +
-      geom_point(aes(
+      geom_point(ggplot2::aes(
         x = .data$bins_first_observed,
         y = .data$n,
         group = .data$pathway_level1,
@@ -508,13 +508,13 @@ visualize_pathways_year_level1 <- function(
       max_n <- max(data_facet_graph$n)
       facet_graph <-
         ggplot2::ggplot(data_facet_graph) +
-        ggplot2::geom_line(aes(
+        ggplot2::geom_line(ggplot2::aes(
           x = .data$bins_first_observed,
           y = .data$n,
           group = .data$pathway_level1,
           color = .data$pathway_level1
         )) +
-        geom_point(aes(
+        geom_point(ggplot2::aes(
           x = .data$bins_first_observed,
           y = .data$n,
           group = .data$pathway_level1,
