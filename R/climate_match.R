@@ -807,7 +807,7 @@ climate_match <- function(region,
             scenario_shape@data <- scenario_shape@data %>% 
               dplyr::mutate(GRIDCODE = as.double(.data$gridcode),
                             ID = .data$Id) %>% 
-              dplyr::select(-gridcode, -Id) %>% 
+              dplyr::select(-c(.data$gridcode, .data$Id)) %>% 
               dplyr::left_join(legends$KG_Beck, by = "GRIDCODE")
           }else{
             scenario_shape@data <- scenario_shape@data %>% 
