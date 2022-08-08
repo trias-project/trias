@@ -36,6 +36,7 @@ Imports:
     ggplot2,
     gratia,
     leaflet,
+    methods,
     mgcv,
     plotly,
     purrr,
@@ -52,7 +53,8 @@ Imports:
 	  svDialogs,
     tibble,
     tidyr,
-    tidyselect
+    tidyselect,
+    utils
 Suggests:
     covr,
     knitr,

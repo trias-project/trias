@@ -131,7 +131,7 @@ climate_match <- function(region,
       
       if (inherits(region_shape, "sf")) {
         # region_shape is sf
-        region_shape <- as(region_shape, "spatial")
+        region_shape <- methods::as(region_shape, "spatial")
       }
       
       assertthat::assert_that(
@@ -369,7 +369,7 @@ climate_match <- function(region,
                                                         sparse = FALSE), 2, 
                                       function(col) {obs_shape[which(col),
                                       ]$GRIDCODE})
-        pb <- txtProgressBar(min = 0, 
+        pb <- utils::txtProgressBar(min = 0, 
                              max = length(data_sf_sub$GRIDCODE), 
                              style = 3)
         for(i in 1:length(data_sf_sub$GRIDCODE)){
@@ -391,7 +391,7 @@ climate_match <- function(region,
         
         for(x in 1:cuts){
           print(paste0(x, "/", cuts))
-          setTxtProgressBar(pb_2, x)
+          utils::setTxtProgressBar(pb_2, x)
           y <- ((x - 1)*10000) + 1 
           z <- x * 10000
           if(z < nrow(data_sf_sub)){
@@ -406,7 +406,7 @@ climate_match <- function(region,
                               function(col) {
                                 obs_shape[which(col), ]$GRIDCODE})
           
-          pb_3 <- txtProgressBar(min = 0, 
+          pb_3 <- utils::txtProgressBar(min = 0, 
                                  max = length(data_sf_sub_sub$GRIDCODE), 
                                  style = 3)
           
