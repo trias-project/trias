@@ -474,7 +474,7 @@ visualize_pathways_year_level1 <- function(
         group = .data$pathway_level1,
         color = .data$pathway_level1
       )) +
-      geom_point(ggplot2::aes(
+      ggplot2::geom_point(ggplot2::aes(
         x = .data$bins_first_observed,
         y = .data$n,
         group = .data$pathway_level1,
@@ -514,7 +514,7 @@ visualize_pathways_year_level1 <- function(
           group = .data$pathway_level1,
           color = .data$pathway_level1
         )) +
-        geom_point(ggplot2::aes(
+        ggplot2::geom_point(ggplot2::aes(
           x = .data$bins_first_observed,
           y = .data$n,
           group = .data$pathway_level1,
