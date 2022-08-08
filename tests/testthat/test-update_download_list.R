@@ -34,14 +34,14 @@ testthat::test_that("gbif download added correctly to list GBIF downloads and ot
                                lazy = FALSE)
 
   # new download is added
-  expect_equal(nrow(output_df), nrow(input_df) + 1)
-  expect_equal(output_df$gbif_download_key[nrow(input_df) + 1], gbif_download_key_to_add)
-  expect_equal(output_df$input_checklist[nrow(input_df) + 1], checklist)
-  expect_equal(output_df$gbif_download_status[nrow(input_df) + 1], "SUCCEEDED")
-  expect_equal(output_df$gbif_download_doi[nrow(input_df) + 1], "https://doi.org/10.15468/dl.5xygvn")
+  testthat::expect_equal(nrow(output_df), nrow(input_df) + 1)
+  testthat::expect_equal(output_df$gbif_download_key[nrow(input_df) + 1], gbif_download_key_to_add)
+  testthat::expect_equal(output_df$input_checklist[nrow(input_df) + 1], checklist)
+  testthat::expect_equal(output_df$gbif_download_status[nrow(input_df) + 1], "SUCCEEDED")
+  testthat::expect_equal(output_df$gbif_download_doi[nrow(input_df) + 1], "https://doi.org/10.15468/dl.5xygvn")
 
   # status previous download updated to SUCCEEDED
-  expect_equal(output_df$gbif_download_status[nrow(input_df)], "SUCCEEDED")
+  testthat::expect_equal(output_df$gbif_download_status[nrow(input_df)], "SUCCEEDED")
 
   #' replace modified file with copy
   #' make a coy of it to replace original file at the end of the test

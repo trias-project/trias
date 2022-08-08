@@ -1,4 +1,4 @@
-input_test_df <- tibble(
+input_test_df <- dplyr::tibble(
   key = c(152543101, 152543102, 152543110, 152543115, 152543120),
   canonicalName = c(
     "Gyrodactylus proterorhini",
@@ -87,10 +87,10 @@ input_test_df_large <- read.delim(
   sep = "\t",
   stringsAsFactors = FALSE
 ) %>%
-  as_tibble()
+  dplyr::as_tibble()
 
 # Output basic usage : default values for all params
-output_test_df_basic <- tibble(
+output_test_df_basic <- dplyr::tibble(
   pathway_level1 = c("contaminant", "unknown"),
   pathway_level2 = c("animal_parasite", "unknown"),
   n = as.integer(c(2, 3)),
@@ -102,45 +102,45 @@ output_test_df_basic <- tibble(
 
 testthat::test_that("Basic usage: default values", {
   pathways_default <- get_table_pathways(input_test_df)
-  expect_warning(
+  testthat::expect_warning(
     pathways_default_from_factors <-
       get_table_pathways(input_test_df_factors),
     "Factors are converted to characters."
   )
   pathways_default_large <- get_table_pathways(input_test_df_large)
   # same cols
-  expect_true(all(names(pathways_default) == names(output_test_df_basic)))
-  expect_true(all(names(pathways_default) == names(pathways_default_large)))
+  testthat::expect_true(all(names(pathways_default) == names(output_test_df_basic)))
+  testthat::expect_true(all(names(pathways_default) == names(pathways_default_large)))
   # same number of rows (pathways combinations)
-  expect_true(nrow(pathways_default) == nrow(output_test_df_basic))
+  testthat::expect_true(nrow(pathways_default) == nrow(output_test_df_basic))
   # if input contains factors, they are converted to characters: same output
   # except order of examples which is randomized by default
-  expect_equal(
+  testthat::expect_equal(
     pathways_default %>%
-      select(-examples),
+      dplyr::select(-.data$examples),
     pathways_default_from_factors %>%
-      select(-examples)
+      dplyr::select(-.data$examples)
   )
   # large input, more pathways, more rows
-  expect_true(nrow(pathways_default_large) > nrow(pathways_default))
+  testthat::expect_true(nrow(pathways_default_large) > nrow(pathways_default))
   # large input, more taxa sharing same pathways, higher n value
-  expect_true(pathways_default_large %>%
-    filter(pathway_level1 == "contaminant" &
+  testthat::expect_true(pathways_default_large %>%
+    dplyr::filter(pathway_level1 == "contaminant" &
       pathway_level2 == "animal_parasite") %>%
-    pull(n) > (output_test_df_basic %>%
-    filter(pathway_level1 == "contaminant" &
+    dplyr::pull(.data$n) > (output_test_df_basic %>%
+    dplyr::filter(pathway_level1 == "contaminant" &
       pathway_level2 == "animal_parasite") %>%
-    pull(n)))
+    dplyr::pull(.data$n)))
   # same content of dfs. No examples take into account as they are randomly
   # selected
-  expect_equal(
-    pathways_default %>% select(-examples),
-    output_test_df_basic %>% select(-examples)
+  testthat::expect_equal(
+    pathways_default %>% dplyr::select(-.data$examples),
+    output_test_df_basic %>% dplyr::select(-.data$examples)
   )
 })
 
 testthat::test_that("Use with 'category'", {
-  output_test_df_animals <- tibble(
+  output_test_df_animals <- dplyr::tibble(
     pathway_level1 = c("contaminant", "unknown"),
     pathway_level2 = c("animal_parasite", "unknown"),
     n = as.integer(c(1, 2)),
@@ -149,13 +149,13 @@ testthat::test_that("Use with 'category'", {
       "Scutigera coleoptrata, Tricellaria inopinata"
     )
   )
-  output_test_df_chordata <- tibble(
+  output_test_df_chordata <- dplyr::tibble(
     pathway_level1 = "unknown",
     pathway_level2 = "unknown",
     n = as.integer(1),
     examples = "Scutigera coleoptrata, Tricellaria inopinata"
   )
-  output_test_df_not_chordata <- tibble(
+  output_test_df_not_chordata <- dplyr::tibble(
     pathway_level1 = c("contaminant", "unknown"),
     pathway_level2 = c("animal_parasite", "unknown"),
     n = as.integer(c(1, 1)),
@@ -178,46 +178,46 @@ testthat::test_that("Use with 'category'", {
     category = "Not Chordata",
     phylum = "phylum_species"
   )
-  expect_equal(nrow(pathways_plants), 0)
-  expect_equal(nrow(pathways_animals), 2)
-  expect_true(is.character(pathways_plants$pathway_level1))
-  expect_true(is.character(pathways_plants$pathway_level2))
-  expect_true(is.character(pathways_plants$examples))
-  expect_true(is.integer(pathways_plants$n))
-  expect_true(all(class(pathways_plants) == class(pathways_animals)))
-  expect_true(all(names(pathways_plants) == names(pathways_animals)))
-  expect_equal(
-    pathways_animals %>% select(-examples),
-    output_test_df_animals %>% select(-examples)
+  testthat::expect_equal(nrow(pathways_plants), 0)
+  testthat::expect_equal(nrow(pathways_animals), 2)
+  testthat::expect_true(is.character(pathways_plants$pathway_level1))
+  testthat::expect_true(is.character(pathways_plants$pathway_level2))
+  testthat::expect_true(is.character(pathways_plants$examples))
+  testthat::expect_true(is.integer(pathways_plants$n))
+  testthat::expect_true(all(class(pathways_plants) == class(pathways_animals)))
+  testthat::expect_true(all(names(pathways_plants) == names(pathways_animals)))
+  testthat::expect_equal(
+    pathways_animals %>% dplyr::select(-.data$examples),
+    output_test_df_animals %>% dplyr::select(-.data$examples)
   )
-  expect_equal(
-    pathways_chordata %>% select(-examples),
-    output_test_df_chordata %>% select(-examples)
+  testthat::expect_equal(
+    pathways_chordata %>% dplyr::select(-.data$examples),
+    output_test_df_chordata %>% dplyr::select(-.data$examples)
   )
-  expect_equal(
-    pathways_not_chordata %>% select(-examples),
-    output_test_df_not_chordata %>% select(-examples)
+  testthat::expect_equal(
+    pathways_not_chordata %>% dplyr::select(-.data$examples),
+    output_test_df_not_chordata %>% dplyr::select(-.data$examples)
   )
   # same result if kingdom col has different name than default
-  expect_equal(
-    pathways_animals %>% select(-examples),
-    pathways_animals_2 %>% select(-examples)
+  testthat::expect_equal(
+    pathways_animals %>% dplyr::select(-.data$examples),
+    pathways_animals_2 %>% dplyr::select(-.data$examples)
   )
   # same result if phylum col has different name than default
-  expect_equal(
-    pathways_not_chordata %>% select(-examples),
-    pathways_not_chordata_2 %>% select(-examples)
+  testthat::expect_equal(
+    pathways_not_chordata %>% dplyr::select(-.data$examples),
+    pathways_not_chordata_2 %>% dplyr::select(-.data$examples)
   )
 })
 
 testthat::test_that("Use with 'from'", {
-  output_test_df_2012 <- tibble(
+  output_test_df_2012 <- dplyr::tibble(
     pathway_level1 = c("contaminant", "unknown"),
     pathway_level2 = c("animal_parasite", "unknown"),
     n = as.integer(c(1, 1)),
     examples = c("Aphanomyces astaci", "Thecaphora oxalidis")
   )
-  output_test_df_2018 <- tibble(
+  output_test_df_2018 <- dplyr::tibble(
     pathway_level1 = "contaminant",
     pathway_level2 = "animal_parasite",
     n = as.integer(1),
@@ -227,20 +227,20 @@ testthat::test_that("Use with 'from'", {
   pathways_2012 <- get_table_pathways(input_test_df, from = 2012)
   pathways_2018 <- get_table_pathways(input_test_df, from = 2018)
   # from is earlier than any first_observed value
-  expect_equal(
+  testthat::expect_equal(
     pathways_1000 %>%
-      select(-examples),
+      dplyr::select(-.data$examples),
     output_test_df_basic %>%
-      select(-examples)
+      dplyr::select(-.data$examples)
   )
-  expect_true(sum(pathways_1000$n) > sum(pathways_2012$n))
-  expect_true(sum(pathways_2012$n) > sum(pathways_2018$n))
-  expect_true(nrow(pathways_2012) == 2)
-  expect_equal(pathways_2012, output_test_df_2012)
-  expect_true(nrow(pathways_2018) == 1)
-  expect_equal(pathways_2018, output_test_df_2018)
-  expect_equal(pathways_2018, pathways_2012[1, ])
-  expect_equal(
+  testthat::expect_true(sum(pathways_1000$n) > sum(pathways_2012$n))
+  testthat::expect_true(sum(pathways_2012$n) > sum(pathways_2018$n))
+  testthat::expect_true(nrow(pathways_2012) == 2)
+  testthat::expect_equal(pathways_2012, output_test_df_2012)
+  testthat::expect_true(nrow(pathways_2018) == 1)
+  testthat::expect_equal(pathways_2018, output_test_df_2018)
+  testthat::expect_equal(pathways_2018, pathways_2012[1, ])
+  testthat::expect_equal(
     pathways_2018,
     get_table_pathways(input_test_df_year,
       from = 2018,
@@ -255,23 +255,23 @@ testthat::test_that("Use with 'n_species'", {
   pathways_n_species_3_large_df <- get_table_pathways(input_test_df_large,
     n_species = 3
   )
-  expect_equal(
+  testthat::expect_equal(
     pathways_n_species_10 %>%
-      select(-examples),
+      dplyr::select(-.data$examples),
     get_table_pathways(input_test_df) %>%
-      select(-examples)
+      dplyr::select(-.data$examples)
   )
-  expect_true(all(purrr::map_lgl(
+  testthat::expect_true(all(purrr::map_lgl(
     pathways_n_species_10$examples,
-    ~ length(str_split(., ",")) <= 10
+    ~ length(stringr::str_split(., ",")) <= 10
   )))
-  expect_true(all(purrr::map_lgl(
+  testthat::expect_true(all(purrr::map_lgl(
     pathways_n_species_1$examples,
-    ~ length(str_split(., ",")) == 1
+    ~ length(stringr::str_split(., ",")) == 1
   )))
-  expect_true(all(purrr::map_lgl(
+  testthat::expect_true(all(purrr::map_lgl(
     pathways_n_species_3_large_df$examples,
-    ~ length(str_split(., ",")) <= 3
+    ~ length(stringr::str_split(., ",")) <= 3
   )))
 })
 
@@ -290,10 +290,10 @@ testthat::test_that("Use with 'species_names'", {
     n_species = 1,
     species_names = "other_name"
   )
-  scientific_names <- pathways_scientificName %>% pull(examples)
-  expect_true(all(purrr::map_lgl(
+  scientific_names <- pathways_scientificName %>% dplyr::pull(examples)
+  testthat::expect_true(all(purrr::map_lgl(
     scientific_names,
     ~ . %in% input_test_df$scientificName
   )))
-  expect_equal(pathways_species, pathways_other)
+  testthat::expect_equal(pathways_species, pathways_other)
 })

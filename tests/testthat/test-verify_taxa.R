@@ -840,23 +840,23 @@ testthat::test_that("output structure", {
   })))
   expect_true(length(output1$info) == 8)
   expect_true(length(output2$info) == 8)
-  expect_equivalent(output1$info, output3$info)
+  testthat::expect_equivalent(output1$info, output3$info)
   expect_true(all())
   expect_true(all(purrr::map_lgl(outputs, function(x) {
     is.data.frame(x$taxa)
   })))
-  expect_equivalent(output1$taxa, output3$taxa)
+  testthat::expect_equivalent(output1$taxa, output3$taxa)
   expect_true(
     all(purrr::map_lgl(outputs, function(x) {
       is.data.frame(x$verification)
     }))
   )
-  expect_equivalent(output1$verification, output3$verification)
+  testthat::expect_equivalent(output1$verification, output3$verification)
   expect_true(all(purrr::map_lgl(output1$info, ~ is.data.frame(.))))
   expect_true(all(purrr::map_lgl(output2$info, ~ is.data.frame(.))))
   expect_true(all(purrr::map_lgl(output1$info, ~ (!"grouped_df" %in% class(.)))))
   expect_true(all(purrr::map_lgl(output2$info, ~ (!"grouped_df" %in% class(.)))))
-  expect_equivalent(output1$info, output3$info)
+  testthat::expect_equivalent(output1$info, output3$info)
   expect_true(
     all(names(output4$verification) == names(my_verification_other_colnames))
   )
@@ -1138,8 +1138,8 @@ output2_duplicates <-
   )
 
 testthat::test_that("output data.frames are correct", {
-  expect_equivalent(output1$taxa, output1_taxa)
-  expect_equivalent(output2$taxa, output2_taxa)
+  testthat::expect_equivalent(output1$taxa, output1_taxa)
+  testthat::expect_equivalent(output2$taxa, output2_taxa)
   # output4 with default column names should be exactly equal to output1
   output4_default_names_verification <-
     output4$verification %>%
@@ -1149,8 +1149,8 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  expect_equivalent(output1$verification, output4_default_names_verification)
-  expect_equivalent(
+  testthat::expect_equivalent(output1$verification, output4_default_names_verification)
+  testthat::expect_equivalent(
     output1$verification %>%
       # new synonyms and unmatched get date of today
       dplyr::select(-c(dateAdded, remarks)),
@@ -1158,7 +1158,7 @@ testthat::test_that("output data.frames are correct", {
       # new synonyms and unmatched got paste date
       dplyr::select(-c(dateAdded, remarks))
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output2$verification %>%
       # new synonyms and unmatched get date of today
       dplyr::select(-dateAdded),
@@ -1175,11 +1175,11 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$new_synonyms,
     output4_default_names_new_synonyms
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$new_synonyms %>%
       # new synonyms get date of today
       dplyr::select(-dateAdded),
@@ -1187,7 +1187,7 @@ testthat::test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output2$info$new_synonyms %>%
       # new synonyms get date of today
       dplyr::select(-dateAdded),
@@ -1204,11 +1204,11 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$new_unmatched_taxa,
     output4_default_names_new_unmatched_taxa
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$new_unmatched_taxa %>%
       # unmatched get date of today
       dplyr::select(-dateAdded),
@@ -1216,7 +1216,7 @@ testthat::test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output2$info$new_unmatched_taxa %>%
       # unmatched get date of today
       dplyr::select(-dateAdded),
@@ -1233,15 +1233,15 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$outdated_unmatched_taxa,
     output4_default_names_outdated_unmatched_taxa
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$outdated_unmatched_taxa,
     output1_outdated_unmatched_taxa
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output2$info$outdated_unmatched_taxa,
     output2_outdated_unmatched_taxa
   )
@@ -1254,15 +1254,15 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$outdated_synonyms,
     output4_default_names_outdated_synonyms
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$outdated_synonyms,
     output1_outdated_synonyms
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output2$info$outdated_synonyms,
     output2_outdated_synonyms
   )
@@ -1273,15 +1273,15 @@ testthat::test_that("output data.frames are correct", {
       bb_scientificName = backbone_scientific_names,
       updated_bb_scientificName = updated_backbone_scientific_names
     )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$updated_bb_scientificName,
     output4_default_names_updated_bb_scientificName
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$updated_bb_scientificName,
     output1_updated_bb_scientificName
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output2$info$updated_bb_scientificName,
     output2_updated_bb_scientificName
   )
@@ -1292,15 +1292,15 @@ testthat::test_that("output data.frames are correct", {
       bb_acceptedName = backbone_accepted_names,
       updated_bb_acceptedName = updated_backbone_accepted_names
     )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$updated_bb_acceptedName,
     output4_default_names_updated_bb_acceptedName
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$updated_bb_acceptedName,
     output1_updated_bb_acceptedName
   )
-  expect_equivalent(
+  testthat::expect_equivalent(
     output2$info$updated_bb_acceptedName,
     output2_updated_bb_acceptedName
   )
@@ -1308,12 +1308,12 @@ testthat::test_that("output data.frames are correct", {
   output4_default_names_duplicates <-
     output4$info$duplicates %>%
     dplyr::rename(bb_scientificName = backbone_scientific_names)
-  expect_equivalent(
+  testthat::expect_equivalent(
     output1$info$duplicates,
     output4_default_names_duplicates
   )
-  expect_equivalent(output1$info$duplicates, output1_duplicates)
-  expect_equivalent(output2$info$duplicates, output2_duplicates)
+  testthat::expect_equivalent(output1$info$duplicates, output1_duplicates)
+  testthat::expect_equivalent(output2$info$duplicates, output2_duplicates)
   # check_verification_key df no tested here: output of another TrIAS function
   # only check 0 rows with output2
   expect_true(nrow(output2$info$check_verificationKey) == 0)

@@ -1,26 +1,26 @@
 context("test_input_decision_rules")
 
-df_dr <- tibble(
+df_dr <- dplyr::tibble(
   taxonID = c(rep(1008955, 10), rep(2493598, 3)),
   y = c(seq(2009, 2018), seq(2016, 2018)),
   obs = c(1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 3, 0)
 )
 
-df_duplicate <- tibble(taxonID = c(1, 1), y = c(2001, 2001), obs = c(5, 3))
+df_duplicate <- dplyr::tibble(taxonID = c(1, 1), y = c(2001, 2001), obs = c(5, 3))
 
-df_duplicates <- tibble(
+df_duplicates <- dplyr::tibble(
   taxonID = c(1, 1, 2, 2, 3),
   y = c(2000, 2001, 2001, 2001, 2000),
   obs = c(0, 0, 1, 0, 1)
 )
 
-df_hole <- tibble(
+df_hole <- dplyr::tibble(
   taxonID = c(rep(1234, 3)),
   y = c(2010, 2011, 2018),
   obs = c(1, 2, 5)
 )
 
-df_holes <- tibble(
+df_holes <- dplyr::tibble(
   taxonID = c(rep(1234, 3), rep(1256, 4)),
   y = c(2010, 2011, 2018, 2014, 2016, 2018, 2020),
   obs = c(1, 2, 3, 5, 1, 2, 5)
@@ -28,7 +28,7 @@ df_holes <- tibble(
 
 testthat::test_that("Test inputs' types.", {
   # df
-  expect_error(apply_decision_rules(
+  testthat::expect_error(apply_decision_rules(
     df = 3,
     y_var = "n_observations",
     eval_year = 2018
@@ -40,7 +40,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # y_var
-  expect_error(apply_decision_rules(
+  testthat::expect_error(apply_decision_rules(
     df = df_dr,
     y_var = 3,
     eval_year = 2018
@@ -52,7 +52,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # eval_year
-  expect_error(apply_decision_rules(
+  testthat::expect_error(apply_decision_rules(
     df = df_dr,
     y_var = "n_observations",
     eval_year = "yyyy"
@@ -63,7 +63,7 @@ testthat::test_that("Test inputs' types.", {
   ),
   fixed = TRUE
   )
-  expect_error(apply_decision_rules(
+  testthat::expect_error(apply_decision_rules(
     df = df_dr,
     y_var = "n_observations",
     eval_year = list(a = 2018)
@@ -75,7 +75,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # year
-  expect_error(apply_decision_rules(
+  testthat::expect_error(apply_decision_rules(
     df = df_dr,
     y_var = "n_observations",
     year = 3,
@@ -88,7 +88,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # taxonKey
-  expect_error(apply_decision_rules(
+  testthat::expect_error(apply_decision_rules(
     df = df_dr,
     y_var = "n_observations",
     eval_year = 2018,
@@ -103,7 +103,7 @@ testthat::test_that("Test inputs' types.", {
 })
 
 testthat::test_that("Test input length.", {
-  expect_error(
+  testthat::expect_error(
     apply_decision_rules(
       df = df_dr,
       y_var = c("n_observations", "why a second col?"),
@@ -111,7 +111,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument y_var provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_decision_rules(
       df = df_dr,
       y_var = c("n_observations"),
@@ -120,7 +120,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument year provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_decision_rules(
       df = df_dr,
       y_var = c("n_observations"),
@@ -132,7 +132,7 @@ testthat::test_that("Test input length.", {
 })
 
 testthat::test_that("Test df contains all needed columns and information.", {
-  expect_error(apply_decision_rules(
+  testthat::expect_error(apply_decision_rules(
     df = df_dr,
     y_var = "y_var_wrong",
     eval_year = 2018,
@@ -145,7 +145,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
   ),
   fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     apply_decision_rules(
       df = df_dr,
       taxonKey = "taxonID",
@@ -158,7 +158,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
       "Check value of argument year."
     )
   )
-  expect_error(apply_decision_rules(
+  testthat::expect_error(apply_decision_rules(
     df = df_dr,
     y_var = "obs",
     year = "y",
@@ -171,7 +171,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
   ),
   fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     apply_decision_rules(
       df = df_dr,
       y_var = "obs",
@@ -184,7 +184,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
       "Check value of argument eval_year."
     )
   )
-  expect_error(
+  testthat::expect_error(
     apply_decision_rules(
       df = df_duplicate,
       y_var = "obs",
@@ -197,7 +197,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
       "of one or more taxa contain duplicates."
     )
   )
-  expect_error(
+  testthat::expect_error(
     apply_decision_rules(
       df = df_duplicates,
       y_var = "obs",
@@ -210,7 +210,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
       "of one or more taxa contain duplicates."
     )
   )
-  expect_error(
+  testthat::expect_error(
     apply_decision_rules(
       df = df_hole,
       y_var = "obs",
@@ -222,7 +222,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
       "as they contain missing time values: 1234."
     )
   )
-  expect_error(
+  testthat::expect_error(
     apply_decision_rules(
       df = df_holes,
       y_var = "obs",

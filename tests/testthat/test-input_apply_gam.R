@@ -17,7 +17,7 @@ df_gam <- data.frame(
 
 testthat::test_that("Test inputs' types.", {
   # df
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = 3,
     y_var = "n_observations",
     eval_years = 2018
@@ -29,7 +29,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # y_var
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = df_gam,
     y_var = 3,
     eval_years = 2018
@@ -41,7 +41,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # eval_years
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = df_gam,
     y_var = "n_observations",
     eval_years = "yyyy"
@@ -52,7 +52,7 @@ testthat::test_that("Test inputs' types.", {
   ),
   fixed = TRUE
   )
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = df_gam,
     y_var = "n_observations",
     eval_years = list(a = 2018)
@@ -64,7 +64,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # year
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = df_gam,
     y_var = "n_observations",
     year = 3,
@@ -77,7 +77,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # taxonKey
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = df_gam,
     y_var = "n_observations",
     eval_years = 2018,
@@ -90,7 +90,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # type_indicator
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = df_gam,
     y_var = "n_observations",
     eval_years = 2018,
@@ -104,7 +104,7 @@ testthat::test_that("Test inputs' types.", {
   fixed = TRUE
   )
   # baseline_var
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -118,7 +118,7 @@ testthat::test_that("Test inputs' types.", {
     )
   )
   # taxon_key
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -131,7 +131,7 @@ testthat::test_that("Test inputs' types.", {
     )
   )
   # name
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -144,7 +144,7 @@ testthat::test_that("Test inputs' types.", {
     )
   )
   # df_title
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -157,7 +157,7 @@ testthat::test_that("Test inputs' types.", {
     )
   )
   # x_label
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -170,7 +170,7 @@ testthat::test_that("Test inputs' types.", {
     )
   )
   # y_label
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -183,7 +183,7 @@ testthat::test_that("Test inputs' types.", {
     )
   )
   # saveplot
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -196,7 +196,7 @@ testthat::test_that("Test inputs' types.", {
       "Did you maybe use quotation marks?"
     )
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -210,7 +210,7 @@ testthat::test_that("Test inputs' types.", {
     )
   )
   # verbose
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -226,7 +226,7 @@ testthat::test_that("Test inputs' types.", {
 })
 
 testthat::test_that("Test input length.", {
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = c("n_observations", "why a second col?"),
@@ -234,7 +234,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument y_var provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = c("n_observations"),
@@ -243,7 +243,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument year provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = c("n_observations"),
@@ -252,7 +252,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument taxonKey provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = c("n_observations"),
@@ -261,7 +261,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument type_indicator provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = c("n_observations"),
@@ -270,7 +270,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument baseline_var provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -279,7 +279,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument name provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -288,7 +288,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument df_title provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -297,7 +297,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument x_label provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -306,7 +306,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument y_label provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -315,7 +315,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument saveplot provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -325,7 +325,7 @@ testthat::test_that("Test input length.", {
     ),
     paste("Multiple values for argument dir_name provided.")
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -337,7 +337,7 @@ testthat::test_that("Test input length.", {
 })
 
 testthat::test_that("Test df contains all needed columns and information.", {
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = df_gam,
     y_var = "y_var_wrong",
     eval_years = 2018
@@ -348,7 +348,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
   ),
   fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -360,7 +360,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
       "Check value of argument year."
     )
   )
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = df_gam,
     y_var = "n_observations",
     eval_years = 2018,
@@ -372,7 +372,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
   ),
   fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -383,7 +383,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
       "Check value of argument eval_years."
     )
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -395,7 +395,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
       "Check value of argument baseline_var."
     )
   )
-  expect_error(apply_gam(
+  testthat::expect_error(apply_gam(
     df = df_gam,
     y_var = "n_observations",
     eval_years = 2018,
@@ -411,7 +411,7 @@ testthat::test_that("Test df contains all needed columns and information.", {
 
 testthat::test_that("Test other inputs.", {
   # type_indicator
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -425,7 +425,7 @@ testthat::test_that("Test other inputs.", {
     )
   )
   # p-max
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -437,7 +437,7 @@ testthat::test_that("Test other inputs.", {
       "number between 0 and 1."
     )
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -449,7 +449,7 @@ testthat::test_that("Test other inputs.", {
       "number between 0 and 1."
     )
   )
-  expect_error(
+  testthat::expect_error(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
@@ -462,7 +462,7 @@ testthat::test_that("Test other inputs.", {
     )
   )
   # warning dir when saveplot is FALSE
-  expect_warning(
+  testthat::expect_warning(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
