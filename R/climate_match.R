@@ -106,7 +106,7 @@ climate_match <- function(region,
   if (missing(region)) {
     # no region is provided => worldwide
     region_shape <- rworldmap::getMap(resolution = "low")
-  }else{
+  } else {
     if (is.character(region)) {
       # region is a character => select region from worldmap
       region <- tolower(region)
@@ -117,15 +117,15 @@ climate_match <- function(region,
       
       if(region %in% valid_countries){
         region_shape <- subset(worldmap, tolower(worldmap$NAME) == region) 
-      }else{
+      } else {
         valid_continents <- tolower(unique(worldmap$REGION))
         if(region %in% valid_continents){
           region_shape <- subset(worldmap, tolower(worldmap$REGION) == region) 
-        }else{
+        } else {
           stop("the provided region is not valid")
         }
       }
-    }else{
+    } else{
       # region is a environment object => get object into function 
       region_shape <- region
       
