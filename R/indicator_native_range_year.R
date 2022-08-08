@@ -67,7 +67,7 @@ indicator_native_range_year <- function(data, years = NULL,
       min(years):max(years)
   ))
 
-  summaryData <- reshape2::melt(table(plotData), id.dplyr::vars = "first_observed")
+  summaryData <- reshape2::melt(table(plotData), id.vars = "first_observed")
   summaryData <- summaryData %>%
     dplyr::group_by(.data$first_observed) %>%
     dplyr::mutate(
