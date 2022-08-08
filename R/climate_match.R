@@ -61,6 +61,7 @@
 #' 
 #' # calculate all climate match outputs
 #' # with GBIF download
+#' require('rgdal')
 #' climate_match(region,
 #'               taxon_key, 
 #'               n_limit = 90,
