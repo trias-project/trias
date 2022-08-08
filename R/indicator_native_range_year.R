@@ -112,7 +112,7 @@ indicator_native_range_year <- function(data, years = NULL,
   }
 
   pl_2 <- plotly::ggplotly(data = summaryData, pl, tooltip = "text") %>%
-    layout(
+    plotly::layout(
       xaxis = list(title = x_lab, tickangle = "auto"),
       yaxis = list(title = y_lab, tickformat = ",d"),
       margin = list(b = 80, t = 100),
