@@ -149,8 +149,8 @@ climate_match <- function(region,
   ## Species
   taxon_key <- as.numeric(unique(taxon_key))
   
-  if(length(taxon_key) == 1){
-    if(is.na(taxon_key)){
+  if (length(taxon_key) == 1) {
+    if (is.na(taxon_key)) {
       stop("taxon_key is missing or not valid")
     }
   }
@@ -163,14 +163,14 @@ climate_match <- function(region,
   
   if (base::missing(zip_file)) {
     rerun <- 2
-  }else{
+  } else {
     if (!file.exists(zip_file)) {
       warning(paste0(zip_file, " cannot be found. Rerunning GBIF download"))
       rerun <- 2
-    }else{
-      rerun <- menu(choices = c("no", "yes"), 
-                    title = "rerun GBIF download?",
-                    graphics = TRUE)
+    } else {
+      rerun <- svDialogs::menu(choices = c("no", "yes"), 
+                               title = "rerun GBIF download?",
+                               graphics = TRUE)
     }
   }
   
