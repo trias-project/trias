@@ -165,10 +165,11 @@ issues are returned. Default: <code>FALSE</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>list with six slots:</p><ol><li><p><code>em_summary</code>: df. A data.frame summarizing the emerging status outputs. <code>em_summary</code>
-contains as many rows as the length of input variable <code>eval_year</code>. So,
-if you evaluate GAM on three years, <code>em_summary</code> will contain three
-rows. Columns:</p><ul><li><p><code>"taxonKey"</code>: column containing taxon ID. Column name equal to value of argument <code>taxonKey</code>.</p></li>
+<p>list with six slots:</p><ol><li><p><code>em_summary</code>: df. A data.frame summarizing the emerging status
+outputs. <code>em_summary</code> contains as many rows as the length of input variable
+<code>eval_year</code>. So, if you evaluate GAM on three years, <code>em_summary</code> will
+contain three rows. Columns:</p><ul><li><p><code>"taxonKey"</code>: column containing taxon ID. Column name equal to value of
+argument <code>taxonKey</code>.</p></li>
 <li><p><code>"year"</code>: column containing temporal values. Column name equal
 to value of argument <code>year</code>. Column itself is equal to value of
 argument <code>eval_years</code>. So, if you evaluate GAM on years 2017, 2018
@@ -176,18 +177,17 @@ argument <code>eval_years</code>. So, if you evaluate GAM on years 2017, 2018
 column.</p></li>
 <li><p><code>em_status</code>: numeric. Emerging statuses, an integer
 between 0 and 3.</p></li>
-<li><p><code>growth</code>: numeric. Lower limit of GAM
-confidence interval for the first derivative. It represents the lower
-guaranteed growth.</p></li>
+<li><p><code>growth</code>: numeric. Lower limit of GAM confidence interval for the first
+derivative. It represents the lower guaranteed growth.</p></li>
 <li><p><code>method</code>: character. GAM method, One of: <code>"correct_baseline"</code> and
 <code>"basic"</code>. See details above in description of argument <code>use_baseline</code>.</p></li>
-</ul></li>
-<li><p><code>model</code>: gam object. The model as returned by <code>gam()</code> function. <code>NULL</code> if
-GAM cannot be applied.</p></li>
-<li><p><code>output</code>: df. Complete data.frame containing more details than the summary
-<code>em_summary</code>.</p></li>
+<li><p><code>model</code>: gam object. The model as returned by <code>gam()</code> function.
+<code>NULL</code> if GAM cannot be applied.</p></li>
+<li><p><code>output</code>: df. Complete data.frame containing more details than the
+summary <code>em_summary</code>.</p></li>
 <li><p><code>first_derivative</code>: df. Data.frame with details of first derivatives.
-It contains following columns:</p><ul><li><p><code>smooth</code>: smoooth identifier. Example: <code>s(year)</code>.</p></li>
+It contains following columns:</p></li>
+<li><p><code>smooth</code>: smoooth identifier. Example: <code>s(year)</code>.</p></li>
 <li><p><code>var</code>: character. Column name the smoother is applied to.</p></li>
 <li><p><code>data</code>: numeric. Data in columns defined by <code>var</code>.</p></li>
 <li><p><code>derivative</code>: numeric. Value of first derivative.</p></li>
@@ -209,6 +209,45 @@ emerging status. If emerging status cannot be assessed only observations are
 plotted.</p></li>
 </ul></li>
 </ol></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The GAM modelling is performed using the <code>mgcvb::gam()</code>. To use this function, we pass:</p><ul><li><p>a formula</p></li>
+<li><p>a family object specifying the distribution</p></li>
+<li><p>a smoothing parameter estimation method</p></li>
+</ul><p>For more information about all other arguments, see <code>[mgcv::gam()]</code>.</p>
+<p>If no covariate is used (<code>baseline_var</code> = NULL), the GAM formula is:
+<code>n ~ s(year, k = maxk, m = 3, bs = "tp")</code>. Otherwise the GAM formula has a
+second term, <code>s(n_covariate)</code> and so the GAM formula is
+<code>n ~ s(year, k = maxk, m = 3, bs = "tp") + s(n_covariate)</code>.</p>
+<p>Description of the parameters present in the formula above:</p><ul><li><p><code>k</code>: dimension of the basis used to represent the smooth term, i.e. the
+number of <em>knots</em> used for calculating the smoother. We #' set <code>k</code> to <code>maxk</code>,
+which is the number of decades in the time series. If less than 5 decades are
+present in the data, <code>maxk</code> is #' set to 5.</p></li>
+<li><p><code>bs</code> indicates the basis to use for the smoothing: we uses the default
+penalized thin plate regression splines.</p></li>
+<li><p><code>m</code> specifies the order of the derivatives in the thin plate spline
+penalty. We use <code>m = 3</code>, the default value.</p></li>
+</ul><p>We use <code>[mgcv::nb()]</code>, a negative binomial family to perform the GAM.</p>
+<p>The smoothing parameter estimation method is set to REML (Restricted maximum
+likelihood approach). If the P-value of the GAM smoother(s) is/are above
+threshold value <code>p_max</code>, GAM is not performed and the next warning is
+returned: "GAM output cannot be used: p-values of all GAM smoothers are above
+{p_max}" where <code>p_max</code> is the P-value used as threshold as defined by
+argument <code>p_max</code>.</p>
+<p>If the <code><a href="https://rdrr.io/pkg/mgcv/man/gam.html" class="external-link">mgcv::gam()</a></code> returns an error or a warning, the following message is
+returned to the user: "GAM ({method_em}) cannot be performed or cannot
+converge.", where <code>method_em</code> is one of <code>"basic"</code> or <code>"correct_baseline"</code>.
+See argument <code>baseline_var</code>.</p>
+<p>The first and second derivatives of the smoother is calculated using function
+<code><a href="https://gavinsimpson.github.io/gratia/reference/derivatives.html" class="external-link">gratia::derivatives()</a></code> with the following hard coded arguments:</p><ul><li><p><code>type</code>: the type of finite difference used. Set  to <code>"central"</code>.</p></li>
+<li><p><code>order</code>: 1 for the first derivative, 2 for the second derivative</p></li>
+<li><p><code>level</code>: the confidence level. Set to 0.8</p></li>
+<li><p><code>eps</code>: the finite difference. Set to 1e-4.</p></li>
+</ul><p>For more details, please check <a href="https://gavinsimpson.github.io/gratia/reference/derivatives.html" class="external-link">derivatives</a>.</p>
+<p>The sign of the lower and upper confidence levels of the first and second
+derivatives are used to define a detailed emergency status (<code>em</code>) which is
+internally used to return the emergency status, <code>em_status</code>, which is a
+column of the returned data.frame <code>em_summary</code>.</p><table class="table table"><tr><td>ucl-1</td><td>lcl-1</td><td>ucl-2</td><td>lcl-2</td><td>em</td><td>em_status</td></tr><tr><td>+</td><td>+</td><td>+</td><td>+</td><td>4</td><td>3 (emerging)</td></tr><tr><td>+</td><td>+</td><td>+</td><td>-</td><td>3</td><td>3 (emerging)</td></tr><tr><td>+</td><td>+</td><td>-</td><td>-</td><td>2</td><td>2 (potentially emerging)</td></tr><tr><td>-</td><td>+</td><td>+</td><td>+</td><td>1</td><td>2 (potentially emerging)</td></tr><tr><td>+</td><td>-</td><td>+</td><td>-</td><td>0</td><td>1 (unclear)</td></tr><tr><td>+</td><td>-</td><td>-</td><td>-</td><td>-1</td><td>0 (not emerging)</td></tr><tr><td>-</td><td>-</td><td>+</td><td>+</td><td>-2</td><td>0 (not emerging)</td></tr><tr><td>-</td><td>-</td><td>+</td><td>-</td><td>-3</td><td>0 (not emerging)</td></tr><tr><td>-</td><td>-</td><td>-</td><td>-</td><td>-4</td><td>0 (not emerging)</td></tr></table></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
