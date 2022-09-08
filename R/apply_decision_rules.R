@@ -43,6 +43,14 @@
 #' @importFrom purrr map2 reduce
 #' @importFrom rlang sym !! :=
 #' @importFrom stats median
+#' @details
+#' Based on the decision rules output we define the emergency status value:
+#' - `dr_3` is `TRUE`: `em = 0` (not emerging)
+#' - `dr_1` and `dr_3` are `FALSE`, `dr_2` and `dr_4` are `TRUE`: `em = 3`
+#' (emerging)
+#' - `dr_2` is `TRUE`, all others are `FALSE`: `em = 2` (potentially emerging
+#' - `dr_1` is `TRUE`  and `dr_3` is `FALSE` or `dr_1`, `dr_2` and `dr_3` is
+#' `FALSE`: `em = 1` (unclear)
 #' @examples
 #' \dontrun{
 #' df <- tibble(
