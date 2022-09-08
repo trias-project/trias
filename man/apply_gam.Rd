@@ -126,6 +126,56 @@ cannot be applied.}}
 This function applies generalized additive models (GAM) to assess emerging
 status for a certain time window.
 }
+\details{
+The GAM modelling is performed using the \code{mgcvb::gam()}. To use this function, we pass:
+\itemize{
+\item a formula
+\item a family object specifying the distribution
+\item a smoothing parameter estimation method
+}
+
+For more information about all other arguments, see \verb{[mgcv::gam()]}.
+
+If no covariate is used (\code{baseline_var} = NULL), the GAM formula is:
+\code{n ~ s(year, k = maxk, m = 3, bs = "tp")}. Otherwise the GAM formula has a
+second term, \code{s(n_covariate)} and so the GAM formula is
+\code{n ~ s(year, k = maxk, m = 3, bs = "tp") + s(n_covariate)}.
+
+Description of the parameters present in the formula above:
+\itemize{
+\item \code{k}: dimension of the basis used to represent the smooth term, i.e. the
+number of \emph{knots} used for calculating the smoother. We #' set \code{k} to \code{maxk},
+which is the number of decades in the time series. If less than 5 decades are
+present in the data, \code{maxk} is #' set to 5.
+\item \code{bs} indicates the basis to use for the smoothing: we uses the default
+penalized thin plate regression splines.
+\item \code{m} specifies the order of the derivatives in the thin plate spline
+penalty. We use \code{m = 3}, the default value.
+}
+
+We use \verb{[mgcv::nb()]}, a negative binomial family to perform the GAM.
+
+The smoothing parameter estimation method is set to REML (Restricted maximum
+likelihood approach).#' If all smoothers "GAM output cannot be used: p-values of all GAM smoothers
+are above {p_max}" where p_max is the P-value used as threshold and
+defined by argument \code{p_max}.
+
+If the \code{mgcv::gam()} returns an error or a warning, the following message is
+returned to the user: "GAM ({method}) cannot be performed or cannot
+converge.", where \code{method_em} is one of \code{"basic"} or \code{"correct_baseline"}.
+See argument \code{baseline_var}.
+
+The first and second derivatives of the smoother is calculated using function
+\code{gratia::derivatives()} with the following hard coded arguments:
+\itemize{
+\item \code{type}: the type of finite difference used. Set  to \code{"central"}.
+\item \code{order}: 1 for the first derivative, 2 for the second derivative
+\item \code{level}: the confidence level. Set to 0.8
+\item \code{eps}: the finite difference. Set to 1e-4.
+}
+
+For more details, please check \link[gratia]{derivatives}.
+}
 \examples{
 \dontrun{
 df_gam <- tibble(
