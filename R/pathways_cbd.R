@@ -8,11 +8,10 @@
 #'   `pathway_level2`.
 #' @export
 #' @usage pathways_cbd()
-#' @importFrom dplyr tibble
 
 pathways_cbd <- function() pathwayscbd
 
-pathwayscbd <- tibble(
+pathwayscbd <- dplyr::tibble(
   pathway_level1 = c(
     rep("release", 9),
     rep("escape", 13),

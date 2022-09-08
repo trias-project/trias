@@ -40,7 +40,7 @@ containing temporal values. Column name equal to value of argument
 So, if you apply decision rules on years 2018 (\code{eval_year = 2018}),
 you will get 2018 in this column.} \item{\code{em_status}: numeric.
 Emerging status, an integer between 0 and 3, based on output of decision
-rules (next columns).} \item{\code{dr_1}: logical. Output of decision rule
+rules (next columns). See details for more information.} \item{\code{dr_1}: logical. Output of decision rule
 1 answers to the question: does the time series contain only one positive
 value at evaluation year?} \item{\code{dr_2}: logical. Output of decision
 rule 2 answers to the question: is value at evaluation year above median
@@ -54,9 +54,21 @@ maximum ever observed up to \code{eval_year}?}}
 This function defines and applies some decision rules to assess emerging
 status at a specific time.
 }
+\details{
+Based on the decision rules output we define the emergency status value,
+\code{em}:
+\itemize{
+\item \code{dr_3} is \code{TRUE}: \code{em = 0} (not emerging)
+\item \code{dr_1} and \code{dr_3} are \code{FALSE}, \code{dr_2} and \code{dr_4} are \code{TRUE}: \code{em = 3}
+(emerging)
+\item \code{dr_2} is \code{TRUE}, all others are \code{FALSE}: \code{em = 2} (potentially emerging
+\item (\code{dr_1} is \code{TRUE}  and \code{dr_3} is \code{FALSE}) or (\code{dr_1}, \code{dr_2} and \code{dr_3} are
+\code{FALSE}): \code{em = 1} (unclear)
+}
+}
 \examples{
 \dontrun{
-df <- tibble(
+df <- dplyr::tibble(
   taxonID = c(rep(1008955, 10), rep(2493598, 3)),
   y = c(seq(2009, 2018), seq(2016, 2018)),
   obs = c(1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 3, 0)

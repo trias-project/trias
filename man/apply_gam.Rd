@@ -85,12 +85,13 @@ issues are returned. Default: \code{FALSE}.}
 \value{
 list with six slots:
 \enumerate{
-\item \code{em_summary}: df. A data.frame summarizing the emerging status outputs. \code{em_summary}
-contains as many rows as the length of input variable \code{eval_year}. So,
-if you evaluate GAM on three years, \code{em_summary} will contain three
-rows. Columns:
+\item \code{em_summary}: df. A data.frame summarizing the emerging status
+outputs. \code{em_summary} contains as many rows as the length of input variable
+\code{eval_year}. So, if you evaluate GAM on three years, \code{em_summary} will
+contain three rows. Columns:
 \itemize{
-\item \code{"taxonKey"}: column containing taxon ID. Column name equal to value of argument \code{taxonKey}.
+\item \code{"taxonKey"}: column containing taxon ID. Column name equal to value of
+argument \code{taxonKey}.
 \item \code{"year"}: column containing temporal values. Column name equal
 to value of argument \code{year}. Column itself is equal to value of
 argument \code{eval_years}. So, if you evaluate GAM on years 2017, 2018
@@ -98,20 +99,16 @@ argument \code{eval_years}. So, if you evaluate GAM on years 2017, 2018
 column.
 \item \code{em_status}: numeric. Emerging statuses, an integer
 between 0 and 3.
-\item \code{growth}: numeric. Lower limit of GAM
-confidence interval for the first derivative. It represents the lower
-guaranteed growth.
+\item \code{growth}: numeric. Lower limit of GAM confidence interval for the first
+derivative. It represents the lower guaranteed growth.
 \item \code{method}: character. GAM method, One of: \code{"correct_baseline"} and
 \code{"basic"}. See details above in description of argument \code{use_baseline}.
-}
-
-\item \code{model}: gam object. The model as returned by \code{gam()} function. \code{NULL} if
-GAM cannot be applied.
-\item \code{output}: df. Complete data.frame containing more details than the summary
-\code{em_summary}.
+\item \code{model}: gam object. The model as returned by \code{gam()} function.
+\code{NULL} if GAM cannot be applied.
+\item \code{output}: df. Complete data.frame containing more details than the
+summary \code{em_summary}.
 \item \code{first_derivative}: df. Data.frame with details of first derivatives.
 It contains following columns:
-\itemize{
 \item \code{smooth}: smoooth identifier. Example: \code{s(year)}.
 \item \code{var}: character. Column name the smoother is applied to.
 \item \code{data}: numeric. Data in columns defined by \code{var}.
@@ -138,6 +135,74 @@ plotted.
 \description{
 This function applies generalized additive models (GAM) to assess emerging
 status for a certain time window.
+}
+\details{
+The GAM modelling is performed using the \code{mgcvb::gam()}. To use this function, we pass:
+\itemize{
+\item a formula
+\item a family object specifying the distribution
+\item a smoothing parameter estimation method
+}
+
+For more information about all other arguments, see \verb{[mgcv::gam()]}.
+
+If no covariate is used (\code{baseline_var} = NULL), the GAM formula is:
+\code{n ~ s(year, k = maxk, m = 3, bs = "tp")}. Otherwise the GAM formula has a
+second term, \code{s(n_covariate)} and so the GAM formula is
+\code{n ~ s(year, k = maxk, m = 3, bs = "tp") + s(n_covariate)}.
+
+Description of the parameters present in the formula above:
+\itemize{
+\item \code{k}: dimension of the basis used to represent the smooth term, i.e. the
+number of \emph{knots} used for calculating the smoother. We #' set \code{k} to \code{maxk},
+which is the number of decades in the time series. If less than 5 decades are
+present in the data, \code{maxk} is #' set to 5.
+\item \code{bs} indicates the basis to use for the smoothing: we uses the default
+penalized thin plate regression splines.
+\item \code{m} specifies the order of the derivatives in the thin plate spline
+penalty. We use \code{m = 3}, the default value.
+}
+
+We use \verb{[mgcv::nb()]}, a negative binomial family to perform the GAM.
+
+The smoothing parameter estimation method is set to REML (Restricted maximum
+likelihood approach). If the P-value of the GAM smoother(s) is/are above
+threshold value \code{p_max}, GAM is not performed and the next warning is
+returned: "GAM output cannot be used: p-values of all GAM smoothers are above
+\{p_max\}" where \code{p_max} is the P-value used as threshold as defined by
+argument \code{p_max}.
+
+If the \code{mgcv::gam()} returns an error or a warning, the following message is
+returned to the user: "GAM (\{method_em\}) cannot be performed or cannot
+converge.", where \code{method_em} is one of \code{"basic"} or \code{"correct_baseline"}.
+See argument \code{baseline_var}.
+
+The first and second derivatives of the smoother is calculated using function
+\code{gratia::derivatives()} with the following hard coded arguments:
+\itemize{
+\item \code{type}: the type of finite difference used. Set  to \code{"central"}.
+\item \code{order}: 1 for the first derivative, 2 for the second derivative
+\item \code{level}: the confidence level. Set to 0.8
+\item \code{eps}: the finite difference. Set to 1e-4.
+}
+
+For more details, please check \link[gratia]{derivatives}.
+
+The sign of the lower and upper confidence levels of the first and second
+derivatives are used to define a detailed emergency status (\code{em}) which is
+internally used to return the emergency status, \code{em_status}, which is a
+column of the returned data.frame \code{em_summary}.\tabular{llllll}{
+   ucl-1 \tab lcl-1 \tab ucl-2 \tab lcl-2 \tab em \tab em_status \cr
+   + \tab + \tab + \tab + \tab 4 \tab 3 (emerging) \cr
+   + \tab + \tab + \tab - \tab 3 \tab 3 (emerging) \cr
+   + \tab + \tab - \tab - \tab 2 \tab 2 (potentially emerging) \cr
+   - \tab + \tab + \tab + \tab 1 \tab 2 (potentially emerging) \cr
+   + \tab - \tab + \tab - \tab 0 \tab 1 (unclear) \cr
+   + \tab - \tab - \tab - \tab -1 \tab 0 (not emerging) \cr
+   - \tab - \tab + \tab + \tab -2 \tab 0 (not emerging) \cr
+   - \tab - \tab + \tab - \tab -3 \tab 0 (not emerging) \cr
+   - \tab - \tab - \tab - \tab -4 \tab 0 (not emerging) \cr
+}
 }
 \examples{
 \dontrun{

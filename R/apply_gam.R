@@ -35,7 +35,7 @@
 #' @param x_label character. x-axis label of output plot. Default:
 #'   `"year"`.
 #' @param y_label character. y-axis label of output plot. Default:
-#'   \code{"number of observations"}.
+#'   `"number of observations"`.
 #' @param saveplot logical. If `TRUE` the plots are authomatically saved.
 #'   Default: `FALSE`.
 #' @param dir_name character. Path of directory where saving plots. If path
@@ -46,11 +46,12 @@
 #'
 #' @return list with six slots:
 #' \enumerate{
-#'   \item `em_summary`: df. A data.frame summarizing the emerging status outputs. `em_summary`
-#'   contains as many rows as the length of input variable `eval_year`. So,
-#'   if you evaluate GAM on three years, `em_summary` will contain three
-#'   rows. Columns:
-#'   - `"taxonKey"`: column containing taxon ID. Column name equal to value of argument `taxonKey`.
+#'   \item `em_summary`: df. A data.frame summarizing the emerging status
+#'   outputs. `em_summary` contains as many rows as the length of input variable
+#'   `eval_year`. So, if you evaluate GAM on three years, `em_summary` will
+#'   contain three rows. Columns:
+#'   - `"taxonKey"`: column containing taxon ID. Column name equal to value of
+#'   argument `taxonKey`.
 #'   - `"year"`: column containing temporal values. Column name equal
 #'   to value of argument `year`. Column itself is equal to value of
 #'   argument `eval_years`. So, if you evaluate GAM on years 2017, 2018
@@ -58,18 +59,16 @@
 #'   column.
 #'   - `em_status`: numeric. Emerging statuses, an integer
 #'   between 0 and 3.
-#'   - `growth`: numeric. Lower limit of GAM
-#'   confidence interval for the first derivative. It represents the lower
-#'   guaranteed growth.
+#'   - `growth`: numeric. Lower limit of GAM confidence interval for the first
+#'   derivative. It represents the lower guaranteed growth.
 #'   - `method`: character. GAM method, One of: `"correct_baseline"` and
 #'   `"basic"`. See details above in description of argument `use_baseline`.
-#'   
-#'   \item `model`: gam object. The model as returned by `gam()` function. `NULL` if
-#' GAM cannot be applied.
-#'   \item `output`: df. Complete data.frame containing more details than the summary
-#' `em_summary`.
-#' \item `first_derivative`: df. Data.frame with details of first derivatives.
-#' It contains following columns:
+#'   \item `model`: gam object. The model as returned by `gam()` function.
+#'   `NULL` if GAM cannot be applied.
+#'   \item `output`: df. Complete data.frame containing more details than the
+#'   summary `em_summary`.
+#'   \item `first_derivative`: df. Data.frame with details of first derivatives.
+#'   It contains following columns:
 #'   - `smooth`: smoooth identifier. Example: `s(year)`.
 #'   - `var`: character. Column name the smoother is applied to.
 #'   - `data`: numeric. Data in columns defined by `var`.
@@ -94,6 +93,71 @@
 #' @export
 #' @importFrom dplyr %>% .data
 #' @importFrom rlang !! :=
+#' 
+#' @details
+#' The GAM modelling is performed using the `mgcvb::gam()`. To use this function, we pass:
+#' - a formula
+#' - a family object specifying the distribution
+#' - a smoothing parameter estimation method
+#' 
+#' For more information about all other arguments, see `[mgcv::gam()]`.
+#' 
+#' If no covariate is used (`baseline_var` = NULL), the GAM formula is: 
+#' `n ~ s(year, k = maxk, m = 3, bs = "tp")`. Otherwise the GAM formula has a
+#' second term, `s(n_covariate)` and so the GAM formula is 
+#' `n ~ s(year, k = maxk, m = 3, bs = "tp") + s(n_covariate)`.
+#' 
+#' Description of the parameters present in the formula above:
+#' - `k`: dimension of the basis used to represent the smooth term, i.e. the
+#' number of _knots_ used for calculating the smoother. We #' set `k` to `maxk`,
+#' which is the number of decades in the time series. If less than 5 decades are
+#' present in the data, `maxk` is #' set to 5.
+#' - `bs` indicates the basis to use for the smoothing: we uses the default
+#' penalized thin plate regression splines.
+#' - `m` specifies the order of the derivatives in the thin plate spline
+#' penalty. We use `m = 3`, the default value.
+#' 
+#' We use `[mgcv::nb()]`, a negative binomial family to perform the GAM.
+#' 
+#' The smoothing parameter estimation method is set to REML (Restricted maximum
+#' likelihood approach). If the P-value of the GAM smoother(s) is/are above
+#' threshold value `p_max`, GAM is not performed and the next warning is
+#' returned: "GAM output cannot be used: p-values of all GAM smoothers are above
+#' \{p_max\}" where `p_max` is the P-value used as threshold as defined by
+#' argument `p_max`.
+#' 
+#' If the `mgcv::gam()` returns an error or a warning, the following message is
+#' returned to the user: "GAM (\{method_em\}) cannot be performed or cannot
+#' converge.", where `method_em` is one of `"basic"` or `"correct_baseline"`.
+#' See argument `baseline_var`.
+#' 
+#' The first and second derivatives of the smoother is calculated using function
+#' `gratia::derivatives()` with the following hard coded arguments:
+#' 
+#' - `type`: the type of finite difference used. Set  to `"central"`.
+#' - `order`: 1 for the first derivative, 2 for the second derivative
+#' - `level`: the confidence level. Set to 0.8
+#' - `eps`: the finite difference. Set to 1e-4.
+#' 
+#' For more details, please check \link[gratia]{derivatives}.
+#' 
+#' The sign of the lower and upper confidence levels of the first and second
+#' derivatives are used to define a detailed emergency status (`em`) which is
+#' internally used to return the emergency status, `em_status`, which is a
+#' column of the returned data.frame `em_summary`.
+#' 
+#' | ucl-1 | lcl-1 | ucl-2 | lcl-2 | em | em_status |
+#' | --- | --- | --- | --- | --- | --- |
+#' | + | + | + | + | 4 | 3 (emerging) |
+#' | + | + | + | - | 3 | 3 (emerging) |
+#' | + | + | - | - | 2 | 2 (potentially emerging) |
+#' | - | + | + | + | 1 | 2 (potentially emerging) |
+#' | + | - | + | - | 0 | 1 (unclear) |
+#' | + | - | - | - | -1 | 0 (not emerging) |
+#' | - | - | + | + | -2 | 0 (not emerging) |
+#' | - | - | + | - | -3 | 0 (not emerging) |
+#' | - | - | - | - | -4 | 0 (not emerging) |
+#' 
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -575,7 +639,7 @@ apply_gam <- function(df,
         # Add lower value of first derivative
         output_model <- dplyr::left_join(output_model, lower_deriv1, by = "year")
 
-        # Get emergin status summary for output
+        # Get emerging status summary for output
         emerging_status_output <-
           output_model %>%
           dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
@@ -669,7 +733,7 @@ apply_gam <- function(df,
 #' @param verbose logical. If \code{TRUE}, informations about possible issues
 #'   are returned. Default: \code{FALSE}.
 #' @return a ggplot2 plot object.
-#' @importFrom dplyr %>% .data
+#' @importFrom dplyr .data %>%
 plot_ribbon_em <- function(df_plot,
                            x_axis = "year",
                            y_axis = "obs",
