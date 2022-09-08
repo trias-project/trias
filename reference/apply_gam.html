@@ -12,7 +12,7 @@ status for a certain time window."><meta property="og:image" content="/logo.png"
     
     <a class="navbar-brand me-2" href="../index.html">trias</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,9 +107,8 @@ passed as string, e.g. <code>"taxon"</code>. Default: <code>"taxonKey"</code>.</
 <dd><p>character. Name of the column containing values to use
 as additional covariate. Such covariate is introduced in the model to
 correct research effort bias. Default: <code>NULL</code>. If <code>NULL</code> internal
-variable <code>method_em = "basic"</code>, otherwise <code>method_em =
-  "correct_baseline"</code>. Value of <code>method_em</code> will be part of title of
-output plot.</p></dd>
+variable <code>method_em = "basic"</code>, otherwise <code>method_em = "correct_baseline"</code>.
+Value of <code>method_em</code> will be part of title of output plot.</p></dd>
 
 
 <dt>p_max</dt>
@@ -166,38 +165,56 @@ issues are returned. Default: <code>FALSE</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>list. List with six objects:</p><ul><li><p><code>model</code>: gam
-object. The model as returned by GAM.</p></li>
-<li><p><code>first_derivative</code>: df.
-Data.frame with details of first derivatives. It contains following
-columns: </p><ul><li><p><code>var</code>: character. Column name the smoother is
-applied to.</p></li>
-<li><p><code>data</code>: numeric. Data in columns defined by
-<code>var</code>.</p></li>
+<p>list with six slots:</p><ol><li><p><code>em_summary</code>: df. A data.frame summarizing the emerging status outputs. <code>em_summary</code>
+contains as many rows as the length of input variable <code>eval_year</code>. So,
+if you evaluate GAM on three years, <code>em_summary</code> will contain three
+rows. Columns:</p><ul><li><p><code>"taxonKey"</code>: column containing taxon ID. Column name equal to value of argument <code>taxonKey</code>.</p></li>
+<li><p><code>"year"</code>: column containing temporal values. Column name equal
+to value of argument <code>year</code>. Column itself is equal to value of
+argument <code>eval_years</code>. So, if you evaluate GAM on years 2017, 2018
+(<code>eval_years = c(2017, 2018)</code>), you will get these two values in this
+column.</p></li>
+<li><p><code>em_status</code>: numeric. Emerging statuses, an integer
+between 0 and 3.</p></li>
+<li><p><code>growth</code>: numeric. Lower limit of GAM
+confidence interval for the first derivative. It represents the lower
+guaranteed growth.</p></li>
+<li><p><code>method</code>: character. GAM method, One of: <code>"correct_baseline"</code> and
+<code>"basic"</code>. See details above in description of argument <code>use_baseline</code>.</p></li>
+</ul></li>
+<li><p><code>model</code>: gam object. The model as returned by <code>gam()</code> function. <code>NULL</code> if
+GAM cannot be applied.</p></li>
+<li><p><code>output</code>: df. Complete data.frame containing more details than the summary
+<code>em_summary</code>.</p></li>
+<li><p><code>first_derivative</code>: df. Data.frame with details of first derivatives.
+It contains following columns:</p><ul><li><p><code>smooth</code>: smoooth identifier. Example: <code>s(year)</code>.</p></li>
+<li><p><code>var</code>: character. Column name the smoother is applied to.</p></li>
+<li><p><code>data</code>: numeric. Data in columns defined by <code>var</code>.</p></li>
 <li><p><code>derivative</code>: numeric. Value of first derivative.</p></li>
 <li><p><code>se</code>: numeric. Standard error of <code>derivative</code>.</p></li>
 <li><p><code>crit</code>: numeric. Critical value required such that
 <code>derivative + (se * crit)</code> and <code>derivative - (se * crit)</code> form
 the upper and lower bounds of the confidence interval on the first
 derivative of the estimated smooth at the specific confidence level. In our
-case the confidence level is hard-coded: 0.8. Then <code>crit &lt;- qnorm(p =
-  (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)</code>.</p></li>
+case the confidence level is hard-coded: 0.8.
+Then <code>crit &lt;- qnorm(p = (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)</code>.</p></li>
 <li><p><code>lower</code>: numeric. Lower bound of the confidence interval of the
 estimated smooth.</p></li>
 <li><p><code>upper</code>: numeric. Upper bound of the
 confidence interval of the estimated smooth.</p></li>
-</ul></li>
 <li><p><code>second_derivative</code>: df. Data.frame with details of second
 derivatives. Same columns as <code>first_derivatives</code>.</p></li>
-<li><p><code>plot</code>:
-a ggplot2 object. Plot of GAM output and emerging. <code>NULL</code> if GAM
-cannot be applied.</p></li>
-</ul></div>
+<li><p><code>plot</code>: a ggplot2 object. Plot of observations with GAM output and
+emerging status. If emerging status cannot be assessed only observations are
+plotted.</p></li>
+</ul></li>
+</ol></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">df_gam</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df_gam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  taxonKey <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">3003709</span>, <span class="fl">24</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  canonicalName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Rosa glauca"</span>, <span class="fl">24</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1995</span>, <span class="fl">2018</span><span class="op">)</span>,</span></span>
@@ -265,6 +282,26 @@ cannot be applied.</p></li>
 <span class="r-in"><span>  dir_name <span class="op">=</span> <span class="st">"./data/"</span>,</span></span>
 <span class="r-in"><span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># warning returned if GAM cannot be applied and plot with only observations</span></span></span>
+<span class="r-in"><span><span class="va">df_gam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>taxonKey <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">3003709</span>, <span class="fl">24</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>canonicalName <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Rosa glauca"</span>, <span class="fl">24</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1995</span>, <span class="fl">2018</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>obs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">5</span>, <span class="fl">0</span>, <span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">10</span></span></span>
+<span class="r-in"><span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>cobs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">24</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">no_gam_applied</span> <span class="op">&lt;-</span> <span class="fu">apply_gam</span><span class="op">(</span><span class="va">df_gam</span>,</span></span>
+<span class="r-in"><span>                            y_var <span class="op">=</span> <span class="st">"obs"</span>,</span></span>
+<span class="r-in"><span>                            eval_years <span class="op">=</span> <span class="fl">2018</span>,</span></span>
+<span class="r-in"><span>                            taxon_key <span class="op">=</span> <span class="fl">3003709</span>,</span></span>
+<span class="r-in"><span>                            name <span class="op">=</span> <span class="st">"Rosa glauca"</span>,</span></span>
+<span class="r-in"><span>                            baseline_var <span class="op">=</span> <span class="st">"cobs"</span>,</span></span>
+<span class="r-in"><span>                            verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">no_gam_applied</span><span class="op">$</span><span class="va">plot</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
