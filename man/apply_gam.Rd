@@ -88,9 +88,9 @@ list. List with six objects: \itemize{\item{\code{em_summary}: df. A
 data.frame summarizing the emerging status outputs. \code{em_summary}
 contains as many rows as the length of input variable \code{eval_year}. So,
 if you evaluate GAM on three years, \code{em_summary} will contain three
-rows. Columns: \itemize{\item{\code{"taxonKey"}: column containing taxon
+rows. Columns: \itemize{\item{\code{taxonKey}: column containing taxon
 ID. Column name equal to value of argument \code{taxonKey}.}
-\item{\code{"year"}: column containing temporal values. Column name equal
+\item{\code{year}: column containing temporal values. Column name equal
 to value of argument \code{year}. Column itself is equal to value of
 argument \code{eval_years}. So, if you evaluate GAM on years 2017, 2018
 (\code{eval_years = c(2017, 2018)}), you will get these two values in this
@@ -177,6 +177,22 @@ The first and second derivatives of the smoother is calculated using function
 }
 
 For more details, please check \link[gratia]{derivatives}.
+
+The sign of the lower and upper confidence levels of the first and second
+derivatives are used to define a detailed emergency status (\code{em}) which is
+internally used to return the emergency status, \code{em_status}, which is a
+column of the returned data.frame \code{em_summary}.\tabular{llllll}{
+   ucl-1 \tab lcl-1 \tab ucl-2 \tab lcl-2 \tab em \tab em_status \cr
+   + \tab + \tab + \tab + \tab 4 \tab 3 (emerging) \cr
+   + \tab + \tab + \tab - \tab 3 \tab 3 (emerging) \cr
+   + \tab + \tab - \tab - \tab 2 \tab 2 (potentially emerging) \cr
+   - \tab + \tab + \tab + \tab 1 \tab 2 (potentially emerging) \cr
+   + \tab - \tab + \tab - \tab 0 \tab 1 (unclear) \cr
+   + \tab - \tab - \tab - \tab -1 \tab 0 (not emerging) \cr
+   - \tab - \tab + \tab + \tab -2 \tab 0 (not emerging) \cr
+   - \tab - \tab + \tab - \tab -3 \tab 0 (not emerging) \cr
+   - \tab - \tab - \tab - \tab -4 \tab 0 (not emerging) \cr
+}
 }
 \examples{
 \dontrun{

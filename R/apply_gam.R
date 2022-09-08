@@ -49,9 +49,9 @@
 #'   data.frame summarizing the emerging status outputs. \code{em_summary}
 #'   contains as many rows as the length of input variable \code{eval_year}. So,
 #'   if you evaluate GAM on three years, \code{em_summary} will contain three
-#'   rows. Columns: \itemize{\item{\code{"taxonKey"}: column containing taxon
+#'   rows. Columns: \itemize{\item{\code{taxonKey}: column containing taxon
 #'   ID. Column name equal to value of argument \code{taxonKey}.}
-#'   \item{\code{"year"}: column containing temporal values. Column name equal
+#'   \item{\code{year}: column containing temporal values. Column name equal
 #'   to value of argument \code{year}. Column itself is equal to value of
 #'   argument \code{eval_years}. So, if you evaluate GAM on years 2017, 2018
 #'   (\code{eval_years = c(2017, 2018)}), you will get these two values in this
@@ -132,6 +132,23 @@
 #' - `eps`: the finite difference. Set to 1e-4.
 #' 
 #' For more details, please check \link[gratia]{derivatives}.
+#' 
+#' The sign of the lower and upper confidence levels of the first and second
+#' derivatives are used to define a detailed emergency status (`em`) which is
+#' internally used to return the emergency status, `em_status`, which is a
+#' column of the returned data.frame `em_summary`.
+#' 
+#' | ucl-1 | lcl-1 | ucl-2 | lcl-2 | em | em_status |
+#' | --- | --- | --- | --- | --- | --- |
+#' | + | + | + | + | 4 | 3 (emerging) |
+#' | + | + | + | - | 3 | 3 (emerging) |
+#' | + | + | - | - | 2 | 2 (potentially emerging) |
+#' | - | + | + | + | 1 | 2 (potentially emerging) |
+#' | + | - | + | - | 0 | 1 (unclear) |
+#' | + | - | - | - | -1 | 0 (not emerging) |
+#' | - | - | + | + | -2 | 0 (not emerging) |
+#' | - | - | + | - | -3 | 0 (not emerging) |
+#' | - | - | - | - | -4 | 0 (not emerging) |
 #' 
 #' @examples
 #' \dontrun{
@@ -567,7 +584,7 @@ apply_gam <- function(df,
         # Add lower value of first derivative
         output_model <- dplyr::left_join(output_model, lower_deriv1, by = "year")
 
-        # Get emergin status summary for output
+        # Get emerging status summary for output
         emerging_status_output <-
           output_model %>%
           dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
