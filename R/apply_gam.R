@@ -83,17 +83,10 @@
 #'   a ggplot2 object. Plot of GAM output and emerging. \code{NULL} if GAM
 #'   cannot be applied.}}
 #' @export
-#' @importFrom assertthat assert_that
-#' @importFrom dplyr mutate filter select case_when rename left_join full_join
+#' @importFrom dplyr filter select case_when rename left_join full_join
 #'   %>% .data sym enquo
 #' @importFrom tidyselect vars_pull
-#' @importFrom tibble as_tibble
-#' @importFrom purrr map2
 #' @importFrom rlang !! :=
-#' @importFrom stringr str_ends str_sub
-#' @importFrom mgcv nb gam summary.gam
-#' @importFrom stats formula predict
-#' @importFrom gratia derivatives
 #' 
 #' @details
 #' The GAM modelling is performed using the `mgcvb::gam()`. To use this function, we pass:
