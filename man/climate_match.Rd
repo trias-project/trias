@@ -88,6 +88,7 @@ zip_file <- "./<path to zip_file>/0001221-210914110416597.zip"
 
 # calculate all climate match outputs
 # with GBIF download
+require('rgdal')
 climate_match(region,
               taxon_key, 
               n_limit = 90,

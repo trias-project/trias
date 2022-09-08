@@ -461,7 +461,7 @@ visualize_pathways_level2 <- function(df,
     top_graph <-
       ggplot2::ggplot(
         data_top_graph,
-        aes(x = forcats::fct_rev(.data$pathway_level2))
+        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2))
       ) +
       ggplot2::geom_bar() +
       ggplot2::xlab(y_lab) +
@@ -481,7 +481,7 @@ visualize_pathways_level2 <- function(df,
       facet_graph <-
         ggplot2::ggplot(
           df,
-          aes(x = forcats::fct_rev(.data$pathway_level2))
+          ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2))
         ) +
         ggplot2::geom_bar() +
         ggplot2::xlab(y_lab) + # invert labels to get them right after flipping

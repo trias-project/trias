@@ -120,7 +120,7 @@ testthat::test_that("Param: labels", {
 })
 
 testthat::test_that("Test warnings", {
-  expect_warning(indicator_introduction_year(input_test_df),
+  testthat::expect_warning(indicator_introduction_year(input_test_df),
     paste0(
       nrow_no_first_obs,
       " records have no information about year of introduction ",

@@ -12,7 +12,7 @@ input_test_df_with_nas <- read.delim(
 
 input_test_df <-
   input_test_df_with_nas %>%
-  filter(!is.na(first_observed))
+  dplyr::filter(!is.na(first_observed))
 
 n_first_observed_na <-
   nrow(input_test_df_with_nas) - nrow(input_test_df)
@@ -112,28 +112,28 @@ output_later_from <- visualize_pathways_year_level1(input_test_df,
 
 empty_output <- visualize_pathways_year_level1(
   input_test_df %>%
-    filter(kingdom != "Protozoa" | pathway_level1 != "unknown"),
+    dplyr::filter(kingdom != "Protozoa" | pathway_level1 != "unknown"),
   category = "Protozoa"
 )
 
 testthat::test_that("Argument: df", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(3),
     "`df` must be a data frame."
   )
 })
 
 testthat::test_that("Argument bin", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,bin = "20"),
     "`bin` must be a number."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, bin = c(20,30)),
     "length(bin) not equal to 1", 
     fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
       bin = 20.5
     ),
@@ -142,18 +142,18 @@ testthat::test_that("Argument bin", {
 })
 
 testthat::test_that("Argument: from", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
       from = "1950"
     ),
     "`from` must be a number."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, from = c(1920,1930)),
     "length(from) not equal to 1",
     fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
       from = 2900
     ),
@@ -166,7 +166,7 @@ testthat::test_that("Argument: from", {
 })
 
 testthat::test_that("Argument: category", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, category = 3),
     paste0(
       "`category` must be a character. One of: ",
@@ -174,14 +174,14 @@ testthat::test_that("Argument: category", {
       "."
     )
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, 
                                    category = c("Animalia", "Protozoa")
     ),
     "length(category) not equal to 1",
     fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
       category = "not nice"
     ),
@@ -194,37 +194,37 @@ testthat::test_that("Argument: category", {
 })
 
 testthat::test_that("Argument: facet_column", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
       facet_column = 5
     ),
     "Argument facet_column has to be NULL or a character."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    facet_column = c("habitat", "phylum")
     ),
     "length(facet_column) not equal to 1",
     fixed = TRUE
   )
-  expect_error(visualize_pathways_year_level1(input_test_df,
+  testthat::expect_error(visualize_pathways_year_level1(input_test_df,
                                               facet_column = "strange_col"
   ))
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
       category = "Chordata",
       facet_column = "phylum"
     ),
     "You cannot use phylum as facet with category Chordata."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    category = "Not Chordata",
                                    facet_column = "phylum"
     ),
     "You cannot use phylum as facet with category Not Chordata."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    category = "Animalia",
                                    facet_column = "kingdom"
@@ -234,11 +234,11 @@ testthat::test_that("Argument: facet_column", {
 })
 
 testthat::test_that("Argument pathways", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, pathways = TRUE),
     "`pathways` must be a vector of characters."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, pathways = no_cbd_values),
     paste0(
       "Pathways in `pathways` not present in data.frame: ",
@@ -248,52 +248,52 @@ testthat::test_that("Argument pathways", {
   )
 })
 testthat::test_that("Argument: taxon_names", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, taxon_names = input_test_df),
     "`taxon_names` must be a character."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    taxon_names = c("taxon", "taxonKey")
     ),
     "length(taxon_names) not equal to 1",
     fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, taxon_names = "blablabla")
   )
 })
 
 testthat::test_that("Argument: kingdom_names", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, kingdom_names = input_test_df),
     "`kingdom_names` must be a character."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    kingdom_names = c("kingdom", "kingdom_col")
     ),
     "length(kingdom_names) not equal to 1",
     fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, kingdom_names = "blablabla")
   )
 })
 
 testthat::test_that("Argument: phylum_names", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, phylum_names = TRUE),
     "`phylum_names` must be a character."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    phylum_names = c("phylum", "phylum_col")
     ),
     "length(phylum_names) not equal to 1",
     fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
       category = "Chordata",
       phylum_names = "blablabla"
@@ -302,51 +302,51 @@ testthat::test_that("Argument: phylum_names", {
 })
 
 testthat::test_that("Argument: first_observed", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, first_observed = 4),
     "`first_observed` must be a character."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    first_observed = c("year", "year_intro")
     ),
     "length(first_observed) not equal to 1",
     fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
       first_observed = "strange_colname"
     )
   )
 })
 testthat::test_that("Argument: title labels", {
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, title = TRUE),
     "`title` must be a character or NULL."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    title = c("my title", "my 2nd title")
     ),
     "length(title) not equal to 1",
     fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, x_lab = input_test_df),
     "`x_lab` must be a character or NULL."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    x_lab = c("x_label", "my x_label")
     ),
     "length(x_lab) not equal to 1",
     fixed = TRUE
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df, y_lab = 4),
     "`y_lab` must be a character or NULL."
   )
-  expect_error(
+  testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,
                                    y_lab = c("y_label", "my y_label")
     ),
@@ -370,7 +370,7 @@ testthat::test_that("Test CBD standard compliance", {
   message_invalid_pathways,
   fixed = TRUE
   )
-  expect_error(visualize_pathways_year_level1(invalid_pathways_df,
+  testthat::expect_error(visualize_pathways_year_level1(invalid_pathways_df,
     cbd_standard = TRUE
   ),
   message_invalid_pathways,

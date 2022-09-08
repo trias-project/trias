@@ -180,7 +180,7 @@ indicator_introduction_year <- function(df,
 
   maxDate <- max(data_top_graph$first_observed)
   # top graph with all dplyr::counts
-  top_graph <- ggplot(
+  top_graph <- ggplot2::ggplot(
     data_top_graph,
     ggplot2::aes(x = .data$first_observed, y = .data$n)
   ) +
@@ -213,7 +213,7 @@ indicator_introduction_year <- function(df,
       dplyr::ungroup()
 
     maxDate <- max(data_facet_graph$first_observed)
-    facet_graph <- ggplot(
+    facet_graph <- ggplot2::ggplot(
       data_facet_graph,
       ggplot2::aes(x = .data$first_observed, y = .data$n)
     ) +
