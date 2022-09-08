@@ -68,7 +68,7 @@ Based on the decision rules output we define the emergency status value,
 }
 \examples{
 \dontrun{
-df <- tibble(
+df <- dplyr::tibble(
   taxonID = c(rep(1008955, 10), rep(2493598, 3)),
   y = c(seq(2009, 2018), seq(2016, 2018)),
   obs = c(1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 3, 0)
