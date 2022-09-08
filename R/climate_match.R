@@ -61,6 +61,7 @@
 #' 
 #' # calculate all climate match outputs
 #' # with GBIF download
+#' require('rgdal')
 #' climate_match(region,
 #'               taxon_key, 
 #'               n_limit = 90,
@@ -106,7 +107,7 @@ climate_match <- function(region,
   if (missing(region)) {
     # no region is provided => worldwide
     region_shape <- rworldmap::getMap(resolution = "low")
-  }else{
+  } else {
     if (is.character(region)) {
       # region is a character => select region from worldmap
       region <- tolower(region)
@@ -117,21 +118,21 @@ climate_match <- function(region,
       
       if(region %in% valid_countries){
         region_shape <- subset(worldmap, tolower(worldmap$NAME) == region) 
-      }else{
+      } else {
         valid_continents <- tolower(unique(worldmap$REGION))
         if(region %in% valid_continents){
           region_shape <- subset(worldmap, tolower(worldmap$REGION) == region) 
-        }else{
+        } else {
           stop("the provided region is not valid")
         }
       }
-    }else{
+    } else{
       # region is a environment object => get object into function 
       region_shape <- region
       
-      if (class(region_shape) == "sf") {
+      if (inherits(region_shape, "sf")) {
         # region_shape is sf
-        region_shape <- as(region_shape, "spatial")
+        region_shape <- methods::as(region_shape, "spatial")
       }
       
       assertthat::assert_that(
@@ -149,8 +150,8 @@ climate_match <- function(region,
   ## Species
   taxon_key <- as.numeric(unique(taxon_key))
   
-  if(length(taxon_key) == 1){
-    if(is.na(taxon_key)){
+  if (length(taxon_key) == 1) {
+    if (is.na(taxon_key)) {
       stop("taxon_key is missing or not valid")
     }
   }
@@ -163,14 +164,14 @@ climate_match <- function(region,
   
   if (base::missing(zip_file)) {
     rerun <- 2
-  }else{
+  } else {
     if (!file.exists(zip_file)) {
       warning(paste0(zip_file, " cannot be found. Rerunning GBIF download"))
       rerun <- 2
-    }else{
-      rerun <- menu(choices = c("no", "yes"), 
-                    title = "rerun GBIF download?",
-                    graphics = TRUE)
+    } else {
+      rerun <- utils::menu(choices = c("no", "yes"), 
+                               title = "rerun GBIF download?",
+                               graphics = TRUE)
     }
   }
   
@@ -196,7 +197,7 @@ climate_match <- function(region,
                                     "year",
                                     "countryCode"
                      )) %>% 
-      dplyr::filter(acceptedTaxonKey %in% taxon_key)
+      dplyr::filter(.data$acceptedTaxonKey %in% taxon_key)
   }else{
     gbif_user <- get_cred("gbif_user")
     gbif_pwd <- get_cred("gbif_pwd")
@@ -303,7 +304,7 @@ climate_match <- function(region,
     summarize(n_obs = n()) %>% 
     dplyr::ungroup() %>% 
     dplyr::left_join(SPECIES, by = c("acceptedTaxonKey" = "TK_2")) %>% 
-    dplyr::rename(acceptedScientificName = ASN_2)
+    dplyr::rename(acceptedScientificName = .data$ASN_2)
   
   if(nrow(data_redux) == 0){
     stop(
@@ -369,11 +370,11 @@ climate_match <- function(region,
                                                         sparse = FALSE), 2, 
                                       function(col) {obs_shape[which(col),
                                       ]$GRIDCODE})
-        pb <- txtProgressBar(min = 0, 
+        pb <- utils::txtProgressBar(min = 0, 
                              max = length(data_sf_sub$GRIDCODE), 
                              style = 3)
         for(i in 1:length(data_sf_sub$GRIDCODE)){
-          setTxtProgressBar(pb, i)
+          utils::setTxtProgressBar(pb, i)
           data_sf_sub$GRIDCODE2[i] <- as.double(data_sf_sub$GRIDCODE[[i]][1])
         }
         
@@ -383,7 +384,7 @@ climate_match <- function(region,
           dplyr::left_join(KG_Rubel_Kotteks_Legend, by = c("GRIDCODE")) 
       }else{
         cuts <- ceiling(nrow(data_sf_sub)/10000)
-        pb_2 <- txtProgressBar(min = 0, 
+        pb_2 <- utils::txtProgressBar(min = 0, 
                                max = cuts, 
                                style = 3)
         
@@ -391,7 +392,7 @@ climate_match <- function(region,
         
         for(x in 1:cuts){
           print(paste0(x, "/", cuts))
-          setTxtProgressBar(pb_2, x)
+          utils::setTxtProgressBar(pb_2, x)
           y <- ((x - 1)*10000) + 1 
           z <- x * 10000
           if(z < nrow(data_sf_sub)){
@@ -406,12 +407,12 @@ climate_match <- function(region,
                               function(col) {
                                 obs_shape[which(col), ]$GRIDCODE})
           
-          pb_3 <- txtProgressBar(min = 0, 
+          pb_3 <- utils::txtProgressBar(min = 0, 
                                  max = length(data_sf_sub_sub$GRIDCODE), 
                                  style = 3)
           
-          for(i in 1:length(data_sf_sub_sub$GRIDCODE)){
-            setTxtProgressBar(pb_3, i)
+          for (i in 1:length(data_sf_sub_sub$GRIDCODE)) {
+            utils::setTxtProgressBar(pb_3, i)
             data_sf_sub_sub$GRIDCODE2[i] <- as.double(
               data_sf_sub_sub$GRIDCODE[[i]][1]
             )
@@ -432,14 +433,14 @@ climate_match <- function(region,
         }
         data_sf_sub <- data_overlay_sub
       }
-    }else{
+    } else {
       warning(paste0("No data was present in the GBIF dataset for ", t))
       next
     }
     # Recombine timeperiodes
-    if(nrow(data_overlay) == 0){
+    if (nrow(data_overlay) == 0) {
       data_overlay <- data_sf_sub
-    }else{
+    } else {
       data_overlay <- rbind(data_overlay, data_sf_sub)
     }
     # Cleanup
@@ -458,8 +459,8 @@ climate_match <- function(region,
     dplyr::mutate(n_totaal = sum(n_obs, na.rm = TRUE)) %>% 
     dplyr::ungroup() %>% 
     dplyr::mutate(perc_climate = .data$n_climate/.data$n_totaal) %>% 
-    dplyr::distinct(.data$acceptedTaxonKey, .data$Classification, 
-             .keep_all = TRUE)  %>% 
+    dplyr::distinct(.data$acceptedTaxonKey, .data$Classification,
+                    .keep_all = TRUE)  %>% 
     dplyr::select(.data$acceptedTaxonKey, 
                   .data$acceptedScientificName, 
                   .data$Classification, 
@@ -482,10 +483,10 @@ climate_match <- function(region,
                   KG_GridCode = as.integer(""))
   
   # Calculate KG codes 
-  for(s in scenarios){
+  for (s in scenarios) {
     shape <- future[[s]]
     
-    if(c("gridcode") %in% colnames(shape@data)){
+    if (c("gridcode") %in% colnames(shape@data)) {
       shape@data <- shape@data %>% 
         dplyr::rename(GRIDCODE = .data$gridcode) 
     }
@@ -495,7 +496,7 @@ climate_match <- function(region,
     
     girdcode_intersect <- raster::intersect(shape, region_shape)
     
-    for(g in girdcode_intersect@data$GRIDCODE){
+    for (g in girdcode_intersect@data$GRIDCODE) {
       output <- output %>% 
         dplyr::add_row(scenario = s,
                        KG_GridCode = g)
@@ -521,7 +522,7 @@ climate_match <- function(region,
   
   cm <- data.frame()
   
-  for(b in unique(future_climate$scenario)){
+  for (b in unique(future_climate$scenario)) {
     future_scenario <- future_climate %>% 
       dplyr::filter(.data$scenario == b)
     
@@ -531,19 +532,19 @@ climate_match <- function(region,
       ) %>% 
       dplyr::mutate(scenario = b)
     
-    if(nrow(cm) == 0){
+    if (nrow(cm) == 0) {
       cm <- cm_int
-    }else{
+    } else {
       cm <- rbind(cm, cm_int)
     }
   }
   
   # Thresholds ####
-  if(missing(n_limit)){
+  if (missing(n_limit)) {
     warning("no n_totaal threshold was provided. defaults to 0!")
     n_limit <- 0
   }
-  if(missing(cm_limit)){
+  if (missing(cm_limit)) {
     warning("no perc_climate threshold was provided. defaults to 0%!")
     cm_limit <- 0
   }
@@ -553,7 +554,7 @@ climate_match <- function(region,
                   .data$perc_climate >= cm_limit)
   
   # MAPS ####
-  if(maps == TRUE){
+  if (maps == TRUE) {
     ## map current climate suitability ####
     
     # Get Current climate
@@ -807,7 +808,7 @@ climate_match <- function(region,
             scenario_shape@data <- scenario_shape@data %>% 
               dplyr::mutate(GRIDCODE = as.double(.data$gridcode),
                             ID = .data$Id) %>% 
-              dplyr::select(-gridcode, -Id) %>% 
+              dplyr::select(-c(.data$gridcode, .data$Id)) %>% 
               dplyr::left_join(legends$KG_Beck, by = "GRIDCODE")
           }else{
             scenario_shape@data <- scenario_shape@data %>% 
@@ -825,7 +826,7 @@ climate_match <- function(region,
                           acceptedScientificName = species,
                           scenario = s)
           
-          if(class(temp_shape) == "data.frame"){
+          if (inherits(temp_shape, "data.frame")){
             temp_shape <- temp_climate
           }else{
             temp_shape <- sp::rbind.SpatialPolygonsDataFrame(temp_shape, 

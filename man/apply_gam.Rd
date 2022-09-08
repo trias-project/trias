@@ -45,9 +45,8 @@ passed as string, e.g. \code{"taxon"}. Default: \code{"taxonKey"}.}
 \item{baseline_var}{character. Name of the column containing values to use
 as additional covariate. Such covariate is introduced in the model to
 correct research effort bias. Default: \code{NULL}. If \code{NULL} internal
-variable \code{method_em = "basic"}, otherwise \code{method_em =
-  "correct_baseline"}. Value of \code{method_em} will be part of title of
-output plot.}
+variable \code{method_em = "basic"}, otherwise \code{method_em = "correct_baseline"}.
+Value of \code{method_em} will be part of title of output plot.}
 
 \item{p_max}{numeric. A value between 0 and 1. Default: 0.1.}
 
@@ -84,43 +83,54 @@ doesn't exists, directory will be created. Example: "./output/graphs/". If
 issues are returned. Default: \code{FALSE}.}
 }
 \value{
-list. List with six objects: \itemize{\item{\code{em_summary}: df. A
-data.frame summarizing the emerging status outputs. \code{em_summary}
-contains as many rows as the length of input variable \code{eval_year}. So,
-if you evaluate GAM on three years, \code{em_summary} will contain three
-rows. Columns: \itemize{\item{\code{taxonKey}: column containing taxon
-ID. Column name equal to value of argument \code{taxonKey}.}
-\item{\code{year}: column containing temporal values. Column name equal
+list with six slots:
+\enumerate{
+\item \code{em_summary}: df. A data.frame summarizing the emerging status
+outputs. \code{em_summary} contains as many rows as the length of input variable
+\code{eval_year}. So, if you evaluate GAM on three years, \code{em_summary} will
+contain three rows. Columns:
+\itemize{
+\item \code{"taxonKey"}: column containing taxon ID. Column name equal to value of
+argument \code{taxonKey}.
+\item \code{"year"}: column containing temporal values. Column name equal
 to value of argument \code{year}. Column itself is equal to value of
 argument \code{eval_years}. So, if you evaluate GAM on years 2017, 2018
 (\code{eval_years = c(2017, 2018)}), you will get these two values in this
-column.} \item{\code{em_status}: numeric. Emerging statuses, an integer
-between 0 and 3.} \item{\code{growth}: numeric. Lower limit of GAM
-confidence interval for the first derivative. It represents the lower
-guaranteed growth.} \item{\code{method}: character. GAM method, as defined
-by internal variable \code{method_em}: character. One of:
-\code{"correct_baseline"} and \code{"basic"}. See details above in
-description of argument \code{use_baseline}.}}} \item{\code{model}: gam
-object. The model as returned by GAM.} \item{\code{first_derivative}: df.
-Data.frame with details of first derivatives. It contains following
-columns: \itemize{\item{\code{smooth}: smoooth identifier. Example:
-\code{s(year)}.} \item{\code{var}: character. Column name the smoother is
-applied to.} \item{\code{data}: numeric. Data in columns defined by
-\code{var}.} \item{\code{derivative}: numeric. Value of first derivative.}
-\item{\code{se}: numeric. Standard error of \code{derivative}.}
-\item{\code{crit}: numeric. Critical value required such that
+column.
+\item \code{em_status}: numeric. Emerging statuses, an integer
+between 0 and 3.
+\item \code{growth}: numeric. Lower limit of GAM confidence interval for the first
+derivative. It represents the lower guaranteed growth.
+\item \code{method}: character. GAM method, One of: \code{"correct_baseline"} and
+\code{"basic"}. See details above in description of argument \code{use_baseline}.
+\item \code{model}: gam object. The model as returned by \code{gam()} function.
+\code{NULL} if GAM cannot be applied.
+\item \code{output}: df. Complete data.frame containing more details than the
+summary \code{em_summary}.
+\item \code{first_derivative}: df. Data.frame with details of first derivatives.
+It contains following columns:
+\item \code{smooth}: smoooth identifier. Example: \code{s(year)}.
+\item \code{var}: character. Column name the smoother is applied to.
+\item \code{data}: numeric. Data in columns defined by \code{var}.
+\item \code{derivative}: numeric. Value of first derivative.
+\item \code{se}: numeric. Standard error of \code{derivative}.
+\item \code{crit}: numeric. Critical value required such that
 \code{derivative + (se * crit)} and \code{derivative - (se * crit)} form
 the upper and lower bounds of the confidence interval on the first
 derivative of the estimated smooth at the specific confidence level. In our
-case the confidence level is hard-coded: 0.8. Then \code{crit <- qnorm(p =
-  (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)}.}
-\item{\code{lower}: numeric. Lower bound of the confidence interval of the
-estimated smooth.} \item{\code{upper}: numeric. Upper bound of the
-confidence interval of the estimated smooth.}}}
-\item{\code{second_derivative}: df. Data.frame with details of second
-derivatives. Same columns as \code{first_derivatives}.} \item{\code{plot}:
-a ggplot2 object. Plot of GAM output and emerging. \code{NULL} if GAM
-cannot be applied.}}
+case the confidence level is hard-coded: 0.8.
+Then \code{crit <- qnorm(p = (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)}.
+\item \code{lower}: numeric. Lower bound of the confidence interval of the
+estimated smooth.
+\item \code{upper}: numeric. Upper bound of the
+confidence interval of the estimated smooth.
+\item \code{second_derivative}: df. Data.frame with details of second
+derivatives. Same columns as \code{first_derivatives}.
+\item \code{plot}: a ggplot2 object. Plot of observations with GAM output and
+emerging status. If emerging status cannot be assessed only observations are
+plotted.
+}
+}
 }
 \description{
 This function applies generalized additive models (GAM) to assess emerging
@@ -196,6 +206,7 @@ column of the returned data.frame \code{em_summary}.\tabular{llllll}{
 }
 \examples{
 \dontrun{
+library(dplyr)
 df_gam <- tibble(
   taxonKey = rep(3003709, 24),
   canonicalName = rep("Rosa glauca", 24),
@@ -264,6 +275,26 @@ apply_gam(df_gam,
   dir_name = "./data/",
   verbose = TRUE
 )
+# warning returned if GAM cannot be applied and plot with only observations
+df_gam <- tibble(
+taxonKey = rep(3003709, 24),
+canonicalName = rep("Rosa glauca", 24),
+year = seq(1995, 2018),
+obs = c(
+  1, 1, 0, 0, 0, 2, 0, 0, 1, 3, 1, 2, 0, 5, 0, 5, 4, 2, 1,
+  1, 3, 3, 8, 10
+),
+cobs = rep(0, 24)
+)
+no_gam_applied <- apply_gam(df_gam,
+                            y_var = "obs",
+                            eval_years = 2018,
+                            taxon_key = 3003709,
+                            name = "Rosa glauca",
+                            baseline_var = "cobs",
+                            verbose = TRUE
+)
+no_gam_applied$plot
 }
 
 }

@@ -5,83 +5,91 @@
 #'
 #' @param df df. A dataframe containing temporal data.
 #' @param y_var character. Name of column containing variable to model. It has
-#'   to be passed as string, e.g. \code{"occurrences"}.
+#'   to be passed as string, e.g. `"occurrences"`.
 #' @param eval_years numeric. Temporal value(s) when emerging status has to be
 #'   evaluated.
 #' @param year character. Name of column containing temporal values. It has to
-#'   be passed as string, e.g. \code{"time"}. Default: \code{"year"}.
+#'   be passed as string, e.g. `"time"`. Default: `"year"`.
 #' @param taxonKey character. Name of column containing taxon IDs. It has to be
-#'   passed as string, e.g. \code{"taxon"}. Default: \code{"taxonKey"}.
-#' @param type_indicator character. One of \code{"observations"},
-#'   \code{"occupancy"}. Used in title of the output plot. Default:
-#'   \code{"observations"}.
+#'   passed as string, e.g. `"taxon"`. Default: `"taxonKey"`.
+#' @param type_indicator character. One of `"observations"`,
+#'   `"occupancy"`. Used in title of the output plot. Default:
+#'   `"observations"`.
 #' @param baseline_var character. Name of the column containing values to use
 #'   as additional covariate. Such covariate is introduced in the model to
-#'   correct research effort bias. Default: \code{NULL}. If \code{NULL} internal
-#'   variable \code{method_em = "basic"}, otherwise \code{method_em =
-#'   "correct_baseline"}. Value of \code{method_em} will be part of title of
-#'   output plot.
+#'   correct research effort bias. Default: `NULL`. If `NULL` internal
+#'   variable `method_em = "basic"`, otherwise `method_em = "correct_baseline"`.
+#'   Value of `method_em` will be part of title of output plot.
 #' @param  p_max numeric. A value between 0 and 1. Default: 0.1.
 #' @param taxon_key numeric, character. Taxon key the timeseries belongs to.
-#'   Used exclusively in graph title and filename (if \code{saveplot = TRUE}).
-#'   Default: \code{NULL}.
+#'   Used exclusively in graph title and filename (if `saveplot = TRUE`).
+#'   Default: `NULL`.
 #' @param name character. Species name the timeseries belongs to. Used
-#'   exclusively in graph title and filename (if \code{saveplot = TRUE}).
-#'   Default: \code{NULL}.
+#'   exclusively in graph title and filename (if `saveplot = TRUE`).
+#'   Default: `NULL`.
 #' @param df_title character. Any string you would like to add to graph titles
-#'   and filenames (if \code{saveplot = TRUE}). The title is always composed of:
-#'   \code{"GAM"} + \code{type_indicator} + \code{method_em} + \code{taxon_key}
-#'   + \code{name} + \code{df_title} separated by underscore ("_"). Default:
-#'   \code{NULL}.
+#'   and filenames (if `saveplot = TRUE`). The title is always composed of:
+#'   `"GAM"` + `type_indicator` + `method_em` + `taxon_key`
+#'   + `name` + `df_title` separated by underscore ("_"). Default:
+#'   `NULL`.
 #' @param x_label character. x-axis label of output plot. Default:
-#'   \code{"year"}.
+#'   `"year"`.
 #' @param y_label character. y-axis label of output plot. Default:
-#'   \code{"number of observations"}.
-#' @param saveplot logical. If \code{TRUE} the plots are authomatically saved.
-#'   Default: \code{FALSE}.
+#'   `"number of observations"`.
+#' @param saveplot logical. If `TRUE` the plots are authomatically saved.
+#'   Default: `FALSE`.
 #' @param dir_name character. Path of directory where saving plots. If path
 #'   doesn't exists, directory will be created. Example: "./output/graphs/". If
-#'   \code{NULL}, plots are saved in current directory. Default: \code{NULL}.
-#' @param verbose logical. If \code{TRUE} status of processing and possible
-#'   issues are returned. Default: \code{FALSE}.
+#'   `NULL`, plots are saved in current directory. Default: `NULL`.
+#' @param verbose logical. If `TRUE` status of processing and possible
+#'   issues are returned. Default: `FALSE`.
 #'
-#' @return list. List with six objects: \itemize{\item{\code{em_summary}: df. A
-#'   data.frame summarizing the emerging status outputs. \code{em_summary}
-#'   contains as many rows as the length of input variable \code{eval_year}. So,
-#'   if you evaluate GAM on three years, \code{em_summary} will contain three
-#'   rows. Columns: \itemize{\item{\code{taxonKey}: column containing taxon
-#'   ID. Column name equal to value of argument \code{taxonKey}.}
-#'   \item{\code{year}: column containing temporal values. Column name equal
-#'   to value of argument \code{year}. Column itself is equal to value of
-#'   argument \code{eval_years}. So, if you evaluate GAM on years 2017, 2018
-#'   (\code{eval_years = c(2017, 2018)}), you will get these two values in this
-#'   column.} \item{\code{em_status}: numeric. Emerging statuses, an integer
-#'   between 0 and 3.} \item{\code{growth}: numeric. Lower limit of GAM
-#'   confidence interval for the first derivative. It represents the lower
-#'   guaranteed growth.} \item{\code{method}: character. GAM method, as defined
-#'   by internal variable \code{method_em}: character. One of:
-#'   \code{"correct_baseline"} and \code{"basic"}. See details above in
-#'   description of argument \code{use_baseline}.}}} \item{\code{model}: gam
-#'   object. The model as returned by GAM.} \item{\code{first_derivative}: df.
-#'   Data.frame with details of first derivatives. It contains following
-#'   columns: \itemize{\item{\code{smooth}: smoooth identifier. Example:
-#'   \code{s(year)}.} \item{\code{var}: character. Column name the smoother is
-#'   applied to.} \item{\code{data}: numeric. Data in columns defined by
-#'   \code{var}.} \item{\code{derivative}: numeric. Value of first derivative.}
-#'   \item{\code{se}: numeric. Standard error of \code{derivative}.}
-#'   \item{\code{crit}: numeric. Critical value required such that
-#'   \code{derivative + (se * crit)} and \code{derivative - (se * crit)} form
+#' @return list with six slots:
+#' \enumerate{
+#'   \item `em_summary`: df. A data.frame summarizing the emerging status
+#'   outputs. `em_summary` contains as many rows as the length of input variable
+#'   `eval_year`. So, if you evaluate GAM on three years, `em_summary` will
+#'   contain three rows. Columns:
+#'   - `"taxonKey"`: column containing taxon ID. Column name equal to value of
+#'   argument `taxonKey`.
+#'   - `"year"`: column containing temporal values. Column name equal
+#'   to value of argument `year`. Column itself is equal to value of
+#'   argument `eval_years`. So, if you evaluate GAM on years 2017, 2018
+#'   (`eval_years = c(2017, 2018)`), you will get these two values in this
+#'   column.
+#'   - `em_status`: numeric. Emerging statuses, an integer
+#'   between 0 and 3.
+#'   - `growth`: numeric. Lower limit of GAM confidence interval for the first
+#'   derivative. It represents the lower guaranteed growth.
+#'   - `method`: character. GAM method, One of: `"correct_baseline"` and
+#'   `"basic"`. See details above in description of argument `use_baseline`.
+#'   \item `model`: gam object. The model as returned by `gam()` function.
+#'   `NULL` if GAM cannot be applied.
+#'   \item `output`: df. Complete data.frame containing more details than the
+#'   summary `em_summary`.
+#'   \item `first_derivative`: df. Data.frame with details of first derivatives.
+#'   It contains following columns:
+#'   - `smooth`: smoooth identifier. Example: `s(year)`.
+#'   - `var`: character. Column name the smoother is applied to.
+#'   - `data`: numeric. Data in columns defined by `var`.
+#'   - `derivative`: numeric. Value of first derivative.
+#'   - `se`: numeric. Standard error of `derivative`.
+#'   - `crit`: numeric. Critical value required such that
+#'   `derivative + (se * crit)` and `derivative - (se * crit)` form
 #'   the upper and lower bounds of the confidence interval on the first
 #'   derivative of the estimated smooth at the specific confidence level. In our
-#'   case the confidence level is hard-coded: 0.8. Then \code{crit <- qnorm(p =
-#'   (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)}.}
-#'   \item{\code{lower}: numeric. Lower bound of the confidence interval of the
-#'   estimated smooth.} \item{\code{upper}: numeric. Upper bound of the
-#'   confidence interval of the estimated smooth.}}}
-#'   \item{\code{second_derivative}: df. Data.frame with details of second
-#'   derivatives. Same columns as \code{first_derivatives}.} \item{\code{plot}:
-#'   a ggplot2 object. Plot of GAM output and emerging. \code{NULL} if GAM
-#'   cannot be applied.}}
+#'   case the confidence level is hard-coded: 0.8.
+#'   Then `crit <- qnorm(p = (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)`.
+#'   - `lower`: numeric. Lower bound of the confidence interval of the
+#'   estimated smooth.
+#'   - `upper`: numeric. Upper bound of the
+#'   confidence interval of the estimated smooth.
+#'   \item `second_derivative`: df. Data.frame with details of second
+#'   derivatives. Same columns as `first_derivatives`.
+#'   \item `plot`: a ggplot2 object. Plot of observations with GAM output and
+#' emerging status. If emerging status cannot be assessed only observations are
+#' plotted.
+#' }
 #' @export
 #' @importFrom dplyr %>% .data
 #' @importFrom rlang !! :=
@@ -152,6 +160,7 @@
 #' 
 #' @examples
 #' \dontrun{
+#' library(dplyr)
 #' df_gam <- tibble(
 #'   taxonKey = rep(3003709, 24),
 #'   canonicalName = rep("Rosa glauca", 24),
@@ -220,6 +229,26 @@
 #'   dir_name = "./data/",
 #'   verbose = TRUE
 #' )
+#' # warning returned if GAM cannot be applied and plot with only observations
+#' df_gam <- tibble(
+#' taxonKey = rep(3003709, 24),
+#' canonicalName = rep("Rosa glauca", 24),
+#' year = seq(1995, 2018),
+#' obs = c(
+#'   1, 1, 0, 0, 0, 2, 0, 0, 1, 3, 1, 2, 0, 5, 0, 5, 4, 2, 1,
+#'   1, 3, 3, 8, 10
+#' ),
+#' cobs = rep(0, 24)
+#' )
+#' no_gam_applied <- apply_gam(df_gam,
+#'                             y_var = "obs",
+#'                             eval_years = 2018,
+#'                             taxon_key = 3003709,
+#'                             name = "Rosa glauca",
+#'                             baseline_var = "cobs",
+#'                             verbose = TRUE
+#' )
+#' no_gam_applied$plot
 #' }
 #'
 apply_gam <- function(df,
@@ -441,7 +470,25 @@ apply_gam <- function(df,
       growth = NA_real_,
       method = method_em
     )
-  model <- deriv1 <- deriv2 <- plot_gam <- summary_pv <- p_ok <- NULL
+  model <- deriv1 <- deriv2 <- summary_pv <- p_ok <- NULL
+  # Compose plot title
+  ptitle <- paste("GAM", type_indicator, method_em, sep = "_")
+  if (!is.null(taxon_key)) {
+    ptitle <- paste(ptitle, taxon_key, sep = "_")
+  }
+  if (!is.null(name)) {
+    ptitle <- paste(ptitle, name, sep = "_")
+  }
+  if (!is.null(df_title)) {
+    ptitle <- paste(ptitle, df_title, sep = "_")
+  }
+  # Initialize the plot with observations only
+  plot_gam <- df %>%
+    ggplot2::ggplot(ggplot2::aes(x = .data$year, y = get(y_var))) +
+    ggplot2::geom_point(color = "black") +
+    ggplot2::ylab(y_label) +
+    ggplot2::ggtitle(ptitle)
+  
   emerging_status_output <-
     output_model %>%
     dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
@@ -474,6 +521,10 @@ apply_gam <- function(df,
           ") cannot be performed or cannot converge.\n"
         ))
       }
+      # add annotation saying that emergence status cannot be assessed
+      plot_gam <- add_annotation(plot_obs = plot_gam,
+                                 df = df,
+                                 y_axis = y_var)
     } else {
       if (isFALSE(p_ok)) {
         if (verbose) {
@@ -483,6 +534,10 @@ apply_gam <- function(df,
             p_max, ".\n"
           ))
         }
+        # add annotation saying that emergence status cannot be assessed
+        plot_gam <- add_annotation(plot_obs = plot_gam,
+                                   df = df,
+                                   y_axis = y_var)
       } else {
         output_model <- df
         # Add method
@@ -572,7 +627,7 @@ apply_gam <- function(df,
 
         output_model <- dplyr::left_join(output_model, em_levels, by = year)
 
-        # Lower value of first dedrivative (minimal guaranted growth) if positive
+        # Lower value of first derivative (minimal guaranteed growth) if positive
         lower_deriv1 <-
           deriv1 %>%
           dplyr::filter(.data$var == year) %>%
@@ -595,22 +650,7 @@ apply_gam <- function(df,
             .data$growth,
             .data$method
           )
-
         # Create plot with conf. interval + colour for status
-        ptitle <- paste("GAM",
-          type_indicator,
-          method_em,
-          sep = "_"
-        )
-        if (!is.null(taxon_key)) {
-          ptitle <- paste(ptitle, taxon_key, sep = "_")
-        }
-        if (!is.null(name)) {
-          ptitle <- paste(ptitle, name, sep = "_")
-        }
-        if (!is.null(df_title)) {
-          ptitle <- paste(ptitle, df_title, sep = "_")
-        }
         plot_gam <- plot_ribbon_em(
           df_plot = output_model,
           x_axis = year,
@@ -619,17 +659,6 @@ apply_gam <- function(df,
           y_label = y_label,
           ptitle = ptitle
         )
-        if (saveplot == TRUE) {
-          if (stringr::str_ends(dir_name, pattern = "/")) {
-            # remove "/" at the end
-            dir_name <- stringr::str_sub(dir_name, end = -2)
-          }
-          file_name <- paste0(dir_name, "/", ptitle, ".png")
-          if (isTRUE(verbose)) {
-            print(paste("Output plot:", file_name))
-          }
-          ggplot2::ggsave(filename = file_name, plot_gam)
-        }
       }
     }
   } else {
@@ -662,6 +691,23 @@ apply_gam <- function(df,
         }
       }
     }
+    # add annotation saying that emergence status cannot be assessed
+    plot_gam <- add_annotation(plot_obs = plot_gam,
+                               df = df,
+                               y_axis = y_var)
+  }
+  
+  # save plot if asked
+  if (saveplot == TRUE) {
+    if (stringr::str_ends(dir_name, pattern = "/")) {
+      # remove "/" at the end
+      dir_name <- stringr::str_sub(dir_name, end = -2)
+    }
+    file_name <- paste0(dir_name, "/", ptitle, ".png")
+    if (isTRUE(verbose)) {
+      print(paste("Output plot:", file_name))
+    }
+    ggplot2::ggsave(filename = file_name, plot_gam)
   }
 
   return(list(
@@ -724,7 +770,8 @@ plot_ribbon_em <- function(df_plot,
         fill = grDevices::grey(0.5),
         alpha = 0.4
       ) +
-      ggplot2::geom_line(ggplot2::aes(x = .data$year, y = .data$fit), color = "grey50") +
+      ggplot2::geom_line(ggplot2::aes(x = .data$year, y = .data$fit),
+                         color = "grey50") +
       ggplot2::geom_point(ggplot2::aes(
         x = .data$year,
         y = .data$fit,
@@ -747,6 +794,36 @@ plot_ribbon_em <- function(df_plot,
       ))
     }
   }
-
   return(g)
+}
+
+#' Add annotation when emergence status cannot be assessed
+#' 
+#' Internal function to be used when GAM cannot be applied to it doesn't
+#' converge.
+#' 
+#' @param plot_obs ggplot2 plot object showing the observations.
+#' @param df tibble data.frame with observations.
+#' @param y_axis character. The name of the column containing the data to plot
+#' @param text character to show as annotation. Default: "The emergence status
+#'   cannot be assessed".
+#' @param colour colour of the annotation. Default: red.
+#' @noRd
+#' @return an annotated ggplot2 plot object
+add_annotation <- function(
+    plot_obs,
+    df,
+    y_axis,
+    text = "The emergence status \ncannot be assessed",
+    colour = "red") {
+  annotated_plot <- plot_obs +
+    ggplot2::annotate("text",
+                      y = max(df[[y_axis]]),
+                      x = max(df$year),
+                      hjust = 1,
+                      vjust = 1,
+                      label = text,
+                      colour = colour
+  )
+  return(annotated_plot)
 }

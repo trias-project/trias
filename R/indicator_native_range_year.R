@@ -27,11 +27,7 @@
 #'   introduced during a given year} \item{'perc': }{percentage of species
 #'   introduced from the native range for a given year. (n/total)*100} } } }
 #' @export
-#' @importFrom reshape2 melt
-#' @importFrom ggplot2 ggplot geom_bar scale_y_continuous xlab ylab theme element_text
-#' @importFrom plotly ggplotly layout
-#' @importFrom scales percent_format
-#' @importFrom dplyr %>% mutate group_by case_when rename_at
+#' @importFrom dplyr %>% .data
 
 indicator_native_range_year <- function(data, years = NULL,
                                         type = c("native_continent", "native_range"),
@@ -44,7 +40,7 @@ indicator_native_range_year <- function(data, years = NULL,
   # Rename to default column name
   data <-
     data %>%
-    rename_at(vars(first_observed), ~"first_observed")
+    dplyr::rename_at(dplyr::vars(first_observed), ~"first_observed")
 
   if (is.null(years)) {
     years <- sort(unique(data$first_observed))
@@ -71,10 +67,10 @@ indicator_native_range_year <- function(data, years = NULL,
       min(years):max(years)
   ))
 
-  summaryData <- melt(table(plotData), id.vars = "first_observed")
+  summaryData <- reshape2::melt(table(plotData), id.vars = "first_observed")
   summaryData <- summaryData %>%
-    group_by(.data$first_observed) %>%
-    mutate(
+    dplyr::group_by(.data$first_observed) %>%
+    dplyr::mutate(
       total = sum(.data$value),
       perc = round((.data$value / .data$total) * 100, 2)
     )
@@ -100,23 +96,23 @@ indicator_native_range_year <- function(data, years = NULL,
     text <- paste0(summaryData$location, "<br>", summaryData$value)
   }
 
-  pl <- ggplot(data = summaryData, aes(
+  pl <- ggplot2::ggplot(data = summaryData, ggplot2::aes(
     x = .data$first_observed,
     y = .data$value,
     fill = .data$location,
     text = text
   )) +
-    geom_bar(position = position, stat = "identity") +
-    xlab(x_lab) +
-    ylab(y_lab) +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+    ggplot2::geom_bar(position = position, stat = "identity") +
+    ggplot2::xlab(x_lab) +
+    ggplot2::ylab(y_lab) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5))
 
   if (relative == TRUE) {
-    pl <- pl + scale_y_continuous(labels = percent_format())
+    pl <- pl + ggplot2::scale_y_continuous(labels = scales::percent_format())
   }
 
-  pl_2 <- ggplotly(data = summaryData, pl, tooltip = "text") %>%
-    layout(
+  pl_2 <- plotly::ggplotly(data = summaryData, pl, tooltip = "text") %>%
+    plotly::layout(
       xaxis = list(title = x_lab, tickangle = "auto"),
       yaxis = list(title = y_lab, tickformat = ",d"),
       margin = list(b = 80, t = 100),
