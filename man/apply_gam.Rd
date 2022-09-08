@@ -156,12 +156,14 @@ penalty. We use \code{m = 3}, the default value.
 We use \verb{[mgcv::nb()]}, a negative binomial family to perform the GAM.
 
 The smoothing parameter estimation method is set to REML (Restricted maximum
-likelihood approach).#' If all smoothers "GAM output cannot be used: p-values of all GAM smoothers
-are above {p_max}" where p_max is the P-value used as threshold and
-defined by argument \code{p_max}.
+likelihood approach). If the P-value of the GAM smoother(s) is/are above
+threshold value \code{p_max}, GAM is not performed and the next warning is
+returned: "GAM output cannot be used: p-values of all GAM smoothers are above
+\{p_max\}" where \code{p_max} is the P-value used as threshold as defined by
+argument \code{p_max}.
 
 If the \code{mgcv::gam()} returns an error or a warning, the following message is
-returned to the user: "GAM ({method}) cannot be performed or cannot
+returned to the user: "GAM (\{method_em\}) cannot be performed or cannot
 converge.", where \code{method_em} is one of \code{"basic"} or \code{"correct_baseline"}.
 See argument \code{baseline_var}.
 

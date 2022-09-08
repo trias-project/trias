@@ -114,12 +114,14 @@
 #' We use `[mgcv::nb()]`, a negative binomial family to perform the GAM.
 #' 
 #' The smoothing parameter estimation method is set to REML (Restricted maximum
-#' likelihood approach).#' If all smoothers "GAM output cannot be used: p-values of all GAM smoothers
-#' are above {p_max}" where p_max is the P-value used as threshold and
-#' defined by argument `p_max`.
+#' likelihood approach). If the P-value of the GAM smoother(s) is/are above
+#' threshold value `p_max`, GAM is not performed and the next warning is
+#' returned: "GAM output cannot be used: p-values of all GAM smoothers are above
+#' \{p_max\}" where `p_max` is the P-value used as threshold as defined by
+#' argument `p_max`.
 #' 
 #' If the `mgcv::gam()` returns an error or a warning, the following message is
-#' returned to the user: "GAM ({method}) cannot be performed or cannot
+#' returned to the user: "GAM (\{method_em\}) cannot be performed or cannot
 #' converge.", where `method_em` is one of `"basic"` or `"correct_baseline"`.
 #' See argument `baseline_var`.
 #' 
