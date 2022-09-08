@@ -36,10 +36,7 @@
 #'   maximum ever observed up to \code{eval_year}?}}
 #' @export
 #' @importFrom dplyr .data %>%
-#' @importFrom tidyselect vars_pull
-#' @importFrom purrr map2 reduce
 #' @importFrom rlang sym !! :=
-#' @importFrom stats median
 #' @details
 #' Based on the decision rules output we define the emergency status value,
 #' `em`:
@@ -79,7 +76,7 @@ apply_decision_rules <- function(df,
     )
   )
 
-  map2(
+  purrr::map2(
     list(y_var, year, taxonKey),
     c("y_var", "year", "taxonKey"),
     function(x, y) {
@@ -114,7 +111,7 @@ apply_decision_rules <- function(df,
     msg = paste0("Multiple values for argument eval_year provided.")
   )
 
-  map2(
+  purrr::map2(
     list(y_var, year, taxonKey),
     c("y_var", "year", "taxonKey"),
     function(x, y) {
@@ -129,8 +126,8 @@ apply_decision_rules <- function(df,
     }
   )
 
-  year <- vars_pull(names(df), !!dplyr::enquo(year))
-  taxonKey <- vars_pull(names(df), !!dplyr::enquo(taxonKey))
+  year <- tidyselect::vars_pull(names(df), !!dplyr::enquo(year))
+  taxonKey <- tidyselect::vars_pull(names(df), !!dplyr::enquo(taxonKey))
 
   # Check eval_year is present in column year
   assertthat::assert_that(eval_year %in% df[[year]],
@@ -142,9 +139,9 @@ apply_decision_rules <- function(df,
 
   # Check timeseries has distinct time values per each taxon (no duplicates)
   assertthat::assert_that(all(df %>%
-    dplyr::group_by(!!sym(taxonKey)) %>%
+    dplyr::group_by(!!rlang::sym(taxonKey)) %>%
     dplyr::summarize(
-      has_distinct_years = dplyr::n_distinct(!!sym(year)) == dplyr::n()
+      has_distinct_years = dplyr::n_distinct(!!rlang::sym(year)) == dplyr::n()
     ) %>%
     distinct(.data$has_distinct_years) %>%
     dplyr::pull() == TRUE),
@@ -158,9 +155,9 @@ apply_decision_rules <- function(df,
   # Check timeseries has no holes (consecutive years)
   taxa_not_consecutive_ts <-
     df %>%
-    dplyr::group_by(!!sym(taxonKey)) %>%
+    dplyr::group_by(!!rlang::sym(taxonKey)) %>%
     dplyr::summarize(
-      has_all_years = dplyr::n() == (max(!!sym(year)) - min(!!sym(year)) + 1)
+      has_all_years = dplyr::n() == (max(!!rlang::sym(year)) - min(!!rlang::sym(year)) + 1)
     ) %>%
     dplyr::filter(.data$has_all_years == FALSE)
 
@@ -176,17 +173,17 @@ apply_decision_rules <- function(df,
   # Get all taxa in df
   taxon_keys <-
     df %>%
-    distinct(!!sym(taxonKey)) %>%
+    distinct(!!rlang::sym(taxonKey)) %>%
     dplyr::pull()
 
   # Find taxa whose timeseries don't contain eval_year, remove them and throw a
   # warning
   taxa_eval_out_of_min_max <-
     df %>%
-    dplyr::group_by(!!sym(taxonKey)) %>%
+    dplyr::group_by(!!rlang::sym(taxonKey)) %>%
     dplyr::summarize(
-      min_ts = min(!!sym(year)),
-      max_ts = max(!!sym(year))
+      min_ts = min(!!rlang::sym(year)),
+      max_ts = max(!!rlang::sym(year))
     ) %>%
     dplyr::filter(eval_year < .data$min_ts | eval_year > .data$max_ts)
 
@@ -199,67 +196,67 @@ apply_decision_rules <- function(df,
     ))
     df <-
       df %>%
-      dplyr::filter(!(!!sym(taxonKey)) %in% taxa_eval_out_of_min_max[[taxonKey]])
+      dplyr::filter(!(!!rlang::sym(taxonKey)) %in% taxa_eval_out_of_min_max[[taxonKey]])
   }
 
   # Cut time series up to eval_year
   df <-
     df %>%
-    dplyr::group_by(!!sym(taxonKey)) %>%
-    dplyr::filter(!!sym(year) <= eval_year) %>%
+    dplyr::group_by(!!rlang::sym(taxonKey)) %>%
+    dplyr::filter(!!rlang::sym(year) <= eval_year) %>%
     dplyr::ungroup()
 
   # Rule 1: Time series with only one positive value at evaluation year
   # appearing at eval_year
   dr_1 <-
     df %>%
-    dplyr::group_by(!!sym(taxonKey)) %>%
-    dplyr::filter(!!sym(y_var) > 0) %>%
+    dplyr::group_by(!!rlang::sym(taxonKey)) %>%
+    dplyr::filter(!!rlang::sym(y_var) > 0) %>%
     dplyr::add_tally(wt = NULL) %>%
     dplyr::mutate(dr_1 = n == 1) %>%
-    distinct(!!sym(taxonKey), dr_1)
+    distinct(!!rlang::sym(taxonKey), dr_1)
 
   # Rule 2: last value (at eval_year) above median value?
   dr_2 <-
     df %>%
-    dplyr::group_by(!!sym(taxonKey)) %>%
-    dplyr::mutate(last_occ = ifelse(!!sym(year) == max(!!sym(year)),
-      !!sym(y_var), -1
+    dplyr::group_by(!!rlang::sym(taxonKey)) %>%
+    dplyr::mutate(last_occ = ifelse(!!rlang::sym(year) == max(!!rlang::sym(year)),
+      !!rlang::sym(y_var), -1
     )) %>%
     dplyr::summarize(
-      median_occ = median(!!sym(y_var)),
+      median_occ = stats::median(!!rlang::sym(y_var)),
       last_occ = max(.data$last_occ)
     ) %>%
     dplyr::mutate(dr_2 = .data$last_occ > .data$median_occ) %>%
-    dplyr::select(!!sym(taxonKey), .data$dr_2)
+    dplyr::select(!!rlang::sym(taxonKey), .data$dr_2)
 
   # Rule 3: 0 in the last 5 years?
   dr_3 <-
     df %>%
-    dplyr::group_by(!!sym(taxonKey)) %>%
-    dplyr::filter(!!sym(year) > (max(!!sym(year)) - 5)) %>%
-    dplyr::tally(!!sym(y_var)) %>%
+    dplyr::group_by(!!rlang::sym(taxonKey)) %>%
+    dplyr::filter(!!rlang::sym(year) > (max(!!rlang::sym(year)) - 5)) %>%
+    dplyr::tally(!!rlang::sym(y_var)) %>%
     dplyr::mutate(dr_3 = n == 0) %>%
-    dplyr::select(!!sym(taxonKey), .data$dr_3)
+    dplyr::select(!!rlang::sym(taxonKey), .data$dr_3)
 
   # Rule 4: last value (at eval_year) is the maximum ever observed?
   dr_4 <-
     df %>%
-    dplyr::group_by(!!sym(taxonKey)) %>%
-    dplyr::summarize(max_occ = max(!!sym(y_var))) %>%
+    dplyr::group_by(!!rlang::sym(taxonKey)) %>%
+    dplyr::summarize(max_occ = max(!!rlang::sym(y_var))) %>%
     dplyr::inner_join(df %>%
-      dplyr::filter(!!sym(year) == max(!!sym(year))) %>%
+      dplyr::filter(!!rlang::sym(year) == max(!!rlang::sym(year))) %>%
       dplyr::ungroup() %>%
-      dplyr::rename(last_value = !!sym(y_var)),
+      dplyr::rename(last_value = !!rlang::sym(y_var)),
     by = taxonKey
     ) %>%
     dplyr::mutate(dr_4 = .data$last_value == .data$max_occ) %>%
-    dplyr::select(!!sym(taxonKey), .data$dr_4)
+    dplyr::select(!!rlang::sym(taxonKey), .data$dr_4)
 
   # Join all decision rules together
   dr_all <-
     list(dr_1, dr_2, dr_3, dr_4) %>%
-    reduce(dplyr::inner_join, by = taxonKey)
+    purrr::reduce(dplyr::inner_join, by = taxonKey)
 
   # convert to em status codes:
   # 0 = not emerging
@@ -281,10 +278,10 @@ apply_decision_rules <- function(df,
       (.data$dr_1 == TRUE & .data$dr_3 == FALSE) |
         (.data$dr_1 == FALSE & .data$dr_2 == FALSE & .data$dr_3 == FALSE) ~ 1 # unclear
     )) %>%
-    dplyr::mutate(!!sym(year) := eval_year) %>%
+    dplyr::mutate(!!rlang::sym(year) := eval_year) %>%
     dplyr::select(
-      !!sym(taxonKey),
-      !!sym(year),
+      !!rlang::sym(taxonKey),
+      !!rlang::sym(year),
       .data$em_status,
       .data$dr_1,
       .data$dr_2,
@@ -297,8 +294,8 @@ apply_decision_rules <- function(df,
   taxon_keys_to_add <- taxon_keys[!taxon_keys %in% em_dr[[taxonKey]]]
 
   taxa_without_em <- dplyr::tibble(
-    !!sym(taxonKey) := taxon_keys_to_add,
-    !!sym(year) := rep(eval_year, length(taxon_keys_to_add))
+    !!rlang::sym(taxonKey) := taxon_keys_to_add,
+    !!rlang::sym(year) := rep(eval_year, length(taxon_keys_to_add))
   )
 
   em_dr <-

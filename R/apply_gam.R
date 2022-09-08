@@ -83,9 +83,7 @@
 #'   a ggplot2 object. Plot of GAM output and emerging. \code{NULL} if GAM
 #'   cannot be applied.}}
 #' @export
-#' @importFrom dplyr filter select case_when rename left_join full_join
-#'   %>% .data sym enquo
-#' @importFrom tidyselect vars_pull
+#' @importFrom dplyr %>% .data
 #' @importFrom rlang !! :=
 #' 
 #' @details
@@ -350,8 +348,8 @@ apply_gam <- function(df,
     }
   }
 
-  year <- vars_pull(names(df), !!enquo(year))
-  taxonKey <- vars_pull(names(df), !!enquo(taxonKey))
+  year <- tidyselect::vars_pull(names(df), !!dplyr::enquo(year))
+  taxonKey <- tidyselect::vars_pull(names(df), !!dplyr::enquo(taxonKey))
 
   # Check eval_year is present in column year
   assertthat::assert_that(all(eval_years %in% df[[year]]),
@@ -429,9 +427,9 @@ apply_gam <- function(df,
   model <- deriv1 <- deriv2 <- plot_gam <- summary_pv <- p_ok <- NULL
   emerging_status_output <-
     output_model %>%
-    dplyr::filter(!!sym(year) %in% eval_years) %>%
+    dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
     dplyr::select(
-      !!sym(taxonKey),
+      !!dplyr::sym(taxonKey),
       .data$year,
       .data$em_status,
       .data$growth,
@@ -518,8 +516,8 @@ apply_gam <- function(df,
             .data$lower < 0 & .data$upper > 0 ~ 0,
             .data$lower >= 0 & .data$upper > 0 ~ 1
           )) %>%
-          dplyr::select(!!sym(year) := .data$data, .data$em1) %>%
-          dplyr::mutate(!!sym(year) := round(!!sym(year)))
+          dplyr::select(!!dplyr::sym(year) := .data$data, .data$em1) %>%
+          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
 
         em2 <- deriv2 %>%
           dplyr::as_tibble() %>%
@@ -529,10 +527,10 @@ apply_gam <- function(df,
             .data$lower < 0 & .data$upper > 0 ~ 0,
             .data$lower >= 0 & .data$upper > 0 ~ 1
           )) %>%
-          dplyr::select(!!sym(year) := .data$data, .data$em2) %>%
-          dplyr::mutate(!!sym(year) := round(!!sym(year)))
+          dplyr::select(!!dplyr::sym(year) := .data$data, .data$em2) %>%
+          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
 
-        em_level_gam <- full_join(em1, em2, by = year) %>%
+        em_level_gam <- dplyr::full_join(em1, em2, by = year) %>%
           dplyr::mutate(em = dplyr::case_when(
             .data$em1 == 1 & .data$em2 == 1 ~ 4,
             .data$em1 == 1 & .data$em2 == 0 ~ 3,
@@ -555,26 +553,26 @@ apply_gam <- function(df,
             .data$em >= 3 ~ 3 # emerging
           ))
 
-        output_model <- left_join(output_model, em_levels, by = year)
+        output_model <- dplyr::left_join(output_model, em_levels, by = year)
 
         # Lower value of first dedrivative (minimal guaranted growth) if positive
         lower_deriv1 <-
           deriv1 %>%
           dplyr::filter(.data$var == year) %>%
-          rename(!!sym(year) := .data$data) %>%
-          dplyr::mutate(!!sym(year) := round(!!sym(year), digits = 0)) %>%
+          dplyr::rename(!!dplyr::sym(year) := .data$data) %>%
+          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), digits = 0)) %>%
           dplyr::mutate(growth = model$family$linkinv(.data$lower)) %>%
-          dplyr::select(!!sym(year), .data$growth)
+          dplyr::select(!!dplyr::sym(year), .data$growth)
 
         # Add lower value of first derivative
-        output_model <- left_join(output_model, lower_deriv1, by = "year")
+        output_model <- dplyr::left_join(output_model, lower_deriv1, by = "year")
 
         # Get emergin status summary for output
         emerging_status_output <-
           output_model %>%
-          dplyr::filter(!!sym(year) %in% eval_years) %>%
+          dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
           dplyr::select(
-            !!sym(taxonKey),
+            !!dplyr::sym(taxonKey),
             .data$year,
             .data$em_status,
             .data$growth,
