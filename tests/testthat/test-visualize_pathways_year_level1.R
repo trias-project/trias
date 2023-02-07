@@ -2,9 +2,11 @@ context("test_visualize_pathways_year_level1")
 
 # input df
 input_test_df_with_nas <- read.delim(
-  paste0(
-    "./data_test_pathways/",
-    "input_data_pathways.tsv"
+  system.file("tests", 
+              "testthat", 
+              "data_test_pathways", 
+              "input_data_pathways.tsv",
+              package = "trias"
   ),
   sep = "\t",
   stringsAsFactors = FALSE
@@ -90,6 +92,11 @@ large_bin_levels <- c(
 
 later_from_bin_levels <- c("before 1970", bin_levels[4:8])
 
+no_before_levels <- c("1990 - 1999", 
+                      "2000 - 2009",
+                      "2010 - 2019"
+)
+
 # Generate outputs
 output_general <- visualize_pathways_year_level1(input_test_df)
 output_with_facet <- visualize_pathways_year_level1(input_test_df,
@@ -108,6 +115,9 @@ output_large_bin <- visualize_pathways_year_level1(input_test_df,
 )
 output_later_from <- visualize_pathways_year_level1(input_test_df,
   from = later_from
+)
+output_no_before <- visualize_pathways_year_level1(
+  input_test_df[input_test_df$first_observed >= 1990, ]
 )
 
 empty_output <- visualize_pathways_year_level1(
@@ -485,9 +495,11 @@ testthat::test_that("test bin", {
   bins_output <- output_general$data_top_graph$bins_first_observed
   large_bin_output <-
     output_large_bin$plot$data_top_graph$bins_first_observed
+  no_before_bins <- output_no_before$data_top_graph$bins_first_observed
   expect_true(is.factor(bins_output))
   expect_true(all(levels(bins_output) == bin_levels))
   expect_true(all(levels(large_bin_output) == large_bin_levels))
+  expect_true(all(levels(no_before_bins) == no_before_levels))
 })
 
 testthat::test_that("test from", {
