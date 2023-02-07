@@ -165,11 +165,11 @@ indicator_introduction_year <- function(df,
   if (is.null(facet_column)) {
     data <-
       data %>%
-      dplyr::distinct(.data$key, .data$first_observed)
+      dplyr::distinct(key, first_observed)
   } else {
     data <-
       data %>%
-      dplyr::distinct(.data$key, .data$first_observed, .data[[facet_column]])
+      dplyr::distinct(key, first_observed, .data[[facet_column]])
   }
   
   data_top_graph <-

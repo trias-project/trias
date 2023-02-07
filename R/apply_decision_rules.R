@@ -228,7 +228,7 @@ apply_decision_rules <- function(df,
       last_occ = max(.data$last_occ)
     ) %>%
     dplyr::mutate(dr_2 = .data$last_occ > .data$median_occ) %>%
-    dplyr::select(!!rlang::sym(taxonKey), .data$dr_2)
+    dplyr::select(!!rlang::sym(taxonKey), dr_2)
 
   # Rule 3: 0 in the last 5 years?
   dr_3 <-
@@ -237,7 +237,7 @@ apply_decision_rules <- function(df,
     dplyr::filter(!!rlang::sym(year) > (max(!!rlang::sym(year)) - 5)) %>%
     dplyr::tally(!!rlang::sym(y_var)) %>%
     dplyr::mutate(dr_3 = n == 0) %>%
-    dplyr::select(!!rlang::sym(taxonKey), .data$dr_3)
+    dplyr::select(!!rlang::sym(taxonKey), dr_3)
 
   # Rule 4: last value (at eval_year) is the maximum ever observed?
   dr_4 <-
@@ -251,7 +251,7 @@ apply_decision_rules <- function(df,
     by = taxonKey
     ) %>%
     dplyr::mutate(dr_4 = .data$last_value == .data$max_occ) %>%
-    dplyr::select(!!rlang::sym(taxonKey), .data$dr_4)
+    dplyr::select(!!rlang::sym(taxonKey), dr_4)
 
   # Join all decision rules together
   dr_all <-
@@ -282,11 +282,11 @@ apply_decision_rules <- function(df,
     dplyr::select(
       !!rlang::sym(taxonKey),
       !!rlang::sym(year),
-      .data$em_status,
-      .data$dr_1,
-      .data$dr_2,
-      .data$dr_3,
-      .data$dr_4
+      em_status,
+      dr_1,
+      dr_2,
+      dr_3,
+      dr_4
     ) %>%
     dplyr::as_tibble()
 

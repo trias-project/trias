@@ -1,6 +1,6 @@
 # Define inputs
 
-my_taxa <- dplyr::tibble(
+my_taxa <- tibble::tibble(
   taxonKey = c(
     141117238,
     113794952,
@@ -160,7 +160,7 @@ my_taxa <- dplyr::tibble(
 # Add column verificationKey which will be overwritten by verify_taxa
 my_taxa_vk <- dplyr::mutate(my_taxa, verificationKey = 1)
 
-my_verification <- dplyr::tibble(
+my_verification <- tibble::tibble(
   taxonKey = c(
     113794952,
     141264857,
@@ -421,7 +421,7 @@ my_verification_nas$taxonKey[2] <- NA_real_
 
 context("input_verify_taxa")
 
-testthat::test_that("taxa is a data frame", {
+test_that("taxa is a data frame", {
   expect_error(
     verify_taxa(
       taxa = 3,
@@ -439,7 +439,7 @@ testthat::test_that("taxa is a data frame", {
 })
 
 
-testthat::test_that("verification is a data frame", {
+test_that("verification is a data frame", {
   expect_error(
     verify_taxa(
       taxa = my_taxa,
@@ -458,7 +458,7 @@ testthat::test_that("verification is a data frame", {
 
 
 # no missing taxon keys in both input taxa and verification df (if not NULL)
-testthat::test_that("No missing taxon keys in input taxa and verification dfs", {
+test_that("No missing taxon keys in input taxa and verification dfs", {
   expect_error(
     verify_taxa(taxa = my_taxa_nas, verification = my_verification),
     paste(
@@ -476,7 +476,7 @@ testthat::test_that("No missing taxon keys in input taxa and verification dfs", 
 })
 
 # taxon keys are unique
-testthat::test_that("Taxon keys are unique in input taxa and verification dfs", {
+test_that("Taxon keys are unique in input taxa and verification dfs", {
   expect_error(
     verify_taxa(taxa = my_taxa_duplicates, verification = my_verification),
     paste(
@@ -495,7 +495,7 @@ testthat::test_that("Taxon keys are unique in input taxa and verification dfs", 
 
 
 # different taxa column names
-taxa_test1 <- dplyr::tibble(
+taxa_test1 <- tibble::tibble(
   bad_checklist_taxonKey_colname = c(123452),
   bad_checklist_scientificName_colname = c("Aspius aspius"),
   bad_checklist_datasetKey_colname = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -509,7 +509,7 @@ taxa_test1 <- dplyr::tibble(
 )
 
 # missing column
-taxa_test2 <- dplyr::tibble(
+taxa_test2 <- tibble::tibble(
   taxonKey = c(123452),
   scientificName = c("Aspius aspius"),
   datasetKey = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -522,7 +522,7 @@ taxa_test2 <- dplyr::tibble(
   bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)")
 )
 
-testthat::test_that("taxa column names are correct", {
+test_that("taxa column names are correct", {
   expect_error(verify_taxa(
     taxa = taxa_test1,
     verification = my_verification
@@ -550,7 +550,7 @@ testthat::test_that("taxa column names are correct", {
 })
 
 # inconsistency about unmatched taxa
-taxa_test3 <- dplyr::tibble(
+taxa_test3 <- tibble::tibble(
   taxonKey = c(123452),
   scientificName = c("Aspius aspius"),
   datasetKey = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -563,7 +563,7 @@ taxa_test3 <- dplyr::tibble(
   bb_acceptedName = c("Leuciscus aspius (Linnaeus, 1758)")
 )
 
-testthat::test_that("consistency of 'taxa' about GBIF backbone info columns", {
+test_that("consistency of 'taxa' about GBIF backbone info columns", {
   expect_error(
     verify_taxa(
       taxa = taxa_test3,
@@ -575,7 +575,7 @@ testthat::test_that("consistency of 'taxa' about GBIF backbone info columns", {
 })
 
 # different verification column names
-verification_test1 <- dplyr::tibble(
+verification_test1 <- tibble::tibble(
   bad_checklist_taxonKey = c(12341),
   bad_checklist_scientificName_colname = c("Aspius aspius"),
   bad_datasetKey_colname = "e4746398-f7c4-47a1-a474-ae80a4f18e92",
@@ -597,7 +597,7 @@ verification_test1 <- dplyr::tibble(
 )
 
 # missing columns
-verification_test2 <- dplyr::tibble(
+verification_test2 <- tibble::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   # datasetKey column missing
@@ -619,7 +619,7 @@ verification_test2 <- dplyr::tibble(
 )
 
 # inconsistency bb_acceptedName - bb_acceptedKey
-verification_test3 <- dplyr::tibble(
+verification_test3 <- tibble::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
@@ -641,7 +641,7 @@ verification_test3 <- dplyr::tibble(
 )
 
 # accepted taxa present (only synonyms and unmatched taxa allowed)
-verification_test4 <- dplyr::tibble(
+verification_test4 <- tibble::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
@@ -663,7 +663,7 @@ verification_test4 <- dplyr::tibble(
 )
 
 # outdated must to be TRUE or FALSE.
-verification_test5 <- dplyr::tibble(
+verification_test5 <- tibble::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92"),
@@ -685,7 +685,7 @@ verification_test5 <- dplyr::tibble(
 )
 
 # datasetKey should be 36 characters long
-verification_test6 <- dplyr::tibble(
+verification_test6 <- tibble::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474-ae80a4f18e92,other stuff"),
@@ -707,7 +707,7 @@ verification_test6 <- dplyr::tibble(
 )
 
 # commas not allowed in datasetKey
-verification_test7 <- dplyr::tibble(
+verification_test7 <- tibble::tibble(
   taxonKey = c(141117238),
   scientificName = c("Aspius aspius"),
   datasetKey = c("e4746398-f7c4-47a1-a474,ae80a4f18e92"),
@@ -728,7 +728,7 @@ verification_test7 <- dplyr::tibble(
   outdated = c(FALSE)
 )
 
-testthat::test_that("verify_taxa column names are correct", {
+test_that("verify_taxa column names are correct", {
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test1
@@ -758,7 +758,7 @@ testthat::test_that("verify_taxa column names are correct", {
   )
 })
 
-testthat::test_that("synonym relations are inconsistent", {
+test_that("synonym relations are inconsistent", {
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test3
@@ -768,7 +768,7 @@ testthat::test_that("synonym relations are inconsistent", {
   )
 })
 
-testthat::test_that("accepted taxa in verification input", {
+test_that("accepted taxa in verification input", {
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test4
@@ -778,7 +778,7 @@ testthat::test_that("accepted taxa in verification input", {
   )
 })
 
-testthat::test_that("restrictions on input columns of verification", {
+test_that("restrictions on input columns of verification", {
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test5
@@ -788,7 +788,7 @@ testthat::test_that("restrictions on input columns of verification", {
   )
 })
 
-testthat::test_that("valid datsetKey values", {
+test_that("valid datsetKey values", {
   expect_error(
     verify_taxa(
       taxa = my_taxa,
@@ -828,7 +828,7 @@ output4 <- verify_taxa(
   verification_verifiedBy = "author_verification"
 )
 outputs <- list(output1, output2, output3, output4)
-testthat::test_that("output structure", {
+test_that("output structure", {
   expect_true(all(purrr::map_lgl(outputs, function(x) {
     class(x) == "list"
   })))
@@ -840,23 +840,23 @@ testthat::test_that("output structure", {
   })))
   expect_true(length(output1$info) == 8)
   expect_true(length(output2$info) == 8)
-  testthat::expect_equivalent(output1$info, output3$info)
+  expect_equivalent(output1$info, output3$info)
   expect_true(all())
   expect_true(all(purrr::map_lgl(outputs, function(x) {
     is.data.frame(x$taxa)
   })))
-  testthat::expect_equivalent(output1$taxa, output3$taxa)
+  expect_equivalent(output1$taxa, output3$taxa)
   expect_true(
     all(purrr::map_lgl(outputs, function(x) {
       is.data.frame(x$verification)
     }))
   )
-  testthat::expect_equivalent(output1$verification, output3$verification)
+  expect_equivalent(output1$verification, output3$verification)
   expect_true(all(purrr::map_lgl(output1$info, ~ is.data.frame(.))))
   expect_true(all(purrr::map_lgl(output2$info, ~ is.data.frame(.))))
   expect_true(all(purrr::map_lgl(output1$info, ~ (!"grouped_df" %in% class(.)))))
   expect_true(all(purrr::map_lgl(output2$info, ~ (!"grouped_df" %in% class(.)))))
-  testthat::expect_equivalent(output1$info, output3$info)
+  expect_equivalent(output1$info, output3$info)
   expect_true(
     all(names(output4$verification) == names(my_verification_other_colnames))
   )
@@ -890,7 +890,7 @@ testthat::test_that("output structure", {
   )
 })
 
-testthat::test_that("consitency input - output", {
+test_that("consitency input - output", {
   expect_true(nrow(output1$taxa) == nrow(my_taxa))
   expect_true(nrow(output2$taxa) == nrow(my_taxa))
   expect_true(ncol(output1$taxa) == ncol(my_taxa) + 1)
@@ -1137,9 +1137,9 @@ output2_duplicates <-
     col_types = readr::cols(n = readr::col_integer())
   )
 
-testthat::test_that("output data.frames are correct", {
-  testthat::expect_equivalent(output1$taxa, output1_taxa)
-  testthat::expect_equivalent(output2$taxa, output2_taxa)
+test_that("output data.frames are correct", {
+  expect_equivalent(output1$taxa, output1_taxa)
+  expect_equivalent(output2$taxa, output2_taxa)
   # output4 with default column names should be exactly equal to output1
   output4_default_names_verification <-
     output4$verification %>%
@@ -1149,8 +1149,8 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  testthat::expect_equivalent(output1$verification, output4_default_names_verification)
-  testthat::expect_equivalent(
+  expect_equivalent(output1$verification, output4_default_names_verification)
+  expect_equivalent(
     output1$verification %>%
       # new synonyms and unmatched get date of today
       dplyr::select(-c(dateAdded, remarks)),
@@ -1158,7 +1158,7 @@ testthat::test_that("output data.frames are correct", {
       # new synonyms and unmatched got paste date
       dplyr::select(-c(dateAdded, remarks))
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output2$verification %>%
       # new synonyms and unmatched get date of today
       dplyr::select(-dateAdded),
@@ -1175,11 +1175,11 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$new_synonyms,
     output4_default_names_new_synonyms
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$new_synonyms %>%
       # new synonyms get date of today
       dplyr::select(-dateAdded),
@@ -1187,7 +1187,7 @@ testthat::test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output2$info$new_synonyms %>%
       # new synonyms get date of today
       dplyr::select(-dateAdded),
@@ -1204,11 +1204,11 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$new_unmatched_taxa,
     output4_default_names_new_unmatched_taxa
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$new_unmatched_taxa %>%
       # unmatched get date of today
       dplyr::select(-dateAdded),
@@ -1216,7 +1216,7 @@ testthat::test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output2$info$new_unmatched_taxa %>%
       # unmatched get date of today
       dplyr::select(-dateAdded),
@@ -1233,15 +1233,15 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$outdated_unmatched_taxa,
     output4_default_names_outdated_unmatched_taxa
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$outdated_unmatched_taxa,
     output1_outdated_unmatched_taxa
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output2$info$outdated_unmatched_taxa,
     output2_outdated_unmatched_taxa
   )
@@ -1254,15 +1254,15 @@ testthat::test_that("output data.frames are correct", {
       outdated = is_outdated,
       verifiedBy = author_verification
     )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$outdated_synonyms,
     output4_default_names_outdated_synonyms
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$outdated_synonyms,
     output1_outdated_synonyms
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output2$info$outdated_synonyms,
     output2_outdated_synonyms
   )
@@ -1273,15 +1273,15 @@ testthat::test_that("output data.frames are correct", {
       bb_scientificName = backbone_scientific_names,
       updated_bb_scientificName = updated_backbone_scientific_names
     )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$updated_bb_scientificName,
     output4_default_names_updated_bb_scientificName
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$updated_bb_scientificName,
     output1_updated_bb_scientificName
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output2$info$updated_bb_scientificName,
     output2_updated_bb_scientificName
   )
@@ -1292,15 +1292,15 @@ testthat::test_that("output data.frames are correct", {
       bb_acceptedName = backbone_accepted_names,
       updated_bb_acceptedName = updated_backbone_accepted_names
     )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$updated_bb_acceptedName,
     output4_default_names_updated_bb_acceptedName
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$updated_bb_acceptedName,
     output1_updated_bb_acceptedName
   )
-  testthat::expect_equivalent(
+  expect_equivalent(
     output2$info$updated_bb_acceptedName,
     output2_updated_bb_acceptedName
   )
@@ -1308,12 +1308,12 @@ testthat::test_that("output data.frames are correct", {
   output4_default_names_duplicates <-
     output4$info$duplicates %>%
     dplyr::rename(bb_scientificName = backbone_scientific_names)
-  testthat::expect_equivalent(
+  expect_equivalent(
     output1$info$duplicates,
     output4_default_names_duplicates
   )
-  testthat::expect_equivalent(output1$info$duplicates, output1_duplicates)
-  testthat::expect_equivalent(output2$info$duplicates, output2_duplicates)
+  expect_equivalent(output1$info$duplicates, output1_duplicates)
+  expect_equivalent(output2$info$duplicates, output2_duplicates)
   # check_verification_key df no tested here: output of another TrIAS function
   # only check 0 rows with output2
   expect_true(nrow(output2$info$check_verificationKey) == 0)

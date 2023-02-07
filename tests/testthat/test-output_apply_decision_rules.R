@@ -128,7 +128,7 @@ df_outputs <- list(
 )
 cols_output <- c("taxonID", "y", "em_status", "dr_1", "dr_2", "dr_3", "dr_4")
 
-testthat::test_that("Test type of output", {
+test_that("Test type of output", {
   # output is a data.frame
   expect_true(all(map_lgl(
     df_outputs, ~ is.data.frame(.)
@@ -139,7 +139,7 @@ testthat::test_that("Test type of output", {
   )))
 })
 
-testthat::test_that("Test rows and columns", {
+test_that("Test rows and columns", {
   # output contain always all taxa
   expect_true(all(map2_lgl(df_outputs, df_inputs, function(x, y) {
     nrow(x) == n_distinct(y$taxonID)
@@ -148,7 +148,7 @@ testthat::test_that("Test rows and columns", {
   expect_true(all(map_lgl(df_outputs, ~ all(names(.) == cols_output))))
 })
 
-testthat::test_that("Test type of columns", {
+test_that("Test type of columns", {
   expect_true(all(map2_lgl(
     df_outputs, df_inputs,
     function(x, y) {
@@ -163,7 +163,7 @@ testthat::test_that("Test type of columns", {
   expect_true(all(map_lgl(df_outputs, ~ is.logical(.$dr_4))))
 })
 
-testthat::test_that("Test values of column with taxon keys", {
+test_that("Test values of column with taxon keys", {
   expect_true(all(map2_lgl(
     df_outputs,
     df_inputs,
@@ -173,7 +173,7 @@ testthat::test_that("Test values of column with taxon keys", {
   )))
 })
 
-testthat::test_that("Test values of column with year values", {
+test_that("Test values of column with year values", {
   expect_true(all(map_lgl(
     list(
       result_dr,
@@ -189,7 +189,7 @@ testthat::test_that("Test values of column with year values", {
   expect_true(all(result_dr_expanded_late$y == late_eyear))
 })
 
-testthat::test_that("Test values of emerging status", {
+test_that("Test values of emerging status", {
   expect_true(all(map_lgl(
     list(
       result_dr_one_val,

@@ -2,33 +2,33 @@
 #' 
 context("test_gbif_verify_keys")
 
-testthat::test_that("test several input types", {
+test_that("test several input types", {
   # input contains nothing
   keys_null1 <- list()
-  testthat::expect_null(gbif_verify_keys(keys_null1))
+  expect_null(gbif_verify_keys(keys_null1))
   
   # input contains invalid taxon keys (they contain letters)
   keys_err1 <- c("1", "128", "120391203", "AE", "12k")
-  testthat::expect_error(
+  expect_error(
     gbif_verify_keys(keys_err1),
     "Invalid keys: AE,12k ."
   )
   
   # input contains empty strings
   keys_err2 <- c("", "", "1")
-  testthat::expect_error(
+  expect_error(
     gbif_verify_keys(keys_err2),
     "Invalid keys: \"\"\"\",\"\"\"\" ."
   )
   
   # input contains dates
-  testthat::expect_error(
+  expect_error(
     gbif_verify_keys(as.Date("2018-01-01")),
     "keys should be a vector, a named list or a data.frame."
   )
   
   # input df doesn't contain column with name keys
-  testthat::expect_error(gbif_verify_keys(data.frame(bad_col_name = 12)),
+  expect_error(gbif_verify_keys(data.frame(bad_col_name = 12)),
     paste(
       "Column with keys not found.",
       "Did you forget maybe to pass",
@@ -38,7 +38,7 @@ testthat::test_that("test several input types", {
   )
 })
 
-testthat::test_that("output type and content", {
+test_that("output type and content", {
   
   # basic vector with input keys for tests
   keys1 <- c(
@@ -85,34 +85,34 @@ testthat::test_that("output type and content", {
   )  
   
   # output type is "list"
-  testthat::expect_type(output1, "list")
-  testthat::expect_type(output2, "list")
-  testthat::expect_type(output3, "list")
-  testthat::expect_type(output4, "list")
-  testthat::expect_null(gbif_verify_keys(keys = c(NA, NA)))
-  testthat::expect_null(gbif_verify_keys(keys = c(NA_character_, NA_character_)))
+  expect_type(output1, "list")
+  expect_type(output2, "list")
+  expect_type(output3, "list")
+  expect_type(output4, "list")
+  expect_null(gbif_verify_keys(keys = c(NA, NA)))
+  expect_null(gbif_verify_keys(keys = c(NA_character_, NA_character_)))
   
   # output class is tibble data.frame
-  testthat::expect_equal(class(output1), c("tbl_df", "tbl", "data.frame"))
-  testthat::expect_equal(class(output2), c("tbl_df", "tbl", "data.frame"))
-  testthat::expect_equal(class(output3), c("tbl_df", "tbl", "data.frame"))
-  testthat::expect_equal(class(output2), c("tbl_df", "tbl", "data.frame"))
+  expect_equal(class(output1), c("tbl_df", "tbl", "data.frame"))
+  expect_equal(class(output2), c("tbl_df", "tbl", "data.frame"))
+  expect_equal(class(output3), c("tbl_df", "tbl", "data.frame"))
+  expect_equal(class(output2), c("tbl_df", "tbl", "data.frame"))
 
 
   # output content is the same for all kinds of inputs
-  testthat::expect_true(nrow(output1) == nrow(output_keys))
-  testthat::expect_true(nrow(output2) == nrow(output_keys))
-  testthat::expect_true(nrow(output3) == nrow(output_keys))
-  testthat::expect_true(nrow(output4) == nrow(output_keys))
-  testthat::expect_true(nrow(gbif_verify_keys(keys = "1")) == 1)
-  testthat::expect_equal(output1, output_keys)
-  testthat::expect_equal(output2, output_keys)
-  testthat::expect_equal(output3, output_keys)
-  testthat::expect_equal(output3, output_keys)
-  testthat::expect_equal(output4, output_keys)
+  expect_true(nrow(output1) == nrow(output_keys))
+  expect_true(nrow(output2) == nrow(output_keys))
+  expect_true(nrow(output3) == nrow(output_keys))
+  expect_true(nrow(output4) == nrow(output_keys))
+  expect_true(nrow(gbif_verify_keys(keys = "1")) == 1)
+  expect_equal(output1, output_keys)
+  expect_equal(output2, output_keys)
+  expect_equal(output3, output_keys)
+  expect_equal(output3, output_keys)
+  expect_equal(output4, output_keys)
 })
 
-testthat::test_that("function works even with duplicated taxon keys", {
+test_that("function works even with duplicated taxon keys", {
   
   # basic vector with input keys for tests
   keys_with_duplicates <- c(
@@ -139,5 +139,5 @@ testthat::test_that("function works even with duplicated taxon keys", {
       is_synonym = rep(c(NA, NA, TRUE, FALSE), 2)
     )
   
-  testthat::expect_equal(output_with_duplicates, expected_output_with_duplicates)
+  expect_equal(output_with_duplicates, expected_output_with_duplicates)
 })
