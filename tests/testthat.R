@@ -1,3 +1,4 @@
+library(testthat)
 library(trias)
 
-testthat::test_check("trias")
+test_check("trias")
