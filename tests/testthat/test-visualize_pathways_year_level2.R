@@ -115,6 +115,10 @@ large_bin_levels <- c(
 
 later_from_bin_levels <- c("before 1970", bin_levels[4:8])
 
+no_before_levels <- c("1990 - 1999", 
+                      "2000 - 2009",
+                      "2010 - 2019"
+)
 # Generate outputs
 output_general <- visualize_pathways_year_level2(
   input_test_df,
@@ -155,6 +159,10 @@ output_later_from <- visualize_pathways_year_level2(
   input_test_df,
   chosen_pathway_level1 = "escape",
   from = later_from
+)
+output_no_before <- visualize_pathways_year_level2(
+  input_test_df[input_test_df$first_observed >= 1990, ],
+  chosen_pathway_level1 = "escape"
 )
 empty_output <- visualize_pathways_year_level2(
   input_test_df %>% # filter to be sure to produce empty bar plot
@@ -604,9 +612,11 @@ test_that("test bin", {
   bins_output <- output_general$data_top_graph$bins_first_observed
   large_bin_output <-
     output_large_bin$data_top_graph$bins_first_observed
+  no_before_bins <- output_no_before$data_top_graph$bins_first_observed
   expect_true(is.factor(bins_output))
   expect_true(all(levels(bins_output) == bin_levels))
   expect_true(all(levels(large_bin_output) == large_bin_levels))
+  expect_true(all(levels(no_before_bins) == no_before_levels))
 })
 
 test_that("test from", {
