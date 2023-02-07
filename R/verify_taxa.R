@@ -96,7 +96,15 @@
 #'   \code{verificationKey}s can be found in backbone.} }} }
 #'
 #' @export
-#' @importFrom dplyr %>% .data
+#' @importFrom assertthat assert_that is.date
+#' @importFrom dplyr desc filter filter_at select distinct mutate rename
+#'   rename_at arrange bind_rows inner_join anti_join left_join %>% pull vars
+#'   as_tibble group_by count starts_with all_vars any_vars .data
+#' @importFrom stringr str_remove str_split
+#' @importFrom tidyselect one_of ends_with
+#' @importFrom tibble tibble
+#' @importFrom purrr pmap_dfr map2_chr
+#' @importFrom rgbif name_usage
 #'
 #' @examples
 #' \dontrun{
@@ -550,13 +558,7 @@
 #' # output
 #' verify_taxa(
 #'   taxa = my_taxa_other_colnames,
-#'   verification = my_verification_other_colnames,
-#'   scientificName = "scientific_names",
-#'   datasetKey = "checklist",
-#'   verification_bb_scientificName = "backbone_scientific_names",
-#'   verification_bb_acceptedName = "backbone_accepted_names",
-#'   verification_verifiedBy = "author_verification",
-#'   verification_outdated = "is_outdated"
+#'   verification = my_verification_other_colnames
 #' )
 #' }
 verify_taxa <- function(taxa,
@@ -591,14 +593,14 @@ verify_taxa <- function(taxa,
                         verification_outdated = "outdated") {
   # Start tests input
   message("Check input dataframes...", appendLF = FALSE)
-
+  
   # Test taxa
   # Retrieve names of needed columns of taxa
   name_col_taxa_original <- c(
     taxonKey, scientificName, datasetKey, bb_key, bb_scientificName,
     bb_kingdom, bb_rank, bb_taxonomicStatus, bb_acceptedKey, bb_acceptedName
   )
-
+  
   # Define vector of column names of taxa we will use later
   name_col_taxa <- c(
     "taxonKey", "scientificName", "datasetKey", "bb_key",
@@ -606,12 +608,12 @@ verify_taxa <- function(taxa,
     "bb_acceptedKey", "bb_acceptedName"
   )
   # Check taxa is a dataframe
-  assert_that(is.data.frame(taxa))
-
+  assertthat::assert_that(is.data.frame(taxa))
+  
   # Check presence needed columns
   col_not_present <-
     name_col_taxa_original[which(!name_col_taxa_original %in% names(taxa))]
-  assert_that(
+  assertthat::assert_that(
     all(name_col_taxa_original %in% names(taxa)),
     msg = paste(
       "The following columns of taxa are not present:",
@@ -620,33 +622,33 @@ verify_taxa <- function(taxa,
       "columns named differently than the default names?"
     )
   )
-
+  
   # Check that taxon keys are all set up, no NAs present in input taxa
-  assert_that(all(!is.na(taxa[[taxonKey]])),
-    msg = sprintf(
-      paste0(
-        "Missing values found in taxon keys of input ",
-        "taxa. Check values in column %s."
-      ),
-      taxonKey
-    )
+  assertthat::assert_that(all(!is.na(taxa[[taxonKey]])),
+                          msg = sprintf(
+                            paste0(
+                              "Missing values found in taxon keys of input ",
+                              "taxa. Check values in column %s."
+                            ),
+                            taxonKey
+                          )
   )
-
+  
   # Check that taxon keys are unique in taxa
-  assert_that(nrow(taxa) == length(unique(taxa[[taxonKey]])),
-    msg = sprintf(
-      paste0(
-        "Taxon keys of input taxa must be unique. ",
-        "Check values in column %s."
-      ),
-      taxonKey
-    )
+  assertthat::assert_that(nrow(taxa) == length(unique(taxa[[taxonKey]])),
+                          msg = sprintf(
+                            paste0(
+                              "Taxon keys of input taxa must be unique. ",
+                              "Check values in column %s."
+                            ),
+                            taxonKey
+                          )
   )
-
+  
   # Convert to default column names
   taxa <-
     taxa %>%
-    dplyr::rename_with(~name_col_taxa, any_of(name_col_taxa_original))
+    rename_at(vars(name_col_taxa_original), ~name_col_taxa)
   # Check class columns
   taxa$scientificName <- as.character(taxa$scientificName)
   taxa$datasetKey <- as.character(taxa$datasetKey)
@@ -658,29 +660,29 @@ verify_taxa <- function(taxa,
   taxa$taxonKey <- as.numeric(taxa$taxonKey)
   taxa$bb_key <- as.numeric(taxa$bb_key)
   taxa$bb_acceptedKey <- as.numeric(taxa$bb_acceptedKey)
-
+  
   # Check that accepted or doubtful taxa have a backbone key
   assert_that(
     taxa %>%
-      dplyr::filter(.data$bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL") &
-        is.na(.data$bb_key)) %>%
+      filter(.data$bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL") &
+               is.na(.data$bb_key)) %>%
       nrow() == 0,
     msg = "Taxa which don't need verification must have a backbone key."
   )
-
+  
   # Unmatched taxa should have no GBIF Backbone information at all
   assert_that(
     taxa %>%
-      dplyr::filter(is.na(.data$bb_key)) %>%
-      dplyr::filter_at(vars(starts_with("bb_")), all_vars(is.na(.))) %>%
+      filter(is.na(.data$bb_key)) %>%
+      filter_at(vars(starts_with("bb_")), all_vars(is.na(.))) %>%
       nrow() ==
       taxa %>%
-        dplyr::filter(is.na(.data$bb_key)) %>%
-        dplyr::filter_at(vars(starts_with("bb_")), any_vars(is.na(.))) %>%
-        nrow(),
+      filter(is.na(.data$bb_key)) %>%
+      filter_at(vars(starts_with("bb_")), any_vars(is.na(.))) %>%
+      nrow(),
     msg = "Columns with GBIF Backbone info should be empty for unmatched taxa."
   )
-
+  
   # Throw a message if a column called verificationKey already exists
   message_existence_verificationKey <- NULL
   if ("verificationKey" %in% names(taxa)) {
@@ -688,9 +690,9 @@ verify_taxa <- function(taxa,
       "Column verificationKey already exists. It will be overwritten."
     taxa <-
       taxa %>%
-      dplyr::select(-verificationKey)
+      select(-.data$verificationKey)
   }
-
+  
   # Test verification
   # Retrieve names of needed columns of verification
   name_col_verification_original <- c(
@@ -704,7 +706,7 @@ verify_taxa <- function(taxa,
     verification_remarks, verification_verifiedBy,
     verification_dateAdded, verification_outdated
   )
-
+  
   # Define vector of names of required columns of verification we will use later
   name_col_verification <- c(
     "taxonKey", "scientificName", "datasetKey",
@@ -718,11 +720,11 @@ verify_taxa <- function(taxa,
   )
   name_col_verification_extra <-
     names(verification)[!names(verification) %in%
-      name_col_verification_original]
-
+                          name_col_verification_original]
+  
   # Make empty tibble df if not exists
   if (is.null(verification)) {
-    verification <- tibble::tibble(
+    verification <- tibble(
       taxonKey = double(),
       scientificName = character(),
       datasetKey = character(),
@@ -745,8 +747,8 @@ verify_taxa <- function(taxa,
     class(verification$dateAdded) <- "Date"
   } else {
     # Check verification is a dataframe
-    assertthat::assert_that(is.data.frame(verification))
-
+    assert_that(is.data.frame(verification))
+    
     # Check presence needed columns
     col_not_present <-
       name_col_verification_original[
@@ -761,18 +763,18 @@ verify_taxa <- function(taxa,
         "columns named differently than the default names?"
       )
     )
-
+    
     # Check that taxon keys are all set up, no NAs present in verification df
     assertthat::assert_that(all(!is.na(verification[[verification_taxonKey]])),
-      msg = sprintf(
-        paste0(
-          "Missing values found in taxon keys of input ",
-          "taxa. Check values in column %s."
-        ),
-        verification_taxonKey
-      )
+                            msg = sprintf(
+                              paste0(
+                                "Missing values found in taxon keys of input ",
+                                "taxa. Check values in column %s."
+                              ),
+                              verification_taxonKey
+                            )
     )
-
+    
     # Check that taxon keys are unique in verification df
     assertthat::assert_that(
       nrow(verification) == length(unique(verification[[verification_taxonKey]])),
@@ -784,14 +786,13 @@ verify_taxa <- function(taxa,
         taxonKey
       )
     )
-
+    
     # Convert to standard column names
     verification <-
       verification %>%
-      dplyr::rename_with(~name_col_verification,
-                  any_of(name_col_verification_original))
+      rename_at(vars(name_col_verification_original), ~name_col_verification)
   }
-
+  
   # Check class columns
   verification$scientificName <- as.character(verification$scientificName)
   verification$datasetKey <- as.character(verification$datasetKey)
@@ -814,7 +815,7 @@ verify_taxa <- function(taxa,
   verification$bb_acceptedKey <- as.numeric(verification$bb_acceptedKey)
   verification$dateAdded <- as.Date(verification$dateAdded)
   verification$outdated <- as.logical(verification$outdated)
-  assertthat::assert_that(
+  assert_that(
     all(nchar(verification$datasetKey) == 36) &
       isFALSE(any(grepl(pattern = ",", x = verification$datasetKey))),
     msg = paste(
@@ -823,25 +824,25 @@ verify_taxa <- function(taxa,
     )
   )
   assert_that(verification %>%
-    dplyr::filter(is.na(.data$outdated)) %>%
-    nrow() == 0,
-  msg = "Only logicals (TRUE/FALSE) allowed in 'outdated' of verification."
+                filter(is.na(.data$outdated)) %>%
+                nrow() == 0,
+              msg = "Only logicals (TRUE/FALSE) allowed in 'outdated' of verification."
   )
-
+  
   # Allow multiple comma separated verification keys (character)
   class(verification$verificationKey) <- "character"
-
+  
   # Allow remarks (remarks col empty means for R a column logicals)
   class(verification$remarks) <- "character"
-
+  
   # Check for integrity synonym relations
-  assertthat::assert_that(
+  assert_that(
     verification %>%
-      dplyr::filter((is.na(.data$bb_acceptedName) &
-        !is.na(.data$bb_acceptedKey)
+      filter((is.na(.data$bb_acceptedName) &
+                !is.na(.data$bb_acceptedKey)
       ) |
         (!is.na(.data$bb_acceptedName) &
-          is.na(.data$bb_acceptedKey)
+           is.na(.data$bb_acceptedKey)
         )) %>%
       nrow() == 0,
     msg = paste(
@@ -849,57 +850,59 @@ verify_taxa <- function(taxa,
       "should be both NA or both present."
     )
   )
-
+  
   # Check that only synonyms and unmatched taxa are present in verification
   taxonomic_status <-
     verification %>%
     distinct(.data$bb_taxonomicStatus) %>%
-    dplyr::filter(!is.na(.data$bb_taxonomicStatus)) %>%
-    dplyr::pull()
+    filter(!is.na(.data$bb_taxonomicStatus)) %>%
+    pull()
   not_allowed_taxonomicStatus <- c("ACCEPTED", "DOUBTFUL")
-  assertthat::assert_that(all(!taxonomic_status %in% not_allowed_taxonomicStatus),
-    msg = "Only synonyms and unmatched taxa allowed in verification."
+  assert_that(all(!taxonomic_status %in% not_allowed_taxonomicStatus),
+              msg = "Only synonyms and unmatched taxa allowed in verification."
   )
   message("DONE.", appendLF = TRUE)
   if (!is.null(message_existence_verificationKey)) {
     message(message_existence_verificationKey, appendLF = TRUE)
   }
-
+  
   # Get order taxon keys
   ordered_taxon_keys <-
     taxa %>%
-    dplyr::select(taxonKey)
-
+    select(taxonKey)
+  
   # Find taxa which don't need any verification and assign verificationKey
   message("Assign verificationKey to taxa which don't need verification...",
-    appendLF = FALSE
+          appendLF = FALSE
   )
   not_to_verify_taxa <-
     taxa %>%
-    dplyr::filter(!is.na(.data$bb_key) &
-      bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL")) %>%
-    dplyr::mutate(
+    filter(!is.na(.data$bb_key) &
+             bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL")) %>%
+    mutate(
       verificationKey = as.character(bb_key)
     )
   message("DONE.", appendLF = TRUE)
-
+  
   # Go further with taxa which need verification
   taxa_input <- taxa
   taxa <-
     taxa %>%
-    dplyr::anti_join(not_to_verify_taxa, by = colnames(taxa))
-
+    anti_join(not_to_verify_taxa,
+              by = colnames(taxa)
+    )
+  
   message("Find new synonyms...", appendLF = FALSE)
   # Find new synonyms (= new triplets (taxonKey, bb_key, bb_acceptedKey))
   new_synonyms <-
     taxa %>%
     # Remove not synonyms
-    dplyr::filter(!is.na(.data$bb_taxonomicStatus) &
-      !.data$bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL")) %>%
-    dplyr::anti_join(verification,
-      by = c("taxonKey", "bb_key", "bb_acceptedKey")
+    filter(!is.na(.data$bb_taxonomicStatus) &
+             !.data$bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL")) %>%
+    anti_join(verification,
+              by = c("taxonKey", "bb_key", "bb_acceptedKey")
     ) %>%
-    dplyr::mutate(
+    mutate(
       bb_acceptedKingdom = NA_character_,
       bb_acceptedRank = NA_character_,
       bb_acceptedTaxonomicStatus = NA_character_,
@@ -909,21 +912,21 @@ verify_taxa <- function(taxa,
       dateAdded = Sys.Date(),
       outdated = FALSE
     ) %>%
-    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
+    select(one_of(name_col_verification), name_col_verification_extra)
   message("DONE.", appendLF = TRUE)
-
+  
   # Find new taxa not matched to GBIF backbone
   message("Find new unmatched taxa...", appendLF = FALSE)
   unmatched_taxa <-
     verification %>%
-    dplyr::filter(is.na(.data$bb_key)) %>%
-    dplyr::distinct(.data$taxonKey) %>%
-    dplyr::pull()
+    filter(is.na(.data$bb_key)) %>%
+    distinct(.data$taxonKey) %>%
+    pull()
   new_unmatched_taxa <-
     taxa %>%
-    dplyr::filter(is.na(.data$bb_key)) %>%
-    dplyr::filter(!.data$taxonKey %in% unmatched_taxa) %>%
-    dplyr::mutate(
+    filter(is.na(.data$bb_key)) %>%
+    filter(!.data$taxonKey %in% unmatched_taxa) %>%
+    mutate(
       bb_acceptedKingdom = NA_character_,
       bb_acceptedRank = NA_character_,
       bb_acceptedTaxonomicStatus = NA_character_,
@@ -933,50 +936,49 @@ verify_taxa <- function(taxa,
       dateAdded = Sys.Date(),
       outdated = FALSE
     ) %>%
-    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
+    select(one_of(name_col_verification), name_col_verification_extra)
   message("DONE.", appendLF = TRUE)
-
+  
   # Create df of updated bb_scientificName
   message("Update backbone scientific names...", appendLF = FALSE)
   if (nrow(verification) > 0) {
     updated_bb_scientificName <-
       verification %>%
-      dplyr::filter(!is.na(.data$bb_scientificName)) %>%
-      dplyr::left_join(taxa,
-        by = c("taxonKey", "bb_key", "bb_acceptedKey")
+      filter(!is.na(.data$bb_scientificName)) %>%
+      left_join(taxa,
+                by = c("taxonKey", "bb_key", "bb_acceptedKey")
       ) %>%
-      dplyr::rename(
+      rename(
         "bb_scientificName" = "bb_scientificName.x",
         "updated_bb_scientificName" = "bb_scientificName.y"
       ) %>%
-      dplyr::filter(.data$bb_scientificName != .data$updated_bb_scientificName) %>%
-      dplyr::select(
+      filter(.data$bb_scientificName != .data$updated_bb_scientificName) %>%
+      select(
         which(colnames(verification) %in% colnames(.)),
         updated_bb_scientificName,
-        tidyselect::ends_with(".x")
+        ends_with(".x")
       ) %>%
       rename_at(vars(ends_with(".x")), list(~ str_remove(., "\\.x")))
     # Update bb_scientificName of verification
     verification <-
       verification %>%
-      dplyr::anti_join(updated_bb_scientificName,
-        by = colnames(verification)
+      anti_join(updated_bb_scientificName,
+                by = colnames(verification)
       ) %>%
-      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
-      dplyr::bind_rows(
-        updated_bb_scientificName %>%
-          dplyr::mutate(bb_scientificName = updated_bb_scientificName) %>%
-          dplyr::select(-updated_bb_scientificName)) %>%
+      bind_rows(updated_bb_scientificName %>%
+                  mutate(bb_scientificName = updated_bb_scientificName) %>%
+                  select(-updated_bb_scientificName)) %>%
+      select(one_of(name_col_verification), name_col_verification_extra)
     # Version for info
     updated_bb_scientificName_short <-
       updated_bb_scientificName %>%
-      dplyr::select(
+      select(
         taxonKey, bb_key, bb_acceptedKey,
         bb_scientificName, updated_bb_scientificName
       )
   }
   else {
-    updated_bb_scientificName_short <- tibble::tibble(
+    updated_bb_scientificName_short <- tibble(
       taxonKey = double(),
       bb_key = double(),
       bb_acceptedKey = double(),
@@ -996,47 +998,47 @@ verify_taxa <- function(taxa,
       paste0("updated_", verification_bb_scientificName)
     )
   message("DONE.", appendLF = TRUE)
-
+  
   # Create df of updated acceptedName
   message("Update backbone accepted names...", appendLF = FALSE)
   if (nrow(verification) > 0) {
     updated_bb_acceptedName <-
       verification %>%
-      dplyr::filter(!is.na(bb_acceptedName)) %>%
-      dplyr::left_join(taxa,
-        by = c("taxonKey", "bb_key", "bb_acceptedKey")
+      filter(!is.na(bb_acceptedName)) %>%
+      left_join(taxa,
+                by = c("taxonKey", "bb_key", "bb_acceptedKey")
       ) %>%
-      dplyr::rename(
+      rename(
         "bb_acceptedName" = "bb_acceptedName.x",
         "updated_bb_acceptedName" = "bb_acceptedName.y"
       ) %>%
-      dplyr::filter(bb_acceptedName != updated_bb_acceptedName) %>%
-      dplyr::select(
+      filter(bb_acceptedName != updated_bb_acceptedName) %>%
+      select(
         which(colnames(verification) %in% colnames(.)),
-        updated_bb_acceptedName,
-        tidyselect::ends_with(".x")
+        .data$updated_bb_acceptedName,
+        ends_with(".x")
       ) %>%
       rename_at(vars(ends_with(".x")), list(~ str_remove(., "\\.x")))
     # Update bb_acceptedName of verification
     verification <-
       verification %>%
-      dplyr::anti_join(updated_bb_acceptedName,
-        by = colnames(verification)
+      anti_join(updated_bb_acceptedName,
+                by = colnames(verification)
       ) %>%
-      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
-      dplyr::bind_rows(updated_bb_acceptedName %>%
-                  dplyr::mutate(bb_acceptedName = updated_bb_acceptedName) %>%
-                  dplyr::select(-updated_bb_acceptedName)) %>%
+      bind_rows(updated_bb_acceptedName %>%
+                  mutate(bb_acceptedName = updated_bb_acceptedName) %>%
+                  select(-updated_bb_acceptedName)) %>%
+      select(one_of(name_col_verification), name_col_verification_extra)
     # Version for info
     updated_bb_acceptedName_short <-
       updated_bb_acceptedName %>%
-      dplyr::select(
+      select(
         taxonKey, bb_key, bb_acceptedKey,
         bb_acceptedName, updated_bb_acceptedName
       )
   }
   else {
-    updated_bb_acceptedName_short <- tibble::tibble(
+    updated_bb_acceptedName_short <- tibble(
       taxonKey = double(),
       bb_key = double(),
       bb_acceptedKey = double(),
@@ -1055,84 +1057,85 @@ verify_taxa <- function(taxa,
       verification_bb_acceptedName,
       paste0("updated_", verification_bb_acceptedName)
     )
-
+  
   message("DONE.", appendLF = TRUE)
-
+  
   # Add new synonyms to verification
   verification <-
     verification %>%
-    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
-    dplyr::bind_rows(new_synonyms) %>%
-
+    bind_rows(new_synonyms) %>%
+    select(one_of(name_col_verification), name_col_verification_extra)
+  
   # Add new unmatches to verification
   verification <-
     verification %>%
-    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
-    dplyr::bind_rows(new_unmatched_taxa) %>%
-
+    bind_rows(new_unmatched_taxa) %>%
+    select(one_of(name_col_verification), name_col_verification_extra)
+  
   # Retrieve backbone information about taxa the synonyms point to
   message("Retrieve backbone info about accepted taxa for synonyms...",
-    appendLF = FALSE
+          appendLF = FALSE
   )
   if (nrow(verification) > 0) {
     accepted_keys <-
       verification %>%
-      dplyr::distinct(bb_acceptedKey) %>%
-      dplyr::filter(!is.na(.data$bb_acceptedKey))
-    accepted_info <- purrr::pmap_dfr(
+      distinct(bb_acceptedKey) %>%
+      filter(!is.na(.data$bb_acceptedKey))
+    accepted_info <- pmap_dfr(
       accepted_keys,
       function(bb_acceptedKey) {
-        rgbif::name_usage(
+        name_usage(
           key = bb_acceptedKey
         )$data
       }
     ) %>%
-      select(key, kingdom, rank, taxonomicStatus) %>%
-      dplyr::rename(
-        bb_acceptedKey = key,
-        bb_acceptedKingdom = kingdom,
-        bb_acceptedRank = rank,
-        bb_acceptedTaxonomicStatus = taxonomicStatus
+      select(.data$key, .data$kingdom, .data$rank, .data$taxonomicStatus) %>%
+      rename(
+        bb_acceptedKey = .data$key,
+        bb_acceptedKingdom = .data$kingdom,
+        bb_acceptedRank = .data$rank,
+        bb_acceptedTaxonomicStatus = .data$taxonomicStatus
       )
     # Update backbone info about accepted taxa in verification
     verification <-
       verification %>%
-      dplyr::select(-c(
-        bb_acceptedKingdom,
-        bb_acceptedRank,
-        bb_acceptedTaxonomicStatus
+      select(-c(
+        .data$bb_acceptedKingdom,
+        .data$bb_acceptedRank,
+        .data$bb_acceptedTaxonomicStatus
       )) %>%
-      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
-      dplyr::left_join(accepted_info, by = "bb_acceptedKey") %>%
+      left_join(accepted_info, by = "bb_acceptedKey") %>%
+      select(one_of(name_col_verification), name_col_verification_extra)
     # Add backbone info to new_synonys too
     new_synonyms <-
       new_synonyms %>%
-      dplyr::select(-c(
-        bb_acceptedKingdom,
-        bb_acceptedRank,
-        bb_acceptedTaxonomicStatus
+      select(-c(
+        .data$bb_acceptedKingdom,
+        .data$bb_acceptedRank,
+        .data$bb_acceptedTaxonomicStatus
       )) %>%
-      dplyr::left_join(verification %>%
-                         dplyr::select(
-                           taxonKey, bb_key, bb_acceptedKey,
-                           bb_acceptedKingdom, bb_acceptedRank,
-                           bb_acceptedTaxonomicStatus),
-      by = c("taxonKey", "bb_key", "bb_acceptedKey")
+      left_join(verification %>%
+                  select(
+                    .data$taxonKey, .data$bb_key, .data$bb_acceptedKey,
+                    .data$bb_acceptedKingdom, .data$bb_acceptedRank,
+                    .data$bb_acceptedTaxonomicStatus
+                  ),
+                by = c("taxonKey", "bb_key", "bb_acceptedKey")
       ) %>%
-      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
+      select(one_of(name_col_verification), name_col_verification_extra)
   } else {
     verification <-
       verification %>%
-      dplyr::mutate(
+      mutate(
         bb_acceptedKey = double(),
         bb_acceptedKingdom = character(),
         bb_acceptedRank = character(),
         bb_acceptedTaxonomicStatus = character()
       ) %>%
-      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
+      select(one_of(name_col_verification), name_col_verification_extra)
   }
   message("DONE.", appendLF = TRUE)
-
+  
   # Handle outdated taxa
   message("Detect outdated data...", appendLF = FALSE)
   # Set outdated = FALSE for taxa which are in use:
@@ -1140,42 +1143,41 @@ verify_taxa <- function(taxa,
   if (nrow(verification) > 0) {
     not_outdated_taxa <-
       verification %>%
-      dplyr::inner_join(taxa %>%
-                          dplyr::select(taxonKey, bb_key, bb_acceptedKey),
-      by = c("taxonKey", "bb_key", "bb_acceptedKey")
+      inner_join(taxa %>%
+                   select(.data$taxonKey, .data$bb_key, .data$bb_acceptedKey),
+                 by = c("taxonKey", "bb_key", "bb_acceptedKey")
       ) %>%
-      dplyr::mutate(outdated = FALSE) %>%
-      dplyr::mutate(remarks = stringr::str_remove(.data$remarks, "Outdated taxa."))
+      mutate(outdated = FALSE) %>%
+      mutate(remarks = str_remove(.data$remarks, "Outdated taxa."))
     # Define the outdated taxa subset
     outdated_taxa <-
       verification %>%
-      dplyr::anti_join(taxa, by = c("taxonKey", "bb_key", "bb_acceptedKey"))
-
+      anti_join(taxa, by = c("taxonKey", "bb_key", "bb_acceptedKey"))
+    
     # Set outdated = TRUE to all outdated taxa
     outdated_taxa <-
       outdated_taxa %>%
-      dplyr::mutate(outdated = TRUE)
+      mutate(outdated = TRUE)
     # Compose verification back together
     verification <-
       not_outdated_taxa %>%
-      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
-      dplyr::bind_rows(outdated_taxa) %>%
-      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
+      bind_rows(outdated_taxa) %>%
+      select(one_of(name_col_verification), name_col_verification_extra)
   }
   message("DONE.", appendLF = TRUE)
-
+  
   # Check verificationKey values against GBIF and GBIF Backbone
   message("Check verification keys...", appendLF = FALSE)
-
+  
   verification_keys <- verification %>%
-    dplyr::filter(!is.na(.data$verificationKey)) %>%
-    dplyr::filter(nchar(.data$verificationKey) > 0) %>%
-    dplyr::pull(.data$verificationKey)
+    filter(!is.na(.data$verificationKey)) %>%
+    filter(nchar(.data$verificationKey) > 0) %>%
+    pull(.data$verificationKey)
   verification_keys <- paste(verification_keys, collapse = ",")
-  verification_keys <- unlist(stringr::str_split(verification_keys, ","))
+  verification_keys <- unlist(str_split(verification_keys, ","))
   check_verificationKey <- gbif_verify_keys(verification_keys)
   if (is.null(check_verificationKey)) {
-    check_verificationKey <- tibble::tibble(
+    check_verificationKey <- tibble(
       key = double(),
       is_taxonKey = logical(),
       is_from_gbif_backbone = logical(),
@@ -1183,30 +1185,30 @@ verify_taxa <- function(taxa,
     )
   }
   message("DONE.", appendLF = TRUE)
-
+  
   # Find taxa duplicates
   message("Find scientific names used in multiple taxa...", appendLF = FALSE)
   if (nrow(verification > 0)) {
     duplicates <-
       verification %>%
-      dplyr::filter(!is.na(.data$bb_key) & !is.na(.data$bb_acceptedKey)) %>%
-      dplyr::group_by(bb_key, bb_acceptedKey) %>%
-      dplyr::count() %>%
-      dplyr::filter(.data$n > 1) %>%
-      dplyr::left_join((verification %>%
-        dplyr::select(bb_key, bb_acceptedKey, bb_scientificName)),
-      by = c("bb_key", "bb_acceptedKey")
+      filter(!is.na(.data$bb_key) & !is.na(.data$bb_acceptedKey)) %>%
+      group_by(bb_key, bb_acceptedKey) %>%
+      count() %>%
+      filter(.data$n > 1) %>%
+      left_join((verification %>%
+                   select(.data$bb_key, .data$bb_acceptedKey, .data$bb_scientificName)),
+                by = c("bb_key", "bb_acceptedKey")
       ) %>%
-      dplyr::select(
-        bb_key,
-        bb_acceptedKey,
-        bb_scientificName,
-        n
+      select(
+        .data$bb_key,
+        .data$bb_acceptedKey,
+        .data$bb_scientificName,
+        .data$n
       ) %>%
-      dplyr::arrange(desc(.data$n)) %>%
-      dplyr::ungroup()
+      arrange(desc(.data$n)) %>%
+      ungroup()
   } else {
-    duplicates <- tibble::tibble(
+    duplicates <- tibble(
       bb_key = double(),
       bb_acceptedKey = double(),
       bb_scientificName = character(),
@@ -1224,36 +1226,36 @@ verify_taxa <- function(taxa,
       "n"
     )
   message("DONE.", appendLF = TRUE)
-
+  
   # Order verification by outdated and dateAdded
   verification <-
     verification %>%
-    dplyr::arrange(.data$outdated, desc(.data$dateAdded))
-
+    arrange(.data$outdated, desc(.data$dateAdded))
+  
   # Add not outdated taxa from verification to not_to_verify_taxa
   taxa <-
     verification %>%
-    dplyr::filter(.data$outdated == FALSE) %>%
-    dplyr::select(name_col_taxa, verificationKey) %>%
-    dplyr::left_join(taxa_input,
-      by = name_col_taxa
+    filter(.data$outdated == FALSE) %>%
+    select(name_col_taxa, .data$verificationKey) %>%
+    left_join(taxa_input,
+              by = name_col_taxa
     ) %>%
-    dplyr::bind_rows(not_to_verify_taxa)
+    bind_rows(not_to_verify_taxa)
   # set same order as in input df taxa
   taxa <-
     ordered_taxon_keys %>%
-    dplyr::left_join(taxa, by = "taxonKey")
-
+    left_join(taxa, by = "taxonKey")
+  
   # Split outdated_taxa in outdated_unmatched_taxa and outdated_synonyms
   outdated_unmatched_taxa <-
     outdated_taxa %>%
-    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
-    dplyr::filter(is.na(.data$bb_key)) %>%
+    filter(is.na(.data$bb_key)) %>%
+    select(one_of(name_col_verification), name_col_verification_extra)
   outdated_synonyms <-
     outdated_taxa %>%
-    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
-    dplyr::filter(!is.na(.data$bb_acceptedKey)) %>%
-
+    filter(!is.na(.data$bb_acceptedKey)) %>%
+    select(one_of(name_col_verification), name_col_verification_extra)
+  
   # Convert to original column names
   taxa <-
     taxa %>%
@@ -1276,25 +1278,25 @@ verify_taxa <- function(taxa,
   updated_bb_scientificName_short <-
     updated_bb_scientificName_short %>%
     rename_at(vars(name_col_updated_bb_scientificName_short), ~
-    name_col_updated_bb_scientificName_short_original)
+                name_col_updated_bb_scientificName_short_original)
   updated_bb_acceptedName_short <-
     updated_bb_acceptedName_short %>%
     rename_at(vars(name_col_updated_bb_acceptedName_short), ~
-    name_col_updated_bb_acceptedName_short_original)
+                name_col_updated_bb_acceptedName_short_original)
   duplicates <-
     duplicates %>%
     rename_at(vars(name_col_duplicates), ~name_col_duplicates_original)
-
+  
   return(list(
     taxa = taxa,
     verification = verification,
     info = list(
-      new_synonyms = tibble::as_tibble(new_synonyms),
-      new_unmatched_taxa = tibble::as_tibble(new_unmatched_taxa),
-      outdated_unmatched_taxa = tibble::as_tibble(outdated_unmatched_taxa),
-      outdated_synonyms = tibble::as_tibble(outdated_synonyms),
-      updated_bb_scientificName = tibble::as_tibble(updated_bb_scientificName_short),
-      updated_bb_acceptedName = tibble::as_tibble(updated_bb_acceptedName_short),
+      new_synonyms = as_tibble(new_synonyms),
+      new_unmatched_taxa = as_tibble(new_unmatched_taxa),
+      outdated_unmatched_taxa = as_tibble(outdated_unmatched_taxa),
+      outdated_synonyms = as_tibble(outdated_synonyms),
+      updated_bb_scientificName = as_tibble(updated_bb_scientificName_short),
+      updated_bb_acceptedName = as_tibble(updated_bb_acceptedName_short),
       duplicates = duplicates,
       check_verificationKey = check_verificationKey
     )
