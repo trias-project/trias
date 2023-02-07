@@ -2,9 +2,12 @@ context("test_indicator_introduction_year")
 
 # test df
 input_test_df <- read.delim(
-  paste0(
-    "./data_test_input_graphs_indicators/",
-    "test_visualization_df.tsv"
+  system.file(
+    "tests",
+    "testthat",
+    "data_test_input_graphs_indicators",
+    "test_visualization_df.tsv",
+    package = "trias"
   ),
   sep = "\t"
 )
