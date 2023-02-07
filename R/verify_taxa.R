@@ -909,7 +909,7 @@ verify_taxa <- function(taxa,
       dateAdded = Sys.Date(),
       outdated = FALSE
     ) %>%
-    select(one_of(name_col_verification), name_col_verification_extra)
+    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
   message("DONE.", appendLF = TRUE)
 
   # Find new taxa not matched to GBIF backbone
@@ -933,7 +933,7 @@ verify_taxa <- function(taxa,
       dateAdded = Sys.Date(),
       outdated = FALSE
     ) %>%
-    select(one_of(name_col_verification), name_col_verification_extra)
+    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
   message("DONE.", appendLF = TRUE)
 
   # Create df of updated bb_scientificName
@@ -962,7 +962,7 @@ verify_taxa <- function(taxa,
       dplyr::anti_join(updated_bb_scientificName,
         by = colnames(verification)
       ) %>%
-      select(one_of(name_col_verification), name_col_verification_extra)
+      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
       dplyr::bind_rows(
         updated_bb_scientificName %>%
           dplyr::mutate(bb_scientificName = updated_bb_scientificName) %>%
@@ -1023,7 +1023,7 @@ verify_taxa <- function(taxa,
       dplyr::anti_join(updated_bb_acceptedName,
         by = colnames(verification)
       ) %>%
-      select(one_of(name_col_verification), name_col_verification_extra)
+      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
       dplyr::bind_rows(updated_bb_acceptedName %>%
                   dplyr::mutate(bb_acceptedName = updated_bb_acceptedName) %>%
                   dplyr::select(-updated_bb_acceptedName)) %>%
@@ -1061,13 +1061,13 @@ verify_taxa <- function(taxa,
   # Add new synonyms to verification
   verification <-
     verification %>%
-    select(one_of(name_col_verification), name_col_verification_extra)
+    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
     dplyr::bind_rows(new_synonyms) %>%
 
   # Add new unmatches to verification
   verification <-
     verification %>%
-    select(one_of(name_col_verification), name_col_verification_extra)
+    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
     dplyr::bind_rows(new_unmatched_taxa) %>%
 
   # Retrieve backbone information about taxa the synonyms point to
@@ -1102,7 +1102,7 @@ verify_taxa <- function(taxa,
         bb_acceptedRank,
         bb_acceptedTaxonomicStatus
       )) %>%
-      select(one_of(name_col_verification), name_col_verification_extra)
+      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
       dplyr::left_join(accepted_info, by = "bb_acceptedKey") %>%
     # Add backbone info to new_synonys too
     new_synonyms <-
@@ -1119,7 +1119,7 @@ verify_taxa <- function(taxa,
                            bb_acceptedTaxonomicStatus),
       by = c("taxonKey", "bb_key", "bb_acceptedKey")
       ) %>%
-      select(one_of(name_col_verification), name_col_verification_extra)
+      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
   } else {
     verification <-
       verification %>%
@@ -1129,7 +1129,7 @@ verify_taxa <- function(taxa,
         bb_acceptedRank = character(),
         bb_acceptedTaxonomicStatus = character()
       ) %>%
-      select(one_of(name_col_verification), name_col_verification_extra)
+      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
   }
   message("DONE.", appendLF = TRUE)
 
@@ -1158,8 +1158,9 @@ verify_taxa <- function(taxa,
     # Compose verification back together
     verification <-
       not_outdated_taxa %>%
-      select(one_of(name_col_verification), name_col_verification_extra)
+      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
       dplyr::bind_rows(outdated_taxa) %>%
+      dplyr::select(one_of(name_col_verification), name_col_verification_extra)
   }
   message("DONE.", appendLF = TRUE)
 
@@ -1246,11 +1247,11 @@ verify_taxa <- function(taxa,
   # Split outdated_taxa in outdated_unmatched_taxa and outdated_synonyms
   outdated_unmatched_taxa <-
     outdated_taxa %>%
-    select(one_of(name_col_verification), name_col_verification_extra)
+    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
     dplyr::filter(is.na(.data$bb_key)) %>%
   outdated_synonyms <-
     outdated_taxa %>%
-    select(one_of(name_col_verification), name_col_verification_extra)
+    dplyr::select(one_of(name_col_verification), name_col_verification_extra)
     dplyr::filter(!is.na(.data$bb_acceptedKey)) %>%
 
   # Convert to original column names
