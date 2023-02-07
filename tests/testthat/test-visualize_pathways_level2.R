@@ -2,9 +2,11 @@ context("test_visualize_pathways_level2")
 
 # input df
 input_test_df <- read.delim(
-  paste0(
-    "./data_test_pathways/",
-    "input_data_pathways.tsv"
+  system.file("tests", 
+              "testthat", 
+              "data_test_pathways", 
+              "input_data_pathways.tsv",
+              package = "trias"
   ),
   sep = "\t",
   stringsAsFactors = FALSE
