@@ -484,7 +484,7 @@ apply_gam <- function(df,
   }
   # Initialize the plot with observations only
   plot_gam <- df %>%
-    ggplot2::ggplot(ggplot2::aes(x = .data$year, y = get(y_var))) +
+    ggplot2::ggplot(ggplot2::aes(x = year, y = get(y_var))) +
     ggplot2::geom_point(color = "black") +
     ggplot2::ylab(y_label) +
     ggplot2::ggtitle(ptitle)
@@ -494,10 +494,10 @@ apply_gam <- function(df,
     dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
     dplyr::select(
       !!dplyr::sym(taxonKey),
-      .data$year,
-      .data$em_status,
-      .data$growth,
-      .data$method
+      year,
+      em_status,
+      growth,
+      method
     )
 
   if (nrow(df) > 3 & sum(df[[y_var]][2:nrow(df)]) != 0) {
@@ -588,7 +588,7 @@ apply_gam <- function(df,
             .data$lower < 0 & .data$upper > 0 ~ 0,
             .data$lower >= 0 & .data$upper > 0 ~ 1
           )) %>%
-          dplyr::select(!!dplyr::sym(year) := .data$data, .data$em1) %>%
+          dplyr::select(!!dplyr::sym(year) := data, em1) %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
 
         em2 <- deriv2 %>%
@@ -599,7 +599,7 @@ apply_gam <- function(df,
             .data$lower < 0 & .data$upper > 0 ~ 0,
             .data$lower >= 0 & .data$upper > 0 ~ 1
           )) %>%
-          dplyr::select(!!dplyr::sym(year) := .data$data, .data$em2) %>%
+          dplyr::select(!!dplyr::sym(year) := data, em2) %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
 
         em_level_gam <- dplyr::full_join(em1, em2, by = year) %>%
@@ -631,10 +631,10 @@ apply_gam <- function(df,
         lower_deriv1 <-
           deriv1 %>%
           dplyr::filter(.data$var == year) %>%
-          dplyr::rename(!!dplyr::sym(year) := .data$data) %>%
+          dplyr::rename(!!dplyr::sym(year) := data) %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), digits = 0)) %>%
           dplyr::mutate(growth = model$family$linkinv(.data$lower)) %>%
-          dplyr::select(!!dplyr::sym(year), .data$growth)
+          dplyr::select(!!dplyr::sym(year), growth)
 
         # Add lower value of first derivative
         output_model <- dplyr::left_join(output_model, lower_deriv1, by = "year")
@@ -645,10 +645,10 @@ apply_gam <- function(df,
           dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
           dplyr::select(
             !!dplyr::sym(taxonKey),
-            .data$year,
-            .data$em_status,
-            .data$growth,
-            .data$method
+            year,
+            em_status,
+            growth,
+            method
           )
         # Create plot with conf. interval + colour for status
         plot_gam <- plot_ribbon_em(
