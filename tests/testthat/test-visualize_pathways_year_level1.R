@@ -126,14 +126,13 @@ empty_output <- visualize_pathways_year_level1(
   category = "Protozoa"
 )
 
-testthat::test_that("Argument: df", {
-  testthat::expect_error(
+test_that("Argument: df", {
+  expect_error(
     visualize_pathways_year_level1(3),
     "`df` must be a data frame."
   )
 })
 
-testthat::test_that("Argument bin", {
   testthat::expect_error(
     visualize_pathways_year_level1(input_test_df,bin = "20"),
     "`bin` must be a number."
