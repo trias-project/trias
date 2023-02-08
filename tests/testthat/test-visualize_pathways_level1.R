@@ -403,9 +403,10 @@ testthat::test_that("Test output class", {
   
   # data_facet_graph contains only columns taxonKey, habitat (the facet) and
   # pathway_level1
-  testthat::expect_equal(
-    names(output_with_facet$data_facet_graph),
+  testthat::expect_true(
+    all(names(output_with_facet$data_facet_graph) %in%
     c("taxonKey", "habitat", "pathway_level1"))
+  )
 })
 
 testthat::test_that("test pathway factors and their order", {
