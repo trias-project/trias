@@ -20,7 +20,7 @@ a logical, TRUE or FALSE.
 \description{
 This function compares GBIF distribution information based on a single taxon
 key with user requests and returns a logical (TRUE or FALSE). Comparison is
-case insensitive. User properties for each term ar treated as OR.
+case insensitive. User properties for each term are treated as OR.
 It is a function built on rgbif function \code{name_usage()}.
 }
 \examples{

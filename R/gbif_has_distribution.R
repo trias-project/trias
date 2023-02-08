@@ -2,7 +2,7 @@
 #'
 #' This function compares GBIF distribution information based on a single taxon
 #' key with user requests and returns a logical (TRUE or FALSE). Comparison is
-#' case insensitive. User properties for each term ar treated as OR.
+#' case insensitive. User properties for each term are treated as OR.
 #' It is a function built on rgbif function `name_usage()`.
 #' @param taxon_key (single numeric or character) a single taxon key.
 #' @param ... one or more GBIF distribution properties and related values.
