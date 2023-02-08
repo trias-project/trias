@@ -24,6 +24,11 @@ case insensitive. User properties for each term are treated as OR.
 It is a function built on rgbif function \code{name_usage()}.
 }
 \examples{
+\dontrun{
+# IMPORTANT! 
+# examples could fail as long as `status` (`occurrenceStatus`) is used due to
+# an issue of the GBIF API: see https://github.com/gbif/gbif-api/issues/94
+
 # numeric taxonKey, atomic parameters
 gbif_has_distribution(145953242,
   country = "BE",
@@ -50,4 +55,5 @@ gbif_has_distribution("145953242",
   status = "PRESENT",
   establishmentMeans = "InTrOdUcEd"
 )
+}
 }

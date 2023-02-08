@@ -13,6 +13,11 @@
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
+#' \dontrun{
+#' # IMPORTANT! 
+#' # examples could fail as long as `status` (`occurrenceStatus`) is used due to
+#' # an issue of the GBIF API: see https://github.com/gbif/gbif-api/issues/94
+#' 
 #' # numeric taxonKey, atomic parameters
 #' gbif_has_distribution(145953242,
 #'   country = "BE",
@@ -39,6 +44,7 @@
 #'   status = "PRESENT",
 #'   establishmentMeans = "InTrOdUcEd"
 #' )
+#' }
 gbif_has_distribution <- function(taxon_key, ...) {
   # df with all possible combinations of user's distribution properties values
   user_properties <- list(...)
