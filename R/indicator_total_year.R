@@ -162,11 +162,11 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   if (is.null(facet_column)) {
     df <-
       df %>%
-      dplyr::distinct(.data$key, .data$first_observed)
+      dplyr::distinct(key, first_observed)
   } else {
     df <-
       df %>%
-      dplyr::distinct(.data$key, .data$first_observed, .data[[facet_column]])
+      dplyr::distinct(key, first_observed, .data[[facet_column]])
   }
 
   # Make individual records for each year up to now
@@ -175,7 +175,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     dplyr::rowwise() %>%
     dplyr::do(year = .data$first_observed:maxDate) %>%
     dplyr::bind_cols(df) %>%
-    tidyr::unnest(.data$year)
+    tidyr::unnest(year)
   
   # calculate numbers to plot
   counts_ias_grouped_by_year <- 

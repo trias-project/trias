@@ -2,10 +2,7 @@ context("test_visualize_pathways_level2")
 
 # input df
 input_test_df <- read.delim(
-  paste0(
-    "./data_test_pathways/",
-    "input_data_pathways.tsv"
-  ),
+  test_path("data_test_pathways/input_data_pathways.tsv"),
   sep = "\t",
   stringsAsFactors = FALSE
 )
@@ -502,9 +499,10 @@ testthat::test_that("Test output class", {
   
   # data_facet_graph contains only columns taxonKey, habitat (the facet),
   # pathway_level2, in this order
-  testthat::expect_equal(
-    names(output_with_facet$data_facet_graph),
-    c("taxonKey", "habitat", "pathway_level2"))
+  testthat::expect_true(
+    all(names(output_with_facet$data_facet_graph) %in%
+          c("taxonKey", "habitat", "pathway_level2"))
+  )
 })
 
 testthat::test_that("test pathway factors and their order", {

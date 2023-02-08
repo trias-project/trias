@@ -2,7 +2,7 @@
 #'
 #' This function compares GBIF distribution information based on a single taxon
 #' key with user requests and returns a logical (TRUE or FALSE). Comparison is
-#' case insensitive. User properties for each term ar treated as OR.
+#' case insensitive. User properties for each term are treated as OR.
 #' It is a function built on rgbif function `name_usage()`.
 #' @param taxon_key (single numeric or character) a single taxon key.
 #' @param ... one or more GBIF distribution properties and related values.
@@ -13,6 +13,11 @@
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
+#' \dontrun{
+#' # IMPORTANT! 
+#' # examples could fail as long as `status` (`occurrenceStatus`) is used due to
+#' # an issue of the GBIF API: see https://github.com/gbif/gbif-api/issues/94
+#' 
 #' # numeric taxonKey, atomic parameters
 #' gbif_has_distribution(145953242,
 #'   country = "BE",
@@ -39,6 +44,7 @@
 #'   status = "PRESENT",
 #'   establishmentMeans = "InTrOdUcEd"
 #' )
+#' }
 gbif_has_distribution <- function(taxon_key, ...) {
   # df with all possible combinations of user's distribution properties values
   user_properties <- list(...)

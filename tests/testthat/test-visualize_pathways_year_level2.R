@@ -2,10 +2,7 @@ context("test_visualize_pathways_year_level2")
 
 # input df
 input_test_df_with_nas <- read.delim(
-  paste0(
-    "./data_test_pathways/",
-    "input_data_pathways.tsv"
-  ),
+  test_path("data_test_pathways/input_data_pathways.tsv"),
   sep = "\t",
   stringsAsFactors = FALSE
 )
@@ -113,6 +110,10 @@ large_bin_levels <- c(
 
 later_from_bin_levels <- c("before 1970", bin_levels[4:8])
 
+no_before_levels <- c("1990 - 1999", 
+                      "2000 - 2009",
+                      "2010 - 2019"
+)
 # Generate outputs
 output_general <- visualize_pathways_year_level2(
   input_test_df,
@@ -154,6 +155,10 @@ output_later_from <- visualize_pathways_year_level2(
   chosen_pathway_level1 = "escape",
   from = later_from
 )
+output_no_before <- visualize_pathways_year_level2(
+  input_test_df[input_test_df$first_observed >= 1990, ],
+  chosen_pathway_level1 = "escape"
+)
 empty_output <- visualize_pathways_year_level2(
   input_test_df %>% # filter to be sure to produce empty bar plot
     dplyr::filter(kingdom != "Protozoa" | pathway_level1 != "corridor"),
@@ -161,7 +166,7 @@ empty_output <- visualize_pathways_year_level2(
   category = "Protozoa"
 )
 
-testthat::test_that("Argument: df", {
+test_that("Argument: df", {
   expect_error(
     visualize_pathways_year_level2(3,
       chosen_pathway_level1 = "escape"
@@ -170,7 +175,7 @@ testthat::test_that("Argument: df", {
   )
 })
 
-testthat::test_that("Argument bin", {
+test_that("Argument bin", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -194,7 +199,7 @@ testthat::test_that("Argument bin", {
   )
 })
 
-testthat::test_that("Argument: from", {
+test_that("Argument: from", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -222,7 +227,7 @@ testthat::test_that("Argument: from", {
   )
 })
 
-testthat::test_that("Argument: category", {
+test_that("Argument: category", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -254,7 +259,7 @@ testthat::test_that("Argument: category", {
   )
 })
 
-testthat::test_that("Argument: facet_column", {
+test_that("Argument: facet_column", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -299,7 +304,7 @@ testthat::test_that("Argument: facet_column", {
   )
 })
 
-testthat::test_that("Argument pathways", {
+test_that("Argument pathways", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -319,7 +324,7 @@ testthat::test_that("Argument pathways", {
     )
   )
 })
-testthat::test_that("Argument: taxon_names", {
+test_that("Argument: taxon_names", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -342,7 +347,7 @@ testthat::test_that("Argument: taxon_names", {
   )
 })
 
-testthat::test_that("Argument: kingdom_names", {
+test_that("Argument: kingdom_names", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -365,7 +370,7 @@ testthat::test_that("Argument: kingdom_names", {
   )
 })
 
-testthat::test_that("Argument: phylum_names", {
+test_that("Argument: phylum_names", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -389,7 +394,7 @@ testthat::test_that("Argument: phylum_names", {
   )
 })
 
-testthat::test_that("Argument: first_observed", {
+test_that("Argument: first_observed", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -411,7 +416,7 @@ testthat::test_that("Argument: first_observed", {
     )
   )
 })
-testthat::test_that("Argument: title labels", {
+test_that("Argument: title labels", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
       chosen_pathway_level1 = "escape",
@@ -456,7 +461,7 @@ testthat::test_that("Argument: title labels", {
   )
 })
 
-testthat::test_that("Test CBD standard compliance", {
+test_that("Test CBD standard compliance", {
   message_invalid_pathways <-
     paste0(
       "No CBD standard pathways level 2 value(s) in column `pathway_level2`: ",
@@ -483,7 +488,7 @@ testthat::test_that("Test CBD standard compliance", {
   )
 })
 
-testthat::test_that("Test empty pathway_level1 transformation to unknown", {
+test_that("Test empty pathway_level1 transformation to unknown", {
   expect_warning(visualize_pathways_year_level2(
     na_pathways,
     chosen_pathway_level1 = "escape"
@@ -519,7 +524,7 @@ testthat::test_that("Test empty pathway_level1 transformation to unknown", {
   )
 })
 
-testthat::test_that("Test warning no year of introduction", {
+test_that("Test warning no year of introduction", {
   expect_warning(
     visualize_pathways_year_level2(
       input_test_df_with_nas,
@@ -533,60 +538,60 @@ testthat::test_that("Test warning no year of introduction", {
   )
 })
 
-testthat::test_that("Test output class", {
+test_that("Test output class", {
   # output is a list
   expect_type(output_general, type = "list")
   expect_type(output_with_facet, type = "list")
   expect_type(empty_output, type = "list")
   
   # plot slot is a list with gg as class if not NULL
-  testthat::expect_type(output_general$plot, type = "list")
-  testthat::expect_type(output_with_facet$plot, type = "list")
-  testthat::expect_s3_class(output_general$plot, class = "gg")
-  testthat::expect_s3_class(output_with_facet$plot, class = "egg")
-  testthat::expect_null(empty_output$plot)
+  expect_type(output_general$plot, type = "list")
+  expect_type(output_with_facet$plot, type = "list")
+  expect_s3_class(output_general$plot, class = "gg")
+  expect_s3_class(output_with_facet$plot, class = "egg")
+  expect_null(empty_output$plot)
   
   # data_top_graph is a data.frame (tibble) if not NULL
-  testthat::expect_type(output_general$data_top_graph, type = "list")
-  testthat::expect_s3_class(output_general$data_top_graph,
+  expect_type(output_general$data_top_graph, type = "list")
+  expect_s3_class(output_general$data_top_graph,
                             class = "data.frame")
-  testthat::expect_s3_class(output_general$data_top_graph,
+  expect_s3_class(output_general$data_top_graph,
                             class = "tbl_df")
-  testthat::expect_type(output_with_facet$data_top_graph,
+  expect_type(output_with_facet$data_top_graph,
                         type = "list")
-  testthat::expect_s3_class(output_with_facet$data_top_graph,
+  expect_s3_class(output_with_facet$data_top_graph,
                             class = "data.frame")
-  testthat::expect_s3_class(output_with_facet$data_top_graph,
+  expect_s3_class(output_with_facet$data_top_graph,
                             class = "tbl_df")
-  testthat::expect_null(empty_output$data_top_graph)
+  expect_null(empty_output$data_top_graph)
   
   # data_top_graph contains only columns bins_first_observed, pathway_level2 and
   # n in this order
-  testthat::expect_equal(
+  expect_equal(
     names(output_general$data_top_graph),
     c("bins_first_observed", "pathway_level2", "n"))
-  testthat::expect_equal(
+  expect_equal(
     names(output_with_facet$data_top_graph),
     c("bins_first_observed", "pathway_level2", "n"))
   
   # data_facet_graph is NULL if faceting is deactivated
-  testthat::expect_null(output_general$date_facet_graph)
+  expect_null(output_general$date_facet_graph)
   
   # data_facet_graph is a data.frame (tibble) if faceting is activated
-  testthat::expect_type(output_with_facet$data_facet_graph, type = "list")
-  testthat::expect_s3_class(output_with_facet$data_facet_graph,
+  expect_type(output_with_facet$data_facet_graph, type = "list")
+  expect_s3_class(output_with_facet$data_facet_graph,
                             class = "data.frame")
-  testthat::expect_s3_class(output_with_facet$data_facet_graph,
+  expect_s3_class(output_with_facet$data_facet_graph,
                             class = "tbl_df")
   
   # data_facet_graph contains only columns bins_first_observed, pathway_level2,
   # habitat (the facet) and n
-  testthat::expect_equal(
+  expect_equal(
     names(output_with_facet$data_facet_graph),
     c("bins_first_observed", "pathway_level2", "habitat", "n"))
 })
 
-testthat::test_that("test pathway factors and their order", {
+test_that("test pathway factors and their order", {
   expect_true(is.factor(output_general$data_top_graph$pathway_level2))
   expect_true(is.factor(output_less_pathways$data_top_graph$pathway_level2))
   expect_true(is.factor(output_less_pathways_inverted$data_top_graph$pathway_level2))
@@ -598,22 +603,24 @@ testthat::test_that("test pathway factors and their order", {
     pathways_selection_inverted_escape))
 })
 
-testthat::test_that("test bin", {
+test_that("test bin", {
   bins_output <- output_general$data_top_graph$bins_first_observed
   large_bin_output <-
     output_large_bin$data_top_graph$bins_first_observed
+  no_before_bins <- output_no_before$data_top_graph$bins_first_observed
   expect_true(is.factor(bins_output))
   expect_true(all(levels(bins_output) == bin_levels))
   expect_true(all(levels(large_bin_output) == large_bin_levels))
+  expect_true(all(levels(no_before_bins) == no_before_levels))
 })
 
-testthat::test_that("test from", {
+test_that("test from", {
   bins_output_later_from <- output_later_from$data_top_graph$bins_first_observed
   expect_true(is.factor(bins_output_later_from))
   expect_true(all(levels(bins_output_later_from) == later_from_bin_levels))
 })
 
-testthat::test_that("test output with other column names", {
+test_that("test output with other column names", {
   expect_equivalent(
     output_general_other_colnames$data_top_graph,
     output_general$data_top_graph
