@@ -982,212 +982,116 @@ col_types_updated_names <- readr::cols(
 
 output1_taxa <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output1_taxa.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output1_taxa.tsv"),
     col_types = col_types_output_taxa
   )
 output2_taxa <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output2_taxa.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output2_taxa.tsv"),
     col_types = col_types_output_taxa
   )
 
 output1_verification <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output1_verification.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output1_verification.tsv"),
     col_types = col_types_verification
   )
 output2_verification <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output2_verification.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output2_verification.tsv"),
     col_types = col_types_verification
   )
 
 output1_new_synonyms <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output1_new_synonyms.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output1_new_synonyms.tsv"),
     col_types = col_types_verification
   )
 output2_new_synonyms <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output2_new_synonyms.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output2_new_synonyms.tsv"),
     col_types = col_types_verification
   )
 
 output1_new_unmatched_taxa <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output1_new_unmatched_taxa.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output1_new_unmatched_taxa.tsv"),
     col_types = col_types_verification
   )
 output2_new_unmatched_taxa <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output2_new_unmatched_taxa.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output2_new_unmatched_taxa.tsv"),
     col_types = col_types_verification
   )
 
 output1_outdated_unmatched_taxa <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output1_outdated_unmatched_taxa.tsv",
-      package = "trias"
+    test_path(
+      "data_test_output_verify_taxa/output1_outdated_unmatched_taxa.tsv"
     ),
     col_types = col_types_verification
   )
 
 output2_outdated_unmatched_taxa <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output2_outdated_unmatched_taxa.tsv",
-      package = "trias"
+    test_path(
+      "data_test_output_verify_taxa/output2_outdated_unmatched_taxa.tsv"
     ),
     col_types = col_types_verification
   )
 
 output1_outdated_synonyms <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output1_outdated_synonyms.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output1_outdated_synonyms.tsv"),
     col_types = col_types_verification
   )
 
 output2_outdated_synonyms <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output2_outdated_synonyms.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output2_outdated_synonyms.tsv"),
     col_types = col_types_verification
   )
 
 output1_updated_bb_scientificName <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output1_updated_bb_scientificName.tsv",
-      package = "trias"
+    test_path(
+      "data_test_output_verify_taxa/output1_updated_bb_scientificName.tsv"
     ),
     col_types = col_types_updated_names
   )
 
 output2_updated_bb_scientificName <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output2_updated_bb_scientificName.tsv",
-      package = "trias"
+    test_path(
+      "data_test_output_verify_taxa/output2_updated_bb_scientificName.tsv"
     ),
     col_types = col_types_updated_names
   )
 
 output1_updated_bb_acceptedName <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output1_updated_bb_acceptedName.tsv",
-      package = "trias"
+    test_path(
+      "data_test_output_verify_taxa/output1_updated_bb_acceptedName.tsv"
     ),
     col_types = col_types_updated_names
   )
 
 output2_updated_bb_acceptedName <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output2_updated_bb_acceptedName.tsv",
-      package = "trias"
+    test_path(
+      "data_test_output_verify_taxa/output2_updated_bb_acceptedName.tsv"
     ),
     col_types = col_types_updated_names
   )
 
 output1_duplicates <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output1_duplicates.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output1_duplicates.tsv"),
     col_types = readr::cols(n = readr::col_integer())
   )
 output2_duplicates <-
   readr::read_tsv(
-    system.file(
-      "tests",
-      "testthat",
-      "data_test_output_verify_taxa",
-      "output2_duplicates.tsv",
-      package = "trias"
-    ),
+    test_path("data_test_output_verify_taxa/output2_duplicates.tsv"),
     col_types = readr::cols(n = readr::col_integer())
   )
 

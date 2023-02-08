@@ -2,12 +2,7 @@ context("test_visualize_pathways_year_level1")
 
 # input df
 input_test_df_with_nas <- read.delim(
-  system.file("tests", 
-              "testthat", 
-              "data_test_pathways", 
-              "input_data_pathways.tsv",
-              package = "trias"
-  ),
+  test_path("data_test_pathways/input_data_pathways.tsv"),
   sep = "\t",
   stringsAsFactors = FALSE
 )

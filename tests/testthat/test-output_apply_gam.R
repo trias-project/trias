@@ -25,23 +25,15 @@ df_bad <- data.frame(
 )
 
 df_bad_p_values_occupancy <- read.delim(
-  file = system.file(
-    "tests",
-    "testthat",
-    "data_test_output_apply_gam",
-    "example_gam_taxonKey2876049_p-values_error.tsv",
-    package = "trias"
+  test_path(
+    "data_test_output_apply_gam/example_gam_taxonKey2876049_p-values_error.tsv"
   ),
   sep = "\t"
 )
 
 df_bad_gam_not_perf <- read.delim(
-  system.file(
-    "tests",
-    "testthat",
-    "data_test_output_apply_gam",
-    "example_gam_taxonKey2927530_no_gam.tsv",
-    package = "trias"
+  test_path(
+    "data_test_output_apply_gam/example_gam_taxonKey2927530_no_gam.tsv"
   ),
   sep = "\t"
 )

@@ -2,13 +2,7 @@ context("test_indicator_total_year")
 
 # test df
 input_test_df_with_na <- read.delim(
-  system.file(
-    "tests",
-    "testthat",
-    "data_test_input_graphs_indicators",
-    "test_visualization_df.tsv",
-    package = "trias"
-  ),
+  test_path("data_test_input_graphs_indicators/test_visualization_df.tsv"),
   sep = "\t"
 )
 
