@@ -571,12 +571,18 @@ apply_gam <- function(df,
         # Calculate first and second derivative + conf. interval
         deriv1 <- gratia::derivatives(model,
           type = "central", order = 1, level = 0.8,
-          n = nrow(output_model), eps = 1e-4
-        )
+          n = nrow(output_model), eps = 1e-4) %>%
+          # to remove by_var and fs_var 
+          # (probably in very new version of gratia, 0.8.x not compatible with R
+          # 4.2.1) errors with GitHub actions automatic checks 
+          dplyr::select(smooth, var, data, derivative, se, crit, lower, upper)
         deriv2 <- gratia::derivatives(model,
           type = "central", order = 2, level = 0.8,
-          n = nrow(output_model), eps = 1e-4
-        )
+          n = nrow(output_model), eps = 1e-4) %>%
+          # to remove by_var and fs_var 
+          # (probably in very new version of gratia, 0.8.x not compatible with R
+          # 4.2.1)
+          dplyr::select(smooth, var, data, derivative, se, crit, lower, upper)
 
         # Emerging status based on first and second derivative
         em1 <-
