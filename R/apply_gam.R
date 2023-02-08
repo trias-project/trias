@@ -803,7 +803,7 @@ plot_ribbon_em <- function(df_plot,
   return(g)
 }
 
-#' Add annotation when emergence status cannot be assessed
+#' Add annotation when status cannot be assessed
 #' 
 #' Internal function to be used when GAM cannot be applied to it doesn't
 #' converge.
@@ -820,7 +820,7 @@ add_annotation <- function(
     plot_obs,
     df,
     y_axis,
-    text = "The emergence status \ncannot be assessed",
+    text = "The status cannot \nbe assessed by GAM",
     colour = "red") {
   annotated_plot <- plot_obs +
     ggplot2::annotate("text",
