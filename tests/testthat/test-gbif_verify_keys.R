@@ -1,5 +1,3 @@
-#' @importFrom purrr map_chr
-#' 
 context("test_gbif_verify_keys")
 
 test_that("test several input types", {
