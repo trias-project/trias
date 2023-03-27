@@ -74,6 +74,10 @@ indicator_native_range_year <- function(df, years = NULL,
   # Select data
   plotData <- plotData[plotData$first_observed %in% years, c("first_observed", "location")]
   plotData <- plotData[!is.na(plotData$first_observed) & !is.na(plotData$location), ]
+  
+  # Exclude unused provinces
+  plotData$first_observed <- as.factor(plotData$first_observed)
+  
   # Exclude unused provinces
   plotData$location <- as.factor(plotData$location)
   plotData$location <- droplevels(plotData$location)
