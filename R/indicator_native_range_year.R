@@ -28,7 +28,25 @@
 #'   introduced from the native range for a given year. (n/total)*100} } } }
 #' @export
 #' @importFrom dplyr %>% .data
-
+#' @examples
+#' \dontrun{
+#' library(readr)
+#' datafile <- paste0(
+#'   "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
+#'   "interim/data_input_checklist_indicators.tsv"
+#' )
+#' data <- read_tsv(datafile,
+#'   na = "",
+#'   col_types = cols(
+#'     .default = col_character(),
+#'     key = col_double(),
+#'     nubKey = col_double(),
+#'     speciesKey = col_double(),
+#'     first_observed = col_double(),
+#'     last_observed = col_double()
+#'   )
+#' )
+#' indicator_native_range_year(data, years = c(2010,2013))
 indicator_native_range_year <- function(df, years = NULL,
                                         type = c("native_continent", "native_range"),
                                         x_lab = "year",
@@ -56,17 +74,11 @@ indicator_native_range_year <- function(df, years = NULL,
   # Select data
   plotData <- plotData[plotData$first_observed %in% years, c("first_observed", "location")]
   plotData <- plotData[!is.na(plotData$first_observed) & !is.na(plotData$location), ]
-
   # Exclude unused provinces
   plotData$location <- as.factor(plotData$location)
   plotData$location <- droplevels(plotData$location)
 
   # Summarize data per native_range and year
-  plotData$first_observed <- with(plotData, factor(first_observed,
-    levels =
-      min(years):max(years)
-  ))
-
   summaryData <- reshape2::melt(table(plotData), id.vars = "first_observed")
   summaryData <- summaryData %>%
     dplyr::group_by(.data$first_observed) %>%
