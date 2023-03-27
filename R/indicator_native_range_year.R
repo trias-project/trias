@@ -4,7 +4,7 @@
 #' Based on
 #' [countYearProvince](https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R)
 #' plot from reporting - rshiny - grofwildjacht
-#' @param data input data.frame.
+#' @param df input data.frame.
 #' @param years (numeric) vector years we are interested to. If \code{NULL}
 #'   (default) all years from minimum and maximum of years of first observation
 #'   are taken into account.
@@ -29,7 +29,7 @@
 #' @export
 #' @importFrom dplyr %>% .data
 
-indicator_native_range_year <- function(data, years = NULL,
+indicator_native_range_year <- function(df, years = NULL,
                                         type = c("native_continent", "native_range"),
                                         x_lab = "year",
                                         y_lab = "alien species",
@@ -38,15 +38,15 @@ indicator_native_range_year <- function(data, years = NULL,
   type <- match.arg(type)
 
   # Rename to default column name
-  data <-
-    data %>%
+  df <-
+    df %>%
     dplyr::rename_at(dplyr::vars(first_observed), ~"first_observed")
 
   if (is.null(years)) {
-    years <- sort(unique(data$first_observed))
+    years <- sort(unique(df$first_observed))
   }
 
-  plotData <- data
+  plotData <- df
 
   plotData$location <- switch(type,
     native_range = plotData$native_range,

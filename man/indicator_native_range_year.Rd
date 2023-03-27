@@ -6,7 +6,7 @@
 and year of introduction}
 \usage{
 indicator_native_range_year(
-  data,
+  df,
   years = NULL,
   type = c("native_continent", "native_range"),
   x_lab = "year",
@@ -16,7 +16,7 @@ indicator_native_range_year(
 )
 }
 \arguments{
-\item{data}{input data.frame.}
+\item{df}{input data.frame.}
 
 \item{years}{(numeric) vector years we are interested to. If \code{NULL}
 (default) all years from minimum and maximum of years of first observation
