@@ -4,17 +4,21 @@
 #' Based on
 #' [countYearProvince](https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R)
 #' plot from reporting - rshiny - grofwildjacht
-#' @param data input data.frame.
+#' @param df input data.frame.
 #' @param years (numeric) vector years we are interested to. If \code{NULL}
 #'   (default) all years from minimum and maximum of years of first observation
 #'   are taken into account.
 #' @param type character, native_range level of interest should be one of
-#'   \code{c("native_continent", "native_range")}.
+#'   `c("native_range", "native_continent")`. Default: `"native_range"`. A
+#'   column called as the selected `type` must be present in `df`.
 #' @param x_lab character string, label of the x-axis. Default: "year".
 #' @param y_lab character string, label of the y-axis. Default: "number of alien
 #'   species".
-#' @param relative (logical) if TRUE, each bar is standardised before stacking
-#' @param first_observed (character) Name of the column in \code{data} containing temporal information about introduction of the alien species. Expressed as years.
+#' @param relative (logical) if TRUE (default), each bar is standardised before
+#'   stacking.
+#' @param first_observed (character) Name of the column in `data`
+#'   containing temporal information about introduction of the alien species.
+#'   Expressed as years.
 #' @return list with: \itemize{ \item{'static_plot': }{ggplot object, for a
 #'   given species the observed number per year and per native range is plotted
 #'   in a stacked bar chart} \item{'interactive_plot': }{plotly object, for a
@@ -28,25 +32,81 @@
 #'   introduced from the native range for a given year. (n/total)*100} } } }
 #' @export
 #' @importFrom dplyr %>% .data
-
-indicator_native_range_year <- function(data, years = NULL,
-                                        type = c("native_continent", "native_range"),
-                                        x_lab = "year",
-                                        y_lab = "alien species",
-                                        relative = FALSE,
-                                        first_observed = "first_observed") {
+#' @examples
+#' \dontrun{
+#' library(readr)
+#' datafile <- paste0(
+#'   "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
+#'   "interim/data_input_checklist_indicators.tsv"
+#' )
+#' data <- read_tsv(datafile,
+#'   na = "",
+#'   col_types = cols(
+#'     .default = col_character(),
+#'     key = col_double(),
+#'     nubKey = col_double(),
+#'     speciesKey = col_double(),
+#'     first_observed = col_double(),
+#'     last_observed = col_double()
+#'   )
+#' )
+#' indicator_native_range_year(data, "native_continent", years = c(2010,2013))
+#' }
+indicator_native_range_year <- function(
+    df,
+    years = NULL,
+    type = c("native_range", "native_continent"),
+    x_lab = "year",
+    y_lab = "alien species",
+    relative = FALSE,
+    first_observed = "first_observed") {
+  # initial input checks
+  assertthat::assert_that(is.data.frame(df))
+  if (!is.null(years)) {
+    assertthat::assert_that(all(is.numeric(years)),
+                            msg = "Argument years has to be a number."
+    )
+    assertthat::assert_that(
+      all(years < as.integer(format(Sys.Date(), "%Y"))),
+      msg = sprintf(
+        "All values in years has to be less than %s.", format(Sys.Date(), "%Y")
+      )
+    )
+  }
   type <- match.arg(type)
-
+  assertthat::assert_that(type %in% names(df),
+                          msg = sprintf("Column %s not present in df.", type)
+  )
+  if (!is.null(x_lab)) {
+    assertthat::assert_that(is.character(x_lab),
+                            msg = "Argument x_lab has to be a character or NULL."
+    )
+  }
+  if (!is.null(y_lab)) {
+    assertthat::assert_that(is.character(y_lab),
+                            msg = "Argument y_lab has to be a character or NULL."
+    )
+    
+  }
+  assertthat::assert_that(is.logical(relative),
+                          msg = "Argument relative has to be a logical."
+  )
+  assertthat::assert_that(is.character(first_observed),
+                          msg = "Argument first_observed has to be a character."
+  )
+  assertable::assert_colnames(df, first_observed, only_colnames = FALSE)
+  
+  
   # Rename to default column name
-  data <-
-    data %>%
+  df <-
+    df %>%
     dplyr::rename_at(dplyr::vars(first_observed), ~"first_observed")
 
   if (is.null(years)) {
-    years <- sort(unique(data$first_observed))
+    years <- sort(unique(df$first_observed))
   }
 
-  plotData <- data
+  plotData <- df
 
   plotData$location <- switch(type,
     native_range = plotData$native_range,
@@ -56,17 +116,13 @@ indicator_native_range_year <- function(data, years = NULL,
   # Select data
   plotData <- plotData[plotData$first_observed %in% years, c("first_observed", "location")]
   plotData <- plotData[!is.na(plotData$first_observed) & !is.na(plotData$location), ]
-
-  # Exclude unused provinces
+  
+  # Set location and first_observed to factors
+  plotData$first_observed <- as.factor(plotData$first_observed)
   plotData$location <- as.factor(plotData$location)
   plotData$location <- droplevels(plotData$location)
 
   # Summarize data per native_range and year
-  plotData$first_observed <- with(plotData, factor(first_observed,
-    levels =
-      min(years):max(years)
-  ))
-
   summaryData <- reshape2::melt(table(plotData), id.vars = "first_observed")
   summaryData <- summaryData %>%
     dplyr::group_by(.data$first_observed) %>%
