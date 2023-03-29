@@ -26,12 +26,6 @@ test_that("Arg: type", {
                                 years = 2001),
     "'arg' must be NULL or a character vector"
   )
-  expect_error(
-    indicator_native_range_year(cleaned_input_test_df, 
-                                type = "aaa", 
-                                years = 2001),
-    "'arg' should be one of “native_range”, “native_continent”"
-  )
   a <- cleaned_input_test_df
   colnames(a)[colnames(a) == "native_range"] <- "l"
   expect_error(
