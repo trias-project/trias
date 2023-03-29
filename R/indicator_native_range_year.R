@@ -74,6 +74,29 @@ indicator_native_range_year <- function(
     )
   }
   type <- match.arg(type)
+  assertthat::assert_that(type %in% names(df),
+                          msg = sprintf("Column %s not present in df.", type)
+  )
+  if (!is.null(x_lab)) {
+    assertthat::assert_that(is.character(x_lab),
+                            msg = "Argument x_lab has to be a character or NULL."
+    )
+  }
+  if (!is.null(y_lab)) {
+    assertthat::assert_that(is.character(y_lab),
+                            msg = "Argument y_lab has to be a character or NULL."
+    )
+    
+  }
+  assertthat::assert_that(is.logical(relative),
+                          msg = "Argument relative has to be a logical."
+  )
+  assertthat::assert_that(is.character(first_observed),
+                          msg = "Argument first_observed has to be a character."
+  )
+  assertable::assert_colnames(df, first_observed, only_colnames = FALSE)
+  
+  
   # Rename to default column name
   df <-
     df %>%
@@ -94,10 +117,8 @@ indicator_native_range_year <- function(
   plotData <- plotData[plotData$first_observed %in% years, c("first_observed", "location")]
   plotData <- plotData[!is.na(plotData$first_observed) & !is.na(plotData$location), ]
   
-  # Exclude unused provinces
+  # Set location and first_observed to factors
   plotData$first_observed <- as.factor(plotData$first_observed)
-  
-  # Exclude unused provinces
   plotData$location <- as.factor(plotData$location)
   plotData$location <- droplevels(plotData$location)
 
