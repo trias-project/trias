@@ -23,16 +23,20 @@ indicator_native_range_year(
 are taken into account.}
 
 \item{type}{character, native_range level of interest should be one of
-\code{c("native_continent", "native_range")}.}
+\code{c("native_continent", "native_range")}. Default: \code{"native_continent"}. A
+column called as the selected \code{type} must be present in \code{df}.}
 
 \item{x_lab}{character string, label of the x-axis. Default: "year".}
 
 \item{y_lab}{character string, label of the y-axis. Default: "number of alien
 species".}
 
-\item{relative}{(logical) if TRUE, each bar is standardised before stacking}
+\item{relative}{(logical) if TRUE (default), each bar is standardised before
+stacking.}
 
-\item{first_observed}{(character) Name of the column in \code{data} containing temporal information about introduction of the alien species. Expressed as years.}
+\item{first_observed}{(character) Name of the column in \code{data}
+containing temporal information about introduction of the alien species.
+Expressed as years.}
 }
 \value{
 list with: \itemize{ \item{'static_plot': }{ggplot object, for a
@@ -51,4 +55,25 @@ introduced from the native range for a given year. (n/total)*100} } } }
 Based on
 \href{https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R}{countYearProvince}
 plot from reporting - rshiny - grofwildjacht
+}
+\examples{
+\dontrun{
+library(readr)
+datafile <- paste0(
+  "https://raw.githubusercontent.com/trias-project/indicators/master/data/",
+  "interim/data_input_checklist_indicators.tsv"
+)
+data <- read_tsv(datafile,
+  na = "",
+  col_types = cols(
+    .default = col_character(),
+    key = col_double(),
+    nubKey = col_double(),
+    speciesKey = col_double(),
+    first_observed = col_double(),
+    last_observed = col_double()
+  )
+)
+indicator_native_range_year(data, "native_continent", years = c(2010,2013))
+}
 }

@@ -9,12 +9,16 @@
 #'   (default) all years from minimum and maximum of years of first observation
 #'   are taken into account.
 #' @param type character, native_range level of interest should be one of
-#'   \code{c("native_continent", "native_range")}.
+#'   `c("native_range", "native_continent")`. Default: `"native_range"`. A
+#'   column called as the selected `type` must be present in `df`.
 #' @param x_lab character string, label of the x-axis. Default: "year".
 #' @param y_lab character string, label of the y-axis. Default: "number of alien
 #'   species".
-#' @param relative (logical) if TRUE, each bar is standardised before stacking
-#' @param first_observed (character) Name of the column in \code{data} containing temporal information about introduction of the alien species. Expressed as years.
+#' @param relative (logical) if TRUE (default), each bar is standardised before
+#'   stacking.
+#' @param first_observed (character) Name of the column in `data`
+#'   containing temporal information about introduction of the alien species.
+#'   Expressed as years.
 #' @return list with: \itemize{ \item{'static_plot': }{ggplot object, for a
 #'   given species the observed number per year and per native range is plotted
 #'   in a stacked bar chart} \item{'interactive_plot': }{plotly object, for a
@@ -46,15 +50,30 @@
 #'     last_observed = col_double()
 #'   )
 #' )
-#' indicator_native_range_year(data, years = c(2010,2013))
-indicator_native_range_year <- function(df, years = NULL,
-                                        type = c("native_continent", "native_range"),
-                                        x_lab = "year",
-                                        y_lab = "alien species",
-                                        relative = FALSE,
-                                        first_observed = "first_observed") {
+#' indicator_native_range_year(data, "native_continent", years = c(2010,2013))
+#' }
+indicator_native_range_year <- function(
+    df,
+    years = NULL,
+    type = c("native_range", "native_continent"),
+    x_lab = "year",
+    y_lab = "alien species",
+    relative = FALSE,
+    first_observed = "first_observed") {
+  # initial input checks
+  assertthat::assert_that(is.data.frame(df))
+  if (!is.null(years)) {
+    assertthat::assert_that(all(is.numeric(years)),
+                            msg = "Argument years has to be a number."
+    )
+    assertthat::assert_that(
+      all(years < as.integer(format(Sys.Date(), "%Y"))),
+      msg = sprintf(
+        "All values in years has to be less than %s.", format(Sys.Date(), "%Y")
+      )
+    )
+  }
   type <- match.arg(type)
-
   # Rename to default column name
   df <-
     df %>%
