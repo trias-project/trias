@@ -1,93 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://trias-project.github.io/trias/404.html</loc>
   </url>
   <url>
-    <loc>/CODE_OF_CONDUCT.html</loc>
+    <loc>https://trias-project.github.io/trias/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>/CONTRIBUTING.html</loc>
+    <loc>https://trias-project.github.io/trias/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>https://trias-project.github.io/trias/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://trias-project.github.io/trias/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://trias-project.github.io/trias/index.html</loc>
   </url>
   <url>
-    <loc>/reference/GBIF_distr_terms.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/GBIF_distr_terms.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_decision_rules.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/apply_decision_rules.html</loc>
   </url>
   <url>
-    <loc>/reference/apply_gam.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/apply_gam.html</loc>
   </url>
   <url>
-    <loc>/reference/climate_match.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/climate_match.html</loc>
   </url>
   <url>
-    <loc>/reference/future.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/future.html</loc>
   </url>
   <url>
-    <loc>/reference/gbif_get_taxa.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/gbif_get_taxa.html</loc>
   </url>
   <url>
-    <loc>/reference/gbif_has_distribution.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/gbif_has_distribution.html</loc>
   </url>
   <url>
-    <loc>/reference/gbif_verify_keys.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/gbif_verify_keys.html</loc>
   </url>
   <url>
-    <loc>/reference/get_cred.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/get_cred.html</loc>
   </url>
   <url>
-    <loc>/reference/get_table_pathways.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/get_table_pathways.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/indicator_introduction_year.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/indicator_introduction_year.html</loc>
   </url>
   <url>
-    <loc>/reference/indicator_native_range_year.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/indicator_native_range_year.html</loc>
   </url>
   <url>
-    <loc>/reference/indicator_total_year.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/indicator_total_year.html</loc>
   </url>
   <url>
-    <loc>/reference/legends.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/legends.html</loc>
   </url>
   <url>
-    <loc>/reference/observed.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/observed.html</loc>
   </url>
   <url>
-    <loc>/reference/pathways_cbd.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/pathways_cbd.html</loc>
   </url>
   <url>
-    <loc>/reference/plot_ribbon_em.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/plot_ribbon_em.html</loc>
   </url>
   <url>
-    <loc>/reference/update_download_list.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/update_download_list.html</loc>
   </url>
   <url>
-    <loc>/reference/verify_taxa.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/verify_taxa.html</loc>
   </url>
   <url>
-    <loc>/reference/visualize_pathways_level1.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/visualize_pathways_level1.html</loc>
   </url>
   <url>
-    <loc>/reference/visualize_pathways_level2.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/visualize_pathways_level2.html</loc>
   </url>
   <url>
-    <loc>/reference/visualize_pathways_year_level1.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/visualize_pathways_year_level1.html</loc>
   </url>
   <url>
-    <loc>/reference/visualize_pathways_year_level2.html</loc>
+    <loc>https://trias-project.github.io/trias/reference/visualize_pathways_year_level2.html</loc>
   </url>
 </urlset>
