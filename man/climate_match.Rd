@@ -78,7 +78,7 @@ of species for a region or nation.
 # use rworldmap shapes 
 region <- "europe"
 
-# provide GBIF taxon_key (-list)
+# provide GBIF taxon_key(s)
 taxon_key <- c(2865504, 5274858)
 
 # download zip_file from GBIF

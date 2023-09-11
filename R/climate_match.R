@@ -51,7 +51,7 @@
 #' # use rworldmap shapes 
 #' region <- "europe"
 #' 
-#' # provide GBIF taxon_key (-list)
+#' # provide GBIF taxon_key(s)
 #' taxon_key <- c(2865504, 5274858)
 #' 
 #' # download zip_file from GBIF
@@ -301,7 +301,7 @@ climate_match <- function(region,
                     .data$acceptedTaxonKey, 
                     .data$decimalLatitude, 
                     .data$decimalLongitude) %>% 
-    summarize(n_obs = n()) %>% 
+    dplyr::summarize(n_obs = n()) %>% 
     dplyr::ungroup() %>% 
     dplyr::left_join(SPECIES, by = c("acceptedTaxonKey" = "TK_2")) %>% 
     dplyr::rename(acceptedScientificName = .data$ASN_2)
