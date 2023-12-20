@@ -14,7 +14,7 @@ Authors@R: c(
     person("Tim", "Adriaens", email = "tim.adriaens@inbo.be",
             role = "ctb", comment = c(ORCID = "0000-0001-7268-4200")),
     person("Research Institute for Nature and Forest (INBO)",
-           role = "cph", comment = "https://www.vlaanderen.be/inbo/en-gb/"),
+           role = c("cph", "fnd"), comment = "https://www.vlaanderen.be/inbo/en-gb/"),
     person("TrIAS",
            role = "fnd", comment = "https://trias-project.be"),
     person("LIFE RIPARIAS",
