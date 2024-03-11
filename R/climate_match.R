@@ -97,15 +97,7 @@ climate_match <- function(region,
                           coord_unc, 
                           BasisOfRecord,
                           maps = TRUE) {
-  #Load packages
-  packages <- c("rgbif", "tidyverse", "rnaturalearth", "sf", "leaflet")
-  
-  for(i in packages) {
-    print(i)
-    if( ! i %in% rownames(installed.packages()) ) { install.packages( i ) }
-    library(i, character.only = TRUE)
-  }
-  
+ 
   # Checks ####
   ## Region ##
   if (missing(region)) {
