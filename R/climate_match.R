@@ -97,6 +97,14 @@ climate_match <- function(region,
                           coord_unc, 
                           BasisOfRecord,
                           maps = TRUE) {
+  #Load packages
+  packages <- c("rgbif", "tidyverse", "rnaturalearth", "sf", "leaflet")
+  
+  for(i in packages) {
+    print(i)
+    if( ! i %in% rownames(installed.packages()) ) { install.packages( i ) }
+    library(i, character.only = TRUE)
+  }
   
   # Checks ####
   ## Region ##
@@ -141,6 +149,7 @@ climate_match <- function(region,
       )
     }
   }
+  
   region_shape<-region_shape %>% st_set_crs(4326)
   
   ## Species
@@ -205,36 +214,33 @@ climate_match <- function(region,
                                 user = gbif_user, 
                                 pwd = gbif_pwd, 
                                 email = gbif_email)
+    #Follow the status of the download    
+    rgbif::occ_download_wait(set1)
     
-    repeat{
-      Sys.sleep(time = 5)
-      test_set1 <- rgbif::occ_download_meta(set1)
-      if(test_set1$status == "SUCCEEDED"){
-        data <- rgbif::occ_download_get(set1,
-                                 overwrite = TRUE) %>% 
-          rgbif::occ_download_import()
-        break()
-        
-        data <- data %>% 
-          dplyr::select("acceptedTaxonKey",
-                        "species",
-                        "decimalLatitude",
-                        "decimalLongitude",
-                        "establishmentMeans",
-                        "coordinateUncertaintyInMeters",
-                        "basisOfRecord",
-                        "taxonRank",
-                        "taxonomicStatus",
-                        "genus",
-                        "specificEpithet",
-                        "eventDate",
-                        "occurrenceStatus",
-                        "gbifID",
-                        "year",
-                        "countryCode")
-      }
-      print(test_set1$status)
-    }
+    #Retrieve downloaded records
+   data <- rgbif::occ_download_get(set1,overwrite = TRUE) %>%
+      occ_download_import() 
+    
+    #Retrieve citation of downloaded dataset
+    print(gbif_citation(occ_download_meta(set1))$download)
+    
+    data <- data %>% 
+      dplyr::select("acceptedTaxonKey",
+                    "species",
+                    "decimalLatitude",
+                    "decimalLongitude",
+                    "establishmentMeans",
+                    "coordinateUncertaintyInMeters",
+                    "basisOfRecord",
+                    "taxonRank",
+                    "taxonomicStatus",
+                    "genus",
+                    "specificEpithet",
+                    "eventDate",
+                    "occurrenceStatus",
+                    "gbifID",
+                    "year",
+                    "countryCode")
     
     if(nrow(data) == 0){
       stop("no occurrences of ", 
@@ -261,9 +267,7 @@ climate_match <- function(region,
                     .data$specificEpithet) %>% 
     dplyr::mutate(ASN_2 = paste(.data$genus, .data$specificEpithet)) %>% 
     dplyr::rename(TK_2 = .data$acceptedTaxonKey) %>% 
-    dplyr::distinct(.data$TK_2, .data$ASN_2) %>% 
-    dplyr::group_by(.data$TK_2) %>% 
-    dplyr::ungroup()
+    dplyr::distinct(.data$TK_2, .data$ASN_2) 
   
   data_redux <- data %>% 
     dplyr::mutate(acceptedScientificName = paste(.data$genus,
@@ -485,8 +489,8 @@ climate_match <- function(region,
       dplyr::mutate(GRIDCODE = as.integer(.data$GRIDCODE)) 
    
     sf_use_s2(FALSE)
-    region_shape<-sf::st_simplify(region_shape)
-    gridcode_intersect<-sf::st_intersection(shape,region_shape)
+    suppressWarnings( region_shape<-sf::st_simplify(region_shape))
+    suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,region_shape))
  
     
     for (g in gridcode_intersect$GRIDCODE) {
@@ -811,7 +815,7 @@ climate_match <- function(region,
                           acceptedScientificName = species,
                           scenario = s)
           
-          if (inherits(temp_shape, "data.frame")){
+          if (length(unique(temp_shape$scenario))==0){
             temp_shape <- temp_climate
           }else{
             temp_shape <- rbind(temp_shape, temp_climate)
@@ -849,8 +853,8 @@ climate_match <- function(region,
           fillOpacity = 0.8,
           stroke = TRUE,
           weight = 0.5,
-          group = ~scenario,
-          popup = ~popup,
+          group = ~temp_shape$scenario,
+          popup = ~temp_shape$popup,
           options = leaflet::pathOptions(pane = "background")) %>% 
         leaflet::addCircleMarkers(
           data = data_sf_species_obs,
@@ -862,7 +866,8 @@ climate_match <- function(region,
                                         to = 1, 
                                         by = 0.1),
                            position = "bottomleft",
-                           title = "<strong>Climate match</strong>") %>% 
+                           title =  paste0("<strong>Climate match</strong><br><em>",
+                                           temp_shape$acceptedScientificName[1])) %>% 
         leaflet::addLayersControl(baseGroups = ~temp_shape$scenario)
       
       single_species_maps[[i]] <- scenario_map
