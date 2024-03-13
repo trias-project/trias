@@ -61,7 +61,6 @@
 #' 
 #' # calculate all climate match outputs
 #' # with GBIF download
-#' require('rgdal')
 #' climate_match(region,
 #'               taxon_key, 
 #'               n_limit = 90,
@@ -97,7 +96,6 @@ climate_match <- function(region,
                           coord_unc, 
                           BasisOfRecord,
                           maps = TRUE) {
- 
   # Checks ####
   ## Region ##
   if (missing(region)) {
@@ -142,7 +140,7 @@ climate_match <- function(region,
     }
   }
   
-  region_shape<-region_shape %>% st_set_crs(4326)
+  region_shape<-region_shape %>% sf::st_set_crs(4326)
   
   ## Species
   taxon_key <- as.numeric(unique(taxon_key))
@@ -214,7 +212,7 @@ climate_match <- function(region,
       occ_download_import() 
     
     #Retrieve citation of downloaded dataset
-    print(gbif_citation(occ_download_meta(set1))$download)
+    print(rgbif::gbif_citation(rgbif::occ_download_meta(set1))$download)
     
     data <- data %>% 
       dplyr::select("acceptedTaxonKey",
@@ -283,7 +281,7 @@ climate_match <- function(region,
                   .data$decimalLongitude, 
                   .data$coordinateUncertaintyInMeters, 
                   .data$countryCode) %>% 
-    dplyr::mutate(year_cat = case_when(year <= 1925 ~ "1901-1925",
+    dplyr::mutate(year_cat = dplyr::case_when(year <= 1925 ~ "1901-1925",
                                        year <= 1950 ~ "1926-1950",
                                        year <= 1975 ~ "1951-1975",
                                        year <= 2000 ~ "1976-2000",
@@ -293,7 +291,7 @@ climate_match <- function(region,
                     .data$acceptedTaxonKey, 
                     .data$decimalLatitude, 
                     .data$decimalLongitude) %>% 
-    dplyr::summarize(n_obs = n()) %>% 
+    dplyr::summarize(n_obs = dplyr::n()) %>% 
     dplyr::ungroup() %>% 
     dplyr::left_join(SPECIES, by = c("acceptedTaxonKey" = "TK_2")) %>% 
     dplyr::rename(acceptedScientificName = .data$ASN_2)
@@ -311,7 +309,7 @@ climate_match <- function(region,
   remove(data)
   
  data_sf <- data_redux %>% 
-    st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), crs = 4326, remove = FALSE)
+    sf::st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), crs = 4326, remove = FALSE)
   
   
   
@@ -571,7 +569,7 @@ climate_match <- function(region,
       if(rlang::is_empty(species)){
         next
       }else{
-        temp_climate <- left_join(current_climate_shape,
+        temp_climate <- dplyr::left_join(current_climate_shape,
                                   data.frame(temp_data), 
                                   by = "Classification")
         
@@ -689,7 +687,7 @@ climate_match <- function(region,
         if(rlang::is_empty(species)){
           next
         }else{
-          temp_climate <- left_join(scenario_shape, as.data.frame(temp_data), 
+          temp_climate <- dplyr::left_join(scenario_shape, as.data.frame(temp_data), 
                                     by = "Classification")
           
           temp_climate <- temp_climate %>% 
@@ -798,7 +796,7 @@ climate_match <- function(region,
               dplyr::left_join(legends$KG_A1FI, by = "GRIDCODE")
           }
           
-          temp_climate <- left_join(scenario_shape, as.data.frame(temp_data), 
+          temp_climate <- dplyr::left_join(scenario_shape, as.data.frame(temp_data), 
                                     by = "Classification")
                                    
           
