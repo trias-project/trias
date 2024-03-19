@@ -5,7 +5,7 @@
 #' 
 #' @param region (optional character) the full name of the target nation or 
 #' region 
-#' region can also be a custom region (SpatialPolygon or sf object).
+#' region can also be a custom region (sf object).
 #' @param taxon_key (character or vector) containing GBIF - taxonkey(s)
 #' @param zip_file (optional character) The path (inclu. extension) of a zipfile 
 #' from a previous GBIF-download. This zipfile should contain data of the 
@@ -48,7 +48,6 @@
 #' @importFrom dplyr %>% .data
 #' @examples
 #' \dontrun{
-#' # use rworldmap shapes 
 #' region <- "europe"
 #' 
 #' # provide GBIF taxon_key(s)
@@ -209,7 +208,7 @@ climate_match <- function(region,
     
     #Retrieve downloaded records
    data <- rgbif::occ_download_get(set1,overwrite = TRUE) %>%
-      occ_download_import() 
+      rgbif::occ_download_import() 
     
     #Retrieve citation of downloaded dataset
     print(rgbif::gbif_citation(rgbif::occ_download_meta(set1))$download)
@@ -433,6 +432,8 @@ climate_match <- function(region,
     gc()
   }
   
+  #Drop geometry column
+  data_overlay<-sf::st_drop_geometry(data_overlay)
   
   ## Calculate threshold parameters ####
   data_overlay_unfiltered <- data_overlay %>% 
@@ -469,7 +470,7 @@ climate_match <- function(region,
   # Calculate KG codes 
   for (s in scenarios) {
     shape <- sf::st_as_sf(future[[s]])%>% 
-      st_set_crs(4326)
+      sf::st_set_crs(4326)
     if (c("gridcode") %in% colnames(shape)) {
       shape <- shape %>% 
         dplyr::rename(GRIDCODE = .data$gridcode) 
@@ -478,7 +479,7 @@ climate_match <- function(region,
     shape <- shape %>% 
       dplyr::mutate(GRIDCODE = as.integer(.data$GRIDCODE)) 
    
-    sf_use_s2(FALSE)
+    sf::sf_use_s2(FALSE)
     suppressWarnings( region_shape<-sf::st_simplify(region_shape))
     suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,region_shape))
  
@@ -602,23 +603,28 @@ climate_match <- function(region,
     )
     
     # create color palette 
-    pal_current <- leaflet::colorBin("OrRd", 
+    pal_current <- leaflet::colorBin(palette = "YlOrRd", 
                                      domain = seq(from = 0, 
                                                   to = 1, 
                                                   by = 0.1),
                                      na.color =  "#f7f7f7",
                                      bins = 9,
                                      reverse = FALSE)
+   
     
     # create current climate map
     current_climate_map <- leaflet::leaflet(current_climate) %>% 
+      leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels") %>%
       leaflet::addPolygons(color = "#bababa",
                            fillColor = ~pal_current(perc_climate),
-                           fillOpacity = 0.8,
+                           fillOpacity = 1,
                            stroke = TRUE,
-                           weight = 0.5,
+                           weight = 0.8,
                            group = ~current_climate$acceptedScientificName,
-                           popup = ~current_climate$popup) %>% 
+                           popup = ~current_climate$popup,
+                           highlightOptions = leaflet::highlightOptions(weight = 2,
+                                                                        color = "grey",
+                                                                        bringToFront = FALSE)) %>% 
       leaflet::addCircleMarkers(data = data_sf,
                                 group = ~data_sf$acceptedScientificName,
                                 color = "black",
@@ -631,25 +637,13 @@ climate_match <- function(region,
                                       to = 1, 
                                       by = 0.1),
                          position = "bottomleft",
-                         title = "Climate match") %>% 
+                         title = "Climate match</br><span style='font-weight:lighter;
+                         '>Current climate</span>") %>% 
       leaflet::addLayersControl(
-        baseGroups = ~data_sf$acceptedScientificName
-      ) %>% 
-      leaflet::addPolygons(data = sea,
-                           fillColor = "#e0e0e0",
-                           weight = 0.5)
+        baseGroups = ~data_sf$acceptedScientificName)
     
     ## map future climate suitability ####
     
-    # Create basemap
-    
-    future_climate_map <- leaflet::leaflet(sea) %>% 
-      leaflet::addPolygons(data = sea,
-                           fillColor = "#e0e0e0",
-                           weight = 0.5) %>% 
-      leaflet::addLegend(colors = "black",
-                         labels = "observations",
-                         position = "bottomleft")
     
     # Create scenario maps
     future_scenario_maps <- purrr::rep_along(scenarios, list())
@@ -717,27 +711,36 @@ climate_match <- function(region,
       
       
       # Add layer to map
-      scenario_map <- future_climate_map %>% 
+      scenario_map <- leaflet::leaflet(temp_shape) %>%
+        leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels") %>%
         leaflet::addPolygons(data = temp_shape,
                              color = "#bababa",
                              fillColor = ~pal_current(temp_shape$perc_climate),
-                             fillOpacity = 0.8,
+                             fillOpacity = 1,
                              stroke = TRUE,
-                             weight = 0.5,
+                             weight = 0.8,
                              group = ~temp_shape$acceptedScientificName,
-                             popup = ~temp_shape$popup) %>% 
+                             popup = ~temp_shape$popup,
+                             highlightOptions = leaflet::highlightOptions(weight = 2,
+                                                                          color = "grey",
+                                                                          bringToFront = FALSE)) %>% 
         leaflet::addCircleMarkers(data = data_sf,
                                   group = ~data_sf$acceptedScientificName,
                                   color = "black",
                                   radius = 1) %>% 
+        leaflet::addLegend(colors = "black",
+                           labels = "observations",
+                           position = "bottomleft")%>% 
+        leaflet::addLayersControl(
+          baseGroups= ~temp_shape$acceptedScientificName) %>% 
         leaflet::addLegend(
           pal = pal_current,
           values = seq(from = 0, 
                        to = 1, 
                        by = 0.1),
           position = "bottomleft",
-          title = paste0("<strong>Climate match</strong></br>", s)) %>% 
-        leaflet::addLayersControl(baseGroups = ~temp_shape$acceptedScientificName)
+          title = paste0("<strong>Climate match</strong></br><span style='font-weight:lighter;'>"
+                         , s, "</span>")) 
       
       
       future_scenario_maps[[i]] <- scenario_map
@@ -745,15 +748,6 @@ climate_match <- function(region,
     
     ## Single species - climate suitability maps ####
     
-    # Create basemap
-    
-    single_species_map <- leaflet::leaflet(sea) %>% 
-      leaflet::addPolygons(data = sea,
-                           fillColor = "#e0e0e0",
-                           weight = 0.5) %>% 
-      leaflet::addLegend(colors = "black",
-                         labels = "observations",
-                         position = "bottomleft")
     
     # Create single species maps
     
@@ -833,19 +827,23 @@ climate_match <- function(region,
         dplyr::filter(acceptedTaxonKey == t)
       
       # Add layer to map
-      scenario_map <- single_species_map %>% 
+      scenario_map <- leaflet::leaflet(temp_shape) %>% 
+        leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels") %>%
         leaflet::addMapPane("background", zIndex = 400) %>%  
         leaflet::addMapPane("foreground", zIndex = 500) %>% 
         leaflet::addPolygons(
           data = temp_shape,
           color = "#bababa",
           fillColor = ~pal_current(perc_climate),
-          fillOpacity = 0.8,
+          fillOpacity = 1,
           stroke = TRUE,
-          weight = 0.5,
+          weight = 0.8,
           group = ~temp_shape$scenario,
           popup = ~temp_shape$popup,
-          options = leaflet::pathOptions(pane = "background")) %>% 
+          options = leaflet::pathOptions(pane = "background"),
+          highlightOptions = leaflet::highlightOptions(weight = 2,
+                                                       color = "grey",
+                                                       bringToFront = FALSE)) %>% 
         leaflet::addCircleMarkers(
           data = data_sf_species_obs,
           color = "black",
@@ -856,9 +854,12 @@ climate_match <- function(region,
                                         to = 1, 
                                         by = 0.1),
                            position = "bottomleft",
-                           title =  paste0("<strong>Climate match</strong><br><em>",
-                                           temp_shape$acceptedScientificName[1])) %>% 
-        leaflet::addLayersControl(baseGroups = ~temp_shape$scenario)
+                           title =  paste0("<strong>Climate match</strong><br><em><span style='font-weight:lighter;'>",
+                                           temp_shape$acceptedScientificName[1], "</span>")) %>% 
+        leaflet::addLayersControl(baseGroups = ~temp_shape$scenario)%>% 
+        leaflet::addLegend(colors = "black",
+                           labels = "observations",
+                           position = "bottomleft")
       
       single_species_maps[[i]] <- scenario_map
     }  
@@ -869,7 +870,8 @@ climate_match <- function(region,
     single_species_maps <- NULL
   }
   
-  sf_use_s2(TRUE)
+  sf::sf_use_s2(TRUE)
+  
   # Return ####
   return(list(unfiltered = data_overlay_unfiltered, 
               cm = cm,
