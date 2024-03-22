@@ -312,8 +312,8 @@ climate_match <- function(region,
   
   
   
-  # Climate matching occurrence data ####
-  
+ ### Climate matching occurrence data ####
+ ### Link each occurrence point to the climatic region and corresponding gridcode at the time of its observation
   timeperiodes <- c("1901-1925", 
                     "1926-1950",
                     "1951-1975",
@@ -322,7 +322,9 @@ climate_match <- function(region,
   
   data_overlay <- data.frame()
   
-  for(t in timeperiodes){
+  suppressWarnings(
+    for(t in timeperiodes){
+    
     print(t)
     # Import legends
     KG_Rubel_Kotteks_Legend <- legends$KG_A1FI
@@ -348,11 +350,11 @@ climate_match <- function(region,
       }
       
       if(nrow(data_sf_sub) <= 11000){
-        data_sf_sub$GRIDCODE <- apply(sf::st_intersects(obs_shape, 
+        data_sf_sub$GRIDCODE <- suppressMessages(apply(sf::st_intersects(obs_shape, 
                                                         data_sf_sub, 
                                                         sparse = FALSE), 2, 
                                       function(col) {obs_shape[which(col),
-                                      ]$GRIDCODE})
+                                      ]$GRIDCODE}))
         pb <- utils::txtProgressBar(min = 0, 
                              max = length(data_sf_sub$GRIDCODE), 
                              style = 3)
@@ -430,7 +432,7 @@ climate_match <- function(region,
     remove(obs_shape)
     remove(data_sf_sub)
     gc()
-  }
+  })
   
   #Drop geometry column
   data_overlay<-sf::st_drop_geometry(data_overlay)
@@ -454,6 +456,10 @@ climate_match <- function(region,
                   .data$n_totaal, 
                   .data$perc_climate)
   
+  
+  ###Create a dataframe with the climate regions, their gridcodes and corresponding information that occur in the region of 
+  ###interest under each future scenario  ###
+  
   # Determine future scenarios ####
   scenarios <- c("2001-2025-A1FI",
                  "2026-2050-A1FI",
@@ -462,7 +468,6 @@ climate_match <- function(region,
                  "2076-2100-A1FI")
   
   # Create empty output 
-  
   output <- data.frame() %>% 
     dplyr::mutate(scenario = "",
                   KG_GridCode = as.integer(""))
@@ -480,10 +485,10 @@ climate_match <- function(region,
       dplyr::mutate(GRIDCODE = as.integer(.data$GRIDCODE)) 
    
     sf::sf_use_s2(FALSE)
-    suppressWarnings( region_shape<-sf::st_simplify(region_shape))
-    suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,region_shape))
- 
-    
+   region_shape<-sf::st_simplify(region_shape)
+    gridcode_intersect<-sf::st_intersection(shape,region_shape)
+    sf::sf_use_s2(TRUE)
+    #Take the gridcodes present in the region of interest under each scenario and add them to the output dataframe
     for (g in gridcode_intersect$GRIDCODE) {
       output <- output %>% 
         dplyr::add_row(scenario = s,
@@ -506,8 +511,10 @@ climate_match <- function(region,
   future_climate <- output_final %>% 
     dplyr::filter(!is.na(.data$Classification))
   
-  # Per scenario filter ####
   
+  ###Link the previous dataframe (with the climatic regions  under all
+  ### future scenarios) to the data regarding percentage climate matching in each of these regions
+  # Per scenario filter ####
   cm <- data.frame()
   
   for (b in unique(future_climate$scenario)) {
@@ -541,7 +548,8 @@ climate_match <- function(region,
     dplyr::filter(.data$n_totaal >= n_limit,
                   .data$perc_climate >= cm_limit)
   
-  # MAPS ####
+  
+  #### MAPS ####
   if (maps == TRUE) {
     ## map current climate suitability ####
     
@@ -586,16 +594,32 @@ climate_match <- function(region,
       }
     }
     
+    
+    
     current_climate <- current_climate %>% 
-      dplyr::mutate(
-        popup = paste0("<strong>Classification: </strong>", 
-                       .data$Description, " (",
-                       .data$Classification, ")",
-                       "</br><strong>ScientificName: </strong>", 
-                       .data$acceptedScientificName,
+      dplyr::mutate (popup="") 
+    
+   #Create a popup for each climatic region where %obs in climate shows the percentage when this value is present in the datafram
+  #When this field is empty in the dataframe, this value becomes 0% in the popup
+  for(i in 1: nrow(current_climate)){
+        if (!is.na(current_climate$perc_climate[i])) {
+          current_climate$popup[i] =  paste0("<strong>Classification: </strong>", 
+                                             current_climate$Description[i], " (",
+                                             current_climate$Classification[i], ")",
+                       "</br><strong>ScientificName: </strong>", "<em>",
+                       current_climate$acceptedScientificName[i], "</em>",
                        "</br><strong>%obs in climate: </strong>", 
-                       round(.data$perc_climate*100, 2), "%")
-    )
+                       round(current_climate$perc_climate[i]*100, 2), "%")
+        }else{
+          current_climate$popup[i] =  paste0("<strong>Classification: </strong>", 
+                                             current_climate$Description[i], " (",
+                                             current_climate$Classification[i], ")",
+                 "</br><strong>ScientificName: </strong>", "<em>",
+                 current_climate$acceptedScientificName[i], "</em>",
+                 "</br><strong>%obs in climate: </strong> 0%")
+        }
+      }
+          
     
     current_climate <- subset(
       current_climate,
@@ -604,17 +628,25 @@ climate_match <- function(region,
     
     # create color palette 
     pal_current <- leaflet::colorBin(palette = "YlOrRd", 
-                                     domain = seq(from = 0, 
-                                                  to = 1, 
-                                                  by = 0.1),
+                                     domain = c(NA, seq(from = 0, to = 1, by = 0.1)),
+                                     
                                      na.color =  "#f7f7f7",
-                                     bins = 9,
+                                     
+                                     bins = 10,
                                      reverse = FALSE)
    
     
     # create current climate map
-    current_climate_map <- leaflet::leaflet(current_climate) %>% 
-      leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels") %>%
+    current_climate_map <- suppressWarnings(leaflet::leaflet(current_climate, options = leaflet::leafletOptions(minZoom = 0.75, maxBoundsViscosity= 1.0)) %>% 
+      leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels",
+                                 options=list(noWrap=TRUE))%>%
+      leaflet::setMaxBounds( lng1 = -180
+                             , lat1 = -90
+                             , lng2 = 180
+                             , lat2 = 90 )%>%
+      leaflet::setView( lng = 0
+                        , lat = 0
+                        , zoom = 1 ) %>%
       leaflet::addPolygons(color = "#bababa",
                            fillColor = ~pal_current(perc_climate),
                            fillOpacity = 1,
@@ -623,24 +655,32 @@ climate_match <- function(region,
                            group = ~current_climate$acceptedScientificName,
                            popup = ~current_climate$popup,
                            highlightOptions = leaflet::highlightOptions(weight = 2,
-                                                                        color = "grey",
+                                                                        color = "#6b6b6b",
                                                                         bringToFront = FALSE)) %>% 
       leaflet::addCircleMarkers(data = data_sf,
                                 group = ~data_sf$acceptedScientificName,
                                 color = "black",
                                 radius = 1) %>% 
       leaflet::addLegend(colors = "black",
-                         labels = "observations",
+                         labels = "Observations",
                          position = "bottomleft") %>% 
-      leaflet::addLegend(pal = pal_current,
-                         values = seq(from = 0, 
-                                      to = 1, 
-                                      by = 0.1),
-                         position = "bottomleft",
-                         title = "Climate match</br><span style='font-weight:lighter;
-                         '>Current climate</span>") %>% 
+      leaflet::addLegend(
+        colors=c("#f7f7f7","#FFFFCC" ,"#FFEFA5", "#FEDD7F" ,"#FFBF5A", "#FE9E43", "#FD7434", "#F44025" ,"#DA151F", "#B60026", "#800026"),
+        labels = c("0",
+                   "0< - 10", 
+                   "10 - 20",
+                   "20 - 30",
+                   "30 - 40",
+                   "40 - 50",
+                   "50 - 60",
+                   "60 - 70",
+                   "70 - 80",
+                   "80 - 90",
+                   "90 - 100"),
+        position = "bottomleft",
+        title = "Climate match (%)</br><span style='font-weight:lighter;'>Current climate</span>") %>% 
       leaflet::addLayersControl(
-        baseGroups = ~data_sf$acceptedScientificName)
+        baseGroups = ~data_sf$acceptedScientificName))
     
     ## map future climate suitability ####
     
@@ -697,22 +737,44 @@ climate_match <- function(region,
       }
       
       temp_shape <- temp_shape %>% 
-        dplyr::mutate(
-          popup = paste0("<strong>Classification: </strong>", 
-                         .data$Description, " (", 
-                         .data$Classification, ")", 
-                         "</br><strong>ScientificName: </strong>", 
-                         .data$acceptedScientificName,
-                         "</br><strong>%obs in climate: </strong>", 
-                         round(.data$perc_climate*100, 2), "%")
-        )
+        dplyr::mutate (popup="") 
+      
+      #Create a popup for each climatic region where %obs in climate shows the percentage when this value is present in the datafram
+      #When this field is empty in the dataframe, this value becomes 0% in the popup
+      for(i in 1: nrow(temp_shape)){
+        if (!is.na(temp_shape$perc_climate[i])) {
+          temp_shape$popup[i] =  paste0("<strong>Classification: </strong>", 
+                                             temp_shape$Description[i], " (",
+                                             temp_shape$Classification[i], ")",
+                                             "</br><strong>ScientificName: </strong>", "<em>",
+                                             temp_shape$acceptedScientificName[i], "</em>",
+                                             "</br><strong>%obs in climate: </strong>", 
+                                             round(temp_shape$perc_climate[i]*100, 2), "%")
+        }else{
+          temp_shape$popup[i] =  paste0("<strong>Classification: </strong>", 
+                                             temp_shape$Description[i], " (",
+                                             temp_shape$Classification[i], ")",
+                                             "</br><strong>ScientificName: </strong>", "<em>",
+                                             temp_shape$acceptedScientificName[i], "</em>",
+                                             "</br><strong>%obs in climate: </strong> 0%")
+        }
+      }
+      
       
       temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
       
       
       # Add layer to map
-      scenario_map <- leaflet::leaflet(temp_shape) %>%
-        leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels") %>%
+      scenario_map <- suppressWarnings(leaflet::leaflet(temp_shape, options = leaflet::leafletOptions(minZoom = 0.75, maxBoundsViscosity= 1.0)) %>% 
+        leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels",
+                                   options=list(noWrap=TRUE))%>%
+        leaflet::setMaxBounds( lng1 = -180
+                               , lat1 = -90
+                               , lng2 = 180
+                               , lat2 = 90 )%>%
+        leaflet::setView( lng = 0
+                          , lat = 0
+                          , zoom = 1 ) %>%
         leaflet::addPolygons(data = temp_shape,
                              color = "#bababa",
                              fillColor = ~pal_current(temp_shape$perc_climate),
@@ -722,25 +784,33 @@ climate_match <- function(region,
                              group = ~temp_shape$acceptedScientificName,
                              popup = ~temp_shape$popup,
                              highlightOptions = leaflet::highlightOptions(weight = 2,
-                                                                          color = "grey",
+                                                                          color = "#6b6b6b",
                                                                           bringToFront = FALSE)) %>% 
         leaflet::addCircleMarkers(data = data_sf,
                                   group = ~data_sf$acceptedScientificName,
                                   color = "black",
                                   radius = 1) %>% 
         leaflet::addLegend(colors = "black",
-                           labels = "observations",
+                           labels = "Observations",
                            position = "bottomleft")%>% 
         leaflet::addLayersControl(
           baseGroups= ~temp_shape$acceptedScientificName) %>% 
-        leaflet::addLegend(
-          pal = pal_current,
-          values = seq(from = 0, 
-                       to = 1, 
-                       by = 0.1),
-          position = "bottomleft",
-          title = paste0("<strong>Climate match</strong></br><span style='font-weight:lighter;'>"
-                         , s, "</span>")) 
+          leaflet::addLegend(
+            colors=c("#f7f7f7","#FFFFCC" ,"#FFEFA5", "#FEDD7F" ,"#FFBF5A", "#FE9E43", "#FD7434", "#F44025" ,"#DA151F", "#B60026", "#800026"),
+            labels = c("0",
+                       "0< - 10", 
+                       "10 - 20",
+                       "20 - 30",
+                       "30 - 40",
+                       "40 - 50",
+                       "50 - 60",
+                       "60 - 70",
+                       "70 - 80",
+                       "80 - 90",
+                       "90 - 100"),
+            position = "bottomleft",
+          title = paste0("<strong>Climate match (%)</strong></br><span style='font-weight:lighter;'>"
+                         , s, "</span>"))) 
       
       
       future_scenario_maps[[i]] <- scenario_map
@@ -808,17 +878,28 @@ climate_match <- function(region,
       }
       
       temp_shape <- temp_shape %>% 
-        dplyr::mutate(
-          popup = paste0("<strong>Classification: </strong>", 
-                         .data$Description, " (", 
-                         .data$Classification, ")", 
-                         "</br><strong>ScientificName: </strong>", 
-                         .data$acceptedScientificName,
-                         "</br><strong>%obs in climate: </strong>", 
-                         round(.data$perc_climate*100, 2), "%",
-                         "</br><strong>scenario: </strong>",
-                         .data$scenario)
-      )
+        dplyr::mutate (popup="") 
+      
+      #Create a popup for each climatic region where %obs in climate shows the percentage when this value is present in the datafram
+      #When this field is empty in the dataframe, this value becomes 0% in the popup
+      for(i in 1: nrow(temp_shape)){
+        if (!is.na(temp_shape$perc_climate[i])) {
+          temp_shape$popup[i] =  paste0("<strong>Classification: </strong>", 
+                                        temp_shape$Description[i], " (",
+                                        temp_shape$Classification[i], ")",
+                                        "</br><strong>ScientificName: </strong>", "<em>",
+                                        temp_shape$acceptedScientificName[i], "</em>",
+                                        "</br><strong>%obs in climate: </strong>", 
+                                        round(temp_shape$perc_climate[i]*100, 2), "%")
+        }else{
+          temp_shape$popup[i] =  paste0("<strong>Classification: </strong>", 
+                                        temp_shape$Description[i], " (",
+                                        temp_shape$Classification[i], ")",
+                                        "</br><strong>ScientificName: </strong>", "<em>",
+                                        temp_shape$acceptedScientificName[i], "</em>",
+                                        "</br><strong>%obs in climate: </strong> 0%")
+        }
+      }
       
       temp_shape <- subset(temp_shape, !is.na(temp_shape$Classification))
       
@@ -827,8 +908,16 @@ climate_match <- function(region,
         dplyr::filter(acceptedTaxonKey == t)
       
       # Add layer to map
-      scenario_map <- leaflet::leaflet(temp_shape) %>% 
-        leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels") %>%
+      scenario_map <- suppressWarnings(leaflet::leaflet(temp_shape, options = leaflet::leafletOptions(minZoom = 0.75, maxBoundsViscosity= 1.0)) %>% 
+        leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels",
+                                   options=list(noWrap=TRUE))%>%
+        leaflet::setMaxBounds( lng1 = -180
+                               , lat1 = -90
+                               , lng2 = 180
+                               , lat2 = 90 )%>%
+        leaflet::setView( lng = 0
+                          , lat = 0
+                          , zoom = 1 ) %>%
         leaflet::addMapPane("background", zIndex = 400) %>%  
         leaflet::addMapPane("foreground", zIndex = 500) %>% 
         leaflet::addPolygons(
@@ -842,24 +931,33 @@ climate_match <- function(region,
           popup = ~temp_shape$popup,
           options = leaflet::pathOptions(pane = "background"),
           highlightOptions = leaflet::highlightOptions(weight = 2,
-                                                       color = "grey",
+                                                       color = "#6b6b6b",
                                                        bringToFront = FALSE)) %>% 
         leaflet::addCircleMarkers(
           data = data_sf_species_obs,
           color = "black",
           radius = 1,
           options = leaflet::pathOptions(pane = "foreground")) %>% 
-        leaflet::addLegend(pal = pal_current,
-                           values = seq(from = 0, 
-                                        to = 1, 
-                                        by = 0.1),
-                           position = "bottomleft",
-                           title =  paste0("<strong>Climate match</strong><br><em><span style='font-weight:lighter;'>",
+          leaflet::addLegend(
+            colors=c("#f7f7f7","#FFFFCC" ,"#FFEFA5", "#FEDD7F" ,"#FFBF5A", "#FE9E43", "#FD7434", "#F44025" ,"#DA151F", "#B60026", "#800026"),
+            labels = c("0",
+                       "0< - 10", 
+                       "10 - 20",
+                       "20 - 30",
+                       "30 - 40",
+                       "40 - 50",
+                       "50 - 60",
+                       "60 - 70",
+                       "70 - 80",
+                       "80 - 90",
+                       "90 - 100"),
+            position = "bottomleft",
+            title =  paste0("<strong>Climate match (%)</strong><br><em><span style='font-weight:lighter;'>",
                                            temp_shape$acceptedScientificName[1], "</span>")) %>% 
         leaflet::addLayersControl(baseGroups = ~temp_shape$scenario)%>% 
-        leaflet::addLegend(colors = "black",
-                           labels = "observations",
-                           position = "bottomleft")
+      leaflet::addLegend(colors = "black",
+                           labels = "Observations",
+                           position = "bottomleft"))
       
       single_species_maps[[i]] <- scenario_map
     }  
@@ -870,14 +968,14 @@ climate_match <- function(region,
     single_species_maps <- NULL
   }
   
-  sf::sf_use_s2(TRUE)
+  
   
   # Return ####
-  return(list(unfiltered = data_overlay_unfiltered, 
-              cm = cm,
-              filtered = data_overlay_scenario_filtered,
-              future = future_climate,
-              spatial = data_sf,
+  return(list(unfiltered = as.data.frame(data_overlay_unfiltered), 
+              cm =as.data.frame(cm),
+              filtered = as.data.frame(data_overlay_scenario_filtered),
+              future = as.data.frame(future_climate),
+              spatial = as.data.frame(data_sf),
               current_map = current_climate_map,
               future_maps = future_scenario_maps,
               single_species_maps = single_species_maps))
