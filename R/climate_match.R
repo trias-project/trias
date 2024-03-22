@@ -473,6 +473,7 @@ climate_match <- function(region,
                   KG_GridCode = as.integer(""))
   
   # Calculate KG codes 
+  sf::sf_use_s2(FALSE)
   for (s in scenarios) {
     shape <- sf::st_as_sf(future[[s]])%>% 
       sf::st_set_crs(4326)
@@ -484,10 +485,10 @@ climate_match <- function(region,
     shape <- shape %>% 
       dplyr::mutate(GRIDCODE = as.integer(.data$GRIDCODE)) 
    
-    sf::sf_use_s2(FALSE)
+   
    region_shape<-sf::st_simplify(region_shape)
     gridcode_intersect<-sf::st_intersection(shape,region_shape)
-    sf::sf_use_s2(TRUE)
+    
     #Take the gridcodes present in the region of interest under each scenario and add them to the output dataframe
     for (g in gridcode_intersect$GRIDCODE) {
       output <- output %>% 
@@ -496,6 +497,7 @@ climate_match <- function(region,
     }
   }
   
+  sf::sf_use_s2(TRUE)
   output_1 <- output %>% 
     dplyr::filter(grepl(pattern = "Beck", .data$scenario)) %>% 
     dplyr::left_join(KG_Beck, by = c("KG_GridCode" = "GRIDCODE"))
@@ -601,21 +603,21 @@ climate_match <- function(region,
     
    #Create a popup for each climatic region where %obs in climate shows the percentage when this value is present in the datafram
   #When this field is empty in the dataframe, this value becomes 0% in the popup
-  for(i in 1: nrow(current_climate)){
-        if (!is.na(current_climate$perc_climate[i])) {
-          current_climate$popup[i] =  paste0("<strong>Classification: </strong>", 
-                                             current_climate$Description[i], " (",
-                                             current_climate$Classification[i], ")",
+  for(x in 1: nrow(current_climate)){
+        if (!is.na(current_climate$perc_climate[x])) {
+          current_climate$popup[x] =  paste0("<strong>Classification: </strong>", 
+                                             current_climate$Description[x], " (",
+                                             current_climate$Classification[x], ")",
                        "</br><strong>ScientificName: </strong>", "<em>",
-                       current_climate$acceptedScientificName[i], "</em>",
+                       current_climate$acceptedScientificName[x], "</em>",
                        "</br><strong>%obs in climate: </strong>", 
-                       round(current_climate$perc_climate[i]*100, 2), "%")
+                       round(current_climate$perc_climate[x]*100, 2), "%")
         }else{
-          current_climate$popup[i] =  paste0("<strong>Classification: </strong>", 
-                                             current_climate$Description[i], " (",
-                                             current_climate$Classification[i], ")",
+          current_climate$popup[x] =  paste0("<strong>Classification: </strong>", 
+                                             current_climate$Description[x], " (",
+                                             current_climate$Classification[x], ")",
                  "</br><strong>ScientificName: </strong>", "<em>",
-                 current_climate$acceptedScientificName[i], "</em>",
+                 current_climate$acceptedScientificName[x], "</em>",
                  "</br><strong>%obs in climate: </strong> 0%")
         }
       }
@@ -741,21 +743,21 @@ climate_match <- function(region,
       
       #Create a popup for each climatic region where %obs in climate shows the percentage when this value is present in the datafram
       #When this field is empty in the dataframe, this value becomes 0% in the popup
-      for(i in 1: nrow(temp_shape)){
-        if (!is.na(temp_shape$perc_climate[i])) {
-          temp_shape$popup[i] =  paste0("<strong>Classification: </strong>", 
-                                             temp_shape$Description[i], " (",
-                                             temp_shape$Classification[i], ")",
+      for(x in 1: nrow(temp_shape)){
+        if (!is.na(temp_shape$perc_climate[x])) {
+          temp_shape$popup[x] =  paste0("<strong>Classification: </strong>", 
+                                             temp_shape$Description[x], " (",
+                                             temp_shape$Classification[x], ")",
                                              "</br><strong>ScientificName: </strong>", "<em>",
-                                             temp_shape$acceptedScientificName[i], "</em>",
+                                             temp_shape$acceptedScientificName[x], "</em>",
                                              "</br><strong>%obs in climate: </strong>", 
-                                             round(temp_shape$perc_climate[i]*100, 2), "%")
+                                             round(temp_shape$perc_climate[x]*100, 2), "%")
         }else{
-          temp_shape$popup[i] =  paste0("<strong>Classification: </strong>", 
-                                             temp_shape$Description[i], " (",
-                                             temp_shape$Classification[i], ")",
+          temp_shape$popup[x] =  paste0("<strong>Classification: </strong>", 
+                                             temp_shape$Description[x], " (",
+                                             temp_shape$Classification[x], ")",
                                              "</br><strong>ScientificName: </strong>", "<em>",
-                                             temp_shape$acceptedScientificName[i], "</em>",
+                                             temp_shape$acceptedScientificName[x], "</em>",
                                              "</br><strong>%obs in climate: </strong> 0%")
         }
       }
@@ -882,21 +884,21 @@ climate_match <- function(region,
       
       #Create a popup for each climatic region where %obs in climate shows the percentage when this value is present in the datafram
       #When this field is empty in the dataframe, this value becomes 0% in the popup
-      for(i in 1: nrow(temp_shape)){
-        if (!is.na(temp_shape$perc_climate[i])) {
-          temp_shape$popup[i] =  paste0("<strong>Classification: </strong>", 
-                                        temp_shape$Description[i], " (",
-                                        temp_shape$Classification[i], ")",
+      for(x in 1: nrow(temp_shape)){
+        if (!is.na(temp_shape$perc_climate[x])) {
+          temp_shape$popup[x] =  paste0("<strong>Classification: </strong>", 
+                                        temp_shape$Description[x], " (",
+                                        temp_shape$Classification[x], ")",
                                         "</br><strong>ScientificName: </strong>", "<em>",
-                                        temp_shape$acceptedScientificName[i], "</em>",
+                                        temp_shape$acceptedScientificName[x], "</em>",
                                         "</br><strong>%obs in climate: </strong>", 
-                                        round(temp_shape$perc_climate[i]*100, 2), "%")
+                                        round(temp_shape$perc_climate[x]*100, 2), "%")
         }else{
-          temp_shape$popup[i] =  paste0("<strong>Classification: </strong>", 
-                                        temp_shape$Description[i], " (",
-                                        temp_shape$Classification[i], ")",
+          temp_shape$popup[x] =  paste0("<strong>Classification: </strong>", 
+                                        temp_shape$Description[x], " (",
+                                        temp_shape$Classification[x], ")",
                                         "</br><strong>ScientificName: </strong>", "<em>",
-                                        temp_shape$acceptedScientificName[i], "</em>",
+                                        temp_shape$acceptedScientificName[x], "</em>",
                                         "</br><strong>%obs in climate: </strong> 0%")
         }
       }
