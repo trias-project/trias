@@ -86,6 +86,7 @@
 #'               BasisOfRecord = "HUMAN_OBSERVATION",
 #'               maps = FALSE
 #' )
+#' }
 climate_match <- function(region, 
                           taxon_key, 
                           zip_file,
