@@ -59,7 +59,7 @@ climate scenarios for the target nation or region and based on the \code{unfilte
 climate_limit thresholds have been applied
 \item \code{future}: a dataframe containing a list per scenario of future climate
 zones in the target nation or region
-\item \code{spatial} a spatialpointsdataframe containing the observations used
+\item \code{spatial} a sf object containing the observations used
 in the analysis
 \item \code{current_map} a leaflet object displaying the degree of wordlwide
 climate match with the climate from 1980 till 2016
