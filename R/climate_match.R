@@ -248,7 +248,7 @@ climate_match <- function(region,
   if(base::missing(BasisOfRecord)){
     BasisOfRecord <- unique(data$basisOfRecord)
     warning(paste0("No BasisOfRecord parameter was provided, using the following",
-                   " values advailable in the data: ",paste(BasisOfRecord, collapse = ", ")))
+                   " values available in the data: ",paste(BasisOfRecord, collapse = ", ")))
   }
   
   SPECIES <- data %>% 
