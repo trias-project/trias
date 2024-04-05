@@ -35,7 +35,7 @@
 #' climate_limit thresholds have been applied
 #' - `future`: a dataframe containing a list per scenario of future climate 
 #' zones in the target nation or region
-#' - `spatial` a spatialpointsdataframe containing the observations used 
+#' - `spatial` a sf object containing the observations used 
 #' in the analysis
 #' - `current_map` a leaflet object displaying the degree of wordlwide 
 #' climate match with the climate from 1980 till 2016
@@ -980,7 +980,7 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
               cm =as.data.frame(cm),
               filtered = as.data.frame(data_overlay_scenario_filtered),
               future = as.data.frame(future_climate),
-              spatial = as.data.frame(data_sf),
+              spatial = data_sf,
               current_map = current_climate_map,
               future_maps = future_scenario_maps,
               single_species_maps = single_species_maps))
