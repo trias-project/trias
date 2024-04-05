@@ -51,7 +51,7 @@ Imports:
 	  svDialogs,
     tibble,
     tidyr,
-    tidyselect,
+    tidyselect (>= 1.2.0),
     utils,
     rnaturalearth
 Suggests:
