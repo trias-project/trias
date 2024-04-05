@@ -38,28 +38,23 @@ Imports:
     ggplot2,
     gratia,
     leaflet,
-    methods,
     mgcv,
     plotly,
     purrr,
-    raster,
     readr,
     reshape2,
     rgbif (>= 3.0),
     rlang,
-    rworldmap,
     scales,
-    sp,
     sf,
     stringr,
 	  svDialogs,
     tibble,
     tidyr,
     tidyselect,
-    utils
+    utils,
+    rnaturalearth
 Suggests:
-    rgdal,
-    rgeos,
     covr,
     knitr,
     testthat
@@ -69,4 +64,4 @@ Encoding: UTF-8
 LazyData: true
 LazyDataCompression: bzip2
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
