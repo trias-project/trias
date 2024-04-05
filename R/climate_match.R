@@ -487,10 +487,10 @@ climate_match <- function(region,
     
     shape <- shape %>% 
       dplyr::mutate(GRIDCODE = as.integer(.data$GRIDCODE)) 
-   
-   
-   region_shape<-sf::st_simplify(region_shape)
-    gridcode_intersect<-sf::st_intersection(shape,region_shape)
+    
+    #Rebuild the geometry as planar geometry, needed to get st_intersection to work
+   region_shape<-sf::st_make_valid(region_shape)
+base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,region_shape)))
     
     #Take the gridcodes present in the region of interest under each scenario and add them to the output dataframe
     for (g in gridcode_intersect$GRIDCODE) {
