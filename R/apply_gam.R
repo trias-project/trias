@@ -495,9 +495,9 @@ apply_gam <- function(df,
     dplyr::select(
       !!dplyr::sym(taxonKey),
       year,
-      em_status,
-      growth,
-      method
+      "em_status",
+      "growth",
+      "method"
     )
 
   if (nrow(df) > 3 & sum(df[[y_var]][2:nrow(df)]) != 0) {
@@ -639,10 +639,10 @@ apply_gam <- function(df,
         lower_deriv1 <-
           deriv1 %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
-          dplyr::select(!!dplyr::sym(year), growth)
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), 
                                                     digits = 0)) %>%
           dplyr::mutate(growth = model$family$linkinv(.data$lower_ci)) %>%
+          dplyr::select(!!dplyr::sym(year), "growth")
 
         # Add lower value of first derivative
         output_model <- dplyr::left_join(output_model, 
@@ -656,9 +656,9 @@ apply_gam <- function(df,
           dplyr::select(
             !!dplyr::sym(taxonKey),
             year,
-            em_status,
-            growth,
-            method
+            "em_status",
+            "growth",
+            "method"
           )
         # Create plot with conf. interval + colour for status
         plot_gam <- plot_ribbon_em(
