@@ -591,7 +591,6 @@ apply_gam <- function(df,
         # Emerging status based on first and second derivative
         em1 <-
           deriv1 %>%
-          dplyr::as_tibble() %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em1 = dplyr::case_when(
             .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
@@ -602,7 +601,6 @@ apply_gam <- function(df,
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
 
         em2 <- deriv2 %>%
-          dplyr::as_tibble() %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em2 = dplyr::case_when(
             .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
