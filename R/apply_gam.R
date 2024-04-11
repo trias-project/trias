@@ -640,8 +640,8 @@ apply_gam <- function(df,
           deriv1 %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), digits = 0)) %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
-          dplyr::mutate(growth = model$family$linkinv(.data$lower)) %>%
           dplyr::select(!!dplyr::sym(year), growth)
+          dplyr::mutate(growth = model$family$linkinv(.data$lower_ci)) %>%
 
         # Add lower value of first derivative
         output_model <- dplyr::left_join(output_model, lower_deriv1, by = "year")
