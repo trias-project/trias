@@ -638,13 +638,16 @@ apply_gam <- function(df,
         # Lower value of first derivative (minimal guaranteed growth) if positive
         lower_deriv1 <-
           deriv1 %>%
-          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), digits = 0)) %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::select(!!dplyr::sym(year), growth)
+          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), 
+                                                    digits = 0)) %>%
           dplyr::mutate(growth = model$family$linkinv(.data$lower_ci)) %>%
 
         # Add lower value of first derivative
-        output_model <- dplyr::left_join(output_model, lower_deriv1, by = "year")
+        output_model <- dplyr::left_join(output_model, 
+                                         lower_deriv1, 
+                                         by = "year")
 
         # Get emerging status summary for output
         emerging_status_output <-
