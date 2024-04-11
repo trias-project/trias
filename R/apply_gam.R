@@ -572,40 +572,44 @@ apply_gam <- function(df,
         deriv1 <- gratia::derivatives(model,
           type = "central", order = 1, level = 0.8,
           n = nrow(output_model), eps = 1e-4) %>%
-          # to remove by_var and fs_var 
-          # (probably in very new version of gratia, 0.8.x not compatible with R
-          # 4.2.1) errors with GitHub actions automatic checks 
-          dplyr::select(smooth, var, data, derivative, se, crit, lower, upper)
+          dplyr::select(".smooth", ".derivative", ".se", ".crit", 
+                        ".lower_ci", ".upper_ci", !!dplyr::sym(year)) %>%
+          dplyr::rename_with(~sub("^\\.", "", .), 
+                             dplyr::all_of(c(".smooth", ".derivative", 
+                                           ".se", ".crit", 
+                                           ".lower_ci", ".upper_ci")))
         deriv2 <- gratia::derivatives(model,
           type = "central", order = 2, level = 0.8,
           n = nrow(output_model), eps = 1e-4) %>%
-          # to remove by_var and fs_var 
-          # (probably in very new version of gratia, 0.8.x not compatible with R
-          # 4.2.1)
-          dplyr::select(smooth, var, data, derivative, se, crit, lower, upper)
+          dplyr::select(".smooth", ".derivative", ".se", ".crit", 
+                        ".lower_ci", ".upper_ci", !!dplyr::sym(year)) %>%
+          dplyr::rename_with(~sub("^\\.", "", .), 
+                             dplyr::all_of(c(".smooth", ".derivative", 
+                                           ".se", ".crit", 
+                                           ".lower_ci", ".upper_ci")))
 
         # Emerging status based on first and second derivative
         em1 <-
           deriv1 %>%
           dplyr::as_tibble() %>%
-          dplyr::filter(.data$var == year) %>%
+          dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em1 = dplyr::case_when(
-            .data$lower < 0 & .data$upper <= 0 ~ -1,
-            .data$lower < 0 & .data$upper > 0 ~ 0,
-            .data$lower >= 0 & .data$upper > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
+            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
+            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
           )) %>%
-          dplyr::select(!!dplyr::sym(year) := data, em1) %>%
+          dplyr::select(!!dplyr::sym(year), "em1") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
 
         em2 <- deriv2 %>%
           dplyr::as_tibble() %>%
-          dplyr::filter(.data$var == year) %>%
+          dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em2 = dplyr::case_when(
-            .data$lower < 0 & .data$upper <= 0 ~ -1,
-            .data$lower < 0 & .data$upper > 0 ~ 0,
-            .data$lower >= 0 & .data$upper > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
+            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
+            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
           )) %>%
-          dplyr::select(!!dplyr::sym(year) := data, em2) %>%
+          dplyr::select(!!dplyr::sym(year), "em2") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
 
         em_level_gam <- dplyr::full_join(em1, em2, by = year) %>%
@@ -636,9 +640,8 @@ apply_gam <- function(df,
         # Lower value of first derivative (minimal guaranteed growth) if positive
         lower_deriv1 <-
           deriv1 %>%
-          dplyr::filter(.data$var == year) %>%
-          dplyr::rename(!!dplyr::sym(year) := data) %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), digits = 0)) %>%
+          dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(growth = model$family$linkinv(.data$lower)) %>%
           dplyr::select(!!dplyr::sym(year), growth)
 
