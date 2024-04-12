@@ -16,6 +16,8 @@
 #'   species".
 #' @param relative (logical) if TRUE (default), each bar is standardised before
 #'   stacking.
+#' @param taxon_key_col character. Name of the column of \code{df} containing
+#'   unique taxon IDs. Default: \code{key}.
 #' @param first_observed (character) Name of the column in `data`
 #'   containing temporal information about introduction of the alien species.
 #'   Expressed as years.
@@ -59,6 +61,7 @@ indicator_native_range_year <- function(
     x_lab = "year",
     y_lab = "alien species",
     relative = FALSE,
+    taxon_key_col = "key",
     first_observed = "first_observed") {
   # initial input checks
   assertthat::assert_that(is.data.frame(df))
@@ -91,6 +94,10 @@ indicator_native_range_year <- function(
   assertthat::assert_that(is.logical(relative),
                           msg = "Argument relative has to be a logical."
   )
+  assertthat::assert_that(is.character(taxon_key_col),
+    msg = "Argument taxon_key_col has to be a character."
+  )
+  assertable::assert_colnames(df, taxon_key_col, only_colnames = FALSE)
   assertthat::assert_that(is.character(first_observed),
                           msg = "Argument first_observed has to be a character."
   )
@@ -100,8 +107,9 @@ indicator_native_range_year <- function(
   # Rename to default column name
   df <-
     df %>%
-    dplyr::rename_at(dplyr::vars(first_observed), ~"first_observed")
-
+    dplyr::rename_at(dplyr::vars(first_observed), ~"first_observed") %>%
+    dplyr::rename_at(dplyr::vars(taxon_key_col), ~"key")
+  
   if (is.null(years)) {
     years <- sort(unique(df$first_observed))
   }
@@ -121,6 +129,9 @@ indicator_native_range_year <- function(
   plotData$first_observed <- as.factor(plotData$first_observed)
   plotData$location <- as.factor(plotData$location)
   plotData$location <- droplevels(plotData$location)
+  
+  # Filter out duplicates
+  plotData <- unique(plotData, by = c("key", "first_observed", "location"))
 
   # Summarize data per native_range and year
   summaryData <- reshape2::melt(table(plotData), id.vars = "first_observed")
