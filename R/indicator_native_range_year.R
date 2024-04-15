@@ -17,7 +17,7 @@
 #' @param relative (logical) if TRUE (default), each bar is standardised before
 #'   stacking.
 #' @param taxon_key_col character. Name of the column of \code{df} containing
-#'   unique taxon IDs. Default: \code{"key"}.
+#'   taxon IDs. Default: \code{"key"}.
 #' @param first_observed (character) Name of the column in `data`
 #'   containing temporal information about introduction of the alien species.
 #'   Expressed as years.
@@ -107,8 +107,8 @@ indicator_native_range_year <- function(
   # Rename to default column name
   df <-
     df %>%
-    dplyr::rename_at(dplyr::vars(first_observed), ~"first_observed") %>%
-    dplyr::rename_at(dplyr::vars(taxon_key_col), ~"key")
+    dplyr::rename_at(dplyr::vars(dplyr::all_of(first_observed)), ~"first_observed") %>%
+    dplyr::rename_at(dplyr::vars(dplyr::all_of(taxon_key_col)), ~"key")
   
   if (is.null(years)) {
     years <- sort(unique(df$first_observed))
