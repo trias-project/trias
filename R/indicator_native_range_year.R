@@ -17,7 +17,7 @@
 #' @param relative (logical) if TRUE (default), each bar is standardised before
 #'   stacking.
 #' @param taxon_key_col character. Name of the column of \code{df} containing
-#'   unique taxon IDs. Default: \code{"key"}.
+#'   taxon IDs. Default: \code{"key"}.
 #' @param first_observed (character) Name of the column in `data`
 #'   containing temporal information about introduction of the alien species.
 #'   Expressed as years.

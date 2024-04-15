@@ -36,7 +36,7 @@ species".}
 stacking.}
 
 \item{taxon_key_col}{character. Name of the column of \code{df} containing
-unique taxon IDs. Default: \code{key}.}
+taxon IDs. Default: \code{"key"}.}
 
 \item{first_observed}{(character) Name of the column in \code{data}
 containing temporal information about introduction of the alien species.
