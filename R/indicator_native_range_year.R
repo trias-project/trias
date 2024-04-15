@@ -107,8 +107,8 @@ indicator_native_range_year <- function(
   # Rename to default column name
   df <-
     df %>%
-    dplyr::rename_at(dplyr::vars(first_observed), ~"first_observed") %>%
-    dplyr::rename_at(dplyr::vars(taxon_key_col), ~"key")
+    dplyr::rename_at(dplyr::vars(dplyr::all_of(first_observed)), ~"first_observed") %>%
+    dplyr::rename_at(dplyr::vars(dplyr::all_of(taxon_key_col)), ~"key")
   
   if (is.null(years)) {
     years <- sort(unique(df$first_observed))
