@@ -144,78 +144,78 @@ basic_gam_taxon_key_and_name <- apply_gam(
   taxon_key = taxon_key
 )
 
-testthat::test_that("Test length of output list", {
+test_that("Test length of output list", {
   # length of list output is not dependent on GAM output
-  testthat::expect_equal(length(basic_gam), expected = 6)
-  testthat::expect_equal(length(corrected_gam), expected = 6)
-  testthat::expect_equal(length(basic_gam_bad), expected = 6)
-  testthat::expect_equal(length(corrected_gam_bad), expected = 6)
+  expect_equal(length(basic_gam), expected = 6)
+  expect_equal(length(corrected_gam), expected = 6)
+  expect_equal(length(basic_gam_bad), expected = 6)
+  expect_equal(length(corrected_gam_bad), expected = 6)
 })
 
-testthat::test_that("Test em_summary", {
+test_that("Test em_summary", {
   # em_summary is a data.frame
-  testthat::expect_true(is.data.frame(basic_gam$em_summary))
-  testthat::expect_true(is.data.frame(basic_gam_ys$em_summary))
-  testthat::expect_true(is.data.frame(basic_gam_bad$em_summary))
-  testthat::expect_true(is.data.frame(basic_gam_bad_ys$em_summary))
-  testthat::expect_true(is.data.frame(corrected_gam$em_summary))
-  testthat::expect_true(is.data.frame(corrected_gam_ys$em_summary))
-  testthat::expect_true(is.data.frame(corrected_gam_bad$em_summary))
-  testthat::expect_true(is.data.frame(corrected_gam_bad_ys$em_summary))
+  expect_true(is.data.frame(basic_gam$em_summary))
+  expect_true(is.data.frame(basic_gam_ys$em_summary))
+  expect_true(is.data.frame(basic_gam_bad$em_summary))
+  expect_true(is.data.frame(basic_gam_bad_ys$em_summary))
+  expect_true(is.data.frame(corrected_gam$em_summary))
+  expect_true(is.data.frame(corrected_gam_ys$em_summary))
+  expect_true(is.data.frame(corrected_gam_bad$em_summary))
+  expect_true(is.data.frame(corrected_gam_bad_ys$em_summary))
   # evaluation on one year
-  testthat::expect_equal(nrow(basic_gam$em_summary),
+  expect_equal(nrow(basic_gam$em_summary),
     expected = length(evaluation_year)
   )
-  testthat::expect_equal(nrow(corrected_gam$em_summary),
+  expect_equal(nrow(corrected_gam$em_summary),
     expected = length(evaluation_year)
   )
-  testthat::expect_equal(nrow(basic_gam_bad$em_summary),
+  expect_equal(nrow(basic_gam_bad$em_summary),
     expected = length(evaluation_year)
   )
-  testthat::expect_equal(nrow(corrected_gam_bad$em_summary),
+  expect_equal(nrow(corrected_gam_bad$em_summary),
     expected = length(evaluation_year)
   )
   # evaluation on two years
-  testthat::expect_equal(nrow(basic_gam_ys$em_summary),
+  expect_equal(nrow(basic_gam_ys$em_summary),
     expected = length(evaluation_years)
   )
-  testthat::expect_equal(nrow(corrected_gam_ys$em_summary),
+  expect_equal(nrow(corrected_gam_ys$em_summary),
     expected = length(evaluation_years)
   )
-  testthat::expect_equal(nrow(basic_gam_bad_ys$em_summary),
+  expect_equal(nrow(basic_gam_bad_ys$em_summary),
     expected = length(evaluation_years)
   )
-  testthat::expect_equal(nrow(corrected_gam_bad_ys$em_summary),
+  expect_equal(nrow(corrected_gam_bad_ys$em_summary),
     expected = length(evaluation_years)
   )
   # if GAM cannot be performed, em_summary and growth are NA
-  testthat::expect_true(all(
+  expect_true(all(
     is.na(corrected_gam_bad$em_summary$em_status),
     is.na(corrected_gam_bad$em_summary$growth),
     is.na(corrected_gam_bad_ys$em_summary$em_status),
     is.na(corrected_gam_bad_ys$em_summary$growth)
   ))
   # if GAM is performed em_summary and growth are numeric
-  testthat::expect_true(all(
+  expect_true(all(
     is.numeric(corrected_gam$em_summary$em_status),
     is.numeric(corrected_gam$em_summary$growth),
     is.numeric(corrected_gam_ys$em_summary$em_status),
     is.numeric(corrected_gam_ys$em_summary$growth)
   ))
   # if GAM is performed em_summary is one of 0,1,2,3
-  testthat::expect_true(all(
+  expect_true(all(
     corrected_gam$em_summary$em_status %in% c(0, 1, 2, 3),
     corrected_gam_ys$em_summary$em_status %in% c(0, 1, 2, 3)
   ))
 })
 
-testthat::test_that("Test model", {
+test_that("Test model", {
 
   # model output is an instance of class "gam"
-  testthat::expect_true(all(class(basic_gam$model) == c("gam", "glm", "lm")))
-  testthat::expect_true(all(class(basic_gam_ys$model) == c("gam", "glm", "lm")))
-  testthat::expect_true(all(class(corrected_gam$model) == c("gam", "glm", "lm")))
-  testthat::expect_true(all(class(corrected_gam_ys$model) == c("gam", "glm", "lm")))
+  expect_true(all(class(basic_gam$model) == c("gam", "glm", "lm")))
+  expect_true(all(class(basic_gam_ys$model) == c("gam", "glm", "lm")))
+  expect_true(all(class(corrected_gam$model) == c("gam", "glm", "lm")))
+  expect_true(all(class(corrected_gam_ys$model) == c("gam", "glm", "lm")))
 
   # model output is NULL if gam is not performed
   expect_null(basic_gam_bad$model)
@@ -224,112 +224,112 @@ testthat::test_that("Test model", {
   expect_null(corrected_gam_bad_ys$model)
 
   # model formula is correct
-  testthat::expect_true(all(
+  expect_true(all(
     basic_gam$model$formula == basic_fm,
     basic_gam_ys$model$formula == basic_fm
   ))
-  testthat::expect_true(all(
+  expect_true(all(
     corrected_gam$model$formula == corrected_fm,
     corrected_gam_ys$model$formula == corrected_fm
   ))
 })
 
-testthat::test_that("Test output", {
+test_that("Test output", {
 
   # output is a data.frame
-  testthat::expect_true(is.data.frame(basic_gam$output))
-  testthat::expect_true(is.data.frame(basic_gam_ys$output))
-  testthat::expect_true(is.data.frame(basic_gam_bad$output))
-  testthat::expect_true(is.data.frame(basic_gam_bad_ys$output))
-  testthat::expect_true(is.data.frame(corrected_gam$output))
-  testthat::expect_true(is.data.frame(corrected_gam_ys$output))
-  testthat::expect_true(is.data.frame(corrected_gam_bad$output))
-  testthat::expect_true(is.data.frame(corrected_gam_bad_ys$output))
+  expect_true(is.data.frame(basic_gam$output))
+  expect_true(is.data.frame(basic_gam_ys$output))
+  expect_true(is.data.frame(basic_gam_bad$output))
+  expect_true(is.data.frame(basic_gam_bad_ys$output))
+  expect_true(is.data.frame(corrected_gam$output))
+  expect_true(is.data.frame(corrected_gam_ys$output))
+  expect_true(is.data.frame(corrected_gam_bad$output))
+  expect_true(is.data.frame(corrected_gam_bad_ys$output))
   # output has all columns of input df
-  testthat::expect_true(all(names(df_gam) %in% names(basic_gam$output)))
-  testthat::expect_true(all(names(df_gam) %in% names(basic_gam_ys$output)))
-  testthat::expect_true(all(names(df_bad) %in% names(basic_gam_bad$output)))
-  testthat::expect_true(all(names(df_bad) %in% names(basic_gam_bad_ys$output)))
-  testthat::expect_true(all(names(df_gam) %in% names(corrected_gam$output)))
-  testthat::expect_true(all(names(df_gam) %in% names(corrected_gam_ys$output)))
-  testthat::expect_true(all(names(df_bad) %in% names(corrected_gam_bad$output)))
-  testthat::expect_true(all(names(df_bad) %in% names(corrected_gam_bad_ys$output)))
+  expect_true(all(names(df_gam) %in% names(basic_gam$output)))
+  expect_true(all(names(df_gam) %in% names(basic_gam_ys$output)))
+  expect_true(all(names(df_bad) %in% names(basic_gam_bad$output)))
+  expect_true(all(names(df_bad) %in% names(basic_gam_bad_ys$output)))
+  expect_true(all(names(df_gam) %in% names(corrected_gam$output)))
+  expect_true(all(names(df_gam) %in% names(corrected_gam_ys$output)))
+  expect_true(all(names(df_bad) %in% names(corrected_gam_bad$output)))
+  expect_true(all(names(df_bad) %in% names(corrected_gam_bad_ys$output)))
 
   # values of these columns are also identical
-  testthat::expect_true(all(df_gam$taxonKey == basic_gam$output$taxonKey))
-  testthat::expect_true(all(df_gam$taxonKey == basic_gam_ys$output$taxonKey))
-  testthat::expect_true(all(df_bad$taxonKey == basic_gam_bad$output$taxonKey))
-  testthat::expect_true(all(df_bad$taxonKey == basic_gam_bad_ys$output$taxonKey))
-  testthat::expect_true(all(df_gam$taxonKey == corrected_gam$output$taxonKey))
-  testthat::expect_true(all(df_gam$taxonKey == corrected_gam_ys$output$taxonKey))
-  testthat::expect_true(all(df_bad$taxonKey == corrected_gam_bad$output$taxonKey))
-  testthat::expect_true(all(df_bad$taxonKey == corrected_gam_bad_ys$output$taxonKey))
-  testthat::expect_true(all(df_gam$canonicalName == basic_gam$output$canonicalName))
-  testthat::expect_true(all(df_gam$canonicalName == basic_gam_ys$output$canonicalName))
-  testthat::expect_true(all(df_bad$canonicalName == basic_gam_bad$output$canonicalName))
-  testthat::expect_true(all(df_bad$canonicalName ==
+  expect_true(all(df_gam$taxonKey == basic_gam$output$taxonKey))
+  expect_true(all(df_gam$taxonKey == basic_gam_ys$output$taxonKey))
+  expect_true(all(df_bad$taxonKey == basic_gam_bad$output$taxonKey))
+  expect_true(all(df_bad$taxonKey == basic_gam_bad_ys$output$taxonKey))
+  expect_true(all(df_gam$taxonKey == corrected_gam$output$taxonKey))
+  expect_true(all(df_gam$taxonKey == corrected_gam_ys$output$taxonKey))
+  expect_true(all(df_bad$taxonKey == corrected_gam_bad$output$taxonKey))
+  expect_true(all(df_bad$taxonKey == corrected_gam_bad_ys$output$taxonKey))
+  expect_true(all(df_gam$canonicalName == basic_gam$output$canonicalName))
+  expect_true(all(df_gam$canonicalName == basic_gam_ys$output$canonicalName))
+  expect_true(all(df_bad$canonicalName == basic_gam_bad$output$canonicalName))
+  expect_true(all(df_bad$canonicalName ==
     basic_gam_bad_ys$output$canonicalName))
-  testthat::expect_true(all(df_gam$canonicalName == corrected_gam$output$canonicalName))
-  testthat::expect_true(all(df_gam$canonicalName == corrected_gam_ys$output$canonicalName))
-  testthat::expect_true(all(df_bad$canonicalName == corrected_gam_bad$output$canonicalName))
-  testthat::expect_true(all(df_bad$canonicalName ==
+  expect_true(all(df_gam$canonicalName == corrected_gam$output$canonicalName))
+  expect_true(all(df_gam$canonicalName == corrected_gam_ys$output$canonicalName))
+  expect_true(all(df_bad$canonicalName == corrected_gam_bad$output$canonicalName))
+  expect_true(all(df_bad$canonicalName ==
     corrected_gam_bad_ys$output$canonicalName))
-  testthat::expect_true(all(df_gam$year == basic_gam$output$year))
-  testthat::expect_true(all(df_gam$year == basic_gam_ys$output$year))
-  testthat::expect_true(all(df_bad$year == basic_gam_bad$output$year))
-  testthat::expect_true(all(df_bad$year == basic_gam_bad_ys$output$year))
-  testthat::expect_true(all(df_gam$year == corrected_gam$output$year))
-  testthat::expect_true(all(df_gam$year == corrected_gam_ys$output$year))
-  testthat::expect_true(all(df_bad$year == corrected_gam_bad$output$year))
-  testthat::expect_true(all(df_bad$year == corrected_gam_bad_ys$output$year))
-  testthat::expect_true(all(df_gam$n_observations == basic_gam$output$n_observations))
-  testthat::expect_true(all(df_gam$n_observations == basic_gam_ys$output$n_observations))
-  testthat::expect_true(all(df_bad$n_observations == basic_gam_bad$output$n_observations))
-  testthat::expect_true(all(df_bad$n_observations ==
+  expect_true(all(df_gam$year == basic_gam$output$year))
+  expect_true(all(df_gam$year == basic_gam_ys$output$year))
+  expect_true(all(df_bad$year == basic_gam_bad$output$year))
+  expect_true(all(df_bad$year == basic_gam_bad_ys$output$year))
+  expect_true(all(df_gam$year == corrected_gam$output$year))
+  expect_true(all(df_gam$year == corrected_gam_ys$output$year))
+  expect_true(all(df_bad$year == corrected_gam_bad$output$year))
+  expect_true(all(df_bad$year == corrected_gam_bad_ys$output$year))
+  expect_true(all(df_gam$n_observations == basic_gam$output$n_observations))
+  expect_true(all(df_gam$n_observations == basic_gam_ys$output$n_observations))
+  expect_true(all(df_bad$n_observations == basic_gam_bad$output$n_observations))
+  expect_true(all(df_bad$n_observations ==
     basic_gam_bad_ys$output$n_observations))
-  testthat::expect_true(all(df_gam$n_observations == corrected_gam$output$n_observations))
-  testthat::expect_true(all(df_gam$n_observations == corrected_gam_ys$output$n_observations))
-  testthat::expect_true(all(df_bad$n_observations == corrected_gam_bad$output$n_observations))
-  testthat::expect_true(all(df_bad$n_observations ==
+  expect_true(all(df_gam$n_observations == corrected_gam$output$n_observations))
+  expect_true(all(df_gam$n_observations == corrected_gam_ys$output$n_observations))
+  expect_true(all(df_bad$n_observations == corrected_gam_bad$output$n_observations))
+  expect_true(all(df_bad$n_observations ==
     corrected_gam_bad_ys$output$n_observations))
 
-  testthat::expect_true(all(df_gam$baseline_observations ==
+  expect_true(all(df_gam$baseline_observations ==
     basic_gam$output$baseline_observations))
-  testthat::expect_true(all(df_gam$baseline_observations ==
+  expect_true(all(df_gam$baseline_observations ==
     basic_gam_ys$output$baseline_observations))
-  testthat::expect_true(all(df_bad$baseline_observations ==
+  expect_true(all(df_bad$baseline_observations ==
     basic_gam_bad$output$baseline_observations))
-  testthat::expect_true(all(df_bad$baseline_observations ==
+  expect_true(all(df_bad$baseline_observations ==
     basic_gam_bad_ys$output$baseline_observations))
-  testthat::expect_true(all(df_gam$baseline_observations ==
+  expect_true(all(df_gam$baseline_observations ==
     corrected_gam$output$baseline_observations))
-  testthat::expect_true(all(df_gam$baseline_observations ==
+  expect_true(all(df_gam$baseline_observations ==
     corrected_gam_ys$output$baseline_observations))
-  testthat::expect_true(all(df_bad$baseline_observations ==
+  expect_true(all(df_bad$baseline_observations ==
     corrected_gam_bad$output$baseline_observations))
-  testthat::expect_true(all(df_bad$baseline_observations ==
+  expect_true(all(df_bad$baseline_observations ==
     corrected_gam_bad_ys$output$baseline_observations))
 
   # output has columns em1, em2, em, em_status, growth, method
-  testthat::expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
+  expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
     names(basic_gam$output)))
-  testthat::expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
+  expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
     names(basic_gam_ys$output)))
-  testthat::expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
+  expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
     names(basic_gam_bad$output)))
-  testthat::expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
+  expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
     names(basic_gam_bad_ys$output)))
-  testthat::expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
+  expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
     names(corrected_gam$output)))
-  testthat::expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
+  expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
     names(corrected_gam_ys$output)))
-  testthat::expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
+  expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
     names(corrected_gam_bad$output)))
-  testthat::expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
+  expect_true(all(c("em1", "em2", "em", "em_status", "growth", "method") %in%
     names(corrected_gam_bad_ys$output)))
 
   # fit values are zero or above
-  testthat::expect_true(all(c(
+  expect_true(all(c(
     basic_gam$output$fit,
     basic_gam$output$ucl,
     basic_gam$output$lcl,
@@ -337,7 +337,7 @@ testthat::test_that("Test output", {
     corrected_gam$output$ucl,
     corrected_gam$output$lcl
   ) >= 0))
-  testthat::expect_true(all(c(
+  expect_true(all(c(
     basic_gam_ys$output$fit,
     basic_gam_ys$output$ucl,
     basic_gam_ys$output$lcl,
@@ -347,7 +347,7 @@ testthat::test_that("Test output", {
   ) >= 0))
 
   # if GAM is not performed: fit columns are NA
-  testthat::expect_true(all(is.na(c(
+  expect_true(all(is.na(c(
     basic_gam_bad$output$fit,
     basic_gam_bad$output$ucl,
     basic_gam_bad$output$lcl,
@@ -355,7 +355,7 @@ testthat::test_that("Test output", {
     corrected_gam_bad$output$ucl,
     corrected_gam_bad$output$lcl
   ))))
-  testthat::expect_true(all(is.na(c(
+  expect_true(all(is.na(c(
     basic_gam_bad_ys$output$fit,
     basic_gam_bad_ys$output$ucl,
     basic_gam_bad_ys$output$lcl,
@@ -365,121 +365,121 @@ testthat::test_that("Test output", {
   ))))
 
   # lcl <= fit <= ucl
-  testthat::expect_true(all(basic_gam$output$lcl <= basic_gam$output$fit &
+  expect_true(all(basic_gam$output$lcl <= basic_gam$output$fit &
     basic_gam$output$fit <= basic_gam$output$ucl))
-  testthat::expect_true(all(basic_gam_ys$output$lcl <= basic_gam_ys$output$fit &
+  expect_true(all(basic_gam_ys$output$lcl <= basic_gam_ys$output$fit &
     basic_gam_ys$output$fit <= basic_gam_ys$output$ucl))
-  testthat::expect_true(all(corrected_gam$output$lcl <= corrected_gam$output$fit &
+  expect_true(all(corrected_gam$output$lcl <= corrected_gam$output$fit &
     corrected_gam$output$fit <= corrected_gam$output$ucl))
-  testthat::expect_true(all(corrected_gam_ys$output$lcl <= corrected_gam_ys$output$fit &
+  expect_true(all(corrected_gam_ys$output$lcl <= corrected_gam_ys$output$fit &
     corrected_gam_ys$output$fit <= corrected_gam_ys$output$ucl))
 
   # number of years for evaluation doesn't affect fit values
-  testthat::expect_true(all(basic_gam$output$lcl == basic_gam_ys$output$lcl &
+  expect_true(all(basic_gam$output$lcl == basic_gam_ys$output$lcl &
     basic_gam$output$fit == basic_gam_ys$output$fit &
     basic_gam$output$ucl == basic_gam_ys$output$ucl))
-  testthat::expect_true(all(corrected_gam$output$lcl == corrected_gam_ys$output$lcl &
+  expect_true(all(corrected_gam$output$lcl == corrected_gam_ys$output$lcl &
     corrected_gam$output$fit == corrected_gam_ys$output$fit &
     corrected_gam$output$ucl == corrected_gam_ys$output$ucl))
 
   # em1, em2, em, em_status are numeric
-  testthat::expect_true(is.numeric(basic_gam$output$em1))
-  testthat::expect_true(is.numeric(basic_gam$output$em2))
-  testthat::expect_true(is.numeric(basic_gam$output$em))
-  testthat::expect_true(is.numeric(basic_gam$output$em_status))
-  testthat::expect_true(is.numeric(corrected_gam$output$em1))
-  testthat::expect_true(is.numeric(corrected_gam$output$em2))
-  testthat::expect_true(is.numeric(corrected_gam$output$em))
-  testthat::expect_true(is.numeric(corrected_gam$output$em_status))
-  testthat::expect_true(is.numeric(basic_gam_bad$output$em1))
-  testthat::expect_true(is.numeric(basic_gam_bad$output$em2))
-  testthat::expect_true(is.numeric(basic_gam_bad$output$em))
-  testthat::expect_true(is.numeric(basic_gam_bad$output$em_status))
-  testthat::expect_true(is.numeric(corrected_gam_bad$output$em1))
-  testthat::expect_true(is.numeric(corrected_gam_bad$output$em2))
-  testthat::expect_true(is.numeric(corrected_gam_bad$output$em))
-  testthat::expect_true(is.numeric(corrected_gam_bad$output$em_status))
+  expect_true(is.numeric(basic_gam$output$em1))
+  expect_true(is.numeric(basic_gam$output$em2))
+  expect_true(is.numeric(basic_gam$output$em))
+  expect_true(is.numeric(basic_gam$output$em_status))
+  expect_true(is.numeric(corrected_gam$output$em1))
+  expect_true(is.numeric(corrected_gam$output$em2))
+  expect_true(is.numeric(corrected_gam$output$em))
+  expect_true(is.numeric(corrected_gam$output$em_status))
+  expect_true(is.numeric(basic_gam_bad$output$em1))
+  expect_true(is.numeric(basic_gam_bad$output$em2))
+  expect_true(is.numeric(basic_gam_bad$output$em))
+  expect_true(is.numeric(basic_gam_bad$output$em_status))
+  expect_true(is.numeric(corrected_gam_bad$output$em1))
+  expect_true(is.numeric(corrected_gam_bad$output$em2))
+  expect_true(is.numeric(corrected_gam_bad$output$em))
+  expect_true(is.numeric(corrected_gam_bad$output$em_status))
 
   # if GAM is performed em1 em2 are one of c(-1, 0, 1),
-  testthat::expect_true(all(
+  expect_true(all(
     basic_gam$output$em1 %in% c(-1, 0, 1),
     basic_gam$output$em2 %in% c(-1, 0, 1)
   ))
-  testthat::expect_true(all(
+  expect_true(all(
     basic_gam_ys$output$em1 %in% c(-1, 0, 1),
     basic_gam_ys$output$em2 %in% c(-1, 0, 1)
   ))
-  testthat::expect_true(all(
+  expect_true(all(
     corrected_gam$output$em1 %in% c(-1, 0, 1),
     corrected_gam$output$em2 %in% c(-1, 0, 1)
   ))
-  testthat::expect_true(all(
+  expect_true(all(
     corrected_gam_ys$output$em1 %in% c(-1, 0, 1),
     corrected_gam_ys$output$em2 %in% c(-1, 0, 1)
   ))
 
   # if GAM is performed em is a value between -4 and +4
-  testthat::expect_true(all(basic_gam$output$em <= 4 & basic_gam$output$em >= -4))
-  testthat::expect_true(all(basic_gam_ys$output$em <= 4 & basic_gam$output$em >= -4))
-  testthat::expect_true(all(corrected_gam$output$em <= 4 & basic_gam$output$em >= -4))
-  testthat::expect_true(all(corrected_gam_ys$output$em <= 4 & basic_gam$output$em >= -4))
+  expect_true(all(basic_gam$output$em <= 4 & basic_gam$output$em >= -4))
+  expect_true(all(basic_gam_ys$output$em <= 4 & basic_gam$output$em >= -4))
+  expect_true(all(corrected_gam$output$em <= 4 & basic_gam$output$em >= -4))
+  expect_true(all(corrected_gam_ys$output$em <= 4 & basic_gam$output$em >= -4))
 
   # if GAM is performed em_stauts is one of 0, 1, 2, 3
-  testthat::expect_true(all(basic_gam$output$em_status <= 3 &
+  expect_true(all(basic_gam$output$em_status <= 3 &
     basic_gam$output$em_status >= 0))
-  testthat::expect_true(all(basic_gam_ys$output$em_status <= 3 &
+  expect_true(all(basic_gam_ys$output$em_status <= 3 &
     basic_gam_ys$output$em_status >= 0))
-  testthat::expect_true(all(corrected_gam$output$em_status <= 3 &
+  expect_true(all(corrected_gam$output$em_status <= 3 &
     corrected_gam$output$em_status >= 0))
-  testthat::expect_true(all(corrected_gam_ys$output$em_status <= 3 &
+  expect_true(all(corrected_gam_ys$output$em_status <= 3 &
     corrected_gam_ys$output$em_status >= 0))
 
   # em_status is equal to em_summary for evaluation_years
-  testthat::expect_true(all((basic_gam$output %>%
+  expect_true(all((basic_gam$output %>%
     dplyr::filter(year == evaluation_year) %>%
     pull(em_status)) ==
     (basic_gam$em_summary %>%
       dplyr::filter(year == evaluation_year) %>%
       pull(em_status))))
-  testthat::expect_true(all((basic_gam_ys$output %>%
+  expect_true(all((basic_gam_ys$output %>%
     dplyr::filter(year %in% evaluation_years) %>%
     pull(em_status)) ==
     (basic_gam_ys$em_summary %>%
       dplyr::filter(year %in% evaluation_years) %>%
       pull(em_status))))
-  testthat::expect_true(all((corrected_gam$output %>%
+  expect_true(all((corrected_gam$output %>%
     dplyr::filter(year == evaluation_year) %>%
     pull(em_status)) ==
     (corrected_gam$em_summary %>%
       dplyr::filter(year == evaluation_year) %>%
       pull(em_status))))
-  testthat::expect_true(all((corrected_gam_ys$output %>%
+  expect_true(all((corrected_gam_ys$output %>%
     dplyr::filter(year %in% evaluation_years) %>%
     pull(em_status)) ==
     (corrected_gam_ys$em_summary %>%
       dplyr::filter(year %in% evaluation_years) %>%
       pull(em_status))))
-  testthat::expect_true(all(is.na(corrected_gam_bad$output %>%
+  expect_true(all(is.na(corrected_gam_bad$output %>%
     dplyr::filter(year == evaluation_year) %>%
     pull(em_status))))
-  testthat::expect_true(all(is.na(corrected_gam_bad_ys$output %>%
+  expect_true(all(is.na(corrected_gam_bad_ys$output %>%
     dplyr::filter(year %in% evaluation_years) %>%
     pull(em_status))))
-  testthat::expect_true(all(is.na(corrected_gam_bad$output %>%
+  expect_true(all(is.na(corrected_gam_bad$output %>%
     dplyr::filter(year == evaluation_year) %>%
     pull(em_status))))
-  testthat::expect_true(all(is.na(corrected_gam_bad_ys$output %>%
+  expect_true(all(is.na(corrected_gam_bad_ys$output %>%
     dplyr::filter(year %in% evaluation_years) %>%
     pull(em_status))))
 
   # number of years for evaluation doesn't affect em1, em2, em, em_status
-  testthat::expect_true(all(
+  expect_true(all(
     basic_gam$output$em1 == basic_gam_ys$output$em1,
     basic_gam$output$em2 == basic_gam_ys$output$em2,
     basic_gam$output$em == basic_gam_ys$output$em,
     basic_gam$output$em_status == corrected_gam_ys$output$em_status
   ))
-  testthat::expect_true(all(
+  expect_true(all(
     corrected_gam_ys$output$em1 == corrected_gam_ys$output$em1,
     corrected_gam_ys$output$em2 == corrected_gam_ys$output$em2,
     corrected_gam_ys$output$em == corrected_gam_ys$output$em,
@@ -487,25 +487,25 @@ testthat::test_that("Test output", {
   ))
 
   # growth
-  testthat::expect_true(is.numeric(basic_gam$output$growth))
-  testthat::expect_true(is.numeric(basic_gam_ys$output$growth))
-  testthat::expect_true(is.numeric(basic_gam_bad$output$growth))
-  testthat::expect_true(is.numeric(basic_gam_bad_ys$output$growth))
-  testthat::expect_true(is.numeric(corrected_gam$output$growth))
-  testthat::expect_true(is.numeric(corrected_gam_ys$output$growth))
-  testthat::expect_true(is.numeric(corrected_gam_bad$output$growth))
-  testthat::expect_true(is.numeric(corrected_gam_bad_ys$output$growth))
+  expect_true(is.numeric(basic_gam$output$growth))
+  expect_true(is.numeric(basic_gam_ys$output$growth))
+  expect_true(is.numeric(basic_gam_bad$output$growth))
+  expect_true(is.numeric(basic_gam_bad_ys$output$growth))
+  expect_true(is.numeric(corrected_gam$output$growth))
+  expect_true(is.numeric(corrected_gam_ys$output$growth))
+  expect_true(is.numeric(corrected_gam_bad$output$growth))
+  expect_true(is.numeric(corrected_gam_bad_ys$output$growth))
 
   # add some checks about values of growth?
 
   # method is correctly returned
-  testthat::expect_true(all(c(
+  expect_true(all(c(
     basic_gam$output$method,
     basic_gam_bad$output$method,
     basic_gam_ys$output$method,
     basic_gam_bad_ys$output$method
   ) == "basic"))
-  testthat::expect_true(all(c(
+  expect_true(all(c(
     corrected_gam$output$method,
     corrected_gam_bad$output$method,
     corrected_gam_ys$output$method,
@@ -513,13 +513,13 @@ testthat::test_that("Test output", {
   ) == "correct_baseline"))
 })
 
-testthat::test_that("Test first derivative", {
+test_that("Test first derivative", {
 
   # first derivative is a data.frame or is NULL
-  testthat::expect_true(is.data.frame(basic_gam$first_derivative))
-  testthat::expect_true(is.data.frame(basic_gam_ys$first_derivative))
-  testthat::expect_true(is.data.frame(corrected_gam$first_derivative))
-  testthat::expect_true(is.data.frame(corrected_gam_ys$first_derivative))
+  expect_true(is.data.frame(basic_gam$first_derivative))
+  expect_true(is.data.frame(basic_gam_ys$first_derivative))
+  expect_true(is.data.frame(corrected_gam$first_derivative))
+  expect_true(is.data.frame(corrected_gam_ys$first_derivative))
   expect_null(basic_gam_bad$first_derivative)
   expect_null(basic_gam_bad_ys$first_derivative)
   expect_null(corrected_gam_bad$first_derivative)
@@ -535,11 +535,11 @@ testthat::test_that("Test first derivative", {
     "upper_ci",
     "year"
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam$first_derivative,
     has_names(expected = expected_cols_basic)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$first_derivative,
     has_names(expected = expected_cols_basic)
   )
@@ -553,26 +553,26 @@ testthat::test_that("Test first derivative", {
     "year",
     "baseline_observations"
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$first_derivative,
     has_names(expected = expected_cols_corrected)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam_ys$first_derivative,
     has_names(expected = expected_cols_corrected)
   )
   
   # smooth column contains only s(year) for basic gam
-  testthat::expect_true(unique(basic_gam$first_derivative$smooth) == "s(year)")
-  testthat::expect_true(unique(basic_gam_ys$first_derivative$smooth) == "s(year)")
-  testthat::expect_false(all(unique(corrected_gam$first_derivative$smooth) == "s(year)"))
-  testthat::expect_false(all(unique(corrected_gam_ys$first_derivative$smooth) == "s(year)"))
+  expect_true(unique(basic_gam$first_derivative$smooth) == "s(year)")
+  expect_true(unique(basic_gam_ys$first_derivative$smooth) == "s(year)")
+  expect_false(all(unique(corrected_gam$first_derivative$smooth) == "s(year)"))
+  expect_false(all(unique(corrected_gam_ys$first_derivative$smooth) == "s(year)"))
 
   # smooth column contains s(year) and s(baseline_observations) if correction
   # baseline is applied
-  testthat::expect_true(all(corrected_gam$first_derivative$smooth %in%
+  expect_true(all(corrected_gam$first_derivative$smooth %in%
     c("s(year)", "s(baseline_observations)")))
-  testthat::expect_true(all(corrected_gam_ys$first_derivative$smooth %in%
+  expect_true(all(corrected_gam_ys$first_derivative$smooth %in%
     c("s(year)", "s(baseline_observations)")))
 
   # year column and baseline_observations, if present, contain numeric values
@@ -596,87 +596,87 @@ testthat::test_that("Test first derivative", {
   )
 
   # columns derivative, se, crit, lower_ci, upper_ci are numeric
-  testthat::expect_true(is.numeric(basic_gam$first_derivative$derivative))
-  testthat::expect_true(is.numeric(basic_gam$first_derivative$se))
-  testthat::expect_true(is.numeric(basic_gam$first_derivative$crit))
-  testthat::expect_true(is.numeric(basic_gam$first_derivative$lower_ci))
-  testthat::expect_true(is.numeric(basic_gam$first_derivative$upper_ci))
-  testthat::expect_true(is.numeric(basic_gam_ys$first_derivative$derivative))
-  testthat::expect_true(is.numeric(basic_gam_ys$first_derivative$se))
-  testthat::expect_true(is.numeric(basic_gam_ys$first_derivative$crit))
-  testthat::expect_true(is.numeric(basic_gam_ys$first_derivative$lower_ci))
-  testthat::expect_true(is.numeric(basic_gam_ys$first_derivative$upper_ci))
-  testthat::expect_true(is.numeric(corrected_gam$first_derivative$derivative))
-  testthat::expect_true(is.numeric(corrected_gam$first_derivative$se))
-  testthat::expect_true(is.numeric(corrected_gam$first_derivative$crit))
-  testthat::expect_true(is.numeric(corrected_gam$first_derivative$lower_ci))
-  testthat::expect_true(is.numeric(corrected_gam$first_derivative$upper_ci))
-  testthat::expect_true(is.numeric(corrected_gam_ys$first_derivative$derivative))
-  testthat::expect_true(is.numeric(corrected_gam_ys$first_derivative$se))
-  testthat::expect_true(is.numeric(corrected_gam_ys$first_derivative$crit))
-  testthat::expect_true(is.numeric(corrected_gam_ys$first_derivative$lower_ci))
-  testthat::expect_true(is.numeric(corrected_gam_ys$first_derivative$upper_ci))
+  expect_true(is.numeric(basic_gam$first_derivative$derivative))
+  expect_true(is.numeric(basic_gam$first_derivative$se))
+  expect_true(is.numeric(basic_gam$first_derivative$crit))
+  expect_true(is.numeric(basic_gam$first_derivative$lower_ci))
+  expect_true(is.numeric(basic_gam$first_derivative$upper_ci))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$derivative))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$se))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$crit))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$lower_ci))
+  expect_true(is.numeric(basic_gam_ys$first_derivative$upper_ci))
+  expect_true(is.numeric(corrected_gam$first_derivative$derivative))
+  expect_true(is.numeric(corrected_gam$first_derivative$se))
+  expect_true(is.numeric(corrected_gam$first_derivative$crit))
+  expect_true(is.numeric(corrected_gam$first_derivative$lower_ci))
+  expect_true(is.numeric(corrected_gam$first_derivative$upper_ci))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$derivative))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$se))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$crit))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$lower_ci))
+  expect_true(is.numeric(corrected_gam_ys$first_derivative$upper_ci))
 
   # number of evaluation years doesn't affect 1st derivative values
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$first_derivative$derivative,
-    testthat::is_identical_to(basic_gam$first_derivative$derivative)
+    is_identical_to(basic_gam$first_derivative$derivative)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$first_derivative$derivative,
-    testthat::is_identical_to(corrected_gam$first_derivative$derivative)
+    is_identical_to(corrected_gam$first_derivative$derivative)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$first_derivative$se,
-    testthat::is_identical_to(basic_gam$first_derivative$se)
+    is_identical_to(basic_gam$first_derivative$se)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$first_derivative$se,
-    testthat::is_identical_to(corrected_gam$first_derivative$se)
+    is_identical_to(corrected_gam$first_derivative$se)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$first_derivative$crit,
-    testthat::is_identical_to(basic_gam$first_derivative$crit)
+    is_identical_to(basic_gam$first_derivative$crit)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$first_derivative$crit,
-    testthat::is_identical_to(corrected_gam$first_derivative$crit)
+    is_identical_to(corrected_gam$first_derivative$crit)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$first_derivative$lower_ci,
-    testthat::is_identical_to(basic_gam$first_derivative$lower_ci)
+    is_identical_to(basic_gam$first_derivative$lower_ci)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$first_derivative$lower_ci,
-    testthat::is_identical_to(corrected_gam$first_derivative$lower_ci)
+    is_identical_to(corrected_gam$first_derivative$lower_ci)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$first_derivative$upper_ci,
-    testthat::is_identical_to(basic_gam$first_derivative$upper_ci)
+    is_identical_to(basic_gam$first_derivative$upper_ci)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$first_derivative$upper_ci,
-    testthat::is_identical_to(corrected_gam$first_derivative$upper_ci)
+    is_identical_to(corrected_gam$first_derivative$upper_ci)
   )
 
   # lower_ci <= derivative <= upper_ci
-  testthat::expect_true(all(basic_gam$first_derivative$lower_ci <=
+  expect_true(all(basic_gam$first_derivative$lower_ci <=
     basic_gam$first_derivative$derivative &
     basic_gam$first_derivative$derivative <=
       basic_gam$first_derivative$upper_ci))
-  testthat::expect_true(all(corrected_gam$first_derivative$lower_ci <=
+  expect_true(all(corrected_gam$first_derivative$lower_ci <=
     corrected_gam$first_derivative$derivative &
     corrected_gam$first_derivative$derivative <=
       corrected_gam$first_derivative$upper_ci))
 })
 
-testthat::test_that("Test second derivative", {
+test_that("Test second derivative", {
 
   # second derivative is a data.frame or is NULL
-  testthat::expect_true(is.data.frame(basic_gam$second_derivative))
-  testthat::expect_true(is.data.frame(basic_gam_ys$second_derivative))
-  testthat::expect_true(is.data.frame(corrected_gam$second_derivative))
-  testthat::expect_true(is.data.frame(corrected_gam_ys$second_derivative))
+  expect_true(is.data.frame(basic_gam$second_derivative))
+  expect_true(is.data.frame(basic_gam_ys$second_derivative))
+  expect_true(is.data.frame(corrected_gam$second_derivative))
+  expect_true(is.data.frame(corrected_gam_ys$second_derivative))
   expect_null(basic_gam_bad$second_derivative)
   expect_null(basic_gam_bad_ys$second_derivative)
   expect_null(corrected_gam_bad$second_derivative)
@@ -692,11 +692,11 @@ testthat::test_that("Test second derivative", {
     "upper_ci",
     "year"
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam$second_derivative,
     has_names(expected = expected_cols_basic)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$second_derivative,
     has_names(expected = expected_cols_basic)
   )
@@ -710,20 +710,20 @@ testthat::test_that("Test second derivative", {
     "year",
     "baseline_observations"
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$second_derivative,
     has_names(expected = expected_cols_corrected)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam_ys$second_derivative,
     has_names(expected = expected_cols_corrected)
   )
 
   # smooth column contains only s(year) for basic gam
-  testthat::expect_true(unique(basic_gam$second_derivative$smooth) == "s(year)")
-  testthat::expect_true(unique(basic_gam_ys$second_derivative$smooth) == "s(year)")
-  testthat::expect_false(all(unique(corrected_gam$second_derivative$smooth) == "s(year)"))
-  testthat::expect_false(all(unique(corrected_gam_ys$second_derivative$smooth) == "s(year)"))
+  expect_true(unique(basic_gam$second_derivative$smooth) == "s(year)")
+  expect_true(unique(basic_gam_ys$second_derivative$smooth) == "s(year)")
+  expect_false(all(unique(corrected_gam$second_derivative$smooth) == "s(year)"))
+  expect_false(all(unique(corrected_gam_ys$second_derivative$smooth) == "s(year)"))
 
   # year column and baseline_observations, if present, contain numeric values
   expect_true(is.numeric(basic_gam$second_derivative$year))
@@ -746,95 +746,95 @@ testthat::test_that("Test second derivative", {
   )
 
   # columns derivative, se, crit, lower_ci, upper_ci are numeric
-  testthat::expect_true(is.numeric(basic_gam$second_derivative$derivative))
-  testthat::expect_true(is.numeric(basic_gam$second_derivative$se))
-  testthat::expect_true(is.numeric(basic_gam$second_derivative$crit))
-  testthat::expect_true(is.numeric(basic_gam$second_derivative$lower_ci))
-  testthat::expect_true(is.numeric(basic_gam$second_derivative$upper_ci))
-  testthat::expect_true(is.numeric(basic_gam_ys$second_derivative$derivative))
-  testthat::expect_true(is.numeric(basic_gam_ys$second_derivative$se))
-  testthat::expect_true(is.numeric(basic_gam_ys$second_derivative$crit))
-  testthat::expect_true(is.numeric(basic_gam_ys$second_derivative$lower_ci))
-  testthat::expect_true(is.numeric(basic_gam_ys$second_derivative$upper_ci))
-  testthat::expect_true(is.numeric(corrected_gam$second_derivative$derivative))
-  testthat::expect_true(is.numeric(corrected_gam$second_derivative$se))
-  testthat::expect_true(is.numeric(corrected_gam$second_derivative$crit))
-  testthat::expect_true(is.numeric(corrected_gam$second_derivative$lower_ci))
-  testthat::expect_true(is.numeric(corrected_gam$second_derivative$upper_ci))
-  testthat::expect_true(is.numeric(corrected_gam_ys$second_derivative$derivative))
-  testthat::expect_true(is.numeric(corrected_gam_ys$second_derivative$se))
-  testthat::expect_true(is.numeric(corrected_gam_ys$second_derivative$crit))
-  testthat::expect_true(is.numeric(corrected_gam_ys$second_derivative$lower_ci))
-  testthat::expect_true(is.numeric(corrected_gam_ys$second_derivative$upper_ci))
+  expect_true(is.numeric(basic_gam$second_derivative$derivative))
+  expect_true(is.numeric(basic_gam$second_derivative$se))
+  expect_true(is.numeric(basic_gam$second_derivative$crit))
+  expect_true(is.numeric(basic_gam$second_derivative$lower_ci))
+  expect_true(is.numeric(basic_gam$second_derivative$upper_ci))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$derivative))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$se))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$crit))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$lower_ci))
+  expect_true(is.numeric(basic_gam_ys$second_derivative$upper_ci))
+  expect_true(is.numeric(corrected_gam$second_derivative$derivative))
+  expect_true(is.numeric(corrected_gam$second_derivative$se))
+  expect_true(is.numeric(corrected_gam$second_derivative$crit))
+  expect_true(is.numeric(corrected_gam$second_derivative$lower_ci))
+  expect_true(is.numeric(corrected_gam$second_derivative$upper_ci))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$derivative))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$se))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$crit))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$lower_ci))
+  expect_true(is.numeric(corrected_gam_ys$second_derivative$upper_ci))
 
   # number of evaluation years doesn't affect 2nd derivative values
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$second_derivative$derivative,
-    testthat::is_identical_to(basic_gam$second_derivative$derivative)
+    is_identical_to(basic_gam$second_derivative$derivative)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$second_derivative$derivative,
-    testthat::is_identical_to(corrected_gam$second_derivative$derivative)
+    is_identical_to(corrected_gam$second_derivative$derivative)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$second_derivative$se,
-    testthat::is_identical_to(basic_gam$second_derivative$se)
+    is_identical_to(basic_gam$second_derivative$se)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$second_derivative$se,
-    testthat::is_identical_to(corrected_gam$second_derivative$se)
+    is_identical_to(corrected_gam$second_derivative$se)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$second_derivative$crit,
-    testthat::is_identical_to(basic_gam$second_derivative$crit)
+    is_identical_to(basic_gam$second_derivative$crit)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$second_derivative$crit,
-    testthat::is_identical_to(corrected_gam$second_derivative$crit)
+    is_identical_to(corrected_gam$second_derivative$crit)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$second_derivative$lower_ci,
-    testthat::is_identical_to(basic_gam$second_derivative$lower_ci)
+    is_identical_to(basic_gam$second_derivative$lower_ci)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$second_derivative$lower_ci,
-    testthat::is_identical_to(corrected_gam$second_derivative$lower_ci)
+    is_identical_to(corrected_gam$second_derivative$lower_ci)
   )
-  testthat::expect_that(
+  expect_that(
     basic_gam_ys$second_derivative$upper_ci,
-    testthat::is_identical_to(basic_gam$second_derivative$upper_ci)
+    is_identical_to(basic_gam$second_derivative$upper_ci)
   )
-  testthat::expect_that(
+  expect_that(
     corrected_gam$second_derivative$upper_ci,
-    testthat::is_identical_to(corrected_gam$second_derivative$upper_ci)
+    is_identical_to(corrected_gam$second_derivative$upper_ci)
   )
 
   # lower_ci <= derivative <= upper_ci
-  testthat::expect_true(all(basic_gam$second_derivative$lower_ci <=
+  expect_true(all(basic_gam$second_derivative$lower_ci <=
     basic_gam$second_derivative$derivative &
     basic_gam$second_derivative$derivative <=
       basic_gam$second_derivative$upper_ci))
-  testthat::expect_true(all(corrected_gam$second_derivative$lower_ci <=
+  expect_true(all(corrected_gam$second_derivative$lower_ci <=
     corrected_gam$second_derivative$derivative &
     corrected_gam$second_derivative$derivative <=
       corrected_gam$second_derivative$upper_ci))
 })
 
-testthat::test_that("Test plot", {
+test_that("Test plot", {
 
   # plot is always an obejct of class ggplot
-  testthat::expect_true(all(class(basic_gam$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(basic_gam_ys$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(corrected_gam$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(corrected_gam_ys$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(basic_gam_occ$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(basic_gam_taxon_key_as_number$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(basic_gam_taxon_key_as_string$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(basic_gam_taxon_key_and_name$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(basic_gam_bad$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(basic_gam_bad_ys$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(corrected_gam_bad$plot) == c("gg", "ggplot")))
-  testthat::expect_true(all(class(corrected_gam_bad_ys$plot) == c("gg", "ggplot")))
+  expect_true(all(class(basic_gam$plot) == c("gg", "ggplot")))
+  expect_true(all(class(basic_gam_ys$plot) == c("gg", "ggplot")))
+  expect_true(all(class(corrected_gam$plot) == c("gg", "ggplot")))
+  expect_true(all(class(corrected_gam_ys$plot) == c("gg", "ggplot")))
+  expect_true(all(class(basic_gam_occ$plot) == c("gg", "ggplot")))
+  expect_true(all(class(basic_gam_taxon_key_as_number$plot) == c("gg", "ggplot")))
+  expect_true(all(class(basic_gam_taxon_key_as_string$plot) == c("gg", "ggplot")))
+  expect_true(all(class(basic_gam_taxon_key_and_name$plot) == c("gg", "ggplot")))
+  expect_true(all(class(basic_gam_bad$plot) == c("gg", "ggplot")))
+  expect_true(all(class(basic_gam_bad_ys$plot) == c("gg", "ggplot")))
+  expect_true(all(class(corrected_gam_bad$plot) == c("gg", "ggplot")))
+  expect_true(all(class(corrected_gam_bad_ys$plot) == c("gg", "ggplot")))
 
   # All plot titles start with "GAM"
   title_plot <- basic_gam_name$plot$labels$title
@@ -852,17 +852,17 @@ testthat::test_that("Test plot", {
     title_plot_with_key_and_name
   )
 
-  testthat::expect_true(all(substr(titles, start = 1, stop = 3) == "GAM"))
+  expect_true(all(substr(titles, start = 1, stop = 3) == "GAM"))
 
   # type of indicator follows the word GAM in title
-  testthat::expect_equal(
+  expect_equal(
     substr(title_plot,
       start = 5,
       stop = 5 + nchar(obs_indicator) - 1
     ),
     obs_indicator
   )
-  testthat::expect_equal(
+  expect_equal(
     substr(title_plot_occ,
       start = 5,
       stop = 5 + nchar(occ_indicator) - 1
@@ -871,7 +871,7 @@ testthat::test_that("Test plot", {
   )
 
   # if provided, value of argument taxon_key is in title of plot
-  testthat::expect_equal(
+  expect_equal(
     substr(
       title_plot_with_key_string,
       start = nchar(title_plot_with_key_string) - nchar(taxon_key) + 1,
@@ -880,7 +880,7 @@ testthat::test_that("Test plot", {
     taxon_key
   )
 
-  testthat::expect_equal(
+  expect_equal(
     substr(
       title_plot_with_key_number,
       start = nchar(title_plot_with_key_number) - nchar(taxon_key) + 1,
@@ -890,11 +890,11 @@ testthat::test_that("Test plot", {
   )
 
   # title of plot doens't change if taxon_key is char or numeric
-  testthat::expect_equal(title_plot_with_key_string, title_plot_with_key_number)
+  expect_equal(title_plot_with_key_string, title_plot_with_key_number)
 
   # if provided, value of argument name is in title of plot at the end
 
-  testthat::expect_equal(
+  expect_equal(
     substr(title_plot_with_name,
       start = nchar(title_plot_with_name) - nchar(name_sp) + 1,
       stop = nchar(title_plot_with_name)
@@ -904,7 +904,7 @@ testthat::test_that("Test plot", {
 
   # if both provided, values of taxon_key and name are in title of plot as
   # taxon_key_name
-  testthat::expect_equal(
+  expect_equal(
     substr(title_plot_with_key_and_name,
       start = nchar(title_plot_with_key_and_name) - nchar(name_sp) - nchar(taxon_key),
       stop = nchar(title_plot_with_key_and_name)
@@ -913,7 +913,7 @@ testthat::test_that("Test plot", {
   )
 })
 
-testthat::test_that("Test warnings and messages.", {
+test_that("Test warnings and messages.", {
   expect_warning(apply_gam(
     df = df_bad,
     y_var = "n_observations",
