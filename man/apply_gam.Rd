@@ -90,7 +90,7 @@ outputs. \code{em_summary} contains as many rows as the length of input variable
 \code{eval_year}. So, if you evaluate GAM on three years, \code{em_summary} will
 contain three rows. Columns:
 \itemize{
-\item \code{"taxonKey"}: column containing taxon ID. Column name equal to value of
+\item \code{taxonKey}: column containing taxon ID. Column name equal to value of
 argument \code{taxonKey}.
 \item \code{"year"}: column containing temporal values. Column name equal
 to value of argument \code{year}. Column itself is equal to value of
@@ -100,15 +100,41 @@ column.
 \item \code{em_status}: numeric. Emerging statuses, an integer
 between 0 and 3.
 \item \code{growth}: numeric. Lower limit of GAM confidence interval for the first
-derivative. It represents the lower guaranteed growth.
+derivative, if positive. It represents the lower guaranteed growth.
 \item \code{method}: character. GAM method, One of: \code{"correct_baseline"} and
 \code{"basic"}. See details above in description of argument \code{use_baseline}.
+}
+
 \item \code{model}: gam object. The model as returned by \code{gam()} function.
 \code{NULL} if GAM cannot be applied.
+
 \item \code{output}: df. Complete data.frame containing more details than the
-summary \code{em_summary}.
+summary \code{em_summary}. Columns:
+\itemize{
+\item \code{taxonKey}: column containing taxon ID. Column name equal to value of
+argument \code{taxonKey}.
+\item \code{canonicalName}: name related to
+\item \code{year}
+\item \code{n}
+\item \code{n_class}
+\item \code{method}: character. GAM method, One of: \code{"correct_baseline"} and
+\code{"basic"}. See details above in description of argument \code{use_baseline}.
+\item \code{fit}: numeric. Fit values.
+\item \code{ucl}: numeric. The upper confidence level values.
+\item \code{lcl}: numeric. The lower confidence level values.
+\item \code{em1}: numeric. The emergency value for the 1st derivative. -1, 0 or +1.
+\item \code{em2}: numeric. The emergency value for the 2nd derivative: -1, 0 or +1.
+\item \code{em}: numeric. The emergency value: from -4 to +4, based on \code{em1} and
+\code{em2}. See Details.
+\item \code{em_status}: numeric. Emerging statuses, an integer
+between 0 and 3. See Details.
+\item \code{growth}: numeric. Lower limit of GAM confidence interval for the first
+derivative, if positive. It represents the lower guaranteed growth.
+}
+
 \item \code{first_derivative}: df. Data.frame with details of first derivatives.
 It contains following columns:
+\itemize{
 \item \code{smooth}: smoooth identifier. Example: \code{s(year)}.
 \item \code{var}: character. Column name the smoother is applied to.
 \item \code{data}: numeric. Data in columns defined by \code{var}.
@@ -124,12 +150,14 @@ Then \code{crit <- qnorm(p = (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)}.
 estimated smooth.
 \item \code{upper}: numeric. Upper bound of the
 confidence interval of the estimated smooth.
+}
+
 \item \code{second_derivative}: df. Data.frame with details of second
 derivatives. Same columns as \code{first_derivatives}.
+
 \item \code{plot}: a ggplot2 object. Plot of observations with GAM output and
 emerging status. If emerging status cannot be assessed only observations are
 plotted.
-}
 }
 }
 \description{

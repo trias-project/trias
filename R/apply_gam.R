@@ -50,7 +50,7 @@
 #'   outputs. `em_summary` contains as many rows as the length of input variable
 #'   `eval_year`. So, if you evaluate GAM on three years, `em_summary` will
 #'   contain three rows. Columns:
-#'   - `"taxonKey"`: column containing taxon ID. Column name equal to value of
+#'   - `taxonKey`: column containing taxon ID. Column name equal to value of
 #'   argument `taxonKey`.
 #'   - `"year"`: column containing temporal values. Column name equal
 #'   to value of argument `year`. Column itself is equal to value of
@@ -60,13 +60,35 @@
 #'   - `em_status`: numeric. Emerging statuses, an integer
 #'   between 0 and 3.
 #'   - `growth`: numeric. Lower limit of GAM confidence interval for the first
-#'   derivative. It represents the lower guaranteed growth.
+#'   derivative, if positive. It represents the lower guaranteed growth.
 #'   - `method`: character. GAM method, One of: `"correct_baseline"` and
 #'   `"basic"`. See details above in description of argument `use_baseline`.
+#'   
 #'   \item `model`: gam object. The model as returned by `gam()` function.
 #'   `NULL` if GAM cannot be applied.
+#'   
 #'   \item `output`: df. Complete data.frame containing more details than the
-#'   summary `em_summary`.
+#'   summary `em_summary`. Columns:
+#'   - `taxonKey`: column containing taxon ID. Column name equal to value of
+#'   argument `taxonKey`.
+#'   - `canonicalName`: name related to 
+#'   - `year`
+#'   - `n`
+#'   - `n_class`
+#'   - `method`: character. GAM method, One of: `"correct_baseline"` and
+#'   `"basic"`. See details above in description of argument `use_baseline`.
+#'   - `fit`: numeric. Fit values.
+#'   - `ucl`: numeric. The upper confidence level values.
+#'   - `lcl`: numeric. The lower confidence level values.
+#'   - `em1`: numeric. The emergency value for the 1st derivative. -1, 0 or +1.
+#'   - `em2`: numeric. The emergency value for the 2nd derivative: -1, 0 or +1.
+#'   - `em`: numeric. The emergency value: from -4 to +4, based on `em1` and 
+#'   `em2`. See Details. 
+#'   - `em_status`: numeric. Emerging statuses, an integer
+#'   between 0 and 3. See Details.
+#'   - `growth`: numeric. Lower limit of GAM confidence interval for the first
+#'   derivative, if positive. It represents the lower guaranteed growth.
+#'   
 #'   \item `first_derivative`: df. Data.frame with details of first derivatives.
 #'   It contains following columns:
 #'   - `smooth`: smoooth identifier. Example: `s(year)`.
@@ -84,8 +106,10 @@
 #'   estimated smooth.
 #'   - `upper`: numeric. Upper bound of the
 #'   confidence interval of the estimated smooth.
+#'   
 #'   \item `second_derivative`: df. Data.frame with details of second
 #'   derivatives. Same columns as `first_derivatives`.
+#'   
 #'   \item `plot`: a ggplot2 object. Plot of observations with GAM output and
 #' emerging status. If emerging status cannot be assessed only observations are
 #' plotted.
@@ -635,7 +659,8 @@ apply_gam <- function(df,
         
         output_model <- dplyr::left_join(output_model, em_levels, by = year)
         
-        # Lower value of first derivative (minimal guaranteed growth) if positive
+        # Lower value of first derivative (minimal guaranteed growth) if
+        # positive
         lower_deriv1 <-
           deriv1 %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
