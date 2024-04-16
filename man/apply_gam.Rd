@@ -38,15 +38,14 @@ be passed as string, e.g. \code{"time"}. Default: \code{"year"}.}
 \item{taxonKey}{character. Name of column containing taxon IDs. It has to be
 passed as string, e.g. \code{"taxon"}. Default: \code{"taxonKey"}.}
 
-\item{type_indicator}{character. One of \code{"observations"},
-\code{"occupancy"}. Used in title of the output plot. Default:
-\code{"observations"}.}
+\item{type_indicator}{character. One of \code{"observations"}, \code{"occupancy"}. Used
+in title of the output plot. Default: \code{"observations"}.}
 
-\item{baseline_var}{character. Name of the column containing values to use
-as additional covariate. Such covariate is introduced in the model to
-correct research effort bias. Default: \code{NULL}. If \code{NULL} internal
-variable \code{method_em = "basic"}, otherwise \code{method_em = "correct_baseline"}.
-Value of \code{method_em} will be part of title of output plot.}
+\item{baseline_var}{character. Name of the column containing values to use as
+additional covariate. Such covariate is introduced in the model to correct
+research effort bias. Default: \code{NULL}. If \code{NULL} internal variable
+\code{method_em = "basic"}, otherwise \code{method_em = "correct_baseline"}. Value of
+\code{method_em} will be part of title of output plot.}
 
 \item{p_max}{numeric. A value between 0 and 1. Default: 0.1.}
 
@@ -55,22 +54,17 @@ Used exclusively in graph title and filename (if \code{saveplot = TRUE}).
 Default: \code{NULL}.}
 
 \item{name}{character. Species name the timeseries belongs to. Used
-exclusively in graph title and filename (if \code{saveplot = TRUE}).
-Default: \code{NULL}.}
+exclusively in graph title and filename (if \code{saveplot = TRUE}). Default:
+\code{NULL}.}
 
 \item{df_title}{character. Any string you would like to add to graph titles
 and filenames (if \code{saveplot = TRUE}). The title is always composed of:
-\code{"GAM"} + \code{type_indicator} + \code{method_em} + \code{taxon_key}
-\itemize{
-\item \code{name} + \code{df_title} separated by underscore ("_"). Default:
-\code{NULL}.
-}}
+\code{"GAM"} + \code{type_indicator} + \code{method_em} + \code{taxon_key} + \code{name} +
+\code{df_title} separated by underscore ("_"). Default: \code{NULL}.}
 
-\item{x_label}{character. x-axis label of output plot. Default:
-\code{"year"}.}
+\item{x_label}{character. x-axis label of output plot. Default: \code{"year"}.}
 
-\item{y_label}{character. y-axis label of output plot. Default:
-\code{"number of observations"}.}
+\item{y_label}{character. y-axis label of output plot. Default: \code{"number of observations"}.}
 
 \item{saveplot}{logical. If \code{TRUE} the plots are authomatically saved.
 Default: \code{FALSE}.}
@@ -79,8 +73,8 @@ Default: \code{FALSE}.}
 doesn't exists, directory will be created. Example: "./output/graphs/". If
 \code{NULL}, plots are saved in current directory. Default: \code{NULL}.}
 
-\item{verbose}{logical. If \code{TRUE} status of processing and possible
-issues are returned. Default: \code{FALSE}.}
+\item{verbose}{logical. If \code{TRUE} status of processing and possible issues
+are returned. Default: \code{FALSE}.}
 }
 \value{
 list with six slots:
@@ -111,12 +105,7 @@ derivative, if positive. It represents the lower guaranteed growth.
 \item \code{output}: df. Complete data.frame containing more details than the
 summary \code{em_summary}. It contains the following columns:
 \itemize{
-\item \code{taxonKey}: column containing taxon ID. Column name equal to value of
-argument \code{taxonKey}.
-\item \code{canonicalName}: name related to
-\item \code{year}
-\item \code{n}
-\item \code{n_class}
+\item all columns in \code{df}.
 \item \code{method}: character. GAM method, One of: \code{"correct_baseline"} and
 \code{"basic"}. See details above in description of argument \code{use_baseline}.
 \item \code{fit}: numeric. Fit values.
@@ -136,8 +125,6 @@ derivative, if positive. It represents the lower guaranteed growth.
 It contains the following columns:
 \itemize{
 \item \code{smooth}: smoooth identifier. Example: \code{s(year)}.
-\item \code{var}: character. Column name the smoother is applied to.
-\item \code{data}: numeric. Data in columns defined by \code{var}.
 \item \code{derivative}: numeric. Value of first derivative.
 \item \code{se}: numeric. Standard error of \code{derivative}.
 \item \code{crit}: numeric. Critical value required such that
@@ -151,6 +138,8 @@ estimated smooth.
 \item \code{upper_ci}: numeric. Upper bound of the
 confidence interval of the estimated smooth.
 \item value of argument \code{year}: column with temporal values.
+\item value of argument \code{baseline_var}: column with the fitted values for the
+baseline. If \code{baseline_var} is \code{NULL}, this column is not present.
 }
 
 \item \code{second_derivative}: df. Data.frame with details of second
@@ -166,71 +155,67 @@ This function applies generalized additive models (GAM) to assess emerging
 status for a certain time window.
 }
 \details{
-The GAM modelling is performed using the \code{mgcvb::gam()}. To use this function, we pass:
+The GAM modelling is performed using the \code{mgcvb::gam()}. To use this
+function, we pass:
 \itemize{
 \item a formula
 \item a family object specifying the distribution
 \item a smoothing parameter estimation method
-}
 
 For more information about all other arguments, see \verb{[mgcv::gam()]}.
 
-If no covariate is used (\code{baseline_var} = NULL), the GAM formula is:
-\code{n ~ s(year, k = maxk, m = 3, bs = "tp")}. Otherwise the GAM formula has a
-second term, \code{s(n_covariate)} and so the GAM formula is
-\code{n ~ s(year, k = maxk, m = 3, bs = "tp") + s(n_covariate)}.
+If no covariate is used (\code{baseline_var} = NULL), the GAM formula is: \code{n ~ s(year, k = maxk, m = 3, bs = "tp")}. Otherwise the GAM formula has a
+second term, \code{s(n_covariate)} and so the GAM formula is \code{n ~ s(year, k = maxk, m = 3, bs = "tp") + s(n_covariate)}.
 
 Description of the parameters present in the formula above:
-\itemize{
 \item \code{k}: dimension of the basis used to represent the smooth term, i.e. the
-number of \emph{knots} used for calculating the smoother. We #' set \code{k} to \code{maxk},
-which is the number of decades in the time series. If less than 5 decades are
-present in the data, \code{maxk} is #' set to 5.
+number of \emph{knots} used for calculating the smoother. We #' set \code{k} to
+\code{maxk}, which is the number of decades in the time series. If less than 5
+decades are present in the data, \code{maxk} is #' set to 5.
 \item \code{bs} indicates the basis to use for the smoothing: we uses the default
 penalized thin plate regression splines.
 \item \code{m} specifies the order of the derivatives in the thin plate spline
 penalty. We use \code{m = 3}, the default value.
-}
 
 We use \verb{[mgcv::nb()]}, a negative binomial family to perform the GAM.
 
-The smoothing parameter estimation method is set to REML (Restricted maximum
-likelihood approach). If the P-value of the GAM smoother(s) is/are above
-threshold value \code{p_max}, GAM is not performed and the next warning is
-returned: "GAM output cannot be used: p-values of all GAM smoothers are above
-\{p_max\}" where \code{p_max} is the P-value used as threshold as defined by
-argument \code{p_max}.
+The smoothing parameter estimation method is set to REML (Restricted
+maximum likelihood approach). If the P-value of the GAM smoother(s) is/are
+above threshold value \code{p_max}, GAM is not performed and the next warning is
+returned: "GAM output cannot be used: p-values of all GAM smoothers are
+above \{p_max\}" where \code{p_max} is the P-value used as threshold as defined
+by argument \code{p_max}.
 
-If the \code{mgcv::gam()} returns an error or a warning, the following message is
-returned to the user: "GAM (\{method_em\}) cannot be performed or cannot
+If the \code{mgcv::gam()} returns an error or a warning, the following message
+is returned to the user: "GAM (\{method_em\}) cannot be performed or cannot
 converge.", where \code{method_em} is one of \code{"basic"} or \code{"correct_baseline"}.
 See argument \code{baseline_var}.
 
-The first and second derivatives of the smoother is calculated using function
-\code{gratia::derivatives()} with the following hard coded arguments:
-\itemize{
+The first and second derivatives of the smoother is calculated using
+function \code{gratia::derivatives()} with the following hard coded arguments:
 \item \code{type}: the type of finite difference used. Set  to \code{"central"}.
 \item \code{order}: 1 for the first derivative, 2 for the second derivative
 \item \code{level}: the confidence level. Set to 0.8
 \item \code{eps}: the finite difference. Set to 1e-4.
-}
 
 For more details, please check \link[gratia]{derivatives}.
 
 The sign of the lower and upper confidence levels of the first and second
 derivatives are used to define a detailed emergency status (\code{em}) which is
 internally used to return the emergency status, \code{em_status}, which is a
-column of the returned data.frame \code{em_summary}.\tabular{llllll}{
-   ucl-1 \tab lcl-1 \tab ucl-2 \tab lcl-2 \tab em \tab em_status \cr
-   + \tab + \tab + \tab + \tab 4 \tab 3 (emerging) \cr
-   + \tab + \tab + \tab - \tab 3 \tab 3 (emerging) \cr
-   + \tab + \tab - \tab - \tab 2 \tab 2 (potentially emerging) \cr
-   - \tab + \tab + \tab + \tab 1 \tab 2 (potentially emerging) \cr
-   + \tab - \tab + \tab - \tab 0 \tab 1 (unclear) \cr
-   + \tab - \tab - \tab - \tab -1 \tab 0 (not emerging) \cr
-   - \tab - \tab + \tab + \tab -2 \tab 0 (not emerging) \cr
-   - \tab - \tab + \tab - \tab -3 \tab 0 (not emerging) \cr
-   - \tab - \tab - \tab - \tab -4 \tab 0 (not emerging) \cr
+column of the returned data.frame \code{em_summary}.
+
+| ucl-1 | lcl-1 | ucl-2 | lcl-2 | em | em_status | | --- | --- | --- | ---
+|
+--- | --- | | + | + | + | + | 4 | 3 (emerging) | | + | + | + | - | 3 | 3
+(emerging) | | + | + | - | - | 2 | 2 (potentially emerging) | | - | + | + |
+\itemize{
+\item | 1 | 2 (potentially emerging) | | + | - | + | - | 0 | 1 (unclear) | | +
+| - | - | - | -1 | 0 (not emerging) | | - | - | + | + | -2 | 0 (not
+emerging) | |
+}
+\item | - | + | - | -3 | 0 (not emerging) | | - | - | - | - | -4 | 0 (not
+emerging) |
 }
 }
 \examples{
