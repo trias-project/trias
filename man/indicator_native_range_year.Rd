@@ -12,6 +12,7 @@ indicator_native_range_year(
   x_lab = "year",
   y_lab = "alien species",
   relative = FALSE,
+  taxon_key_col = "key",
   first_observed = "first_observed"
 )
 }
@@ -33,6 +34,9 @@ species".}
 
 \item{relative}{(logical) if TRUE (default), each bar is standardised before
 stacking.}
+
+\item{taxon_key_col}{character. Name of the column of \code{df} containing
+taxon IDs. Default: \code{"key"}.}
 
 \item{first_observed}{(character) Name of the column in \code{data}
 containing temporal information about introduction of the alien species.
