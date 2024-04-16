@@ -519,7 +519,7 @@ apply_gam <- function(df,
     dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
     dplyr::select(
       !!dplyr::sym(taxonKey),
-      year,
+      !!dplyr::sym(year),
       "em_status",
       "growth",
       "method"
@@ -596,18 +596,22 @@ apply_gam <- function(df,
         # Calculate first and second derivative + conf. interval
         deriv1 <- gratia::derivatives(model,
                                       type = "central", order = 1, level = 0.8,
-                                      n = nrow(output_model), eps = 1e-4) %>%
-          dplyr::select(".smooth", ".derivative", ".se", ".crit", 
-                        ".lower_ci", ".upper_ci", !!dplyr::sym(year)) %>%
+                                      n = nrow(output_model), eps = 1e-4)
+        cols_to_select <- c(".smooth", ".derivative", ".se", ".crit",
+                            ".lower_ci", ".upper_ci",
+                            year, baseline_var)
+        deriv1 <- deriv1 %>%
+          dplyr::select(dplyr::all_of(cols_to_select)) %>%
           dplyr::rename_with(~sub("^\\.", "", .), 
                              dplyr::all_of(c(".smooth", ".derivative", 
                                              ".se", ".crit", 
                                              ".lower_ci", ".upper_ci")))
         deriv2 <- gratia::derivatives(model,
                                       type = "central", order = 2, level = 0.8,
-                                      n = nrow(output_model), eps = 1e-4) %>%
-          dplyr::select(".smooth", ".derivative", ".se", ".crit", 
-                        ".lower_ci", ".upper_ci", !!dplyr::sym(year)) %>%
+                                      n = nrow(output_model), eps = 1e-4)
+        deriv2 <- deriv2 %>%
+          # same columns to select as for 1st derivative
+          dplyr::select(dplyr::all_of(cols_to_select)) %>%
           dplyr::rename_with(~sub("^\\.", "", .), 
                              dplyr::all_of(c(".smooth", ".derivative", 
                                              ".se", ".crit", 
