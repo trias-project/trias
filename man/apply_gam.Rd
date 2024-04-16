@@ -300,6 +300,9 @@ obs = c(
 ),
 cobs = rep(0, 24)
 )
+
+# if GAM cannot be applied a warning is returned and the plot mention it
+\dontrun{
 no_gam_applied <- apply_gam(df_gam,
                             y_var = "obs",
                             eval_years = 2018,
@@ -310,5 +313,5 @@ no_gam_applied <- apply_gam(df_gam,
 )
 no_gam_applied$plot
 }
-
+}
 }
