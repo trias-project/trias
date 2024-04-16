@@ -270,14 +270,14 @@ apply_gam <- function(df,
   if (is.numeric(taxon_key)) {
     taxon_key <- as.character(taxon_key)
   }
-
+  
   # Check right type of inputs
   assertthat::assert_that(is.data.frame(df),
-    msg = paste(
-      paste(as.character(df), collapse = ","),
-      "is not a data frame.",
-      "Check value of argument df."
-    )
+                          msg = paste(
+                            paste(as.character(df), collapse = ","),
+                            "is not a data frame.",
+                            "Check value of argument df."
+                          )
   )
   purrr::map2(
     list(y_var, year, taxonKey, type_indicator, x_label, y_label),
@@ -285,85 +285,85 @@ apply_gam <- function(df,
     function(x, y) {
       # Check right type of inputs
       assertthat::assert_that(is.character(x),
-        msg = paste0(
-          paste(as.character(x), collapse = ","),
-          " is not a character vector.",
-          " Check value of argument ", y, "."
-        )
+                              msg = paste0(
+                                paste(as.character(x), collapse = ","),
+                                " is not a character vector.",
+                                " Check value of argument ", y, "."
+                              )
       )
       # Check y_var, year, taxonKey, type_indicator have length 1
       assertthat::assert_that(length(x) == 1,
-        msg = paste0(
-          "Multiple values for argument ",
-          paste0(y, collapse = ","),
-          " provided."
-        )
+                              msg = paste0(
+                                "Multiple values for argument ",
+                                paste0(y, collapse = ","),
+                                " provided."
+                              )
       )
     }
   )
   assertthat::assert_that(is.numeric(eval_years),
-    msg = paste(
-      paste(as.character(eval_years), collapse = ","),
-      "is not a numeric or integer vector.",
-      "Check value of argument eval_years."
-    )
+                          msg = paste(
+                            paste(as.character(eval_years), collapse = ","),
+                            "is not a numeric or integer vector.",
+                            "Check value of argument eval_years."
+                          )
   )
-
+  
   purrr::map2(
     list(baseline_var, taxon_key, name, df_title, dir_name),
     c("baseline_var", "taxon_key", "name", "df_title", "dir_name"),
     function(x, y) {
       # check argument type
       assertthat::assert_that(is.null(x) | is.character(x),
-        msg = paste0(
-          paste(as.character(x), collapse = ","),
-          " is not a character vector.",
-          " Check value of argument ", y, "."
-        )
+                              msg = paste0(
+                                paste(as.character(x), collapse = ","),
+                                " is not a character vector.",
+                                " Check value of argument ", y, "."
+                              )
       )
       # check length
       assertthat::assert_that(length(x) < 2,
-        msg = paste(
-          "Multiple values for argument",
-          y, "provided."
-        )
+                              msg = paste(
+                                "Multiple values for argument",
+                                y, "provided."
+                              )
       )
     }
   )
-
+  
   purrr::map2(
     list(saveplot, verbose),
     c("saveplot", "verbose"),
     function(x, y) {
       assertthat::assert_that(is.logical(x),
-        msg = paste(
-          paste(as.character(x), collapse = ","),
-          "is not a logical vector.",
-          "Check value of argument saveplot.",
-          "Did you maybe use quotation marks?"
-        )
+                              msg = paste(
+                                paste(as.character(x), collapse = ","),
+                                "is not a logical vector.",
+                                "Check value of argument saveplot.",
+                                "Did you maybe use quotation marks?"
+                              )
       )
       assertthat::assert_that(length(x) == 1,
-        msg = paste("Multiple values for argument", y, "provided.")
+                              msg = paste("Multiple values for argument", y, "provided.")
       )
     }
   )
-
+  
   purrr::map2(
     list(y_var, year, taxonKey),
     c("y_var", "year", "taxonKey"),
     function(x, y) {
       # Check y_var, year, taxonKey are present in df
       assertthat::assert_that(x %in% names(df),
-        msg = paste0(
-          "The column ", x,
-          " is not present in df. Check value of",
-          " argument ", y, "."
-        )
+                              msg = paste0(
+                                "The column ", x,
+                                " is not present in df. Check value of",
+                                " argument ", y, "."
+                              )
       )
     }
   )
-
+  
   if (!is.null(baseline_var)) {
     # Check baseline_var is present in df
     assertthat::assert_that(
@@ -377,7 +377,7 @@ apply_gam <- function(df,
   } else {
     method_em <- "basic"
   }
-
+  
   if (isFALSE(saveplot)) {
     if (!is.null(dir_name)) {
       warning(paste(
@@ -393,44 +393,44 @@ apply_gam <- function(df,
       dir_name <- "./"
     }
   }
-
+  
   year <- tidyselect::vars_pull(names(df), !!dplyr::enquo(year))
   taxonKey <- tidyselect::vars_pull(names(df), !!dplyr::enquo(taxonKey))
-
+  
   # Check eval_year is present in column year
   assertthat::assert_that(all(eval_years %in% df[[year]]),
-    msg = paste(
-      "One or more evaluation years",
-      "not present in df.",
-      "Check value of argument eval_years."
-    )
+                          msg = paste(
+                            "One or more evaluation years",
+                            "not present in df.",
+                            "Check value of argument eval_years."
+                          )
   )
-
+  
   assertthat::assert_that(is.numeric(p_max) && p_max >= 0 && p_max <= 1,
-    msg = paste(
-      "p_max is a p-value: it has to be a",
-      "number between 0 and 1."
-    )
+                          msg = paste(
+                            "p_max is a p-value: it has to be a",
+                            "number between 0 and 1."
+                          )
   )
-
+  
   # Check type_indicator is one of the two allowed values
   assertthat::assert_that(type_indicator %in% c("observations", "occupancy"),
-    msg = paste(
-      "Invalid type_indicator.",
-      "type_indicator has to be one of:",
-      "observations, occupancy."
-    )
+                          msg = paste(
+                            "Invalid type_indicator.",
+                            "type_indicator has to be one of:",
+                            "observations, occupancy."
+                          )
   )
-
+  
   if (verbose == TRUE) {
     print(paste0("Analyzing: ", name, "(", taxon_key, ")"))
   }
-
+  
   if (nrow(df) > 0) {
     # Maximum minimum time series (year)
     fyear <- min(df[[year]], na.rm = TRUE) # first year
     lyear <- max(df[[year]], na.rm = TRUE) # last year
-
+    
     # Define model to use for GAM
     maxk <- max(round((lyear - fyear) / 10, digits = 0), 5) # max number of knots
   }
@@ -454,7 +454,7 @@ apply_gam <- function(df,
     )
     fm <- stats::formula(fm)
   }
-
+  
   # Initialization
   output_model <- dplyr::as_tibble(df)
   output_model <-
@@ -495,11 +495,11 @@ apply_gam <- function(df,
     dplyr::select(
       !!dplyr::sym(taxonKey),
       year,
-      em_status,
-      growth,
-      method
+      "em_status",
+      "growth",
+      "method"
     )
-
+  
   if (nrow(df) > 3 & sum(df[[y_var]][2:nrow(df)]) != 0) {
     result <- tryCatch(expr = {
       model <- mgcv::gam(
@@ -512,7 +512,7 @@ apply_gam <- function(df,
       summary_pv <- mgcv::summary.gam(model)$s.pv
       p_ok <- ifelse(any(summary_pv < p_max), TRUE, FALSE)
     }, error = function(e) e, warning = function(w) w)
-
+    
     if (class(result)[1] %in% c("simpleWarning", "simpleError")) {
       if (verbose) {
         warning(paste0(
@@ -552,13 +552,13 @@ apply_gam <- function(df,
           interval = "prediction",
           se.fit = TRUE
         )
-
+        
         # Calculate confidence intervals & backtransform to real scale
         intercept <- unname(model$coefficients[1])
         output_model$fit <- model$family$linkinv(temp$fit[, 1] + intercept)
         output_model$ucl <- model$family$linkinv(temp$fit[, 1] + intercept + temp$se.fit[, 1] * 1.96)
         output_model$lcl <- model$family$linkinv(temp$fit[, 1] + intercept - temp$se.fit[, 1] * 1.96)
-
+        
         # Check that fit ucl and lcl are all above zero
         output_model <-
           output_model %>%
@@ -567,47 +567,49 @@ apply_gam <- function(df,
             ucl = ifelse(.data$ucl < 0, 0, .data$ucl),
             lcl = ifelse(.data$lcl < 0, 0, .data$lcl)
           )
-
+        
         # Calculate first and second derivative + conf. interval
         deriv1 <- gratia::derivatives(model,
-          type = "central", order = 1, level = 0.8,
-          n = nrow(output_model), eps = 1e-4) %>%
-          # to remove by_var and fs_var 
-          # (probably in very new version of gratia, 0.8.x not compatible with R
-          # 4.2.1) errors with GitHub actions automatic checks 
-          dplyr::select(smooth, var, data, derivative, se, crit, lower, upper)
+                                      type = "central", order = 1, level = 0.8,
+                                      n = nrow(output_model), eps = 1e-4) %>%
+          dplyr::select(".smooth", ".derivative", ".se", ".crit", 
+                        ".lower_ci", ".upper_ci", !!dplyr::sym(year)) %>%
+          dplyr::rename_with(~sub("^\\.", "", .), 
+                             dplyr::all_of(c(".smooth", ".derivative", 
+                                             ".se", ".crit", 
+                                             ".lower_ci", ".upper_ci")))
         deriv2 <- gratia::derivatives(model,
-          type = "central", order = 2, level = 0.8,
-          n = nrow(output_model), eps = 1e-4) %>%
-          # to remove by_var and fs_var 
-          # (probably in very new version of gratia, 0.8.x not compatible with R
-          # 4.2.1)
-          dplyr::select(smooth, var, data, derivative, se, crit, lower, upper)
-
+                                      type = "central", order = 2, level = 0.8,
+                                      n = nrow(output_model), eps = 1e-4) %>%
+          dplyr::select(".smooth", ".derivative", ".se", ".crit", 
+                        ".lower_ci", ".upper_ci", !!dplyr::sym(year)) %>%
+          dplyr::rename_with(~sub("^\\.", "", .), 
+                             dplyr::all_of(c(".smooth", ".derivative", 
+                                             ".se", ".crit", 
+                                             ".lower_ci", ".upper_ci")))
+        
         # Emerging status based on first and second derivative
         em1 <-
           deriv1 %>%
-          dplyr::as_tibble() %>%
-          dplyr::filter(.data$var == year) %>%
+          dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em1 = dplyr::case_when(
-            .data$lower < 0 & .data$upper <= 0 ~ -1,
-            .data$lower < 0 & .data$upper > 0 ~ 0,
-            .data$lower >= 0 & .data$upper > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
+            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
+            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
           )) %>%
-          dplyr::select(!!dplyr::sym(year) := data, em1) %>%
+          dplyr::select(!!dplyr::sym(year), "em1") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
-
+        
         em2 <- deriv2 %>%
-          dplyr::as_tibble() %>%
-          dplyr::filter(.data$var == year) %>%
+          dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em2 = dplyr::case_when(
-            .data$lower < 0 & .data$upper <= 0 ~ -1,
-            .data$lower < 0 & .data$upper > 0 ~ 0,
-            .data$lower >= 0 & .data$upper > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
+            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
+            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
           )) %>%
-          dplyr::select(!!dplyr::sym(year) := data, em2) %>%
+          dplyr::select(!!dplyr::sym(year), "em2") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
-
+        
         em_level_gam <- dplyr::full_join(em1, em2, by = year) %>%
           dplyr::mutate(em = dplyr::case_when(
             .data$em1 == 1 & .data$em2 == 1 ~ 4,
@@ -620,7 +622,7 @@ apply_gam <- function(df,
             .data$em1 == -1 & .data$em2 == 0 ~ -3,
             .data$em1 == -1 & .data$em2 == -1 ~ -4
           ))
-
+        
         # Emerging status
         em_levels <-
           em_level_gam %>%
@@ -630,21 +632,23 @@ apply_gam <- function(df,
             .data$em < 3 ~ 2, # potentially emerging
             .data$em >= 3 ~ 3 # emerging
           ))
-
+        
         output_model <- dplyr::left_join(output_model, em_levels, by = year)
-
+        
         # Lower value of first derivative (minimal guaranteed growth) if positive
         lower_deriv1 <-
           deriv1 %>%
-          dplyr::filter(.data$var == year) %>%
-          dplyr::rename(!!dplyr::sym(year) := data) %>%
-          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), digits = 0)) %>%
-          dplyr::mutate(growth = model$family$linkinv(.data$lower)) %>%
-          dplyr::select(!!dplyr::sym(year), growth)
-
+          dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
+          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), 
+                                                    digits = 0)) %>%
+          dplyr::mutate(growth = model$family$linkinv(.data$lower_ci)) %>%
+          dplyr::select(!!dplyr::sym(year), "growth")
+        
         # Add lower value of first derivative
-        output_model <- dplyr::left_join(output_model, lower_deriv1, by = "year")
-
+        output_model <- dplyr::left_join(output_model, 
+                                         lower_deriv1, 
+                                         by = "year")
+        
         # Get emerging status summary for output
         emerging_status_output <-
           output_model %>%
@@ -652,9 +656,9 @@ apply_gam <- function(df,
           dplyr::select(
             !!dplyr::sym(taxonKey),
             year,
-            em_status,
-            growth,
-            method
+            "em_status",
+            "growth",
+            "method"
           )
         # Create plot with conf. interval + colour for status
         plot_gam <- plot_ribbon_em(
@@ -715,7 +719,7 @@ apply_gam <- function(df,
     }
     ggplot2::ggsave(filename = file_name, plot_gam)
   }
-
+  
   return(list(
     em_summary = emerging_status_output,
     model = model,
@@ -765,7 +769,7 @@ plot_ribbon_em <- function(df_plot,
     ggplot2::geom_point(color = "black") +
     ggplot2::ylab(y_label) +
     ggplot2::ggtitle(ptitle)
-
+  
   if (all(
     all(abs(df_plot$lcl < 10^10)),
     all(abs(df_plot$ucl < 10^10)),
@@ -773,8 +777,8 @@ plot_ribbon_em <- function(df_plot,
   )) {
     g <- g +
       ggplot2::geom_ribbon(ggplot2::aes(ymax = .data$ucl, ymin = .data$lcl),
-        fill = grDevices::grey(0.5),
-        alpha = 0.4
+                           fill = grDevices::grey(0.5),
+                           alpha = 0.4
       ) +
       ggplot2::geom_line(ggplot2::aes(x = .data$year, y = .data$fit),
                          color = "grey50") +
@@ -830,6 +834,6 @@ add_annotation <- function(
                       vjust = 1,
                       label = text,
                       colour = colour
-  )
+    )
   return(annotated_plot)
 }
