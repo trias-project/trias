@@ -49,8 +49,8 @@
 #'   \item `em_summary`: df. A data.frame summarizing the emerging status
 #'   outputs. `em_summary` contains as many rows as the length of input variable
 #'   `eval_year`. So, if you evaluate GAM on three years, `em_summary` will
-#'   contain three rows. Columns:
-#'   - `taxonKey`: column containing taxon ID. Column name equal to value of
+#'   contain three rows. It contains the following columns:
+#'   - `"taxonKey"`: column containing taxon ID. Column name equal to value of
 #'   argument `taxonKey`.
 #'   - `"year"`: column containing temporal values. Column name equal
 #'   to value of argument `year`. Column itself is equal to value of
@@ -68,7 +68,7 @@
 #'   `NULL` if GAM cannot be applied.
 #'   
 #'   \item `output`: df. Complete data.frame containing more details than the
-#'   summary `em_summary`. Columns:
+#'   summary `em_summary`. It contains the following columns:
 #'   - `taxonKey`: column containing taxon ID. Column name equal to value of
 #'   argument `taxonKey`.
 #'   - `canonicalName`: name related to 
@@ -90,7 +90,7 @@
 #'   derivative, if positive. It represents the lower guaranteed growth.
 #'   
 #'   \item `first_derivative`: df. Data.frame with details of first derivatives.
-#'   It contains following columns:
+#'   It contains the following columns:
 #'   - `smooth`: smoooth identifier. Example: `s(year)`.
 #'   - `var`: character. Column name the smoother is applied to.
 #'   - `data`: numeric. Data in columns defined by `var`.
@@ -102,10 +102,11 @@
 #'   derivative of the estimated smooth at the specific confidence level. In our
 #'   case the confidence level is hard-coded: 0.8.
 #'   Then `crit <- qnorm(p = (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)`.
-#'   - `lower`: numeric. Lower bound of the confidence interval of the
+#'   - `lower_ci`: numeric. Lower bound of the confidence interval of the
 #'   estimated smooth.
-#'   - `upper`: numeric. Upper bound of the
+#'   - `upper_ci`: numeric. Upper bound of the
 #'   confidence interval of the estimated smooth.
+#'   - value of argument `year`: column with temporal values.
 #'   
 #'   \item `second_derivative`: df. Data.frame with details of second
 #'   derivatives. Same columns as `first_derivatives`.

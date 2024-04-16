@@ -88,9 +88,9 @@ list with six slots:
 \item \code{em_summary}: df. A data.frame summarizing the emerging status
 outputs. \code{em_summary} contains as many rows as the length of input variable
 \code{eval_year}. So, if you evaluate GAM on three years, \code{em_summary} will
-contain three rows. Columns:
+contain three rows. It contains the following columns:
 \itemize{
-\item \code{taxonKey}: column containing taxon ID. Column name equal to value of
+\item \code{"taxonKey"}: column containing taxon ID. Column name equal to value of
 argument \code{taxonKey}.
 \item \code{"year"}: column containing temporal values. Column name equal
 to value of argument \code{year}. Column itself is equal to value of
@@ -109,7 +109,7 @@ derivative, if positive. It represents the lower guaranteed growth.
 \code{NULL} if GAM cannot be applied.
 
 \item \code{output}: df. Complete data.frame containing more details than the
-summary \code{em_summary}. Columns:
+summary \code{em_summary}. It contains the following columns:
 \itemize{
 \item \code{taxonKey}: column containing taxon ID. Column name equal to value of
 argument \code{taxonKey}.
@@ -133,7 +133,7 @@ derivative, if positive. It represents the lower guaranteed growth.
 }
 
 \item \code{first_derivative}: df. Data.frame with details of first derivatives.
-It contains following columns:
+It contains the following columns:
 \itemize{
 \item \code{smooth}: smoooth identifier. Example: \code{s(year)}.
 \item \code{var}: character. Column name the smoother is applied to.
@@ -146,10 +146,11 @@ the upper and lower bounds of the confidence interval on the first
 derivative of the estimated smooth at the specific confidence level. In our
 case the confidence level is hard-coded: 0.8.
 Then \code{crit <- qnorm(p = (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)}.
-\item \code{lower}: numeric. Lower bound of the confidence interval of the
+\item \code{lower_ci}: numeric. Lower bound of the confidence interval of the
 estimated smooth.
-\item \code{upper}: numeric. Upper bound of the
+\item \code{upper_ci}: numeric. Upper bound of the
 confidence interval of the estimated smooth.
+\item value of argument \code{year}: column with temporal values.
 }
 
 \item \code{second_derivative}: df. Data.frame with details of second
