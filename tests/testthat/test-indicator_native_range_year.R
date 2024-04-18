@@ -137,4 +137,13 @@ test_that("Test output type, class, slots and columns", {
   
   # data slot is not affected by value of related arg
   expect_identical(plot_output$data, plot_output_rel$data)
+  
+  # function automatically retains unique records per species & type
+  invasive_df <- cleaned_input_test_df[
+    cleaned_input_test_df$degree_of_establishment == "invasive", 
+  ]
+  nRecords <- nrow(unique(invasive_df[, c("last_observed", "native_range")]))
+  plot_output_invasive <- indicator_native_range_year(invasive_df)
+  expect_equal(nrow(plot_output_invasive$data), nRecords)
+  
 })

@@ -12,44 +12,41 @@
 #'   be passed as string, e.g. `"time"`. Default: `"year"`.
 #' @param taxonKey character. Name of column containing taxon IDs. It has to be
 #'   passed as string, e.g. `"taxon"`. Default: `"taxonKey"`.
-#' @param type_indicator character. One of `"observations"`,
-#'   `"occupancy"`. Used in title of the output plot. Default:
-#'   `"observations"`.
-#' @param baseline_var character. Name of the column containing values to use
-#'   as additional covariate. Such covariate is introduced in the model to
-#'   correct research effort bias. Default: `NULL`. If `NULL` internal
-#'   variable `method_em = "basic"`, otherwise `method_em = "correct_baseline"`.
-#'   Value of `method_em` will be part of title of output plot.
+#' @param type_indicator character. One of `"observations"`, `"occupancy"`. Used
+#'   in title of the output plot. Default: `"observations"`.
+#' @param baseline_var character. Name of the column containing values to use as
+#'   additional covariate. Such covariate is introduced in the model to correct
+#'   research effort bias. Default: `NULL`. If `NULL` internal variable
+#'   `method_em = "basic"`, otherwise `method_em = "correct_baseline"`. Value of
+#'   `method_em` will be part of title of output plot.
 #' @param  p_max numeric. A value between 0 and 1. Default: 0.1.
 #' @param taxon_key numeric, character. Taxon key the timeseries belongs to.
 #'   Used exclusively in graph title and filename (if `saveplot = TRUE`).
 #'   Default: `NULL`.
 #' @param name character. Species name the timeseries belongs to. Used
-#'   exclusively in graph title and filename (if `saveplot = TRUE`).
-#'   Default: `NULL`.
+#'   exclusively in graph title and filename (if `saveplot = TRUE`). Default:
+#'   `NULL`.
 #' @param df_title character. Any string you would like to add to graph titles
 #'   and filenames (if `saveplot = TRUE`). The title is always composed of:
-#'   `"GAM"` + `type_indicator` + `method_em` + `taxon_key`
-#'   + `name` + `df_title` separated by underscore ("_"). Default:
-#'   `NULL`.
-#' @param x_label character. x-axis label of output plot. Default:
-#'   `"year"`.
-#' @param y_label character. y-axis label of output plot. Default:
-#'   `"number of observations"`.
+#'   `"GAM"` + `type_indicator` + `method_em` + `taxon_key` + `name` +
+#'   `df_title` separated by underscore ("_"). Default: `NULL`.
+#' @param x_label character. x-axis label of output plot. Default: `"year"`.
+#' @param y_label character. y-axis label of output plot. Default: `"number of
+#'   observations"`.
 #' @param saveplot logical. If `TRUE` the plots are authomatically saved.
 #'   Default: `FALSE`.
 #' @param dir_name character. Path of directory where saving plots. If path
 #'   doesn't exists, directory will be created. Example: "./output/graphs/". If
 #'   `NULL`, plots are saved in current directory. Default: `NULL`.
-#' @param verbose logical. If `TRUE` status of processing and possible
-#'   issues are returned. Default: `FALSE`.
+#' @param verbose logical. If `TRUE` status of processing and possible issues
+#'   are returned. Default: `FALSE`.
 #'
 #' @return list with six slots:
 #' \enumerate{
 #'   \item `em_summary`: df. A data.frame summarizing the emerging status
 #'   outputs. `em_summary` contains as many rows as the length of input variable
 #'   `eval_year`. So, if you evaluate GAM on three years, `em_summary` will
-#'   contain three rows. Columns:
+#'   contain three rows. It contains the following columns:
 #'   - `"taxonKey"`: column containing taxon ID. Column name equal to value of
 #'   argument `taxonKey`.
 #'   - `"year"`: column containing temporal values. Column name equal
@@ -60,18 +57,33 @@
 #'   - `em_status`: numeric. Emerging statuses, an integer
 #'   between 0 and 3.
 #'   - `growth`: numeric. Lower limit of GAM confidence interval for the first
-#'   derivative. It represents the lower guaranteed growth.
+#'   derivative, if positive. It represents the lower guaranteed growth.
 #'   - `method`: character. GAM method, One of: `"correct_baseline"` and
 #'   `"basic"`. See details above in description of argument `use_baseline`.
+#'
 #'   \item `model`: gam object. The model as returned by `gam()` function.
 #'   `NULL` if GAM cannot be applied.
+#'
 #'   \item `output`: df. Complete data.frame containing more details than the
-#'   summary `em_summary`.
+#'   summary `em_summary`. It contains the following columns:
+#'   - all columns in `df`.
+#'   - `method`: character. GAM method, One of: `"correct_baseline"` and
+#'   `"basic"`. See details above in description of argument `use_baseline`.
+#'   - `fit`: numeric. Fit values.
+#'   - `ucl`: numeric. The upper confidence level values.
+#'   - `lcl`: numeric. The lower confidence level values.
+#'   - `em1`: numeric. The emergency value for the 1st derivative. -1, 0 or +1.
+#'   - `em2`: numeric. The emergency value for the 2nd derivative: -1, 0 or +1.
+#'   - `em`: numeric. The emergency value: from -4 to +4, based on `em1` and
+#'   `em2`. See Details.
+#'   - `em_status`: numeric. Emerging statuses, an integer
+#'   between 0 and 3. See Details.
+#'   - `growth`: numeric. Lower limit of GAM confidence interval for the first
+#'   derivative, if positive. It represents the lower guaranteed growth.
+#'
 #'   \item `first_derivative`: df. Data.frame with details of first derivatives.
-#'   It contains following columns:
+#'   It contains the following columns:
 #'   - `smooth`: smoooth identifier. Example: `s(year)`.
-#'   - `var`: character. Column name the smoother is applied to.
-#'   - `data`: numeric. Data in columns defined by `var`.
 #'   - `derivative`: numeric. Value of first derivative.
 #'   - `se`: numeric. Standard error of `derivative`.
 #'   - `crit`: numeric. Critical value required such that
@@ -80,12 +92,17 @@
 #'   derivative of the estimated smooth at the specific confidence level. In our
 #'   case the confidence level is hard-coded: 0.8.
 #'   Then `crit <- qnorm(p = (1-0.8)/2, mean = 0, sd = 1, lower.tail = FALSE)`.
-#'   - `lower`: numeric. Lower bound of the confidence interval of the
+#'   - `lower_ci`: numeric. Lower bound of the confidence interval of the
 #'   estimated smooth.
-#'   - `upper`: numeric. Upper bound of the
+#'   - `upper_ci`: numeric. Upper bound of the
 #'   confidence interval of the estimated smooth.
+#'   - value of argument `year`: column with temporal values.
+#'   - value of argument `baseline_var`: column with the fitted values for the 
+#'   baseline. If `baseline_var` is `NULL`, this column is not present.
+#'
 #'   \item `second_derivative`: df. Data.frame with details of second
 #'   derivatives. Same columns as `first_derivatives`.
+#'
 #'   \item `plot`: a ggplot2 object. Plot of observations with GAM output and
 #' emerging status. If emerging status cannot be assessed only observations are
 #' plotted.
@@ -93,71 +110,69 @@
 #' @export
 #' @importFrom dplyr %>% .data
 #' @importFrom rlang !! :=
-#' 
-#' @details
-#' The GAM modelling is performed using the `mgcvb::gam()`. To use this function, we pass:
+#'
+#' @details The GAM modelling is performed using the `mgcvb::gam()`. To use this
+#'   function, we pass:
 #' - a formula
 #' - a family object specifying the distribution
 #' - a smoothing parameter estimation method
-#' 
-#' For more information about all other arguments, see `[mgcv::gam()]`.
-#' 
-#' If no covariate is used (`baseline_var` = NULL), the GAM formula is: 
-#' `n ~ s(year, k = maxk, m = 3, bs = "tp")`. Otherwise the GAM formula has a
-#' second term, `s(n_covariate)` and so the GAM formula is 
-#' `n ~ s(year, k = maxk, m = 3, bs = "tp") + s(n_covariate)`.
-#' 
-#' Description of the parameters present in the formula above:
+#'
+#'   For more information about all other arguments, see `[mgcv::gam()]`.
+#'
+#'   If no covariate is used (`baseline_var` = NULL), the GAM formula is: `n ~
+#'   s(year, k = maxk, m = 3, bs = "tp")`. Otherwise the GAM formula has a
+#'   second term, `s(n_covariate)` and so the GAM formula is `n ~ s(year, k =
+#'   maxk, m = 3, bs = "tp") + s(n_covariate)`.
+#'
+#'   Description of the parameters present in the formula above:
 #' - `k`: dimension of the basis used to represent the smooth term, i.e. the
-#' number of _knots_ used for calculating the smoother. We #' set `k` to `maxk`,
-#' which is the number of decades in the time series. If less than 5 decades are
-#' present in the data, `maxk` is #' set to 5.
+#'   number of _knots_ used for calculating the smoother. We #' set `k` to
+#'   `maxk`, which is the number of decades in the time series. If less than 5
+#'   decades are present in the data, `maxk` is #' set to 5.
 #' - `bs` indicates the basis to use for the smoothing: we uses the default
-#' penalized thin plate regression splines.
+#'   penalized thin plate regression splines.
 #' - `m` specifies the order of the derivatives in the thin plate spline
-#' penalty. We use `m = 3`, the default value.
-#' 
-#' We use `[mgcv::nb()]`, a negative binomial family to perform the GAM.
-#' 
-#' The smoothing parameter estimation method is set to REML (Restricted maximum
-#' likelihood approach). If the P-value of the GAM smoother(s) is/are above
-#' threshold value `p_max`, GAM is not performed and the next warning is
-#' returned: "GAM output cannot be used: p-values of all GAM smoothers are above
-#' \{p_max\}" where `p_max` is the P-value used as threshold as defined by
-#' argument `p_max`.
-#' 
-#' If the `mgcv::gam()` returns an error or a warning, the following message is
-#' returned to the user: "GAM (\{method_em\}) cannot be performed or cannot
-#' converge.", where `method_em` is one of `"basic"` or `"correct_baseline"`.
-#' See argument `baseline_var`.
-#' 
-#' The first and second derivatives of the smoother is calculated using function
-#' `gratia::derivatives()` with the following hard coded arguments:
-#' 
+#'   penalty. We use `m = 3`, the default value.
+#'
+#'   We use `[mgcv::nb()]`, a negative binomial family to perform the GAM.
+#'
+#'   The smoothing parameter estimation method is set to REML (Restricted
+#'   maximum likelihood approach). If the P-value of the GAM smoother(s) is/are
+#'   above threshold value `p_max`, GAM is not performed and the next warning is
+#'   returned: "GAM output cannot be used: p-values of all GAM smoothers are
+#'   above \{p_max\}" where `p_max` is the P-value used as threshold as defined
+#'   by argument `p_max`.
+#'
+#'   If the `mgcv::gam()` returns an error or a warning, the following message
+#'   is returned to the user: "GAM (\{method_em\}) cannot be performed or cannot
+#'   converge.", where `method_em` is one of `"basic"` or `"correct_baseline"`.
+#'   See argument `baseline_var`.
+#'
+#'   The first and second derivatives of the smoother is calculated using
+#'   function `gratia::derivatives()` with the following hard coded arguments:
+#'
 #' - `type`: the type of finite difference used. Set  to `"central"`.
 #' - `order`: 1 for the first derivative, 2 for the second derivative
 #' - `level`: the confidence level. Set to 0.8
 #' - `eps`: the finite difference. Set to 1e-4.
-#' 
-#' For more details, please check \link[gratia]{derivatives}.
-#' 
-#' The sign of the lower and upper confidence levels of the first and second
-#' derivatives are used to define a detailed emergency status (`em`) which is
-#' internally used to return the emergency status, `em_status`, which is a
-#' column of the returned data.frame `em_summary`.
-#' 
-#' | ucl-1 | lcl-1 | ucl-2 | lcl-2 | em | em_status |
-#' | --- | --- | --- | --- | --- | --- |
-#' | + | + | + | + | 4 | 3 (emerging) |
-#' | + | + | + | - | 3 | 3 (emerging) |
-#' | + | + | - | - | 2 | 2 (potentially emerging) |
-#' | - | + | + | + | 1 | 2 (potentially emerging) |
-#' | + | - | + | - | 0 | 1 (unclear) |
-#' | + | - | - | - | -1 | 0 (not emerging) |
-#' | - | - | + | + | -2 | 0 (not emerging) |
-#' | - | - | + | - | -3 | 0 (not emerging) |
-#' | - | - | - | - | -4 | 0 (not emerging) |
-#' 
+#'
+#'   For more details, please check \link[gratia]{derivatives}.
+#'
+#'   The sign of the lower and upper confidence levels of the first and second
+#'   derivatives are used to define a detailed emergency status (`em`) which is
+#'   internally used to return the emergency status, `em_status`, which is a
+#'   column of the returned data.frame `em_summary`.
+#'
+#'   | ucl-1 | lcl-1 | ucl-2 | lcl-2 | em | em_status | | --- | --- | --- | ---
+#'   |
+#' --- | --- | | + | + | + | + | 4 | 3 (emerging) | | + | + | + | - | 3 | 3
+#'   (emerging) | | + | + | - | - | 2 | 2 (potentially emerging) | | - | + | + |
+#'   + | 1 | 2 (potentially emerging) | | + | - | + | - | 0 | 1 (unclear) | | +
+#'   | - | - | - | -1 | 0 (not emerging) | | - | - | + | + | -2 | 0 (not
+#'   emerging) | |
+#' - | - | + | - | -3 | 0 (not emerging) | | - | - | - | - | -4 | 0 (not
+#'   emerging) |
+#'
 #' @examples
 #' \dontrun{
 #' library(dplyr)
@@ -240,6 +255,9 @@
 #' ),
 #' cobs = rep(0, 24)
 #' )
+#' 
+#' # if GAM cannot be applied a warning is returned and the plot mention it
+#' \dontrun{
 #' no_gam_applied <- apply_gam(df_gam,
 #'                             y_var = "obs",
 #'                             eval_years = 2018,
@@ -250,7 +268,7 @@
 #' )
 #' no_gam_applied$plot
 #' }
-#'
+#' }
 apply_gam <- function(df,
                       y_var,
                       eval_years,
@@ -270,14 +288,14 @@ apply_gam <- function(df,
   if (is.numeric(taxon_key)) {
     taxon_key <- as.character(taxon_key)
   }
-
+  
   # Check right type of inputs
   assertthat::assert_that(is.data.frame(df),
-    msg = paste(
-      paste(as.character(df), collapse = ","),
-      "is not a data frame.",
-      "Check value of argument df."
-    )
+                          msg = paste(
+                            paste(as.character(df), collapse = ","),
+                            "is not a data frame.",
+                            "Check value of argument df."
+                          )
   )
   purrr::map2(
     list(y_var, year, taxonKey, type_indicator, x_label, y_label),
@@ -285,85 +303,85 @@ apply_gam <- function(df,
     function(x, y) {
       # Check right type of inputs
       assertthat::assert_that(is.character(x),
-        msg = paste0(
-          paste(as.character(x), collapse = ","),
-          " is not a character vector.",
-          " Check value of argument ", y, "."
-        )
+                              msg = paste0(
+                                paste(as.character(x), collapse = ","),
+                                " is not a character vector.",
+                                " Check value of argument ", y, "."
+                              )
       )
       # Check y_var, year, taxonKey, type_indicator have length 1
       assertthat::assert_that(length(x) == 1,
-        msg = paste0(
-          "Multiple values for argument ",
-          paste0(y, collapse = ","),
-          " provided."
-        )
+                              msg = paste0(
+                                "Multiple values for argument ",
+                                paste0(y, collapse = ","),
+                                " provided."
+                              )
       )
     }
   )
   assertthat::assert_that(is.numeric(eval_years),
-    msg = paste(
-      paste(as.character(eval_years), collapse = ","),
-      "is not a numeric or integer vector.",
-      "Check value of argument eval_years."
-    )
+                          msg = paste(
+                            paste(as.character(eval_years), collapse = ","),
+                            "is not a numeric or integer vector.",
+                            "Check value of argument eval_years."
+                          )
   )
-
+  
   purrr::map2(
     list(baseline_var, taxon_key, name, df_title, dir_name),
     c("baseline_var", "taxon_key", "name", "df_title", "dir_name"),
     function(x, y) {
       # check argument type
       assertthat::assert_that(is.null(x) | is.character(x),
-        msg = paste0(
-          paste(as.character(x), collapse = ","),
-          " is not a character vector.",
-          " Check value of argument ", y, "."
-        )
+                              msg = paste0(
+                                paste(as.character(x), collapse = ","),
+                                " is not a character vector.",
+                                " Check value of argument ", y, "."
+                              )
       )
       # check length
       assertthat::assert_that(length(x) < 2,
-        msg = paste(
-          "Multiple values for argument",
-          y, "provided."
-        )
+                              msg = paste(
+                                "Multiple values for argument",
+                                y, "provided."
+                              )
       )
     }
   )
-
+  
   purrr::map2(
     list(saveplot, verbose),
     c("saveplot", "verbose"),
     function(x, y) {
       assertthat::assert_that(is.logical(x),
-        msg = paste(
-          paste(as.character(x), collapse = ","),
-          "is not a logical vector.",
-          "Check value of argument saveplot.",
-          "Did you maybe use quotation marks?"
-        )
+                              msg = paste(
+                                paste(as.character(x), collapse = ","),
+                                "is not a logical vector.",
+                                "Check value of argument saveplot.",
+                                "Did you maybe use quotation marks?"
+                              )
       )
       assertthat::assert_that(length(x) == 1,
-        msg = paste("Multiple values for argument", y, "provided.")
+                              msg = paste("Multiple values for argument", y, "provided.")
       )
     }
   )
-
+  
   purrr::map2(
     list(y_var, year, taxonKey),
     c("y_var", "year", "taxonKey"),
     function(x, y) {
       # Check y_var, year, taxonKey are present in df
       assertthat::assert_that(x %in% names(df),
-        msg = paste0(
-          "The column ", x,
-          " is not present in df. Check value of",
-          " argument ", y, "."
-        )
+                              msg = paste0(
+                                "The column ", x,
+                                " is not present in df. Check value of",
+                                " argument ", y, "."
+                              )
       )
     }
   )
-
+  
   if (!is.null(baseline_var)) {
     # Check baseline_var is present in df
     assertthat::assert_that(
@@ -377,7 +395,7 @@ apply_gam <- function(df,
   } else {
     method_em <- "basic"
   }
-
+  
   if (isFALSE(saveplot)) {
     if (!is.null(dir_name)) {
       warning(paste(
@@ -393,44 +411,44 @@ apply_gam <- function(df,
       dir_name <- "./"
     }
   }
-
+  
   year <- tidyselect::vars_pull(names(df), !!dplyr::enquo(year))
   taxonKey <- tidyselect::vars_pull(names(df), !!dplyr::enquo(taxonKey))
-
+  
   # Check eval_year is present in column year
   assertthat::assert_that(all(eval_years %in% df[[year]]),
-    msg = paste(
-      "One or more evaluation years",
-      "not present in df.",
-      "Check value of argument eval_years."
-    )
+                          msg = paste(
+                            "One or more evaluation years",
+                            "not present in df.",
+                            "Check value of argument eval_years."
+                          )
   )
-
+  
   assertthat::assert_that(is.numeric(p_max) && p_max >= 0 && p_max <= 1,
-    msg = paste(
-      "p_max is a p-value: it has to be a",
-      "number between 0 and 1."
-    )
+                          msg = paste(
+                            "p_max is a p-value: it has to be a",
+                            "number between 0 and 1."
+                          )
   )
-
+  
   # Check type_indicator is one of the two allowed values
   assertthat::assert_that(type_indicator %in% c("observations", "occupancy"),
-    msg = paste(
-      "Invalid type_indicator.",
-      "type_indicator has to be one of:",
-      "observations, occupancy."
-    )
+                          msg = paste(
+                            "Invalid type_indicator.",
+                            "type_indicator has to be one of:",
+                            "observations, occupancy."
+                          )
   )
-
+  
   if (verbose == TRUE) {
     print(paste0("Analyzing: ", name, "(", taxon_key, ")"))
   }
-
+  
   if (nrow(df) > 0) {
     # Maximum minimum time series (year)
     fyear <- min(df[[year]], na.rm = TRUE) # first year
     lyear <- max(df[[year]], na.rm = TRUE) # last year
-
+    
     # Define model to use for GAM
     maxk <- max(round((lyear - fyear) / 10, digits = 0), 5) # max number of knots
   }
@@ -454,7 +472,7 @@ apply_gam <- function(df,
     )
     fm <- stats::formula(fm)
   }
-
+  
   # Initialization
   output_model <- dplyr::as_tibble(df)
   output_model <-
@@ -494,12 +512,12 @@ apply_gam <- function(df,
     dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
     dplyr::select(
       !!dplyr::sym(taxonKey),
-      year,
-      em_status,
-      growth,
-      method
+      !!dplyr::sym(year),
+      "em_status",
+      "growth",
+      "method"
     )
-
+  
   if (nrow(df) > 3 & sum(df[[y_var]][2:nrow(df)]) != 0) {
     result <- tryCatch(expr = {
       model <- mgcv::gam(
@@ -512,7 +530,7 @@ apply_gam <- function(df,
       summary_pv <- mgcv::summary.gam(model)$s.pv
       p_ok <- ifelse(any(summary_pv < p_max), TRUE, FALSE)
     }, error = function(e) e, warning = function(w) w)
-
+    
     if (class(result)[1] %in% c("simpleWarning", "simpleError")) {
       if (verbose) {
         warning(paste0(
@@ -552,13 +570,13 @@ apply_gam <- function(df,
           interval = "prediction",
           se.fit = TRUE
         )
-
+        
         # Calculate confidence intervals & backtransform to real scale
         intercept <- unname(model$coefficients[1])
         output_model$fit <- model$family$linkinv(temp$fit[, 1] + intercept)
         output_model$ucl <- model$family$linkinv(temp$fit[, 1] + intercept + temp$se.fit[, 1] * 1.96)
         output_model$lcl <- model$family$linkinv(temp$fit[, 1] + intercept - temp$se.fit[, 1] * 1.96)
-
+        
         # Check that fit ucl and lcl are all above zero
         output_model <-
           output_model %>%
@@ -567,47 +585,53 @@ apply_gam <- function(df,
             ucl = ifelse(.data$ucl < 0, 0, .data$ucl),
             lcl = ifelse(.data$lcl < 0, 0, .data$lcl)
           )
-
+        
         # Calculate first and second derivative + conf. interval
         deriv1 <- gratia::derivatives(model,
-          type = "central", order = 1, level = 0.8,
-          n = nrow(output_model), eps = 1e-4) %>%
-          # to remove by_var and fs_var 
-          # (probably in very new version of gratia, 0.8.x not compatible with R
-          # 4.2.1) errors with GitHub actions automatic checks 
-          dplyr::select(smooth, var, data, derivative, se, crit, lower, upper)
+                                      type = "central", order = 1, level = 0.8,
+                                      n = nrow(output_model), eps = 1e-4)
+        cols_to_select <- c(".smooth", ".derivative", ".se", ".crit",
+                            ".lower_ci", ".upper_ci",
+                            year, baseline_var)
+        deriv1 <- deriv1 %>%
+          dplyr::select(dplyr::all_of(cols_to_select)) %>%
+          dplyr::rename_with(~sub("^\\.", "", .), 
+                             dplyr::all_of(c(".smooth", ".derivative", 
+                                             ".se", ".crit", 
+                                             ".lower_ci", ".upper_ci")))
         deriv2 <- gratia::derivatives(model,
-          type = "central", order = 2, level = 0.8,
-          n = nrow(output_model), eps = 1e-4) %>%
-          # to remove by_var and fs_var 
-          # (probably in very new version of gratia, 0.8.x not compatible with R
-          # 4.2.1)
-          dplyr::select(smooth, var, data, derivative, se, crit, lower, upper)
-
+                                      type = "central", order = 2, level = 0.8,
+                                      n = nrow(output_model), eps = 1e-4)
+        deriv2 <- deriv2 %>%
+          # same columns to select as for 1st derivative
+          dplyr::select(dplyr::all_of(cols_to_select)) %>%
+          dplyr::rename_with(~sub("^\\.", "", .), 
+                             dplyr::all_of(c(".smooth", ".derivative", 
+                                             ".se", ".crit", 
+                                             ".lower_ci", ".upper_ci")))
+        
         # Emerging status based on first and second derivative
         em1 <-
           deriv1 %>%
-          dplyr::as_tibble() %>%
-          dplyr::filter(.data$var == year) %>%
+          dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em1 = dplyr::case_when(
-            .data$lower < 0 & .data$upper <= 0 ~ -1,
-            .data$lower < 0 & .data$upper > 0 ~ 0,
-            .data$lower >= 0 & .data$upper > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
+            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
+            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
           )) %>%
-          dplyr::select(!!dplyr::sym(year) := data, em1) %>%
+          dplyr::select(!!dplyr::sym(year), "em1") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
-
+        
         em2 <- deriv2 %>%
-          dplyr::as_tibble() %>%
-          dplyr::filter(.data$var == year) %>%
+          dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em2 = dplyr::case_when(
-            .data$lower < 0 & .data$upper <= 0 ~ -1,
-            .data$lower < 0 & .data$upper > 0 ~ 0,
-            .data$lower >= 0 & .data$upper > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
+            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
+            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
           )) %>%
-          dplyr::select(!!dplyr::sym(year) := data, em2) %>%
+          dplyr::select(!!dplyr::sym(year), "em2") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
-
+        
         em_level_gam <- dplyr::full_join(em1, em2, by = year) %>%
           dplyr::mutate(em = dplyr::case_when(
             .data$em1 == 1 & .data$em2 == 1 ~ 4,
@@ -620,7 +644,7 @@ apply_gam <- function(df,
             .data$em1 == -1 & .data$em2 == 0 ~ -3,
             .data$em1 == -1 & .data$em2 == -1 ~ -4
           ))
-
+        
         # Emerging status
         em_levels <-
           em_level_gam %>%
@@ -630,21 +654,24 @@ apply_gam <- function(df,
             .data$em < 3 ~ 2, # potentially emerging
             .data$em >= 3 ~ 3 # emerging
           ))
-
+        
         output_model <- dplyr::left_join(output_model, em_levels, by = year)
-
-        # Lower value of first derivative (minimal guaranteed growth) if positive
+        
+        # Lower value of first derivative (minimal guaranteed growth) if
+        # positive
         lower_deriv1 <-
           deriv1 %>%
-          dplyr::filter(.data$var == year) %>%
-          dplyr::rename(!!dplyr::sym(year) := data) %>%
-          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), digits = 0)) %>%
-          dplyr::mutate(growth = model$family$linkinv(.data$lower)) %>%
-          dplyr::select(!!dplyr::sym(year), growth)
-
+          dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
+          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), 
+                                                    digits = 0)) %>%
+          dplyr::mutate(growth = model$family$linkinv(.data$lower_ci)) %>%
+          dplyr::select(!!dplyr::sym(year), "growth")
+        
         # Add lower value of first derivative
-        output_model <- dplyr::left_join(output_model, lower_deriv1, by = "year")
-
+        output_model <- dplyr::left_join(output_model, 
+                                         lower_deriv1, 
+                                         by = "year")
+        
         # Get emerging status summary for output
         emerging_status_output <-
           output_model %>%
@@ -652,9 +679,9 @@ apply_gam <- function(df,
           dplyr::select(
             !!dplyr::sym(taxonKey),
             year,
-            em_status,
-            growth,
-            method
+            "em_status",
+            "growth",
+            "method"
           )
         # Create plot with conf. interval + colour for status
         plot_gam <- plot_ribbon_em(
@@ -715,7 +742,7 @@ apply_gam <- function(df,
     }
     ggplot2::ggsave(filename = file_name, plot_gam)
   }
-
+  
   return(list(
     em_summary = emerging_status_output,
     model = model,
@@ -765,7 +792,7 @@ plot_ribbon_em <- function(df_plot,
     ggplot2::geom_point(color = "black") +
     ggplot2::ylab(y_label) +
     ggplot2::ggtitle(ptitle)
-
+  
   if (all(
     all(abs(df_plot$lcl < 10^10)),
     all(abs(df_plot$ucl < 10^10)),
@@ -773,8 +800,8 @@ plot_ribbon_em <- function(df_plot,
   )) {
     g <- g +
       ggplot2::geom_ribbon(ggplot2::aes(ymax = .data$ucl, ymin = .data$lcl),
-        fill = grDevices::grey(0.5),
-        alpha = 0.4
+                           fill = grDevices::grey(0.5),
+                           alpha = 0.4
       ) +
       ggplot2::geom_line(ggplot2::aes(x = .data$year, y = .data$fit),
                          color = "grey50") +
@@ -830,6 +857,6 @@ add_annotation <- function(
                       vjust = 1,
                       label = text,
                       colour = colour
-  )
+    )
   return(annotated_plot)
 }
