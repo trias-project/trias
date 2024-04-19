@@ -346,10 +346,10 @@ climate_match <- function(region,
     # Overlay with observed climate
     if(nrow(data_sf_sub)>0){
       if(start <= 2000){
-        obs_shape <- sf::st_as_sf(observed[[t]])
-      }else{
+        obs_shape <- observed[[t]]
+       }else{
         t <- "2001-2025-A1FI"
-        obs_shape <- sf::st_as_sf(future[[t]])
+        obs_shape <- future[[t]]
       }
       
       if(nrow(data_sf_sub) <= 11000){
@@ -478,7 +478,7 @@ climate_match <- function(region,
   # Calculate KG codes 
   sf::sf_use_s2(FALSE)
   for (s in scenarios) {
-    shape <- sf::st_as_sf(future[[s]])%>% 
+    shape <- future[[s]]%>% 
       sf::st_set_crs(4326)
     if (c("gridcode") %in% colnames(shape)) {
       shape <- shape %>% 
@@ -560,7 +560,7 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
     ## map current climate suitability ####
     
     # Get Current climate
-    current_climate_shape <- sf::st_as_sf(observed$`1980-2016`)
+    current_climate_shape <- observed$`1980-2016`
     
     current_climate_shape <- current_climate_shape %>% 
       dplyr::mutate(gridcode = as.double(gridcode)) %>% 
@@ -700,7 +700,7 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
       s <- scenarios[i]
       
       # Get scenario shape
-      scenario_shape <- sf::st_as_sf(future[[s]])
+      scenario_shape <- future[[s]]
       
       # Attach legends
       if(grepl("Beck", s)){
@@ -850,9 +850,9 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
         for(s in scenarios_2){
           
           if(s == "1980-2016"){
-            scenario_shape <- sf::st_as_sf(observed[[s]])
+            scenario_shape <- observed[[s]]
           }else{
-            scenario_shape <- sf::st_as_sf(future[[s]])
+            scenario_shape <- future[[s]]
           }
           if (grepl("Beck", s) | s == "1980-2016") {
             scenario_shape<- scenario_shape %>% 
