@@ -3,9 +3,9 @@
 \docType{data}
 \name{observed}
 \alias{observed}
-\title{Historical climate shapefiles}
+\title{Historical climate sf objects}
 \format{
-\code{observed} is a list of 5 spatialpolygonsdataframes:
+\code{observed} is a list of 5 sf objects:
 \itemize{
 \item \code{1901-1925}: observed climate data from 1901 up to 1925
 \item \code{1925-1950}: observed climate data from 1926 up to 1950
@@ -14,21 +14,22 @@
 \item \code{1980-2016}: observed climate data from 1980 up to 2016
 }
 
-Each spatialpolygonsdataframe contains 2 variables:
+Each sf object contains 3 variables:
 \itemize{
 \item \code{ID}: polygon identifier
 \item \code{GRIDCODE}: grid value corresponding to a climate zone
+\item \code{geometry}: the coordinates that define the polygon's shape
 }
 }
 \source{
-These shapes originate from \href{http://dx.doi.org/10.1127/0941-2948/2010/0430}{Rubel & Kottek 2010}, except the last one,
+These objects originate from \href{http://dx.doi.org/10.1127/0941-2948/2010/0430}{Rubel & Kottek 2010}, except the last one,
 with data from 1980 to 2016, which is based on \href{https://doi.org/10.1038/sdata.2018.214}{Beck et al. 2018}.
 }
 \usage{
 observed
 }
 \description{
-These shapefiles contain worldwide climate classifications for
+These sf objects contain worldwide climate classifications for
 different year intervals.
 }
 \seealso{
