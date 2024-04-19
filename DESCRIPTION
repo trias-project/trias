@@ -57,13 +57,7 @@ Imports:
 Suggests:
     covr,
     knitr,
-    testthat,
-    stats,
-    setNames,
-    smooth,
-    var,
-    utils,
-    data
+    testthat
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
