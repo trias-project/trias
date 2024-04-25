@@ -7,8 +7,8 @@
 get_cred(x)
 }
 \arguments{
-\item{x}{(character) the name of the system environment variable to get and
-store}
+\item{x}{a character with the name of the system environment variable to get
+and store}
 }
 \value{
 a character vector containing the value of the system variable
