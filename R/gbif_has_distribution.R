@@ -126,7 +126,7 @@ gbif_has_distribution <- function(taxon_key, ...) {
           distr_properties %>%
             dplyr::select(names(user_properties)) %>%
             dplyr::distinct() %>%
-            dplyr::mutate(dplyr::across(.cols = everything(), toupper))
+            dplyr::mutate(dplyr::across(.cols = dplyr::everything(), toupper))
         ) %>%
           nrow() > 0
         return(has_distr)

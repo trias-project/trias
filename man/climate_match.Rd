@@ -19,7 +19,7 @@ climate_match(
 \arguments{
 \item{region}{(optional character) the full name of the target nation or
 region
-region can also be a custom region (SpatialPolygon or sf object).}
+region can also be a custom region (sf object).}
 
 \item{taxon_key}{(character or vector) containing GBIF - taxonkey(s)}
 
@@ -28,7 +28,7 @@ from a previous GBIF-download. This zipfile should contain data of the
 species specified by the taxon_key}
 
 \item{scenario}{(character) the future scenarios we are interested in.
-(default) all future scenarios are used}
+(default) all future scenarios are used.}
 
 \item{n_limit}{(optional numeric) the minimal number of total observations a
 species must have to be included in the outputs}
@@ -59,7 +59,7 @@ climate scenarios for the target nation or region and based on the \code{unfilte
 climate_limit thresholds have been applied
 \item \code{future}: a dataframe containing a list per scenario of future climate
 zones in the target nation or region
-\item \code{spatial} a spatialpointsdataframe containing the observations used
+\item \code{spatial} a sf object containing the observations used
 in the analysis
 \item \code{current_map} a leaflet object displaying the degree of wordlwide
 climate match with the climate from 1980 till 2016
@@ -75,7 +75,6 @@ of species for a region or nation.
 }
 \examples{
 \dontrun{
-# use rworldmap shapes 
 region <- "europe"
 
 # provide GBIF taxon_key(s)
@@ -88,7 +87,6 @@ zip_file <- "./<path to zip_file>/0001221-210914110416597.zip"
 
 # calculate all climate match outputs
 # with GBIF download
-require('rgdal')
 climate_match(region,
               taxon_key, 
               n_limit = 90,
@@ -114,5 +112,6 @@ climate_match(region,
               coord_unc = 100,
               BasisOfRecord = "HUMAN_OBSERVATION",
               maps = FALSE
+)
 }
 }
