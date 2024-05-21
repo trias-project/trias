@@ -16,7 +16,7 @@ Authors@R: c(
     person("Stijn", "Van Hoey", email = "stijnvanhoey@gmail.com",
             role = "ctb", comment = c(ORCID = "0000-0001-6413-3185")),
     person("Machteld", "Varewyck", email = "machteld.varewyck@openanalytics.eu",
-            role = "ctb"),
+            role = "ctb", comment = c(ORCID = "0009-0003-0496-0447")),
     person("Research Institute for Nature and Forest (INBO)",
            role = c("cph", "fnd"), comment = "https://www.vlaanderen.be/inbo/en-gb/"),
     person("TrIAS",
