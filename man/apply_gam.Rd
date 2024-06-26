@@ -20,6 +20,8 @@ apply_gam(
   y_label = "Observations",
   saveplot = FALSE,
   dir_name = NULL,
+  width = NULL,
+  height = NULL,
   verbose = FALSE
 )
 }
@@ -71,7 +73,13 @@ Default: \code{FALSE}.}
 
 \item{dir_name}{character. Path of directory where saving plots. If path
 doesn't exists, directory will be created. Example: "./output/graphs/". If
-\code{NULL}, plots are saved in current directory. Default: \code{NULL}.}
+\code{NULL} and \code{saveplot} is \code{TRUE}, plots are saved in current directory.
+Default: \code{NULL}.}
+
+\item{width, }{height numeric. Plot size in pixels. Default width: 1680.
+Default height: 1200. Values are passed to \link[ggplot2]{ggsave}. Ignored
+if \code{saveplot} = \code{FALSE}. If \code{NULL} and \code{saveplot} is \code{TRUE}, \code{width} is set
+to 1680, \code{height} to 1200 and a message is returned. Default: \code{NULL}.}
 
 \item{verbose}{logical. If \code{TRUE} status of processing and possible issues
 are returned. Default: \code{FALSE}.}
@@ -203,23 +211,22 @@ For more details, please check \link[gratia]{derivatives}.
 The sign of the lower and upper confidence levels of the first and second
 derivatives are used to define a detailed emergency status (\code{em}) which is
 internally used to return the emergency status, \code{em_status}, which is a
-column of the returned data.frame \code{em_summary}.
-
-| ucl-1 | lcl-1 | ucl-2 | lcl-2 | em | em_status | | --- | --- | --- | ---
-|
---- | --- | | + | + | + | + | 4 | 3 (emerging) | | + | + | + | - | 3 | 3
-(emerging) | | + | + | - | - | 2 | 2 (potentially emerging) | | - | + | + |
-\itemize{
-\item | 1 | 2 (potentially emerging) | | + | - | + | - | 0 | 1 (unclear) | | +
-| - | - | - | -1 | 0 (not emerging) | | - | - | + | + | -2 | 0 (not
-emerging) | |
+column of the returned data.frame \code{em_summary}.\tabular{llllll}{
+   ucl-1 \tab lcl-1 \tab ucl-2 \tab lcl-2 \tab em \tab em_status \cr
+   + \tab + \tab + \tab + \tab 4 \tab 3 (emerging) \cr
+   + \tab + \tab + \tab - \tab 3 \tab 3 (emerging) \cr
+   + \tab + \tab - \tab - \tab 2 \tab 2 (potentially emerging) \cr
+   - \tab + \tab + \tab + \tab 1 \tab 2 (potentially emerging) \cr
+   + \tab - \tab + \tab - \tab 0 \tab 1 (unclear) \cr
+   + \tab - \tab - \tab - \tab -1 \tab 0 (not emerging) \cr
+   - \tab - \tab + \tab + \tab -2 \tab 0 (not emerging) \cr
+   - \tab - \tab + \tab - \tab -3 \tab 0 (not emerging) \cr
+   - \tab - \tab - \tab - \tab -4 \tab 0 (not emerging) \cr
 }
-\item | - | + | - | -3 | 0 (not emerging) | | - | - | - | - | -4 | 0 (not
-emerging) |
+
 }
 }
 \examples{
-\dontrun{
 library(dplyr)
 df_gam <- tibble(
   taxonKey = rep(3003709, 24),
@@ -312,6 +319,5 @@ no_gam_applied <- apply_gam(df_gam,
                             verbose = TRUE
 )
 no_gam_applied$plot
-}
 }
 }

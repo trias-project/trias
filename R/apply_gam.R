@@ -37,7 +37,12 @@
 #'   Default: `FALSE`.
 #' @param dir_name character. Path of directory where saving plots. If path
 #'   doesn't exists, directory will be created. Example: "./output/graphs/". If
-#'   `NULL`, plots are saved in current directory. Default: `NULL`.
+#'   `NULL` and `saveplot` is `TRUE`, plots are saved in current directory.
+#'   Default: `NULL`.
+#' @param width, height numeric. Plot size in pixels. Default width: 1680.
+#'   Default height: 1200. Values are passed to \link[ggplot2]{ggsave}. Ignored
+#'   if `saveplot` = `FALSE`. If `NULL` and `saveplot` is `TRUE`, `width` is set
+#'   to 1680, `height` to 1200 and a message is returned. Default: `NULL`.
 #' @param verbose logical. If `TRUE` status of processing and possible issues
 #'   are returned. Default: `FALSE`.
 #'
@@ -163,18 +168,19 @@
 #'   internally used to return the emergency status, `em_status`, which is a
 #'   column of the returned data.frame `em_summary`.
 #'
-#'   | ucl-1 | lcl-1 | ucl-2 | lcl-2 | em | em_status | | --- | --- | --- | ---
-#'   |
-#' --- | --- | | + | + | + | + | 4 | 3 (emerging) | | + | + | + | - | 3 | 3
-#'   (emerging) | | + | + | - | - | 2 | 2 (potentially emerging) | | - | + | + |
-#'   + | 1 | 2 (potentially emerging) | | + | - | + | - | 0 | 1 (unclear) | | +
-#'   | - | - | - | -1 | 0 (not emerging) | | - | - | + | + | -2 | 0 (not
-#'   emerging) | |
-#' - | - | + | - | -3 | 0 (not emerging) | | - | - | - | - | -4 | 0 (not
-#'   emerging) |
+#'   | ucl-1 | lcl-1 | ucl-2 | lcl-2 | em | em_status |
+#'   | --- | --- | --- | --- | --- | --- |
+#'   | + | + | + | + | 4 | 3 (emerging) |
+#'   | + | + | + | - | 3 | 3 (emerging) |
+#'   | + | + | - | - | 2 | 2 (potentially emerging) |
+#'   | - | + | + | + | 1 | 2 (potentially emerging) |
+#'   | + | - | + | - | 0 | 1 (unclear) |
+#'   | + | - | - | - | -1 | 0 (not emerging) |
+#'   | - | - | + | + | -2 | 0 (not emerging) |
+#'   | - | - | + | - | -3 | 0 (not emerging) |
+#'   | - | - | - | - | -4 | 0 (not emerging) |
 #'
 #' @examples
-#' \dontrun{
 #' library(dplyr)
 #' df_gam <- tibble(
 #'   taxonKey = rep(3003709, 24),
@@ -268,7 +274,6 @@
 #' )
 #' no_gam_applied$plot
 #' }
-#' }
 apply_gam <- function(df,
                       y_var,
                       eval_years,
@@ -284,6 +289,8 @@ apply_gam <- function(df,
                       y_label = "Observations",
                       saveplot = FALSE,
                       dir_name = NULL,
+                      width = NULL,
+                      height = NULL,
                       verbose = FALSE) {
   if (is.numeric(taxon_key)) {
     taxon_key <- as.character(taxon_key)
@@ -350,6 +357,28 @@ apply_gam <- function(df,
   )
   
   purrr::map2(
+    list(width, height),
+    c("width", "height"),
+    function(x, y) {
+      # check argument type
+      assertthat::assert_that(is.null(x) | is.numeric(x),
+                              msg = paste0(
+                                paste(as.character(x), collapse = ","),
+                                " is not numeric.",
+                                " Check value of argument ", y, "."
+                              )
+      )
+      # check length
+      assertthat::assert_that(length(x) < 2,
+                              msg = paste(
+                                "Multiple values for argument",
+                                y, "provided."
+                              )
+      )
+    }
+  )
+  
+  purrr::map2(
     list(saveplot, verbose),
     c("saveplot", "verbose"),
     function(x, y) {
@@ -398,9 +427,21 @@ apply_gam <- function(df,
   
   if (isFALSE(saveplot)) {
     if (!is.null(dir_name)) {
-      warning(paste(
+      message(paste(
         "saveplot is FALSE: plots are not saved.",
-        "Argument dir_name ignored."
+        "Argument `dir_name` ignored."
+      ))
+    }
+    if (!is.null(height)) {
+      message(paste(
+        "saveplot is FALSE: plots are not saved.",
+        "Argument `height` ignored."
+      ))
+    }
+    if (!is.null(width)) {
+      message(paste(
+        "saveplot is FALSE: plots are not saved.",
+        "Argument `width` ignored."
       ))
     }
   } else {
@@ -409,6 +450,14 @@ apply_gam <- function(df,
     } else {
       # current directory
       dir_name <- "./"
+    }
+    if (is.null(width)) {
+      width <- 1680
+      message("width not provided. Set to 1680 pixels.")
+    }
+    if (is.null(height)) {
+      height <- 1200
+      message("height not provided. Set to 1200 pixels.")
     }
   }
   
@@ -740,7 +789,11 @@ apply_gam <- function(df,
     if (isTRUE(verbose)) {
       print(paste("Output plot:", file_name))
     }
-    ggplot2::ggsave(filename = file_name, plot_gam)
+    ggplot2::ggsave(filename = file_name,
+                    plot = plot_gam,
+                    width = width,
+                    height = height,
+                    units = "px")
   }
   
   return(list(
