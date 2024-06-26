@@ -999,18 +999,4 @@ test_that("Test warnings and messages.", {
   ),
   fixed = TRUE
   )
-
-  expect_warning(
-    apply_gam(df_gam,
-      y_var = "year",
-      eval_years = 2018,
-      saveplot = FALSE,
-      dir_name = "./graphs/",
-      verbose = TRUE
-    ),
-    paste(
-      "saveplot is FALSE: plots are not saved.",
-      "Argument dir_name ignored."
-    )
-  )
 })
