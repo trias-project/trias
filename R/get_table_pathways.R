@@ -175,7 +175,7 @@ get_table_pathways <- function(df,
       assertthat::assert_that(is.character(phylum_names),
         msg = "Parameter 'phylum_names' should be a character."
       )
-      assert_colnames(df, phylum_names, only_colnames = FALSE)
+      assertable::assert_colnames(df, phylum_names, only_colnames = FALSE)
       df <-
         df %>%
         dplyr::rename(phylum_group = !!phylum_names)
