@@ -105,7 +105,7 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
     )
   }
   # as keys could contain duplicates, we make a copy called input_keys_df
-  input_keys_df <- tibble(key = as.numeric(keys))
+  input_keys_df <- dplyr::tibble(key = as.numeric(keys))
   # make list of unique keys
   keys <- unique(keys)
   names(keys) <- as.character(keys)
@@ -129,9 +129,9 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   if (length(valid_keys) > 0) {
     valid_keys_df <-
       valid_keys %>%
-      purrr::reduce(bind_rows) %>%
-      dplyr::mutate(is_from_gbif_backbone = ifelse(.data$datasetKey == uuid_backbone,
-        TRUE, FALSE
+      purrr::reduce(dplyr::bind_rows) %>%
+      dplyr::mutate(is_from_gbif_backbone = ifelse(
+        .data$datasetKey == uuid_backbone, TRUE, FALSE
       ))
     check_keys <-
       check_keys %>%
