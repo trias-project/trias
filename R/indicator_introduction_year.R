@@ -32,7 +32,7 @@
 #'
 #' @export
 #' @importFrom dplyr %>% .data
-#' @importFrom rlang !!!
+#' @importFrom rlang !! !!!
 #'
 #' @examples
 #' \dontrun{
@@ -138,8 +138,8 @@ indicator_introduction_year <- function(df,
   # Rename to default column name
   df <-
     df %>%
-    dplyr::rename_with(.fn = ~"first_observed", .cols = one_of(first_observed)) %>%
-    dplyr::rename_with(.fn = ~"key", .cols= one_of(taxon_key_col))
+    dplyr::rename(first_observed = !!first_observed) %>%
+    dplyr::rename(key =  !!taxon_key_col)
 
   # Provide warning messages for first_observed NA values
   n_first_observed_not_present <-
@@ -165,11 +165,11 @@ indicator_introduction_year <- function(df,
   if (is.null(facet_column)) {
     data <-
       data %>%
-      dplyr::distinct(key, first_observed)
+      dplyr::distinct(.data$key, .data$first_observed)
   } else {
     data <-
       data %>%
-      dplyr::distinct(key, first_observed, .data[[facet_column]])
+      dplyr::distinct(.data$key, .data$first_observed, .data[[facet_column]])
   }
   
   data_top_graph <-
