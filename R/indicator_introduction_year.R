@@ -128,10 +128,10 @@ indicator_introduction_year <- function(df,
     msg = "Argument first_observed has to be a character."
   )
   assertable::assert_colnames(df, first_observed, only_colnames = FALSE)
-  assertthat::assert_that(is.character(x_lab),
+  assertthat::assert_that(is.character(x_lab) | is.null(x_lab),
     msg = "Argument x_lab has to be a character or NULL."
   )
-  assertthat::assert_that(is.character(y_lab),
+  assertthat::assert_that(is.character(y_lab) |is.null(y_lab),
     msg = "Argument y_lab has to be a character or NULL."
   )
 
