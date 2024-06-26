@@ -76,10 +76,15 @@ doesn't exists, directory will be created. Example: "./output/graphs/". If
 \code{NULL} and \code{saveplot} is \code{TRUE}, plots are saved in current directory.
 Default: \code{NULL}.}
 
-\item{width, }{height numeric. Plot size in pixels. Default width: 1680.
-Default height: 1200. Values are passed to \link[ggplot2]{ggsave}. Ignored
-if \code{saveplot} = \code{FALSE}. If \code{NULL} and \code{saveplot} is \code{TRUE}, \code{width} is set
-to 1680, \code{height} to 1200 and a message is returned. Default: \code{NULL}.}
+\item{width}{numeric. Plot width in pixels. Values are passed to
+\link[ggplot2]{ggsave}. Ignored if \code{saveplot} = \code{FALSE}. If \code{NULL} and
+\code{saveplot} is \code{TRUE}, \code{width} is set to 1680 and a message is returned.
+Default: \code{NULL}.}
+
+\item{height}{numeric. Plot height in pixels. Values are passed to
+\link[ggplot2]{ggsave}. Ignored if \code{saveplot} = \code{FALSE}. If \code{NULL} and
+\code{saveplot} is \code{TRUE}, \code{height} to 1200 and a message is returned. Default:
+\code{NULL}.}
 
 \item{verbose}{logical. If \code{TRUE} status of processing and possible issues
 are returned. Default: \code{FALSE}.}

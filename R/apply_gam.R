@@ -39,10 +39,14 @@
 #'   doesn't exists, directory will be created. Example: "./output/graphs/". If
 #'   `NULL` and `saveplot` is `TRUE`, plots are saved in current directory.
 #'   Default: `NULL`.
-#' @param width, height numeric. Plot size in pixels. Default width: 1680.
-#'   Default height: 1200. Values are passed to \link[ggplot2]{ggsave}. Ignored
-#'   if `saveplot` = `FALSE`. If `NULL` and `saveplot` is `TRUE`, `width` is set
-#'   to 1680, `height` to 1200 and a message is returned. Default: `NULL`.
+#' @param width numeric. Plot width in pixels. Values are passed to
+#'   \link[ggplot2]{ggsave}. Ignored if `saveplot` = `FALSE`. If `NULL` and
+#'   `saveplot` is `TRUE`, `width` is set to 1680 and a message is returned.
+#'   Default: `NULL`.
+#' @param height numeric. Plot height in pixels. Values are passed to
+#'   \link[ggplot2]{ggsave}. Ignored if `saveplot` = `FALSE`. If `NULL` and
+#'   `saveplot` is `TRUE`, `height` to 1200 and a message is returned. Default:
+#'   `NULL`.
 #' @param verbose logical. If `TRUE` status of processing and possible issues
 #'   are returned. Default: `FALSE`.
 #'
