@@ -533,4 +533,6 @@ testthat::test_that("Test other inputs.", {
     ),
     "height not provided. Set to 1200 pixels."
   )
+  # Remove the png created while using `saveplot = TRUE`
+  unlink("GAM_observations_basic.png")
 })
