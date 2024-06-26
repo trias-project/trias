@@ -175,7 +175,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     dplyr::rowwise() %>%
     dplyr::do(year = .data$first_observed:maxDate) %>%
     dplyr::bind_cols(df) %>%
-    tidyr::unnest(.data$year)
+    tidyr::unnest("year")
   
   # calculate numbers to plot
   counts_ias_grouped_by_year <- 
