@@ -49,7 +49,7 @@ test_that("output type and content", {
   )
   
   # input is a df
-  keys2 <- tibble(
+  keys2 <- dplyr::tibble(
     key = keys1,
     other = sample.int(40, size = length(keys1))
   )
@@ -72,7 +72,7 @@ test_that("output type and content", {
   output4 <- gbif_verify_keys(keys4)
 
   # output expected
-  output_keys <- tibble(
+  output_keys <- dplyr::tibble(
     key = c(
       12323785387253, 172331902,
       1000693, 1000310
@@ -130,7 +130,7 @@ test_that("function works even with duplicated taxon keys", {
   
   # expected output
   expected_output_with_duplicates <- 
-    tibble(
+    dplyr::tibble(
       key = as.numeric(keys_with_duplicates),
       is_taxonKey = rep(c(FALSE, TRUE, TRUE, TRUE), 2),
       is_from_gbif_backbone = rep(c(NA, FALSE, TRUE, TRUE), 2),
