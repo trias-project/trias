@@ -27,7 +27,8 @@
 #' @param species_names character. Name of the column of \code{df} containing
 #'   information about species names. Default: \code{"canonicalName"}.
 #'
-#' @return a data.frame
+#' @return a data.frame with 4 columns: `pathway_level1`, `pathway_level2`, `n`
+#'   (number of taxa) and `examples`.
 #' @export
 #' @importFrom dplyr %>% .data
 #' @examples
