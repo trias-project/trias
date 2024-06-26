@@ -32,7 +32,7 @@
 #'
 #' @export
 #' @importFrom dplyr %>% .data
-#' @importFrom rlang !!!
+#' @importFrom rlang !! !!!
 #'
 #' @examples
 #' \dontrun{
@@ -128,18 +128,18 @@ indicator_introduction_year <- function(df,
     msg = "Argument first_observed has to be a character."
   )
   assertable::assert_colnames(df, first_observed, only_colnames = FALSE)
-  assertthat::assert_that(is.character(x_lab),
+  assertthat::assert_that(is.character(x_lab) | is.null(x_lab),
     msg = "Argument x_lab has to be a character or NULL."
   )
-  assertthat::assert_that(is.character(y_lab),
+  assertthat::assert_that(is.character(y_lab) |is.null(y_lab),
     msg = "Argument y_lab has to be a character or NULL."
   )
 
   # Rename to default column name
   df <-
     df %>%
-    dplyr::rename_with(.fn = ~"first_observed", .cols = one_of(first_observed)) %>%
-    dplyr::rename_with(.fn = ~"key", .cols= one_of(taxon_key_col))
+    dplyr::rename(first_observed = !!first_observed) %>%
+    dplyr::rename(key =  !!taxon_key_col)
 
   # Provide warning messages for first_observed NA values
   n_first_observed_not_present <-
@@ -165,11 +165,11 @@ indicator_introduction_year <- function(df,
   if (is.null(facet_column)) {
     data <-
       data %>%
-      dplyr::distinct(key, first_observed)
+      dplyr::distinct(.data$key, .data$first_observed)
   } else {
     data <-
       data %>%
-      dplyr::distinct(key, first_observed, .data[[facet_column]])
+      dplyr::distinct(.data$key, .data$first_observed, .data[[facet_column]])
   }
   
   data_top_graph <-

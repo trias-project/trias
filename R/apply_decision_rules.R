@@ -143,7 +143,7 @@ apply_decision_rules <- function(df,
     dplyr::summarize(
       has_distinct_years = dplyr::n_distinct(!!rlang::sym(year)) == dplyr::n()
     ) %>%
-    distinct(.data$has_distinct_years) %>%
+    dplyr::distinct(.data$has_distinct_years) %>%
     dplyr::pull() == TRUE),
   msg = paste0(
     "Timeseries in column ",

@@ -48,7 +48,8 @@ containing information about year of introduction. Default:
 information about species names. Default: \code{"canonicalName"}.}
 }
 \value{
-a data.frame
+a data.frame with 4 columns: \code{pathway_level1}, \code{pathway_level2}, \code{n}
+(number of taxa) and \code{examples}.
 }
 \description{
 Function to get number of taxa introduced by different pathways. Possible

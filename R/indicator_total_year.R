@@ -36,7 +36,7 @@
 #'
 #' @export
 #' @importFrom dplyr %>% .data
-#' @importFrom rlang !!!
+#' @importFrom rlang !! !!!
 #'
 #' @examples
 #' \dontrun{
@@ -135,8 +135,8 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   # rename to default column name
   df <-
     df %>%
-    dplyr::rename_with(.fn = ~"first_observed", .cols = one_of(first_observed)) %>%
-    dplyr::rename_with(.fn = ~"key", .cols= one_of(taxon_key_col))
+    dplyr::rename(first_observed = !!first_observed) %>%
+    dplyr::rename(key = !!taxon_key_col)
 
   # Provide warning messages for first_observed NA values
   n_first_observed_not_present <-
@@ -162,11 +162,11 @@ indicator_total_year <- function(df, start_year_plot = 1940,
   if (is.null(facet_column)) {
     df <-
       df %>%
-      dplyr::distinct(key, first_observed)
+      dplyr::distinct(.data$key, .data$first_observed)
   } else {
     df <-
       df %>%
-      dplyr::distinct(key, first_observed, .data[[facet_column]])
+      dplyr::distinct(.data$key, .data$first_observed, .data[[facet_column]])
   }
 
   # Make individual records for each year up to now
@@ -175,7 +175,7 @@ indicator_total_year <- function(df, start_year_plot = 1940,
     dplyr::rowwise() %>%
     dplyr::do(year = .data$first_observed:maxDate) %>%
     dplyr::bind_cols(df) %>%
-    tidyr::unnest(year)
+    tidyr::unnest("year")
   
   # calculate numbers to plot
   counts_ias_grouped_by_year <- 

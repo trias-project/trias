@@ -27,14 +27,11 @@
 #' @param species_names character. Name of the column of \code{df} containing
 #'   information about species names. Default: \code{"canonicalName"}.
 #'
-#' @return a data.frame
+#' @return a data.frame with 4 columns: `pathway_level1`, `pathway_level2`, `n`
+#'   (number of taxa) and `examples`.
 #' @export
-#' @importFrom dplyr %>% filter distinct mutate mutate_if group_by count ungroup
-#'   rowwise sample_n pull select rename_at as_tibble .data
-#' @importFrom assertthat assert_that
-#' @importFrom assertable assert_colnames
-#' @importFrom stringr str_c
-#' @importFrom purrr pmap_dfr map_chr
+#' @importFrom dplyr %>% .data
+#' @importFrom rlang !!
 #' @examples
 #' \dontrun{
 #' library(readr)
@@ -94,16 +91,16 @@ get_table_pathways <- function(df,
     "Not Chordata"
   )
   # initial input checks
-  assert_that(is.data.frame(df), msg = "df is not a data frame.")
+  assertthat::assert_that(is.data.frame(df), msg = "df is not a data frame.")
   if (!is.null(category)) {
-    assert_that(is.character(category),
+    assertthat::assert_that(is.character(category),
       msg = paste0(
         "Category has to be a character. One of: ",
         paste(categories, collapse = ", "),
         "."
       )
     )
-    assert_that(category %in% categories,
+    assertthat::assert_that(category %in% categories,
       msg = paste0(
         "Category not correct. Choose one of: ",
         paste(categories, collapse = ", "),
@@ -111,83 +108,83 @@ get_table_pathways <- function(df,
       )
     )
   }
-  assert_colnames(df, kingdom_names, only_colnames = FALSE)
-  assert_that(is.character(kingdom_names),
+  assertable::assert_colnames(df, kingdom_names, only_colnames = FALSE)
+  assertthat::assert_that(is.character(kingdom_names),
     msg = "Parameter 'kingdom_names' should be a character."
   )
-  assert_that(is.numeric(n_species),
+  assertthat::assert_that(is.numeric(n_species),
     msg = "Parameter 'n_species' should be a number."
   )
-  assert_that(n_species > 0,
+  assertthat::assert_that(n_species > 0,
     msg = "Parameter 'n_species' should be a positive number."
   )
-  assert_that(n_species == as.integer(n_species),
+  assertthat::assert_that(n_species == as.integer(n_species),
     msg = "Parameter 'n_species' should be an integer."
   )
   if (!is.null(from)) {
-    assert_that(is.numeric(from),
+    assertthat::assert_that(is.numeric(from),
       msg = "Parameter 'from' should be a number (year)."
     )
-    assert_that(from > 0,
+    assertthat::assert_that(from > 0,
       msg = "Parameter 'from' should be a positive number."
     )
-    assert_that(from == as.integer(from),
+    assertthat::assert_that(from == as.integer(from),
       msg = "Parameter 'from' should be an integer."
     )
-    assert_that(from <= as.numeric(substr(Sys.Date(), start = 1, stop = 4)),
+    assertthat::assert_that(from <= as.numeric(substr(Sys.Date(), start = 1, stop = 4)),
       msg = paste0(
         "Invalid year in 'from'. ",
         "Choose a year smaller than ",
         substr(Sys.Date(), start = 1, stop = 4)
       )
     )
-    assert_that(is.character(first_observed),
+    assertthat::assert_that(is.character(first_observed),
       msg = "Column 'first_observed' should be a character."
     )
-    assert_colnames(df, first_observed, only_colnames = FALSE)
+    assertable::assert_colnames(df, first_observed, only_colnames = FALSE)
   }
 
-  assert_colnames(df, species_names, only_colnames = FALSE)
-  assert_that(is.character(species_names),
+  assertable::assert_colnames(df, species_names, only_colnames = FALSE)
+  assertthat::assert_that(is.character(species_names),
     msg = "Parameter 'species_names' should be a character."
   )
 
   # convert factors to characters (in case stringsAsFactors = TRUE)
-  if (any(map_chr(names(df), ~ class(df[[.]])) == "factor")) {
+  if (any(purrr::map_chr(names(df), ~ class(df[[.]])) == "factor")) {
     warning("Factors are converted to characters.")
     df <-
       df %>%
-      mutate_if(is.factor, as.character)
+      dplyr::mutate_if(is.factor, as.character)
   }
   # rename to default column name
   df <-
     df %>%
-    rename_at(vars(kingdom_names), ~"group") %>%
-    rename_at(vars(species_names), ~"taxa_names")
+    dplyr::rename(group = !!kingdom_names) %>%
+    dplyr::rename(taxa_names = !!species_names)
   if (!is.null(from)) {
     df <-
       df %>%
-      rename_at(vars(first_observed), ~"first_observed")
+      dplyr::rename(first_observed = !!first_observed)
   }
   # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {
     if (!category %in% c("Chordata", "Not Chordata")) {
-      filtered_data <- df %>% filter(.data$group == category)
+      filtered_data <- df %>% dplyr::filter(.data$group == category)
     } else {
       # check parameter phylum
-      assert_that(is.character(phylum_names),
+      assertthat::assert_that(is.character(phylum_names),
         msg = "Parameter 'phylum_names' should be a character."
       )
-      assert_colnames(df, phylum_names, only_colnames = FALSE)
+      assertable::assert_colnames(df, phylum_names, only_colnames = FALSE)
       df <-
         df %>%
-        rename_at(vars(phylum_names), ~"phylum_group")
+        dplyr::rename(phylum_group = !!phylum_names)
       if (category == "Chordata") {
-        filtered_data <- df %>% filter(.data$phylum_group == category)
+        filtered_data <- df %>% dplyr::filter(.data$phylum_group == category)
       } else {
         filtered_data <- df %>%
-          filter(.data$group == "Animalia") %>%
-          filter(.data$phylum_group != "Chordata")
+          dplyr::filter(.data$group == "Animalia") %>%
+          dplyr::filter(.data$phylum_group != "Chordata")
       }
     }
   } else {
@@ -197,18 +194,18 @@ get_table_pathways <- function(df,
   if (!is.null(from)) {
     filtered_data <-
       filtered_data %>%
-      filter(.data$first_observed >= from)
+      dplyr::filter(.data$first_observed >= from)
   }
   # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
   preprocess_data <-
     filtered_data %>%
     # Handle NAs, "unknown" and hierarchy (1st and 2nd level)
-    mutate(pathway_level1 = ifelse(is.na(.data$pathway_level1) |
+    dplyr::mutate(pathway_level1 = ifelse(is.na(.data$pathway_level1) |
       .data$pathway_level1 == "",
     "unknown",
     .data$pathway_level1
     )) %>%
-    mutate(pathway_level2 = ifelse(.data$pathway_level1 != "unknown" &
+    dplyr::mutate(pathway_level2 = ifelse(.data$pathway_level1 != "unknown" &
       !is.na(.data$pathway_level2) & .data$pathway_level2 != "",
     .data$pathway_level2,
     "unknown"
@@ -216,22 +213,22 @@ get_table_pathways <- function(df,
   # Create groups based on pathway level1 and level2
   preprocess_data <-
     preprocess_data %>%
-    distinct(
+    dplyr::distinct(
       .data$taxa_names, .data$pathway_level1, .data$pathway_level2
     ) %>%
-    group_by(.data$pathway_level1, .data$pathway_level2)
+    dplyr::group_by(.data$pathway_level1, .data$pathway_level2)
 
   # Assess size of sample per group
   pathway_data <-
     preprocess_data %>%
-    count() %>%
-    rowwise() %>%
-    mutate(size_sample = ifelse(n > n_species,
+    dplyr::count() %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(size_sample = ifelse(n > n_species,
       n_species, n
     ))
   # Make df with sample species
   samples <-
-    pmap_dfr(
+    purrr::pmap_dfr(
       list(
         pathway_data$pathway_level1,
         pathway_data$pathway_level2,
@@ -240,19 +237,19 @@ get_table_pathways <- function(df,
       function(p1, p2, s) {
         set_species <-
           preprocess_data %>%
-          filter(.data$pathway_level1 == p1) %>%
-          filter(.data$pathway_level2 == p2)
+          dplyr::filter(.data$pathway_level1 == p1) %>%
+          dplyr::filter(.data$pathway_level2 == p2)
         if (s < nrow(preprocess_data)) {
-          examples <- sample_n(set_species, s)
+          examples <- dplyr::sample_n(set_species, s)
         } else {
           examples <- set_species
         }
         examples <-
           examples %>%
-          pull(.data$taxa_names)
+          dplyr::pull(.data$taxa_names)
 
-        tibble(examples = str_c(examples, collapse = ", ")) %>%
-          mutate(
+        dplyr::tibble(examples = stringr::str_c(examples, collapse = ", ")) %>%
+          dplyr::mutate(
             pathway_level1 = as.character(p1),
             pathway_level2 = as.character(p2)
           )
@@ -260,7 +257,7 @@ get_table_pathways <- function(df,
     )
   # No samples
   if (length(names(samples)) == 0) {
-    samples <- tibble(
+    samples <- dplyr::tibble(
       examples = character(),
       pathway_level1 = character(),
       pathway_level2 = character()
@@ -268,7 +265,7 @@ get_table_pathways <- function(df,
   }
   # Join pathways and samples together
   if (nrow(pathway_data) == 0) {
-    tibble(
+    dplyr::tibble(
       pathway_level1 = character(0),
       pathway_level2 = character(0),
       n = integer(0),
@@ -276,10 +273,10 @@ get_table_pathways <- function(df,
     )
   } else {
     pathway_data %>%
-      left_join(samples,
+      dplyr::left_join(samples,
         by = c("pathway_level1", "pathway_level2")
       ) %>%
-      select(-.data$size_sample) %>%
-      ungroup()
+      dplyr::select(-"size_sample") %>%
+      dplyr::ungroup()
   }
 }
