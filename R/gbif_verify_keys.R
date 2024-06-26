@@ -136,7 +136,7 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
     check_keys <-
       check_keys %>%
       dplyr::left_join(valid_keys_df %>%
-        dplyr::select(.data$key, .data$is_from_gbif_backbone),
+        dplyr::select("key", "is_from_gbif_backbone"),
       by = "key"
       )
     valid_keys_df <-
@@ -148,7 +148,7 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
     check_keys <-
       check_keys %>%
       dplyr::left_join(valid_keys_df %>%
-        dplyr::select(.data$key, .data$is_synonym),
+        dplyr::select("key", "is_synonym"),
       by = "key"
       )
   } else {
