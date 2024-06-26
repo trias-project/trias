@@ -31,6 +31,7 @@
 #'   (number of taxa) and `examples`.
 #' @export
 #' @importFrom dplyr %>% .data
+#' @importFrom rlang !!
 #' @examples
 #' \dontrun{
 #' library(readr)
