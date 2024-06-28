@@ -33,7 +33,7 @@
 #' @param x_label character. x-axis label of output plot. Default: `"year"`.
 #' @param y_label character. y-axis label of output plot. Default: `"number of
 #'   observations"`.
-#' @param saveplot logical. If `TRUE` the plots are authomatically saved.
+#' @param saveplot logical. If `TRUE` the plots are automatically saved.
 #'   Default: `FALSE`.
 #' @param dir_name character. Path of directory where saving plots. If path
 #'   doesn't exists, directory will be created. Example: "./output/graphs/". If
@@ -83,7 +83,7 @@
 #'
 #'   \item `first_derivative`: df. Data.frame with details of first derivatives.
 #'   It contains the following columns:
-#'   - `smooth`: smoooth identifier. Example: `s(year)`.
+#'   - `smooth`: smooth identifier. Example: `s(year)`.
 #'   - `derivative`: numeric. Value of first derivative.
 #'   - `se`: numeric. Standard error of `derivative`.
 #'   - `crit`: numeric. Critical value required such that

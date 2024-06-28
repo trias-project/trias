@@ -66,7 +66,7 @@ and filenames (if \code{saveplot = TRUE}). The title is always composed of:
 
 \item{y_label}{character. y-axis label of output plot. Default: \code{"number of observations"}.}
 
-\item{saveplot}{logical. If \code{TRUE} the plots are authomatically saved.
+\item{saveplot}{logical. If \code{TRUE} the plots are automatically saved.
 Default: \code{FALSE}.}
 
 \item{dir_name}{character. Path of directory where saving plots. If path
@@ -124,7 +124,7 @@ derivative, if positive. It represents the lower guaranteed growth.
 \item \code{first_derivative}: df. Data.frame with details of first derivatives.
 It contains the following columns:
 \itemize{
-\item \code{smooth}: smoooth identifier. Example: \code{s(year)}.
+\item \code{smooth}: smooth identifier. Example: \code{s(year)}.
 \item \code{derivative}: numeric. Value of first derivative.
 \item \code{se}: numeric. Standard error of \code{derivative}.
 \item \code{crit}: numeric. Critical value required such that
