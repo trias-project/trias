@@ -117,9 +117,9 @@ testthat::test_that("Basic usage: default values", {
   # except order of examples which is randomized by default
   testthat::expect_equal(
     pathways_default %>%
-      dplyr::select(-.data$examples),
+      dplyr::select(-"examples"),
     pathways_default_from_factors %>%
-      dplyr::select(-.data$examples)
+      dplyr::select(-"examples")
   )
   # large input, more pathways, more rows
   testthat::expect_true(nrow(pathways_default_large) > nrow(pathways_default))
@@ -134,8 +134,8 @@ testthat::test_that("Basic usage: default values", {
   # same content of dfs. No examples take into account as they are randomly
   # selected
   testthat::expect_equal(
-    pathways_default %>% dplyr::select(-.data$examples),
-    output_test_df_basic %>% dplyr::select(-.data$examples)
+    pathways_default %>% dplyr::select(-"examples"),
+    output_test_df_basic %>% dplyr::select(-"examples")
   )
 })
 
@@ -187,26 +187,26 @@ testthat::test_that("Use with 'category'", {
   testthat::expect_true(all(class(pathways_plants) == class(pathways_animals)))
   testthat::expect_true(all(names(pathways_plants) == names(pathways_animals)))
   testthat::expect_equal(
-    pathways_animals %>% dplyr::select(-.data$examples),
-    output_test_df_animals %>% dplyr::select(-.data$examples)
+    pathways_animals %>% dplyr::select(-"examples"),
+    output_test_df_animals %>% dplyr::select(-"examples")
   )
   testthat::expect_equal(
-    pathways_chordata %>% dplyr::select(-.data$examples),
-    output_test_df_chordata %>% dplyr::select(-.data$examples)
+    pathways_chordata %>% dplyr::select(-"examples"),
+    output_test_df_chordata %>% dplyr::select(-"examples")
   )
   testthat::expect_equal(
-    pathways_not_chordata %>% dplyr::select(-.data$examples),
-    output_test_df_not_chordata %>% dplyr::select(-.data$examples)
+    pathways_not_chordata %>% dplyr::select(-"examples"),
+    output_test_df_not_chordata %>% dplyr::select(-"examples")
   )
   # same result if kingdom col has different name than default
   testthat::expect_equal(
-    pathways_animals %>% dplyr::select(-.data$examples),
-    pathways_animals_2 %>% dplyr::select(-.data$examples)
+    pathways_animals %>% dplyr::select(-"examples"),
+    pathways_animals_2 %>% dplyr::select(-"examples")
   )
   # same result if phylum col has different name than default
   testthat::expect_equal(
-    pathways_not_chordata %>% dplyr::select(-.data$examples),
-    pathways_not_chordata_2 %>% dplyr::select(-.data$examples)
+    pathways_not_chordata %>% dplyr::select(-"examples"),
+    pathways_not_chordata_2 %>% dplyr::select(-"examples")
   )
 })
 
@@ -229,9 +229,9 @@ testthat::test_that("Use with 'from'", {
   # from is earlier than any first_observed value
   testthat::expect_equal(
     pathways_1000 %>%
-      dplyr::select(-.data$examples),
+      dplyr::select(-"examples"),
     output_test_df_basic %>%
-      dplyr::select(-.data$examples)
+      dplyr::select(-"examples")
   )
   testthat::expect_true(sum(pathways_1000$n) > sum(pathways_2012$n))
   testthat::expect_true(sum(pathways_2012$n) > sum(pathways_2018$n))
@@ -257,9 +257,9 @@ testthat::test_that("Use with 'n_species'", {
   )
   testthat::expect_equal(
     pathways_n_species_10 %>%
-      dplyr::select(-.data$examples),
+      dplyr::select(-"examples"),
     get_table_pathways(input_test_df) %>%
-      dplyr::select(-.data$examples)
+      dplyr::select(-"examples")
   )
   testthat::expect_true(all(purrr::map_lgl(
     pathways_n_species_10$examples,

@@ -122,7 +122,9 @@ gbif_has_distribution <- function(taxon_key, ...) {
         # Check whether at least one property defined by user is present
         has_distr <- dplyr::intersect(
           user_properties %>%
-            purrr::cross_df(),
+            tidyr::expand_grid() %>% 
+            purrr::pluck(1) %>% 
+            dplyr::as_tibble(),
           distr_properties %>%
             dplyr::select(names(user_properties)) %>%
             dplyr::distinct() %>%

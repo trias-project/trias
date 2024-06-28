@@ -461,18 +461,78 @@ testthat::test_that("Test other inputs.", {
       "number between 0 and 1."
     )
   )
-  # warning dir when saveplot is FALSE
-  testthat::expect_warning(
+  # message dir_name when saveplot is FALSE
+  testthat::expect_message(
     apply_gam(
       df = df_gam,
       y_var = "n_observations",
       eval_years = 2018,
       saveplot = FALSE,
-      dir_name = "./data/"
+      dir_name = "./data/",
+      width = NULL,
+      height = NULL
     ),
     paste(
       "saveplot is FALSE: plots are not saved.",
-      "Argument dir_name ignored."
+      "Argument `dir_name` ignored."
     )
   )
+  # message width when saveplot is FALSE
+  testthat::expect_message(
+    apply_gam(
+      df = df_gam,
+      y_var = "n_observations",
+      eval_years = 2018,
+      saveplot = FALSE,
+      dir_name = NULL,
+      width = 1000,
+      height = NULL
+    ),
+    paste(
+      "saveplot is FALSE: plots are not saved.",
+      "Argument `width` ignored."
+    )
+  )
+  # message height when saveplot is FALSE
+  testthat::expect_message(
+    apply_gam(
+      df = df_gam,
+      y_var = "n_observations",
+      eval_years = 2018,
+      saveplot = FALSE,
+      dir_name = NULL,
+      width = NULL,
+      height = 1000
+    ),
+    paste(
+      "saveplot is FALSE: plots are not saved.",
+      "Argument `height` ignored."
+    )
+  )
+  # message width = NULL and saveplot is TRUE
+  testthat::expect_message(
+    apply_gam(
+      df = df_gam,
+      y_var = "n_observations",
+      eval_years = 2018,
+      saveplot = TRUE,
+      width = NULL,
+      height = 1000
+    ),
+    "width not provided. Set to 1680 pixels."
+  )
+  # message height = NULL and saveplot is TRUE
+  testthat::expect_message(
+    apply_gam(
+      df = df_gam,
+      y_var = "n_observations",
+      eval_years = 2018,
+      saveplot = TRUE,
+      width = 2000, 
+      height = NULL
+    ),
+    "height not provided. Set to 1200 pixels."
+  )
+  # Remove the png created while using `saveplot = TRUE`
+  unlink("GAM_observations_basic.png")
 })
