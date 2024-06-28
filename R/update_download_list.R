@@ -2,7 +2,7 @@
 #'
 #' This function opens a (tab-separated) text file containing all occurrence
 #' downloads from GBIF and updates the status of all downloads with status
-#' `RUNNING` or `PREPARING`. If the specifid download is not present it will be add.
+#' `RUNNING` or `PREPARING`. If the specified download is not present it will be add.
 #'
 #' If a download key is passed which is not present in the file it will be added
 #' as a new line.

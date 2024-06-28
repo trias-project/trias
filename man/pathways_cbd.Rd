@@ -2,7 +2,7 @@
 % Please edit documentation in R/pathways_cbd.R
 \name{pathways_cbd}
 \alias{pathways_cbd}
-\title{Pathways of introdcution as defined by CBD}
+\title{Pathways of introduction as defined by CBD}
 \usage{
 pathways_cbd()
 }

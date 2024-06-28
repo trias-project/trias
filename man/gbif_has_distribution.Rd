@@ -11,7 +11,7 @@ gbif_has_distribution(taxon_key, ...)
 
 \item{...}{one or more GBIF distribution properties and related values.
 Up to now it supports the following properties:
-country (and its synoynym: countryCode), status (and its synonym:
+country (and its synonym: countryCode), status (and its synonym:
 occurrenceStatus) and establishmentMeans.}
 }
 \value{

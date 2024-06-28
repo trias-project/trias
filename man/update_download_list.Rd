@@ -42,7 +42,7 @@ message with the performed updates
 \description{
 This function opens a (tab-separated) text file containing all occurrence
 downloads from GBIF and updates the status of all downloads with status
-\code{RUNNING} or \code{PREPARING}. If the specifid download is not present it will be add.
+\code{RUNNING} or \code{PREPARING}. If the specified download is not present it will be add.
 }
 \details{
 If a download key is passed which is not present in the file it will be added

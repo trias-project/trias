@@ -38,7 +38,7 @@ related to a taxa.}
 That means that adding a key at the end of the URL
 https://www.gbif.org/species/ returns a GBIF page related to a taxa of the
 GBIF Backbone.)}
-\item{\code{keys} are synonyms of other taxa (taxonomicStauts neither
+\item{\code{keys} are synonyms of other taxa (taxonomicStatus neither
 \code{ACCEPTED} nor \code{DOUBTFUL}).}
 }.
 }

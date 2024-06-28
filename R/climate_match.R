@@ -37,7 +37,7 @@
 #' zones in the target nation or region
 #' - `spatial` a sf object containing the observations used 
 #' in the analysis
-#' - `current_map` a leaflet object displaying the degree of wordlwide 
+#' - `current_map` a leaflet object displaying the degree of worldwide 
 #' climate match with the climate from 1980 till 2016
 #' - `future_maps` a list of leaflet objects for each future climate 
 #' scenario, displaying the degree of climate match
