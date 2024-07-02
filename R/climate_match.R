@@ -160,7 +160,7 @@ climate_match <- function(region,
   ## If the zip_file argument was not provided:
   if (missing(zip_file)) {
     rerun <- 2
-  ## If the zip_file argument was provided:
+  ## If the zip_file argument was provided, but the file doesn't exist:
   } else {
     if (!file.exists(zip_file)) {
       warning(paste0(zip_file, " cannot be found. Rerunning GBIF download"))
