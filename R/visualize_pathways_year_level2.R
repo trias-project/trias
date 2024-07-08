@@ -341,11 +341,16 @@ visualize_pathways_year_level2 <- function(
   # rename to default column name
   df <-
     df %>%
-    dplyr::rename_at(vars(tidyselect::all_of(kingdom_names)), ~"group") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(taxon_names)), ~"taxonKey") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(first_observed)), ~"first_observed") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(pathway_level1_names)), ~"pathway_level1") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(pathway_level2_names)), ~"pathway_level2")
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(kingdom_names)), ~"group") %>%
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(taxon_names)), ~"taxonKey") %>%
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(first_observed)), ~"first_observed") %>%
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(pathway_level1_names)), ~"pathway_level1") %>%
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(pathway_level2_names)), ~"pathway_level2")
   # Select data with the chosen pathway level 1
   df <-
     df %>%
