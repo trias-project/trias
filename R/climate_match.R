@@ -949,7 +949,19 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
           radius = 1,
           options = leaflet::pathOptions(pane = "foreground")) %>% 
           leaflet::addLegend(
-            colors=c("#f7f7f7","#FFFFCC" ,"#FFEFA5", "#FEDD7F" ,"#FFBF5A", "#FE9E43", "#FD7434", "#F44025" ,"#DA151F", "#B60026", "#800026"),
+            colors = c(
+              "#f7f7f7",
+              "#FFFFCC" ,
+              "#FFEFA5",
+              "#FEDD7F" ,
+              "#FFBF5A",
+              "#FE9E43",
+              "#FD7434",
+              "#F44025" ,
+              "#DA151F",
+              "#B60026",
+              "#800026"
+            ), 
             labels = c("0",
                        "0< - 10", 
                        "10 - 20",
