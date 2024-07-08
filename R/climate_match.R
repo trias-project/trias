@@ -242,14 +242,16 @@ climate_match <- function(region,
   
   
   # Data prep ####
-  if(base::missing(coord_unc)){
+  if (missing(coord_unc)) {
     coord_unc <- max(data$coordinateUncertaintyInMeters, na.rm = TRUE)
   }
-  
-  if(base::missing(BasisOfRecord)){
+
+  if (missing(BasisOfRecord)) {
     BasisOfRecord <- unique(data$basisOfRecord)
-    warning(paste0("No BasisOfRecord parameter was provided, using the following",
-                   " values available in the data: ",paste(BasisOfRecord, collapse = ", ")))
+    warning(paste0(
+      "No BasisOfRecord parameter was provided, using the following",
+      " values available in the data: ", paste(BasisOfRecord, collapse = ", ")
+    ))
   }
   
   SPECIES <- data %>% 
