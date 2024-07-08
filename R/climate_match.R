@@ -799,7 +799,7 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
                                   radius = 1) %>% 
         leaflet::addLegend(colors = "black",
                            labels = "Observations",
-                           position = "bottomleft")%>% 
+                           position = "bottomleft") %>% 
         leaflet::addLayersControl(
           baseGroups= ~temp_shape$acceptedScientificName) %>% 
           leaflet::addLegend(
