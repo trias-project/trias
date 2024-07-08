@@ -233,7 +233,7 @@ climate_match <- function(region,
                     "year",
                     "countryCode")
     
-    if(nrow(data) == 0){
+    if (nrow(data) == 0) {
       stop("no occurrences of ", 
            paste(taxon_key, collapse = ", "), 
            " were found on GBIF")
@@ -982,7 +982,7 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
   
   # Return ####
   return(list(unfiltered = as.data.frame(data_overlay_unfiltered), 
-              cm =as.data.frame(cm),
+              cm = as.data.frame(cm),
               filtered = as.data.frame(data_overlay_scenario_filtered),
               future = as.data.frame(future_climate),
               spatial = data_sf,
