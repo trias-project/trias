@@ -925,9 +925,9 @@ suppressMessages(suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,
                                , lat1 = -90
                                , lng2 = 180
                                , lat2 = 90 )%>%
-        leaflet::setView( lng = 0
-                          , lat = 0
-                          , zoom = 1 ) %>%
+        leaflet::setView(lng = 0,
+                         lat = 0,
+                         zoom = 1) %>%
         leaflet::addMapPane("background", zIndex = 400) %>%  
         leaflet::addMapPane("foreground", zIndex = 500) %>% 
         leaflet::addPolygons(
