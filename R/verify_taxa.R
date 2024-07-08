@@ -666,12 +666,12 @@ verify_taxa <- function(taxa,
   assertthat::assert_that(
     taxa %>%
       dplyr::filter(is.na(.data$bb_key)) %>%
-      dplyr::filter_at(dplyr::vars(stringr::starts_with("bb_")),
+      dplyr::filter_at(dplyr::vars(dplyr::starts_with("bb_")),
                        dplyr::all_vars(is.na(.))) %>%
       nrow() ==
       taxa %>%
       dplyr::filter(is.na(.data$bb_key)) %>%
-      dplyr::filter_at(dplyr::vars(stringr::starts_with("bb_")),
+      dplyr::filter_at(dplyr::vars(dplyr::starts_with("bb_")),
                        dplyr::any_vars(is.na(.))) %>%
       nrow(),
     msg = "Columns with GBIF Backbone info should be empty for unmatched taxa."
