@@ -4,7 +4,7 @@
 #' through different CBD pathways level 2 for a specific CBD pathway level 1.
 #' Time expressed in years. Possible breakpoints: taxonomic (kingdoms +
 #' vertebrates/invertebrates).
-#' 
+#'
 #' @param df A data frame.
 #' @param chosen_pathway_level1 character. Selected pathway level 1.
 #' @param bin numeric. Time span in years to use for agggregation. Default:
@@ -18,7 +18,7 @@
 #'   2. `Animalia`
 #'   3. `Fungi`
 #'   4. `Chromista`
-#'   5. `Archaea` 
+#'   5. `Archaea`
 #'   6. `Bacteria`
 #'   7. `Protozoa`
 #'   8. `Viruses`
@@ -61,7 +61,7 @@
 #' - `data_top_graph`: data.frame (tibble) with data used for the main plot (top
 #' graph) in `plot`.
 #' - `data_facet_graph`: data.frame (tibble) with data used for the faceting
-#' plot in `plot`. `NULL` is returned if `facet_column` is `NULL`. 
+#' plot in `plot`. `NULL` is returned if `facet_column` is `NULL`.
 #'
 #' @export
 #' @importFrom dplyr %>% .data
@@ -233,12 +233,12 @@ visualize_pathways_year_level2 <- function(
       msg = "You cannot use phylum as facet with category Chordata."
     )
     assertthat::assert_that(
-      is.null(category) || 
+      is.null(category) ||
         !(category == "Not Chordata" & facet_column == "phylum"),
       msg = "You cannot use phylum as facet with category Not Chordata."
     )
     assertthat::assert_that(
-      is.null(category) || 
+      is.null(category) ||
         !(!is.null(category) & facet_column == "kingdom"),
       msg = "You cannot use kingdom as facet if category is selected."
     )
@@ -368,14 +368,14 @@ visualize_pathways_year_level2 <- function(
       }
     }
   }
-  
+
   if (!is.null(facet_column)) {
     if (facet_column == "kingdom") {
       # category NULL by assertion
       df$kingdom <- df$group
     }
-  } 
-  
+  }
+
   # Handle NAs and ""
   nas_or_empty_pathway_level2 <-
     df %>%
