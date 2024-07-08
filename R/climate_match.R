@@ -158,7 +158,7 @@ climate_match <- function(region,
   
   # Download data ####
   
-  if (base::missing(zip_file)) {
+  if (missing(zip_file)) {
     rerun <- 2
   } else {
     if (!file.exists(zip_file)) {
@@ -494,7 +494,7 @@ climate_match <- function(region,
     
     #Rebuild the geometry as planar geometry, needed to get st_intersection to work
    region_shape<-sf::st_make_valid(region_shape)
-base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,region_shape)))
+suppressMessages(suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,region_shape)))
     
     #Take the gridcodes present in the region of interest under each scenario and add them to the output dataframe
     for (g in gridcode_intersect$GRIDCODE) {
