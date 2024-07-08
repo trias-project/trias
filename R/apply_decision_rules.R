@@ -157,7 +157,8 @@ apply_decision_rules <- function(df,
     df %>%
     dplyr::group_by(!!rlang::sym(taxonKey)) %>%
     dplyr::summarize(
-      has_all_years = dplyr::n() == (max(!!rlang::sym(year)) - min(!!rlang::sym(year)) + 1)
+      has_all_years =
+        dplyr::n() == (max(!!rlang::sym(year)) - min(!!rlang::sym(year)) + 1)
     ) %>%
     dplyr::filter(.data$has_all_years == FALSE)
 
