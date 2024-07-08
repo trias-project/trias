@@ -974,9 +974,10 @@ suppressMessages(suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,
                        "80 - 90",
                        "90 - 100"),
             position = "bottomleft",
-            title =  paste0("<strong>Climate match (%)</strong><br><em><span style='font-weight:lighter;'>",
-                                           temp_shape$acceptedScientificName[1], "</span>")) %>% 
-        leaflet::addLayersControl(baseGroups = ~temp_shape$scenario)%>% 
+            title = 
+              paste0("<strong>Climate match (%)</strong><br><em><span style='font-weight:lighter;'>",
+                     temp_shape$acceptedScientificName[1], "</span>")) %>%
+        leaflet::addLayersControl(baseGroups = ~temp_shape$scenario) %>%
       leaflet::addLegend(colors = "black",
                            labels = "Observations",
                            position = "bottomleft"))
