@@ -597,8 +597,7 @@ visualize_pathways_year_level2 <- function(
       return(list(plot = egg::ggarrange(top_graph, facet_graph, draw = FALSE),
                   data_top_graph = data_top_graph,
                   data_facet_graph = data_facet_graph))
-    }
-    else {
+    } else {
       return(list(plot = NULL, data_top_graph = NULL, data_facet_graph = NULL))
     }
   }
