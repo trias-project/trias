@@ -928,8 +928,8 @@ suppressMessages(suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,
         leaflet::setView(lng = 0,
                          lat = 0,
                          zoom = 1) %>%
-        leaflet::addMapPane("background", zIndex = 400) %>%  
-        leaflet::addMapPane("foreground", zIndex = 500) %>% 
+        leaflet::addMapPane("background", zIndex = 400) %>%
+        leaflet::addMapPane("foreground", zIndex = 500) %>%
         leaflet::addPolygons(
           data = temp_shape,
           color = "#bababa",
@@ -961,9 +961,9 @@ suppressMessages(suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,
               "#DA151F",
               "#B60026",
               "#800026"
-            ), 
+            ),
             labels = c("0",
-                       "0< - 10", 
+                       "0< - 10",
                        "10 - 20",
                        "20 - 30",
                        "30 - 40",
