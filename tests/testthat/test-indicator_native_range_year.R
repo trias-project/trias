@@ -46,7 +46,7 @@ test_that("Arg: years", {
   )
   expect_error(
     indicator_native_range_year(cleaned_input_test_df,
-                                years = c(2000,3000)
+                                years = c(2000, 3000)
     ),
     sprintf("All values in years has to be less than %s.", format(Sys.Date(), "%Y"))
   )
@@ -81,11 +81,11 @@ test_that("Param: labels", {
 test_that("Test output type, class, slots and columns", {
   plot_output <-
     indicator_native_range_year(cleaned_input_test_df,
-                                years = c(2000,2005)
+                                years = c(2000, 2005)
   )
   plot_output_rel <-
     indicator_native_range_year(cleaned_input_test_df,
-                                years = c(2000,2005),
+                                years = c(2000, 2005),
                                 relative = TRUE
   )
   # output is a list
