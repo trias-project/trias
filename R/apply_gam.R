@@ -106,7 +106,7 @@
 #'   - `upper_ci`: numeric. Upper bound of the
 #'   confidence interval of the estimated smooth.
 #'   - value of argument `year`: column with temporal values.
-#'   - value of argument `baseline_var`: column with the fitted values for the 
+#'   - value of argument `baseline_var`: column with the fitted values for the
 #'   baseline. If `baseline_var` is `NULL`, this column is not present.
 #'
 #'   \item `second_derivative`: df. Data.frame with details of second
@@ -265,7 +265,7 @@
 #' ),
 #' cobs = rep(0, 24)
 #' )
-#' 
+#'
 #' # if GAM cannot be applied a warning is returned and the plot mention it
 #' \dontrun{
 #' no_gam_applied <- apply_gam(df_gam,
