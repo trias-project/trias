@@ -327,11 +327,11 @@ visualize_pathways_level2 <- function(df,
   # rename to default column name
   df <-
     df %>%
-    dplyr::rename_at(vars(tidyselect::all_of(kingdom_names)), ~"group") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(taxon_names)), ~"taxonKey") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(first_observed)), ~"first_observed") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(pathway_level1_names)), ~"pathway_level1") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(pathway_level2_names)), ~"pathway_level2")
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(kingdom_names)), ~"group") %>%
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(taxon_names)), ~"taxonKey") %>%
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(first_observed)), ~"first_observed") %>%
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(pathway_level1_names)), ~"pathway_level1") %>%
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(pathway_level2_names)), ~"pathway_level2")
   # Select data with the chosen pathway level 1
   df <-
     df %>%
@@ -343,7 +343,7 @@ visualize_pathways_level2 <- function(df,
     } else {
       df <-
         df %>%
-        dplyr::rename_at(vars(phylum_names), ~"phylum_group")
+        dplyr::rename_at(dplyr::vars(phylum_names), ~"phylum_group")
       if (category == "Chordata") {
         df <- df %>% dplyr::filter(.data$phylum_group == category)
       } else {

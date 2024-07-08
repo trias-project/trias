@@ -306,7 +306,7 @@ apply_decision_rules <- function(df,
 
   em_dr <-
     em_dr %>%
-    bind_rows(taxa_without_em)
+    dplyr::bind_rows(taxa_without_em)
 
   return(em_dr)
 }

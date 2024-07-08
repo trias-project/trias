@@ -285,10 +285,10 @@ visualize_pathways_year_level1 <- function(
   # rename to default column name
   df <-
     df %>%
-    dplyr::rename_at(vars(tidyselect::all_of(kingdom_names)), ~"group") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(taxon_names)), ~"taxonKey") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(first_observed)), ~"first_observed") %>%
-    dplyr::rename_at(vars(tidyselect::all_of(pathway_level1_names)), ~"pathway_level1")
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(kingdom_names)), ~"group") %>%
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(taxon_names)), ~"taxonKey") %>%
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(first_observed)), ~"first_observed") %>%
+    dplyr::rename_at(dplyr::vars(tidyselect::all_of(pathway_level1_names)), ~"pathway_level1")
   
   # handle asymmetric category system (Chordata, Not Chordata are not kingdoms)
   if (!is.null(category)) {
@@ -297,7 +297,7 @@ visualize_pathways_year_level1 <- function(
     } else {
       df <-
         df %>%
-        dplyr::rename_at(vars(phylum_names), ~"phylum_group")
+        dplyr::rename_at(dplyr::vars(phylum_names), ~"phylum_group")
       if (category == "Chordata") {
         df <- df %>% dplyr::filter(.data$phylum_group == category)
       } else {
@@ -447,7 +447,7 @@ visualize_pathways_year_level1 <- function(
     levels_first_observed <-
       c(
         dplyr::last(levels_first_observed),
-        head(levels_first_observed, -1)
+        utils::head(levels_first_observed, -1)
       )
   }
   df <-
