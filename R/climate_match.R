@@ -106,7 +106,7 @@ climate_match <- function(region,
       # region is a character => select region from worldmap
       
       region <- tolower(region)
-      worldmap<- rnaturalearth::ne_countries()
+      worldmap <- rnaturalearth::ne_countries()
      
       valid_countries <- tolower(unique(worldmap$name_long))
       
