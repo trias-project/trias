@@ -446,8 +446,8 @@ visualize_pathways_year_level1 <- function(
   ) {
     levels_first_observed <-
       c(
-        levels_first_observed[length(levels_first_observed)],
-        levels_first_observed[1:length(levels_first_observed) - 1]
+        dplyr::last(levels_first_observed),
+        head(levels_first_observed, -1)
       )
   }
   df <-
