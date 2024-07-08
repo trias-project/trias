@@ -920,11 +920,11 @@ suppressMessages(suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,
       # Add layer to map
       scenario_map <- suppressWarnings(leaflet::leaflet(temp_shape, options = leaflet::leafletOptions(minZoom = 0.75, maxBoundsViscosity= 1.0)) %>% 
         leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels",
-                                   options=list(noWrap=TRUE))%>%
-        leaflet::setMaxBounds( lng1 = -180
-                               , lat1 = -90
-                               , lng2 = 180
-                               , lat2 = 90 )%>%
+                                   options = list(noWrap = TRUE)) %>%
+        leaflet::setMaxBounds(lng1 = -180,
+                              lat1 = -90,
+                              lng2 = 180,
+                              lat2 = 90) %>%
         leaflet::setView(lng = 0,
                          lat = 0,
                          zoom = 1) %>%
