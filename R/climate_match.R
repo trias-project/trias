@@ -116,7 +116,8 @@ climate_match <- function(region,
       } else {
         valid_continents <- tolower(unique(worldmap$continent))
         if (region %in% valid_continents) {
-          region_shape <- subset(worldmap, tolower(worldmap$continent) == region)
+          region_shape <-
+            subset(worldmap, tolower(worldmap$continent) == region)
         } else {
           stop("the provided region is not valid")
         }
