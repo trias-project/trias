@@ -971,7 +971,7 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
       
       single_species_maps[[i]] <- scenario_map
     }  
-  }else{
+  } else {
     message("maps are disabled")
     current_climate_map <- NULL
     future_scenario_maps <- NULL
@@ -981,7 +981,7 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
   
   
   # Return ####
-  return(list(unfiltered = as.data.frame(data_overlay_unfiltered), 
+  return(list(unfiltered = as.data.frame(data_overlay_unfiltered),
               cm = as.data.frame(cm),
               filtered = as.data.frame(data_overlay_scenario_filtered),
               future = as.data.frame(future_climate),
