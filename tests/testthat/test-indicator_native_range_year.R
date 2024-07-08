@@ -21,15 +21,15 @@ test_that("Arg: df", {
 
 test_that("Arg: type", {
   expect_error(
-    indicator_native_range_year(cleaned_input_test_df, 
-                                type = 2, 
+    indicator_native_range_year(cleaned_input_test_df,
+                                type = 2,
                                 years = 2001),
     "'arg' must be NULL or a character vector"
   )
   a <- cleaned_input_test_df
   colnames(a)[colnames(a) == "native_range"] <- "l"
   expect_error(
-    indicator_native_range_year(a, 
+    indicator_native_range_year(a,
                                 type = "native_range", 
                                 years = 2001),
     "Column native_range not present in df."

@@ -11,7 +11,7 @@ testthat::test_that("checklist is character, limit higher than n. of records", {
 })
 
 testthat::test_that(
-  paste("checklist is vector,", 
+  paste("checklist is vector,",
         "limit higher than n. of records in all datasets"), {
   testthat::expect_warning(
     gbif_get_taxa(
