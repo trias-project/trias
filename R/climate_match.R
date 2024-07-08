@@ -951,13 +951,13 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
           leaflet::addLegend(
             colors = c(
               "#f7f7f7",
-              "#FFFFCC" ,
+              "#FFFFCC",
               "#FFEFA5",
-              "#FEDD7F" ,
+              "#FEDD7F",
               "#FFBF5A",
               "#FE9E43",
               "#FD7434",
-              "#F44025" ,
+              "#F44025",
               "#DA151F",
               "#B60026",
               "#800026"
