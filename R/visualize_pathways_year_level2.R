@@ -500,14 +500,14 @@ visualize_pathways_year_level2 <- function(
     levels(ordered(unique(df$bins_first_observed)))
   # Set the bin "before ..." at first position if needed
   if (isTRUE(stringr::str_starts(
-    string = tail(levels_first_observed, 1),
+    string = utlis::tail(levels_first_observed, 1),
     pattern = "before"
   ))
   ) {
     levels_first_observed <-
       c(
-        tail(levels_first_observed, 1),
-        head(levels_first_observed, -1)
+        utlis::tail(levels_first_observed, 1),
+        utils::head(levels_first_observed, -1)
       )
   }
   df <-
