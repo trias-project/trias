@@ -942,12 +942,12 @@ base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_interse
           options = leaflet::pathOptions(pane = "background"),
           highlightOptions = leaflet::highlightOptions(weight = 2,
                                                        color = "#6b6b6b",
-                                                       bringToFront = FALSE)) %>% 
+                                                       bringToFront = FALSE)) %>%
         leaflet::addCircleMarkers(
           data = data_sf_species_obs,
           color = "black",
           radius = 1,
-          options = leaflet::pathOptions(pane = "foreground")) %>% 
+          options = leaflet::pathOptions(pane = "foreground")) %>%
           leaflet::addLegend(
             colors = c(
               "#f7f7f7",
