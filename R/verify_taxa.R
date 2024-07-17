@@ -1237,7 +1237,7 @@ verify_taxa <- function(taxa,
   # Order verification by outdated and dateAdded
   verification <-
     verification %>%
-    dplyr::arrange(.data$outdated, dply::desc(.data$dateAdded))
+    dplyr::arrange(.data$outdated, dplyr::desc(.data$dateAdded))
   
   # Add not outdated taxa from verification to not_to_verify_taxa
   taxa <-
