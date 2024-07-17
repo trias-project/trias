@@ -362,7 +362,7 @@ visualize_pathways_year_level2 <- function(
     } else {
       df <-
         df %>%
-        dplyr::rename_at(vars(phylum_names), ~"phylum_group")
+        dplyr::rename_at(dplyr::vars(phylum_names), ~"phylum_group")
       if (category == "Chordata") {
         df <- df %>% dplyr::filter(.data$phylum_group == category)
       } else {
