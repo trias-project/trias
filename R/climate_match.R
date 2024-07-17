@@ -157,8 +157,10 @@ climate_match <- function(region,
   
   # Download data ####
   
-  if (base::missing(zip_file)) {
+  ## If the zip_file argument was not provided:
+  if (missing(zip_file)) {
     rerun <- 2
+  ## If the zip_file argument was provided, but the file doesn't exist:
   } else {
     if (!file.exists(zip_file)) {
       warning(paste0(zip_file, " cannot be found. Rerunning GBIF download"))
@@ -241,11 +243,13 @@ climate_match <- function(region,
   
   
   # Data prep ####
-  if(base::missing(coord_unc)){
+  ## If the coord_unc argument was not provided:
+  if(missing(coord_unc)){
     coord_unc <- max(data$coordinateUncertaintyInMeters, na.rm = TRUE)
   }
   
-  if(base::missing(BasisOfRecord)){
+  ## If the BasisOfRecord argument was not provided:
+  if(missing(BasisOfRecord)){
     BasisOfRecord <- unique(data$basisOfRecord)
     warning(paste0("No BasisOfRecord parameter was provided, using the following",
                    " values available in the data: ",paste(BasisOfRecord, collapse = ", ")))
@@ -491,7 +495,9 @@ climate_match <- function(region,
     
     #Rebuild the geometry as planar geometry, needed to get st_intersection to work
    region_shape<-sf::st_make_valid(region_shape)
-base::suppressMessages(base::suppressWarnings(gridcode_intersect<-sf::st_intersection(shape,region_shape)))
+   suppressMessages(suppressWarnings(
+     gridcode_intersect <- sf::st_intersection(shape, region_shape)
+   ))
     
     #Take the gridcodes present in the region of interest under each scenario and add them to the output dataframe
     for (g in gridcode_intersect$GRIDCODE) {
