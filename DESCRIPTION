@@ -24,7 +24,9 @@ Authors@R: c(
     person("TrIAS", role = "fnd",
            comment = "https://trias-project.be"),
     person("LIFE RIPARIAS", role = "fnd",
-           comment = "https://www.riparias.be")
+           comment = "https://www.riparias.be"),
+    person("European Union's Horizon Europe Research and Innovation Programme (ID No 101059592)", role = "fnd",
+           comment = "https://b-cubed.eu/")
   )
 Description: This package provides functionality to facilitate the data
     processing for the project Tracking Invasive Alien Species (TrIAS
