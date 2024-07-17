@@ -1212,7 +1212,7 @@ verify_taxa <- function(taxa,
         .data$bb_scientificName,
         .data$n
       ) %>%
-      dplyr::arrange(dply::desc(.data$n)) %>%
+      dplyr::arrange(dplyr::desc(.data$n)) %>%
       dplyr::ungroup()
   } else {
     duplicates <- dplyr::tibble(
