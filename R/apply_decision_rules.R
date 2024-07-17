@@ -47,7 +47,6 @@
 #' - (`dr_1` is `TRUE`  and `dr_3` is `FALSE`) or (`dr_1`, `dr_2` and `dr_3` are
 #' `FALSE`): `em = 1` (unclear)
 #' @examples
-#' \dontrun{
 #' df <- dplyr::tibble(
 #'   taxonID = c(rep(1008955, 10), rep(2493598, 3)),
 #'   y = c(seq(2009, 2018), seq(2016, 2018)),
@@ -59,8 +58,6 @@
 #'   taxonKey = "taxonID",
 #'   year = "y"
 #' )
-#' }
-#'
 apply_decision_rules <- function(df,
                                  y_var = "ncells",
                                  eval_year,
