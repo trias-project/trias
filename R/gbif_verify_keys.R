@@ -34,6 +34,7 @@
 #' @importFrom dplyr .data %>%
 #' @importFrom rlang !!
 #' @examples
+#' \dontrun{
 #' # input is a vector
 #' keys1 <- c(
 #'   "12323785387253", # invalid GBIF taxonKey
@@ -64,6 +65,7 @@
 #' gbif_verify_keys(keys2, col_keys = "keys")
 #' gbif_verify_keys(keys3)
 #' gbif_verify_keys(keys4)
+#' }
 gbif_verify_keys <- function(keys, col_keys = "key") {
   assertthat::assert_that(is.data.frame(keys) | is.vector(keys),
     msg = "keys should be a vector, a named list or a data.frame."
