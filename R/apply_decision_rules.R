@@ -54,10 +54,10 @@
 #'   obs = c(1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 3, 0)
 #' )
 #' apply_decision_rules(df,
-#'   eval_year = c(2016, 2017, 2018),
+#'   eval_year = 2016,
 #'   y_var = "obs",
 #'   taxonKey = "taxonID",
-#'   year = y
+#'   year = "y"
 #' )
 #' }
 #'
