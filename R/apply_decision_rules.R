@@ -173,7 +173,7 @@ apply_decision_rules <- function(df,
   # Get all taxa in df
   taxon_keys <-
     df %>%
-    distinct(!!rlang::sym(taxonKey)) %>%
+    dplyr::distinct(!!rlang::sym(taxonKey)) %>%
     dplyr::pull()
 
   # Find taxa whose timeseries don't contain eval_year, remove them and throw a
@@ -214,7 +214,7 @@ apply_decision_rules <- function(df,
     dplyr::filter(!!rlang::sym(y_var) > 0) %>%
     dplyr::add_tally(wt = NULL) %>%
     dplyr::mutate(dr_1 = n == 1) %>%
-    distinct(!!rlang::sym(taxonKey), dr_1)
+    dplyr::distinct(!!rlang::sym(taxonKey), dr_1)
 
   # Rule 2: last value (at eval_year) above median value?
   dr_2 <-
