@@ -67,18 +67,15 @@ Based on the decision rules output we define the emergency status value,
 }
 }
 \examples{
-\dontrun{
 df <- dplyr::tibble(
   taxonID = c(rep(1008955, 10), rep(2493598, 3)),
   y = c(seq(2009, 2018), seq(2016, 2018)),
   obs = c(1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 3, 0)
 )
 apply_decision_rules(df,
-  eval_year = c(2016, 2017, 2018),
+  eval_year = 2016,
   y_var = "obs",
   taxonKey = "taxonID",
-  year = y
+  year = "y"
 )
-}
-
 }

@@ -338,19 +338,24 @@ visualize_pathways_year_level2 <- function(
     )
     assertthat::assert_that(length(y_lab) == 1)
   }
-  # rename to default column name
+  # Rename to default column name
   df <-
     df %>%
-    dplyr::rename_at(dplyr::vars(tidyselect::all_of(kingdom_names)), ~"group") %>%
-    dplyr::rename_at(dplyr::vars(tidyselect::all_of(taxon_names)), ~"taxonKey") %>%
-    dplyr::rename_at(dplyr::vars(tidyselect::all_of(first_observed)), ~"first_observed") %>%
-    dplyr::rename_at(dplyr::vars(tidyselect::all_of(pathway_level1_names)), ~"pathway_level1") %>%
-    dplyr::rename_at(dplyr::vars(tidyselect::all_of(pathway_level2_names)), ~"pathway_level2")
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(kingdom_names)), ~"group") %>%
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(taxon_names)), ~"taxonKey") %>%
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(first_observed)), ~"first_observed") %>%
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(pathway_level1_names)), ~"pathway_level1") %>%
+    dplyr::rename_at(
+      dplyr::vars(dplyr::all_of(pathway_level2_names)), ~"pathway_level2")
   # Select data with the chosen pathway level 1
   df <-
     df %>%
     dplyr::filter(.data$pathway_level1 == chosen_pathway_level1)
-  # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
+  # Handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {
     if (!category %in% c("Chordata", "Not Chordata")) {
       df <- df %>% dplyr::filter(.data$group == category)
@@ -371,7 +376,7 @@ visualize_pathways_year_level2 <- function(
 
   if (!is.null(facet_column)) {
     if (facet_column == "kingdom") {
-      # category NULL by assertion
+      # Category NULL by assertion
       df$kingdom <- df$group
     }
   }
@@ -520,7 +525,7 @@ visualize_pathways_year_level2 <- function(
     df %>%
     dplyr::mutate(pathway_level2 = factor(.data$pathway_level2, levels = pathways))
 
-  # dplyr::count number of taxa per pathway_level2 over time
+  # Count number of taxa per pathway_level2 over time
   data_top_graph <-
     df %>%
     dplyr::group_by(

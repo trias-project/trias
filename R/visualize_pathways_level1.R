@@ -259,14 +259,14 @@ visualize_pathways_level1 <- function(df,
   if (!is.null(y_lab)) {
     assertthat::assert_that(length(y_lab) == 1)
   }
-  # rename to default column name
+  # Rename to default column name
   df <-
     df %>%
     dplyr::rename_at(dplyr::vars(tidyselect::all_of(kingdom_names)), ~"group") %>%
     dplyr::rename_at(dplyr::vars(tidyselect::all_of(taxon_names)), ~"taxonKey") %>%
     dplyr::rename_at(dplyr::vars(tidyselect::all_of(first_observed)), ~"first_observed") %>%
     dplyr::rename_at(dplyr::vars(tidyselect::all_of(pathway_level1_names)), ~"pathway_level1")
-  # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
+  # Handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {
     if (!category %in% c("Chordata", "Not Chordata")) {
       df <- df %>% dplyr::filter(.data$group == category)
@@ -293,7 +293,7 @@ visualize_pathways_level1 <- function(df,
   
   if (!is.null(facet_column)) {
     if (facet_column == "kingdom") {
-      # category NULL by assertion
+      # Category NULL by assertion
       df$kingdom <- df$group
     }
   } 
@@ -363,7 +363,7 @@ visualize_pathways_level1 <- function(df,
   } else {
     warning(message_invalid_pathways)
   }
-  # dplyr::distinct taxa
+  # Distinct taxa
   if (!is.null(facet_column)) {
     df <-
       df %>%

@@ -16,8 +16,8 @@ n_first_observed_na <-
 
 valid_pathways <-
   pathways_cbd() %>%
-  distinct(pathway_level1) %>%
-  pull()
+  dplyr::distinct(pathway_level1) %>%
+  dplyr::pull()
 
 invalid_pathways_df <- input_test_df[1:6, ]
 

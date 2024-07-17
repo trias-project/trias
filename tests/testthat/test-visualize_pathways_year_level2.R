@@ -22,7 +22,7 @@ input_test_df <-
 
 input_test_df_other_colnames <-
   input_test_df %>%
-  rename(
+  dplyr::rename(
     date_introduction = first_observed,
     pathway_1 = pathway_level1,
     pathway_2 = pathway_level2,
@@ -32,9 +32,9 @@ input_test_df_other_colnames <-
 
 valid_pathways_escape <-
   pathways_cbd() %>%
-  filter(pathway_level1 == "escape") %>%
-  distinct(pathway_level2) %>%
-  pull()
+  dplyr::filter(pathway_level1 == "escape") %>%
+  dplyr::distinct(pathway_level2) %>%
+  dplyr::pull()
 
 invalid_pathways_df <- input_test_df[1:6, ]
 invalid_pathways_df$pathway_level1 <- rep("escape", 6)

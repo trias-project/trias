@@ -43,17 +43,25 @@ containing temporal information about introduction of the alien species.
 Expressed as years.}
 }
 \value{
-list with: \itemize{ \item{'static_plot': }{ggplot object, for a
+list with:
+\itemize{
+\item \code{static_plot}: ggplot object, for a
 given species the observed number per year and per native range is plotted
-in a stacked bar chart} \item{'interactive_plot': }{plotly object, for a
+in a stacked bar chart.
+\item \code{interactive_plot}: plotly object, for a
 given species the observed number per year and per native range is plotted
-in a stacked bar chart} \item{'data': }{data displayed in the plot, as
-data.frame with: \itemize{ \item{'year': }{year at which the species were
-introduced} \item{'native_range': }{native range of the introduced species}
-\item{'n': }{number of species introduced from the native range for a given
-year} \item{'total': }{total number of species, from all around the world,
-introduced during a given year} \item{'perc': }{percentage of species
-introduced from the native range for a given year. (n/total)*100} } } }
+in a stacked bar chart.
+\item \code{data}: data displayed in the plot, as a data.frame with:
+\itemize{
+\item \code{year}: year at which the species were introduced.
+\item \code{native_range}: native range of the introduced species.
+\item \code{n}: number of species introduced from the native range for a given year.
+\item \code{total}: total number of species, from all around the world, introduced.
+during a given year.
+\item \code{perc}: percentage of species introduced from the native range for a
+given year, \code{n}/\code{total}*100.
+}
+}
 }
 \description{
 Based on
