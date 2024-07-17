@@ -31,7 +31,7 @@ input_test_df_other_colnames <-
   )
 
 valid_pathways_escape <-
-  pathways_cbd() %>%
+  pathways_cbd %>%
   dplyr::filter(pathway_level1 == "escape") %>%
   dplyr::distinct(pathway_level2) %>%
   dplyr::pull()

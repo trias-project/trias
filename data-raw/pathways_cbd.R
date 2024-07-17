@@ -1,17 +1,6 @@
-#' Pathways of introduction as defined by CBD
-#'
-#' Function to get all CBD pathays of introdution at level 1 (`pathway_level1`)
-#' and level 2 (`pathway_level2`). Added pathway `unknown` at level 1 and level
-#' 2 for classifying taxa without pathway (at level 1 or level 2) information.
-#'
-#' @return A tibble data.frame with 2 columns: `pathway_level1` and
-#'   `pathway_level2`.
-#' @export
-#' @usage pathways_cbd()
+# Code to prepare `pathwayscbd` dataset
 
-pathways_cbd <- function() pathwayscbd
-
-pathwayscbd <- dplyr::tibble(
+pathways_cbd <- dplyr::tibble(
   pathway_level1 = c(
     rep("release", 9),
     rep("escape", 13),
@@ -75,3 +64,5 @@ pathwayscbd <- dplyr::tibble(
     "unknown"
   )
 )
+
+# Then run `usethis::use_data(pathways_cbd, overwrite = TRUE)`

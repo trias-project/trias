@@ -28,7 +28,7 @@ visualize_pathways_level2(
 
 \item{chosen_pathway_level1}{character. A pathway level 1. If CBD standard is
 followed (see argument \code{cbd_standard}), one of the level 1 pathways from
-\code{pathways_cbd()}.}
+\code{pathways_cbd}.}
 
 \item{category}{\code{NULL} (default) or character. One of the kingdoms as given
 in GBIF or \code{Chordata} (the phylum) or \verb{Not Chordata} (all other phyla of
@@ -85,7 +85,7 @@ one of: \code{"Chordata"}, \code{"Not Chordata"}.  Default:
 information about year of introduction. Default: \code{"first_observed"}.}
 
 \item{cbd_standard}{logical. If \code{TRUE} the values of pathway level 2 are
-checked based on CBD standard as returned by \code{pathways_cbd()}. Error is
+checked based on CBD standard in \code{pathways_cbd}. Error is
 returned if unmatched values are found. If \code{FALSE}, a warning is returned.
 Default: \code{TRUE}.}
 
