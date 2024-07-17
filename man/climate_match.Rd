@@ -61,7 +61,7 @@ climate_limit thresholds have been applied
 zones in the target nation or region
 \item \code{spatial} a sf object containing the observations used
 in the analysis
-\item \code{current_map} a leaflet object displaying the degree of wordlwide
+\item \code{current_map} a leaflet object displaying the degree of worldwide
 climate match with the climate from 1980 till 2016
 \item \code{future_maps} a list of leaflet objects for each future climate
 scenario, displaying the degree of climate match
