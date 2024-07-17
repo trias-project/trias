@@ -666,12 +666,12 @@ verify_taxa <- function(taxa,
   assertthat::assert_that(
     taxa %>%
       dplyr::filter(is.na(.data$bb_key)) %>%
-      dplyr::filter_at(dplyr::vars(starts_with("bb_")),
+      dplyr::filter_at(dplyr::vars(dplyr::starts_with("bb_")),
                        dplyr::all_vars(is.na(.))) %>%
       nrow() ==
       taxa %>%
       dplyr::filter(is.na(.data$bb_key)) %>%
-      dplyr::filter_at(dplyr::vars(starts_with("bb_")),
+      dplyr::filter_at(dplyr::vars(dplyr::starts_with("bb_")),
                        dplyr::any_vars(is.na(.))) %>%
       nrow(),
     msg = "Columns with GBIF Backbone info should be empty for unmatched taxa."
@@ -1212,7 +1212,7 @@ verify_taxa <- function(taxa,
         .data$bb_scientificName,
         .data$n
       ) %>%
-      dplyr::arrange(desc(.data$n)) %>%
+      dplyr::arrange(dplyr::desc(.data$n)) %>%
       dplyr::ungroup()
   } else {
     duplicates <- dplyr::tibble(
@@ -1237,7 +1237,7 @@ verify_taxa <- function(taxa,
   # Order verification by outdated and dateAdded
   verification <-
     verification %>%
-    dplyr::arrange(.data$outdated, desc(.data$dateAdded))
+    dplyr::arrange(.data$outdated, dplyr::desc(.data$dateAdded))
   
   # Add not outdated taxa from verification to not_to_verify_taxa
   taxa <-

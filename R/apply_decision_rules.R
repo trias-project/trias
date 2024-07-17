@@ -47,20 +47,17 @@
 #' - (`dr_1` is `TRUE`  and `dr_3` is `FALSE`) or (`dr_1`, `dr_2` and `dr_3` are
 #' `FALSE`): `em = 1` (unclear)
 #' @examples
-#' \dontrun{
 #' df <- dplyr::tibble(
 #'   taxonID = c(rep(1008955, 10), rep(2493598, 3)),
 #'   y = c(seq(2009, 2018), seq(2016, 2018)),
 #'   obs = c(1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 3, 0)
 #' )
 #' apply_decision_rules(df,
-#'   eval_year = c(2016, 2017, 2018),
+#'   eval_year = 2016,
 #'   y_var = "obs",
 #'   taxonKey = "taxonID",
-#'   year = y
+#'   year = "y"
 #' )
-#' }
-#'
 apply_decision_rules <- function(df,
                                  y_var = "ncells",
                                  eval_year,
@@ -300,7 +297,7 @@ apply_decision_rules <- function(df,
 
   em_dr <-
     em_dr %>%
-    bind_rows(taxa_without_em)
+    dplyr::bind_rows(taxa_without_em)
 
   return(em_dr)
 }
