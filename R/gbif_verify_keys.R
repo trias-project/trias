@@ -1,39 +1,37 @@
 #' Check keys against GBIF Backbone Taxonomy
 #'
 #' This function performs three checks:
-#' \itemize{
-#'   \item{\code{keys} are valid GBIF taxon keys. That means that adding a key
+#' - `keys` are valid GBIF taxon keys. That means that adding a key
 #'   at the end of the URL https://www.gbif.org/species/ returns a GBIF page
-#'   related to a taxa.}
-#'   \item{\code{keys} are taxon keys of the GBIF Backbone Taxonomy checklist.
+#'   related to a taxa.
+#' - `keys` are taxon keys of the GBIF Backbone Taxonomy checklist.
 #'   That means that adding a key at the end of the URL
 #'   https://www.gbif.org/species/ returns a GBIF page related to a taxa of the
-#'   GBIF Backbone.)}
-#'   \item{\code{keys} are synonyms of other taxa (taxonomicStauts neither
-#'   \code{ACCEPTED} nor \code{DOUBTFUL}).}
-#'   }.
+#'   GBIF Backbone.)
+#' - `keys` are synonyms of other taxa (taxonomicStatus neither
+#'   `ACCEPTED` nor `DOUBTFUL`).
 #' @param keys (character or numeric) a vector, a list, or a data.frame
 #'   containing the keys to verify.
 #' @param col_keys (character) name of column containing keys in case
-#'   \code{keys} is a data.frame.
+#'   `keys` is a data.frame.
 #'
 #' @return a data.frame with the following columns:
-#'   \itemize{
-#'     \item{\code{key}}{:(numeric) keys as input keys.}
-#'     \item{\code{is_taxonKey}} {: (logical) is the key a valid GBIF taxon
-#'     key?}
-#'   \item{\code{is_from_gbif_backbone}} {:(logical) is the key a valid taxon
-#'   key from GBIF Backbone Taxonomy checklist?}
-#'   \item{\code{is_synonym}} {: (logical) is the key related to a synonym (not
-#'   \code{ACCEPTED} or \code{DOUBTFUL})?}
-#'   }
-#'   If a key didn't pass the first check (\code{is_taxonKey = FALSE}) then
-#'   \code{NA} for other two columns. If a key didn't pass the second check
-#'   (\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
+#' - `key`: (numeric) keys as input keys.
+#' - `is_taxonKey`: (logical) is the key a valid GBIF taxon key?
+#' - `is_from_gbif_backbone`: (logical) is the key a valid taxon key from 
+#' GBIF Backbone Taxonomy checklist?
+#' - `is_synonym`: (logical) is the key related to a synonym (not
+#'   `ACCEPTED` or `DOUBTFUL`)?
+#'   
+#' If a key didn't pass the first check (`is_taxonKey` = `FALSE`) then
+#' `NA` for other two columns. If a key didn't pass the second check
+#' (`is_from_gbif_backbone` = `FALSE`) then `is_synonym` = `NA`.
+#' 
 #' @export
 #' @importFrom dplyr .data %>%
 #' @importFrom rlang !!
 #' @examples
+#' \dontrun{
 #' # input is a vector
 #' keys1 <- c(
 #'   "12323785387253", # invalid GBIF taxonKey
@@ -50,7 +48,6 @@
 #' )
 #' # input is a named list
 #' keys3 <- keys1
-#' library(purrr)
 #' names(keys3) <- purrr::map_chr(
 #'   c(1:length(keys3)),
 #'   ~ paste(sample(c(0:9, letters, LETTERS), 3),
@@ -64,6 +61,7 @@
 #' gbif_verify_keys(keys2, col_keys = "keys")
 #' gbif_verify_keys(keys3)
 #' gbif_verify_keys(keys4)
+#' }
 gbif_verify_keys <- function(keys, col_keys = "key") {
   assertthat::assert_that(is.data.frame(keys) | is.vector(keys),
     msg = "keys should be a vector, a named list or a data.frame."

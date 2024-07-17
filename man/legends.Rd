@@ -12,10 +12,10 @@ respectively.
 Each data.frame contains two columns:
 \itemize{
 \item \code{GRIDCODE}: (numeric) grid value corresponding to a climate zone
-\item \code{Classification}: (character) Koppen-{G}eiger climate classification value
-\item \code{Description}: (character) verbose description of the Koppen-{G}eiger
+\item \code{Classification}: (character) Koppen-Geiger climate classification value
+\item \code{Description}: (character) verbose description of the Koppen-Geiger
 climate zone, e.g. "Tropical rainforest climate"
-\item \code{Group}: (character) group the Koppen-{G}eiger climate zone belongs to,
+\item \code{Group}: (character) group the Koppen-Geiger climate zone belongs to,
 e.g. "Tropical"
 \item \verb{Precipitation Type}: (character) Type of precipitations associated to
 the climate zone, e.g. "Rainforest"
