@@ -16,33 +16,34 @@ containing the keys to verify.}
 \value{
 a data.frame with the following columns:
 \itemize{
-\item{\code{key}}{:(numeric) keys as input keys.}
-\item{\code{is_taxonKey}} {: (logical) is the key a valid GBIF taxon
-key?}
-\item{\code{is_from_gbif_backbone}} {:(logical) is the key a valid taxon
-key from GBIF Backbone Taxonomy checklist?}
-\item{\code{is_synonym}} {: (logical) is the key related to a synonym (not
-\code{ACCEPTED} or \code{DOUBTFUL})?}
+\item \code{key}: (numeric) keys as input keys.
+\item \code{is_taxonKey}: (logical) is the key a valid GBIF taxon key?
+\item \code{is_from_gbif_backbone}: (logical) is the key a valid taxon key from
+GBIF Backbone Taxonomy checklist?
+\item \code{is_synonym}: (logical) is the key related to a synonym (not
+\code{ACCEPTED} or \code{DOUBTFUL})?
 }
-If a key didn't pass the first check (\code{is_taxonKey = FALSE}) then
+
+If a key didn't pass the first check (\code{is_taxonKey} = \code{FALSE}) then
 \code{NA} for other two columns. If a key didn't pass the second check
-(\code{is_from_gbif_backbone = FALSE}) then \code{is_synonym} = \code{NA}.
+(\code{is_from_gbif_backbone} = \code{FALSE}) then \code{is_synonym} = \code{NA}.
 }
 \description{
 This function performs three checks:
 \itemize{
-\item{\code{keys} are valid GBIF taxon keys. That means that adding a key
+\item \code{keys} are valid GBIF taxon keys. That means that adding a key
 at the end of the URL https://www.gbif.org/species/ returns a GBIF page
-related to a taxa.}
-\item{\code{keys} are taxon keys of the GBIF Backbone Taxonomy checklist.
+related to a taxa.
+\item \code{keys} are taxon keys of the GBIF Backbone Taxonomy checklist.
 That means that adding a key at the end of the URL
 https://www.gbif.org/species/ returns a GBIF page related to a taxa of the
-GBIF Backbone.)}
-\item{\code{keys} are synonyms of other taxa (taxonomicStatus neither
-\code{ACCEPTED} nor \code{DOUBTFUL}).}
-}.
+GBIF Backbone.)
+\item \code{keys} are synonyms of other taxa (taxonomicStatus neither
+\code{ACCEPTED} nor \code{DOUBTFUL}).
+}
 }
 \examples{
+\dontrun{
 # input is a vector
 keys1 <- c(
   "12323785387253", # invalid GBIF taxonKey
@@ -59,7 +60,6 @@ keys2 <- data.frame(
 )
 # input is a named list
 keys3 <- keys1
-library(purrr)
 names(keys3) <- purrr::map_chr(
   c(1:length(keys3)),
   ~ paste(sample(c(0:9, letters, LETTERS), 3),
@@ -73,4 +73,5 @@ gbif_verify_keys(keys1)
 gbif_verify_keys(keys2, col_keys = "keys")
 gbif_verify_keys(keys3)
 gbif_verify_keys(keys4)
+}
 }

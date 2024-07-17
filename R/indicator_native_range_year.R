@@ -5,7 +5,7 @@
 #' [countYearProvince](https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R)
 #' plot from reporting - rshiny - grofwildjacht
 #' @param df input data.frame.
-#' @param years (numeric) vector years we are interested to. If \code{NULL}
+#' @param years (numeric) vector years we are interested to. If `NULL`
 #'   (default) all years from minimum and maximum of years of first observation
 #'   are taken into account.
 #' @param type character, native_range level of interest should be one of
@@ -16,22 +16,26 @@
 #'   species".
 #' @param relative (logical) if TRUE (default), each bar is standardised before
 #'   stacking.
-#' @param taxon_key_col character. Name of the column of \code{df} containing
-#'   taxon IDs. Default: \code{"key"}.
+#' @param taxon_key_col character. Name of the column of `df` containing
+#'   taxon IDs. Default: `"key"`.
 #' @param first_observed (character) Name of the column in `data`
 #'   containing temporal information about introduction of the alien species.
 #'   Expressed as years.
-#' @return list with: \itemize{ \item{'static_plot': }{ggplot object, for a
+#' @return list with:
+#' - `static_plot`: ggplot object, for a
 #'   given species the observed number per year and per native range is plotted
-#'   in a stacked bar chart} \item{'interactive_plot': }{plotly object, for a
+#'   in a stacked bar chart.
+#' - `interactive_plot`: plotly object, for a
 #'   given species the observed number per year and per native range is plotted
-#'   in a stacked bar chart} \item{'data': }{data displayed in the plot, as
-#'   data.frame with: \itemize{ \item{'year': }{year at which the species were
-#'   introduced} \item{'native_range': }{native range of the introduced species}
-#'   \item{'n': }{number of species introduced from the native range for a given
-#'   year} \item{'total': }{total number of species, from all around the world,
-#'   introduced during a given year} \item{'perc': }{percentage of species
-#'   introduced from the native range for a given year. (n/total)*100} } } }
+#'   in a stacked bar chart.
+#' - `data`: data displayed in the plot, as a data.frame with: 
+#'   - `year`: year at which the species were introduced.
+#'   - `native_range`: native range of the introduced species.
+#'   - `n`: number of species introduced from the native range for a given year.
+#'   - `total`: total number of species, from all around the world, introduced.
+#'   during a given year.
+#'   - `perc`: percentage of species introduced from the native range for a 
+#'   given year, `n`/`total`*100.
 #' @export
 #' @importFrom dplyr %>% .data
 #' @examples

@@ -6,10 +6,10 @@
 #'   
 #'   Each data.frame contains two columns: 
 #'   - `GRIDCODE`: (numeric) grid value corresponding to a climate zone 
-#'   - `Classification`: (character) Koppen-{G}eiger climate classification value
-#'   - `Description`: (character) verbose description of the Koppen-{G}eiger
+#'   - `Classification`: (character) Koppen-Geiger climate classification value
+#'   - `Description`: (character) verbose description of the Koppen-Geiger
 #'   climate zone, e.g. "Tropical rainforest climate"
-#'   - `Group`: (character) group the Koppen-{G}eiger climate zone belongs to,
+#'   - `Group`: (character) group the Koppen-Geiger climate zone belongs to,
 #'   e.g. "Tropical"
 #'   - `Precipitation Type`: (character) Type of precipitations associated to
 #'   the climate zone, e.g. "Rainforest"
