@@ -223,8 +223,8 @@ get_table_pathways <- function(df,
     preprocess_data %>%
     dplyr::count() %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(size_sample = ifelse(n > n_species,
-      n_species, n
+    dplyr::mutate(size_sample = ifelse(.data$n > n_species,
+      n_species, .data$n
     ))
   # Make df with sample species
   samples <-
