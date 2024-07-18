@@ -90,7 +90,7 @@ testthat::test_that("Argument: from", {
     "`from` must be a number."
   )
   expect_error(
-    visualize_pathways_level1(input_test_df, from = c(1920,1930)),
+    visualize_pathways_level1(input_test_df, from = c(1920, 1930)),
     "length(from) not equal to 1",
     fixed = TRUE
   )

@@ -528,7 +528,7 @@ testthat::test_that("Test other inputs.", {
       y_var = "n_observations",
       eval_years = 2018,
       saveplot = TRUE,
-      width = 2000, 
+      width = 2000,
       height = NULL
     ),
     "height not provided. Set to 1200 pixels."

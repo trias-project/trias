@@ -107,8 +107,7 @@ gbif_has_distribution <- function(taxon_key, ...) {
   if (is.null(names(user_properties))) {
     has_distr <- nrow(distr_properties) > 0
     return(has_distr)
-  }
-  else {
+  } else {
     # taxa has no distribution
     if (nrow(distr_properties) == 0) {
       return(FALSE)

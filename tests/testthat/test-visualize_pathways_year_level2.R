@@ -193,7 +193,7 @@ test_that("Argument bin", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
                                    chosen_pathway_level1 = "escape",
-                                   bin = c(20,30)
+                                   bin = c(20, 30)
     ),
     "length(bin) not equal to 1", fixed = TRUE
   )
@@ -210,7 +210,7 @@ test_that("Argument: from", {
   expect_error(
     visualize_pathways_year_level2(input_test_df,
                                    chosen_pathway_level1 = "escape",
-                                   from = c(1920,1930)
+                                   from = c(1920, 1930)
     ),
     "length(from) not equal to 1", fixed = TRUE
   )

@@ -106,7 +106,7 @@
 #'   - `upper_ci`: numeric. Upper bound of the
 #'   confidence interval of the estimated smooth.
 #'   - value of argument `year`: column with temporal values.
-#'   - value of argument `baseline_var`: column with the fitted values for the 
+#'   - value of argument `baseline_var`: column with the fitted values for the
 #'   baseline. If `baseline_var` is `NULL`, this column is not present.
 #'
 #'   \item `second_derivative`: df. Data.frame with details of second
@@ -265,7 +265,7 @@
 #' ),
 #' cobs = rep(0, 24)
 #' )
-#' 
+#'
 #' # if GAM cannot be applied a warning is returned and the plot mention it
 #' \dontrun{
 #' no_gam_applied <- apply_gam(df_gam,
@@ -299,7 +299,7 @@ apply_gam <- function(df,
   if (is.numeric(taxon_key)) {
     taxon_key <- as.character(taxon_key)
   }
-  
+
   # Check right type of inputs
   assertthat::assert_that(is.data.frame(df),
                           msg = paste(
@@ -337,7 +337,7 @@ apply_gam <- function(df,
                             "Check value of argument eval_years."
                           )
   )
-  
+
   purrr::map2(
     list(baseline_var, taxon_key, name, df_title, dir_name),
     c("baseline_var", "taxon_key", "name", "df_title", "dir_name"),
@@ -359,7 +359,7 @@ apply_gam <- function(df,
       )
     }
   )
-  
+
   purrr::map2(
     list(width, height),
     c("width", "height"),
@@ -381,7 +381,7 @@ apply_gam <- function(df,
       )
     }
   )
-  
+
   purrr::map2(
     list(saveplot, verbose),
     c("saveplot", "verbose"),
@@ -399,7 +399,7 @@ apply_gam <- function(df,
       )
     }
   )
-  
+
   purrr::map2(
     list(y_var, year, taxonKey),
     c("y_var", "year", "taxonKey"),
@@ -414,7 +414,7 @@ apply_gam <- function(df,
       )
     }
   )
-  
+
   if (!is.null(baseline_var)) {
     # Check baseline_var is present in df
     assertthat::assert_that(
@@ -428,7 +428,7 @@ apply_gam <- function(df,
   } else {
     method_em <- "basic"
   }
-  
+
   if (isFALSE(saveplot)) {
     if (!is.null(dir_name)) {
       message(paste(
@@ -464,10 +464,10 @@ apply_gam <- function(df,
       message("height not provided. Set to 1200 pixels.")
     }
   }
-  
+
   year <- tidyselect::vars_pull(names(df), !!dplyr::enquo(year))
   taxonKey <- tidyselect::vars_pull(names(df), !!dplyr::enquo(taxonKey))
-  
+
   # Check eval_year is present in column year
   assertthat::assert_that(all(eval_years %in% df[[year]]),
                           msg = paste(
@@ -476,14 +476,14 @@ apply_gam <- function(df,
                             "Check value of argument eval_years."
                           )
   )
-  
+
   assertthat::assert_that(is.numeric(p_max) && p_max >= 0 && p_max <= 1,
                           msg = paste(
                             "p_max is a p-value: it has to be a",
                             "number between 0 and 1."
                           )
   )
-  
+
   # Check type_indicator is one of the two allowed values
   assertthat::assert_that(type_indicator %in% c("observations", "occupancy"),
                           msg = paste(
@@ -492,16 +492,16 @@ apply_gam <- function(df,
                             "observations, occupancy."
                           )
   )
-  
+
   if (verbose == TRUE) {
     print(paste0("Analyzing: ", name, "(", taxon_key, ")"))
   }
-  
+
   if (nrow(df) > 0) {
     # Maximum minimum time series (year)
     fyear <- min(df[[year]], na.rm = TRUE) # first year
     lyear <- max(df[[year]], na.rm = TRUE) # last year
-    
+
     # Define model to use for GAM
     maxk <- max(round((lyear - fyear) / 10, digits = 0), 5) # max number of knots
   }
@@ -525,7 +525,7 @@ apply_gam <- function(df,
     )
     fm <- stats::formula(fm)
   }
-  
+
   # Initialization
   output_model <- dplyr::as_tibble(df)
   output_model <-
@@ -559,7 +559,7 @@ apply_gam <- function(df,
     ggplot2::geom_point(color = "black") +
     ggplot2::ylab(y_label) +
     ggplot2::ggtitle(ptitle)
-  
+
   emerging_status_output <-
     output_model %>%
     dplyr::filter(!!dplyr::sym(year) %in% eval_years) %>%
@@ -570,7 +570,7 @@ apply_gam <- function(df,
       "growth",
       "method"
     )
-  
+
   if (nrow(df) > 3 & sum(df[[y_var]][2:nrow(df)]) != 0) {
     result <- tryCatch(expr = {
       model <- mgcv::gam(
@@ -583,7 +583,7 @@ apply_gam <- function(df,
       summary_pv <- mgcv::summary.gam(model)$s.pv
       p_ok <- ifelse(any(summary_pv < p_max), TRUE, FALSE)
     }, error = function(e) e, warning = function(w) w)
-    
+
     if (class(result)[1] %in% c("simpleWarning", "simpleError")) {
       if (verbose) {
         warning(paste0(
@@ -623,13 +623,13 @@ apply_gam <- function(df,
           interval = "prediction",
           se.fit = TRUE
         )
-        
+
         # Calculate confidence intervals & backtransform to real scale
         intercept <- unname(model$coefficients[1])
         output_model$fit <- model$family$linkinv(temp$fit[, 1] + intercept)
         output_model$ucl <- model$family$linkinv(temp$fit[, 1] + intercept + temp$se.fit[, 1] * 1.96)
         output_model$lcl <- model$family$linkinv(temp$fit[, 1] + intercept - temp$se.fit[, 1] * 1.96)
-        
+
         # Check that fit ucl and lcl are all above zero
         output_model <-
           output_model %>%
@@ -638,7 +638,7 @@ apply_gam <- function(df,
             ucl = ifelse(.data$ucl < 0, 0, .data$ucl),
             lcl = ifelse(.data$lcl < 0, 0, .data$lcl)
           )
-        
+
         # Calculate first and second derivative + conf. interval
         deriv1 <- gratia::derivatives(model,
                                       type = "central", order = 1, level = 0.8,
@@ -648,9 +648,9 @@ apply_gam <- function(df,
                             year, baseline_var)
         deriv1 <- deriv1 %>%
           dplyr::select(dplyr::all_of(cols_to_select)) %>%
-          dplyr::rename_with(~sub("^\\.", "", .), 
-                             dplyr::all_of(c(".smooth", ".derivative", 
-                                             ".se", ".crit", 
+          dplyr::rename_with(~sub("^\\.", "", .),
+                             dplyr::all_of(c(".smooth", ".derivative",
+                                             ".se", ".crit",
                                              ".lower_ci", ".upper_ci")))
         deriv2 <- gratia::derivatives(model,
                                       type = "central", order = 2, level = 0.8,
@@ -658,11 +658,11 @@ apply_gam <- function(df,
         deriv2 <- deriv2 %>%
           # same columns to select as for 1st derivative
           dplyr::select(dplyr::all_of(cols_to_select)) %>%
-          dplyr::rename_with(~sub("^\\.", "", .), 
-                             dplyr::all_of(c(".smooth", ".derivative", 
-                                             ".se", ".crit", 
+          dplyr::rename_with(~sub("^\\.", "", .),
+                             dplyr::all_of(c(".smooth", ".derivative",
+                                             ".se", ".crit",
                                              ".lower_ci", ".upper_ci")))
-        
+
         # Emerging status based on first and second derivative
         em1 <-
           deriv1 %>%
@@ -674,7 +674,7 @@ apply_gam <- function(df,
           )) %>%
           dplyr::select(!!dplyr::sym(year), "em1") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
-        
+
         em2 <- deriv2 %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em2 = dplyr::case_when(
@@ -684,7 +684,7 @@ apply_gam <- function(df,
           )) %>%
           dplyr::select(!!dplyr::sym(year), "em2") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
-        
+
         em_level_gam <- dplyr::full_join(em1, em2, by = year) %>%
           dplyr::mutate(em = dplyr::case_when(
             .data$em1 == 1 & .data$em2 == 1 ~ 4,
@@ -697,7 +697,7 @@ apply_gam <- function(df,
             .data$em1 == -1 & .data$em2 == 0 ~ -3,
             .data$em1 == -1 & .data$em2 == -1 ~ -4
           ))
-        
+
         # Emerging status
         em_levels <-
           em_level_gam %>%
@@ -707,24 +707,24 @@ apply_gam <- function(df,
             .data$em < 3 ~ 2, # potentially emerging
             .data$em >= 3 ~ 3 # emerging
           ))
-        
+
         output_model <- dplyr::left_join(output_model, em_levels, by = year)
-        
+
         # Lower value of first derivative (minimal guaranteed growth) if
         # positive
         lower_deriv1 <-
           deriv1 %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
-          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year), 
+          dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year),
                                                     digits = 0)) %>%
           dplyr::mutate(growth = model$family$linkinv(.data$lower_ci)) %>%
           dplyr::select(!!dplyr::sym(year), "growth")
-        
+
         # Add lower value of first derivative
-        output_model <- dplyr::left_join(output_model, 
-                                         lower_deriv1, 
+        output_model <- dplyr::left_join(output_model,
+                                         lower_deriv1,
                                          by = "year")
-        
+
         # Get emerging status summary for output
         emerging_status_output <-
           output_model %>%
@@ -782,7 +782,7 @@ apply_gam <- function(df,
                                df = df,
                                y_axis = y_var)
   }
-  
+
   # save plot if asked
   if (saveplot == TRUE) {
     if (stringr::str_ends(dir_name, pattern = "/")) {
@@ -799,7 +799,7 @@ apply_gam <- function(df,
                     height = height,
                     units = "px")
   }
-  
+
   return(list(
     em_summary = emerging_status_output,
     model = model,
@@ -849,7 +849,7 @@ plot_ribbon_em <- function(df_plot,
     ggplot2::geom_point(color = "black") +
     ggplot2::ylab(y_label) +
     ggplot2::ggtitle(ptitle)
-  
+
   if (all(
     all(abs(df_plot$lcl < 10^10)),
     all(abs(df_plot$ucl < 10^10)),
@@ -888,10 +888,10 @@ plot_ribbon_em <- function(df_plot,
 }
 
 #' Add annotation when status cannot be assessed
-#' 
+#'
 #' Internal function to be used when GAM cannot be applied to it doesn't
 #' converge.
-#' 
+#'
 #' @param plot_obs ggplot2 plot object showing the observations.
 #' @param df tibble data.frame with observations.
 #' @param y_axis character. The name of the column containing the data to plot

@@ -282,7 +282,7 @@ visualize_pathways_year_level1 <- function(
     )
     assertthat::assert_that(length(y_lab) == 1)
   }
-  # rename to default column name
+  # Rename to default column name
   df <-
     df %>%
     dplyr::rename_at(dplyr::vars(dplyr::all_of(kingdom_names)), ~"group") %>%
@@ -291,8 +291,7 @@ visualize_pathways_year_level1 <- function(
                      ~"first_observed") %>%
     dplyr::rename_at(dplyr::vars(dplyr::all_of(pathway_level1_names)),
                      ~"pathway_level1")
-  
-  # handle asymmetric category system (Chordata, Not Chordata are not kingdoms)
+  # Handle asymmetric category system (Chordata, Not Chordata are not kingdoms)
   if (!is.null(category)) {
     if (!category %in% c("Chordata", "Not Chordata")) {
       df <- df %>% dplyr::filter(.data$group == category)
@@ -401,7 +400,7 @@ visualize_pathways_year_level1 <- function(
       df %>%
       dplyr::filter(!is.na(first_observed))
   }
-  # dplyr::distinct taxa
+  # Distinct taxa
   if (is.null(facet_column)) {
     df <-
       df %>%
@@ -448,8 +447,8 @@ visualize_pathways_year_level1 <- function(
   ) {
     levels_first_observed <-
       c(
-        levels_first_observed[length(levels_first_observed)],
-        levels_first_observed[1:length(levels_first_observed) - 1]
+        dplyr::last(levels_first_observed),
+        utils::head(levels_first_observed, -1)
       )
   }
   df <-
@@ -462,7 +461,7 @@ visualize_pathways_year_level1 <- function(
     df %>%
     dplyr::mutate(pathway_level1 = factor(.data$pathway_level1, levels = pathways))
 
-  # dplyr::count number of taxa per pathway_level1 over time
+  # Count number of taxa per pathway_level1 over time
   data_top_graph <-
     df %>%
     dplyr::group_by(
@@ -501,7 +500,7 @@ visualize_pathways_year_level1 <- function(
                 data_top_graph = data_top_graph,
                 data_facet_graph = NULL))
   } else {
-    # dplyr::count number of taxa per pathway_level1 per facet over time
+    # Count number of taxa per pathway_level1 per facet over time
     data_facet_graph <-
       df %>%
       dplyr::group_by(

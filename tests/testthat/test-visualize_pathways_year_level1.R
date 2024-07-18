@@ -130,11 +130,11 @@ test_that("Argument: df", {
 
 test_that("Argument bin", {
   expect_error(
-    visualize_pathways_year_level1(input_test_df,bin = "20"),
+    visualize_pathways_year_level1(input_test_df, bin = "20"),
     "`bin` must be a number."
   )
   expect_error(
-    visualize_pathways_year_level1(input_test_df, bin = c(20,30)),
+    visualize_pathways_year_level1(input_test_df, bin = c(20, 30)),
     "length(bin) not equal to 1", 
     fixed = TRUE
   )
@@ -154,7 +154,7 @@ test_that("Argument: from", {
     "`from` must be a number."
   )
   expect_error(
-    visualize_pathways_year_level1(input_test_df, from = c(1920,1930)),
+    visualize_pathways_year_level1(input_test_df, from = c(1920, 1930)),
     "length(from) not equal to 1",
     fixed = TRUE
   )

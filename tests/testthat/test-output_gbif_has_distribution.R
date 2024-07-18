@@ -7,7 +7,7 @@ testthat::test_that("gbif_has_distribution with user parameters", {
     taxon_key = 140563025,
     country = "BE",
     # uncomment after https://github.com/gbif/gbif-api/issues/94 is solved
-    # status = "PRESENT", 
+    # status = "PRESENT",
     establishmentMeans = "introduced"
   ))
   testthat::expect_true(gbif_has_distribution(100022263,
