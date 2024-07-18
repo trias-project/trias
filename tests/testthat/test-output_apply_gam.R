@@ -561,7 +561,7 @@ test_that("Test first derivative", {
     corrected_gam_ys$first_derivative,
     has_names(expected = expected_cols_corrected)
   )
-  
+
   # smooth column contains only s(year) for basic gam
   expect_true(unique(basic_gam$first_derivative$smooth) == "s(year)")
   expect_true(unique(basic_gam_ys$first_derivative$smooth) == "s(year)")
@@ -736,7 +736,7 @@ test_that("Test second derivative", {
   expect_true(
     is.numeric(corrected_gam_ys$second_derivative$baseline_observations)
   )
-  
+
   # year column is equal to column year of df_gam for basic gam
   expect_equivalent(round(basic_gam$second_derivative$year),
     expected = df_gam$year

@@ -106,17 +106,18 @@ climate_match <- function(region,
       # region is a character => select region from worldmap
       
       region <- tolower(region)
-      worldmap<- rnaturalearth::ne_countries()
+      worldmap <- rnaturalearth::ne_countries()
      
       valid_countries <- tolower(unique(worldmap$name_long))
       
       
-      if(region %in% valid_countries){
-        region_shape <- subset(worldmap, tolower(worldmap$name_long) == region) 
+      if (region %in% valid_countries) {
+        region_shape <- subset(worldmap, tolower(worldmap$name_long) == region)
       } else {
         valid_continents <- tolower(unique(worldmap$continent))
-        if(region %in% valid_continents){
-          region_shape <- subset(worldmap, tolower(worldmap$continent) == region) 
+        if (region %in% valid_continents) {
+          region_shape <-
+            subset(worldmap, tolower(worldmap$continent) == region)
         } else {
           stop("the provided region is not valid")
         }
@@ -234,7 +235,7 @@ climate_match <- function(region,
                     "year",
                     "countryCode")
     
-    if(nrow(data) == 0){
+    if (nrow(data) == 0) {
       stop("no occurrences of ", 
            paste(taxon_key, collapse = ", "), 
            " were found on GBIF")
@@ -242,7 +243,7 @@ climate_match <- function(region,
   }
   
   
-  # Data prep ####
+  # Data preparation section
   ## If the coord_unc argument was not provided:
   if(missing(coord_unc)){
     coord_unc <- max(data$coordinateUncertaintyInMeters, na.rm = TRUE)
@@ -251,8 +252,10 @@ climate_match <- function(region,
   ## If the BasisOfRecord argument was not provided:
   if(missing(BasisOfRecord)){
     BasisOfRecord <- unique(data$basisOfRecord)
-    warning(paste0("No BasisOfRecord parameter was provided, using the following",
-                   " values available in the data: ",paste(BasisOfRecord, collapse = ", ")))
+    warning(paste0(
+      "No BasisOfRecord parameter was provided, using the following",
+      " values available in the data: ", paste(BasisOfRecord, collapse = ", ")
+    ))
   }
   
   SPECIES <- data %>% 
@@ -805,7 +808,7 @@ climate_match <- function(region,
                                   radius = 1) %>% 
         leaflet::addLegend(colors = "black",
                            labels = "Observations",
-                           position = "bottomleft")%>% 
+                           position = "bottomleft") %>% 
         leaflet::addLayersControl(
           baseGroups= ~temp_shape$acceptedScientificName) %>% 
           leaflet::addLegend(
@@ -923,16 +926,16 @@ climate_match <- function(region,
       # Add layer to map
       scenario_map <- suppressWarnings(leaflet::leaflet(temp_shape, options = leaflet::leafletOptions(minZoom = 0.75, maxBoundsViscosity= 1.0)) %>% 
         leaflet::addProviderTiles( "CartoDB.VoyagerNoLabels",
-                                   options=list(noWrap=TRUE))%>%
-        leaflet::setMaxBounds( lng1 = -180
-                               , lat1 = -90
-                               , lng2 = 180
-                               , lat2 = 90 )%>%
-        leaflet::setView( lng = 0
-                          , lat = 0
-                          , zoom = 1 ) %>%
-        leaflet::addMapPane("background", zIndex = 400) %>%  
-        leaflet::addMapPane("foreground", zIndex = 500) %>% 
+                                   options = list(noWrap = TRUE)) %>%
+        leaflet::setMaxBounds(lng1 = -180,
+                              lat1 = -90,
+                              lng2 = 180,
+                              lat2 = 90) %>%
+        leaflet::setView(lng = 0,
+                         lat = 0,
+                         zoom = 1) %>%
+        leaflet::addMapPane("background", zIndex = 400) %>%
+        leaflet::addMapPane("foreground", zIndex = 500) %>%
         leaflet::addPolygons(
           data = temp_shape,
           color = "#bababa",
@@ -945,16 +948,28 @@ climate_match <- function(region,
           options = leaflet::pathOptions(pane = "background"),
           highlightOptions = leaflet::highlightOptions(weight = 2,
                                                        color = "#6b6b6b",
-                                                       bringToFront = FALSE)) %>% 
+                                                       bringToFront = FALSE)) %>%
         leaflet::addCircleMarkers(
           data = data_sf_species_obs,
           color = "black",
           radius = 1,
-          options = leaflet::pathOptions(pane = "foreground")) %>% 
+          options = leaflet::pathOptions(pane = "foreground")) %>%
           leaflet::addLegend(
-            colors=c("#f7f7f7","#FFFFCC" ,"#FFEFA5", "#FEDD7F" ,"#FFBF5A", "#FE9E43", "#FD7434", "#F44025" ,"#DA151F", "#B60026", "#800026"),
+            colors = c(
+              "#f7f7f7",
+              "#FFFFCC",
+              "#FFEFA5",
+              "#FEDD7F",
+              "#FFBF5A",
+              "#FE9E43",
+              "#FD7434",
+              "#F44025",
+              "#DA151F",
+              "#B60026",
+              "#800026"
+            ),
             labels = c("0",
-                       "0< - 10", 
+                       "0< - 10",
                        "10 - 20",
                        "20 - 30",
                        "30 - 40",
@@ -965,16 +980,17 @@ climate_match <- function(region,
                        "80 - 90",
                        "90 - 100"),
             position = "bottomleft",
-            title =  paste0("<strong>Climate match (%)</strong><br><em><span style='font-weight:lighter;'>",
-                                           temp_shape$acceptedScientificName[1], "</span>")) %>% 
-        leaflet::addLayersControl(baseGroups = ~temp_shape$scenario)%>% 
+            title = 
+              paste0("<strong>Climate match (%)</strong><br><em><span style='font-weight:lighter;'>",
+                     temp_shape$acceptedScientificName[1], "</span>")) %>%
+        leaflet::addLayersControl(baseGroups = ~temp_shape$scenario) %>%
       leaflet::addLegend(colors = "black",
                            labels = "Observations",
                            position = "bottomleft"))
       
       single_species_maps[[i]] <- scenario_map
     }  
-  }else{
+  } else {
     message("maps are disabled")
     current_climate_map <- NULL
     future_scenario_maps <- NULL
@@ -984,8 +1000,8 @@ climate_match <- function(region,
   
   
   # Return ####
-  return(list(unfiltered = as.data.frame(data_overlay_unfiltered), 
-              cm =as.data.frame(cm),
+  return(list(unfiltered = as.data.frame(data_overlay_unfiltered),
+              cm = as.data.frame(cm),
               filtered = as.data.frame(data_overlay_scenario_filtered),
               future = as.data.frame(future_climate),
               spatial = data_sf,

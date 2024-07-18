@@ -5,11 +5,10 @@
 #' @return a character vector containing the value of the system variable
 #' @export
 #' @importFrom svDialogs dlgInput
-get_cred <- function(x){
-  
+get_cred <- function(x) {
   cred <- Sys.getenv(x)
-  
-  if(cred == ""){
+
+  if (cred == "") {
     input <- dlgInput(paste0("What is your ", x, "?"))
     cred <- input$res
     do.call(Sys.setenv, as.list(purrr::set_names(cred, x)))

@@ -154,7 +154,8 @@ apply_decision_rules <- function(df,
     df %>%
     dplyr::group_by(!!rlang::sym(taxonKey)) %>%
     dplyr::summarize(
-      has_all_years = dplyr::n() == (max(!!rlang::sym(year)) - min(!!rlang::sym(year)) + 1)
+      has_all_years =
+        dplyr::n() == (max(!!rlang::sym(year)) - min(!!rlang::sym(year)) + 1)
     ) %>%
     dplyr::filter(.data$has_all_years == FALSE)
 
@@ -193,7 +194,9 @@ apply_decision_rules <- function(df,
     ))
     df <-
       df %>%
-      dplyr::filter(!(!!rlang::sym(taxonKey)) %in% taxa_eval_out_of_min_max[[taxonKey]])
+      dplyr::filter(
+        !(!!rlang::sym(taxonKey)) %in% taxa_eval_out_of_min_max[[taxonKey]]
+      )
   }
 
   # Cut time series up to eval_year
@@ -217,9 +220,11 @@ apply_decision_rules <- function(df,
   dr_2 <-
     df %>%
     dplyr::group_by(!!rlang::sym(taxonKey)) %>%
-    dplyr::mutate(last_occ = ifelse(!!rlang::sym(year) == max(!!rlang::sym(year)),
-      !!rlang::sym(y_var), -1
-    )) %>%
+    dplyr::mutate(
+      last_occ = ifelse(!!rlang::sym(year) == max(!!rlang::sym(year)),
+                        !!rlang::sym(y_var),
+                        -1)
+      ) %>%
     dplyr::summarize(
       median_occ = stats::median(!!rlang::sym(y_var)),
       last_occ = max(.data$last_occ)
@@ -241,11 +246,12 @@ apply_decision_rules <- function(df,
     df %>%
     dplyr::group_by(!!rlang::sym(taxonKey)) %>%
     dplyr::summarize(max_occ = max(!!rlang::sym(y_var))) %>%
-    dplyr::inner_join(df %>%
-      dplyr::filter(!!rlang::sym(year) == max(!!rlang::sym(year))) %>%
-      dplyr::ungroup() %>%
-      dplyr::rename(last_value = !!rlang::sym(y_var)),
-    by = taxonKey
+    dplyr::inner_join(
+      df %>%
+        dplyr::filter(!!rlang::sym(year) == max(!!rlang::sym(year))) %>%
+        dplyr::ungroup() %>%
+        dplyr::rename(last_value = !!rlang::sym(y_var)),
+      by = taxonKey
     ) %>%
     dplyr::mutate(dr_4 = .data$last_value == .data$max_occ) %>%
     dplyr::select(!!rlang::sym(taxonKey), "dr_4")

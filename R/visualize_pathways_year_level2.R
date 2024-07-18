@@ -4,7 +4,7 @@
 #' through different CBD pathways level 2 for a specific CBD pathway level 1.
 #' Time expressed in years. Possible breakpoints: taxonomic (kingdoms +
 #' vertebrates/invertebrates).
-#' 
+#'
 #' @param df A data frame.
 #' @param chosen_pathway_level1 character. Selected pathway level 1.
 #' @param bin numeric. Time span in years to use for agggregation. Default:
@@ -18,7 +18,7 @@
 #'   2. `Animalia`
 #'   3. `Fungi`
 #'   4. `Chromista`
-#'   5. `Archaea` 
+#'   5. `Archaea`
 #'   6. `Bacteria`
 #'   7. `Protozoa`
 #'   8. `Viruses`
@@ -61,7 +61,7 @@
 #' - `data_top_graph`: data.frame (tibble) with data used for the main plot (top
 #' graph) in `plot`.
 #' - `data_facet_graph`: data.frame (tibble) with data used for the faceting
-#' plot in `plot`. `NULL` is returned if `facet_column` is `NULL`. 
+#' plot in `plot`. `NULL` is returned if `facet_column` is `NULL`.
 #'
 #' @export
 #' @importFrom dplyr %>% .data
@@ -233,12 +233,12 @@ visualize_pathways_year_level2 <- function(
       msg = "You cannot use phylum as facet with category Chordata."
     )
     assertthat::assert_that(
-      is.null(category) || 
+      is.null(category) ||
         !(category == "Not Chordata" & facet_column == "phylum"),
       msg = "You cannot use phylum as facet with category Not Chordata."
     )
     assertthat::assert_that(
-      is.null(category) || 
+      is.null(category) ||
         !(!is.null(category) & facet_column == "kingdom"),
       msg = "You cannot use kingdom as facet if category is selected."
     )
@@ -338,7 +338,7 @@ visualize_pathways_year_level2 <- function(
     )
     assertthat::assert_that(length(y_lab) == 1)
   }
-  # rename to default column name
+  # Rename to default column name
   df <-
     df %>%
     dplyr::rename_at(
@@ -355,7 +355,7 @@ visualize_pathways_year_level2 <- function(
   df <-
     df %>%
     dplyr::filter(.data$pathway_level1 == chosen_pathway_level1)
-  # handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
+  # Handle asymmetric category system (Chordata, Not Chordta are not kingdoms)
   if (!is.null(category)) {
     if (!category %in% c("Chordata", "Not Chordata")) {
       df <- df %>% dplyr::filter(.data$group == category)
@@ -373,14 +373,14 @@ visualize_pathways_year_level2 <- function(
       }
     }
   }
-  
+
   if (!is.null(facet_column)) {
     if (facet_column == "kingdom") {
-      # category NULL by assertion
+      # Category NULL by assertion
       df$kingdom <- df$group
     }
-  } 
-  
+  }
+
   # Handle NAs and ""
   nas_or_empty_pathway_level2 <-
     df %>%
@@ -505,14 +505,14 @@ visualize_pathways_year_level2 <- function(
     levels(ordered(unique(df$bins_first_observed)))
   # Set the bin "before ..." at first position if needed
   if (isTRUE(stringr::str_starts(
-    string = levels_first_observed[length(levels_first_observed)],
-    pattern = "before")
-    )
+    string = utils::tail(levels_first_observed, 1),
+    pattern = "before"
+  ))
   ) {
     levels_first_observed <-
       c(
-        levels_first_observed[length(levels_first_observed)],
-        levels_first_observed[1:length(levels_first_observed) - 1]
+        utils::tail(levels_first_observed, 1),
+        utils::head(levels_first_observed, -1)
       )
   }
   df <-
@@ -525,7 +525,7 @@ visualize_pathways_year_level2 <- function(
     df %>%
     dplyr::mutate(pathway_level2 = factor(.data$pathway_level2, levels = pathways))
 
-  # dplyr::count number of taxa per pathway_level2 over time
+  # Count number of taxa per pathway_level2 over time
   data_top_graph <-
     df %>%
     dplyr::group_by(
@@ -602,8 +602,7 @@ visualize_pathways_year_level2 <- function(
       return(list(plot = egg::ggarrange(top_graph, facet_graph, draw = FALSE),
                   data_top_graph = data_top_graph,
                   data_facet_graph = data_facet_graph))
-    }
-    else {
+    } else {
       return(list(plot = NULL, data_top_graph = NULL, data_facet_graph = NULL))
     }
   }
