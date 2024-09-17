@@ -69,6 +69,7 @@ Suggests:
 VignetteBuilder: 
     knitr
 Encoding: UTF-8
+Language: en-GB
 LazyData: true
 LazyDataCompression: bzip2
 Roxygen: list(markdown = TRUE)
