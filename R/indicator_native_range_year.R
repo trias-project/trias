@@ -206,7 +206,7 @@ indicator_native_range_year <- function(
     )
 
   # To prevent warnings in UI
-  pl$elementId <- NULL
+  pl_2$elementId <- NULL
 
   # Change variable name
   names(summaryData)[names(summaryData) == "value"] <- "n"
