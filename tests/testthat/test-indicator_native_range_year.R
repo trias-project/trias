@@ -52,6 +52,17 @@ test_that("Arg: years", {
   )
 })
 
+
+test_that("Arg: x_major_scale_stepsize", {
+    expect_error(
+      indicator_native_range_year(cleaned_input_test_df,
+        x_major_scale_stepsize = "10"
+      ),
+      "Argument x_major_scale_stepsize has to be a number."
+    )
+  })
+
+
 test_that("Arg: first_observed", {
   expect_error(
     indicator_native_range_year(input_test_df, 

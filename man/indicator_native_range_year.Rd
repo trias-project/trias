@@ -9,6 +9,7 @@ indicator_native_range_year(
   df,
   years = NULL,
   type = c("native_range", "native_continent"),
+  x_major_scale_stepsize = 10,
   x_lab = "year",
   y_lab = "alien species",
   relative = FALSE,
@@ -26,6 +27,9 @@ are taken into account.}
 \item{type}{character, native_range level of interest should be one of
 \code{c("native_range", "native_continent")}. Default: \code{"native_range"}. A
 column called as the selected \code{type} must be present in \code{df}.}
+
+\item{x_major_scale_stepsize}{(integer) Parameter that indicates the breaks
+of the x axis. Default: 10.}
 
 \item{x_lab}{character string, label of the x-axis. Default: "year".}
 

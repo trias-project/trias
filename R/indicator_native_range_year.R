@@ -11,6 +11,8 @@
 #' @param type character, native_range level of interest should be one of
 #'   `c("native_range", "native_continent")`. Default: `"native_range"`. A
 #'   column called as the selected `type` must be present in `df`.
+#' @param x_major_scale_stepsize (integer) Parameter that indicates the breaks
+#'   of the x axis. Default: 10.
 #' @param x_lab character string, label of the x-axis. Default: "year".
 #' @param y_lab character string, label of the y-axis. Default: "number of alien
 #'   species".
@@ -62,6 +64,7 @@ indicator_native_range_year <- function(
     df,
     years = NULL,
     type = c("native_range", "native_continent"),
+    x_major_scale_stepsize = 10,
     x_lab = "year",
     y_lab = "alien species",
     relative = FALSE,
@@ -83,6 +86,9 @@ indicator_native_range_year <- function(
   type <- match.arg(type)
   assertthat::assert_that(type %in% names(df),
                           msg = sprintf("Column %s not present in df.", type)
+  )
+  assertthat::assert_that(is.numeric(x_major_scale_stepsize),
+    msg = "Argument x_major_scale_stepsize has to be a number."
   )
   if (!is.null(x_lab)) {
     assertthat::assert_that(is.character(x_lab),
@@ -174,6 +180,13 @@ indicator_native_range_year <- function(
     text = text
   )) +
     ggplot2::geom_bar(position = position, stat = "identity") +
+    ggplot2::scale_x_discrete(
+      breaks = seq(
+        min(years, na.rm = TRUE),
+        max(years, na.rm = TRUE),
+        x_major_scale_stepsize
+      )
+    ) +
     ggplot2::xlab(x_lab) +
     ggplot2::ylab(y_lab) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5))
