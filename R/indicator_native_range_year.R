@@ -133,6 +133,7 @@ indicator_native_range_year <- function(
   )
 
   # Select data
+  plotData <- plotData[!duplicated(plotData[, c("key", "first_observed", "location")]), ]
   plotData <- plotData[plotData$first_observed %in% years, c("first_observed", "location")]
   plotData <- plotData[!is.na(plotData$first_observed) & !is.na(plotData$location), ]
   
@@ -141,9 +142,7 @@ indicator_native_range_year <- function(
   plotData$location <- as.factor(plotData$location)
   plotData$location <- droplevels(plotData$location)
   
-  # Filter out duplicates
-  plotData <- unique(plotData, by = c("key", "first_observed", "location"))
-
+  
   # Summarize data per native_range and year
   summaryData <- reshape2::melt(table(plotData), id.vars = "first_observed")
   summaryData <- summaryData %>%
