@@ -16,8 +16,11 @@
 #' @param x_lab character string, label of the x-axis. Default: "year".
 #' @param y_lab character string, label of the y-axis. Default: "number of alien
 #'   species".
-#' @param relative (logical) if TRUE (default), each bar is standardised before
-#'   stacking.
+#' @param response_type (character) summary type of response to be displayed;
+#'   should be one of \code{c("absolute", "relative", "cumulative")}. 
+#'   Default: \code{"absolute"}. If "absolute" the number per year and location
+#' is displayed; if "relative" each bar is standardised per year before stacking;
+#' if "cumulative" the cumulative number over years per location.
 #' @param taxon_key_col character. Name of the column of `df` containing
 #'   taxon IDs. Default: `"key"`.
 #' @param first_observed (character) Name of the column in `data`
@@ -67,7 +70,7 @@ indicator_native_range_year <- function(
     x_major_scale_stepsize = 10,
     x_lab = "year",
     y_lab = "alien species",
-    relative = FALSE,
+    response_type = c("absolute", "relative", "cumulative"),
     taxon_key_col = "key",
     first_observed = "first_observed") {
   # initial input checks
@@ -101,9 +104,7 @@ indicator_native_range_year <- function(
     )
     
   }
-  assertthat::assert_that(is.logical(relative),
-                          msg = "Argument relative has to be a logical."
-  )
+  response_type <- match.arg(response_type)
   assertthat::assert_that(is.character(taxon_key_col),
     msg = "Argument taxon_key_col has to be a character."
   )
@@ -151,10 +152,12 @@ indicator_native_range_year <- function(
       total = sum(.data$value),
       perc = round((.data$value / .data$total) * 100, 2)
     )
-
-  # Summarize data per year
-  totalCount <- table(plotData$first_observed)
-
+  if (response_type == "cumulative")
+    summaryData <- summaryData %>%
+      dplyr::group_by(.data$location) %>%
+      dplyr::mutate(
+        value = cumsum(.data$value)
+      )
 
   # For optimal displaying in the plot
   summaryData$location <- as.factor(summaryData$location)
@@ -165,7 +168,7 @@ indicator_native_range_year <- function(
 
   # Create plot
 
-  if (relative == TRUE) {
+  if (response_type == "relative") {
     position <- "fill"
     text <- paste0(summaryData$location, "<br>", summaryData$perc, "%")
   } else {
@@ -191,7 +194,7 @@ indicator_native_range_year <- function(
     ggplot2::ylab(y_lab) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5))
 
-  if (relative == TRUE) {
+  if (response_type == "relative") {
     pl <- pl + ggplot2::scale_y_continuous(labels = scales::percent_format())
   }
 
