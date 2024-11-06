@@ -21,6 +21,8 @@
 #'   Default: \code{"absolute"}. If "absolute" the number per year and location
 #' is displayed; if "relative" each bar is standardised per year before stacking;
 #' if "cumulative" the cumulative number over years per location.
+#' @param relative (logical) if TRUE each bar is standardised before
+#'   stacking. Deprecated, use \code{response_type = 'relative'} instead.
 #' @param taxon_key_col character. Name of the column of `df` containing
 #'   taxon IDs. Default: `"key"`.
 #' @param first_observed (character) Name of the column in `data`
@@ -43,6 +45,7 @@
 #'   given year, `n`/`total`*100.
 #' @export
 #' @importFrom dplyr %>% .data
+#' @importFrom lifecycle deprecated is_present deprecate_warn
 #' @examples
 #' \dontrun{
 #' library(readr)
@@ -71,8 +74,11 @@ indicator_native_range_year <- function(
     x_lab = "year",
     y_lab = "alien species",
     response_type = c("absolute", "relative", "cumulative"),
+    relative = lifecycle::deprecated(),
     taxon_key_col = "key",
     first_observed = "first_observed") {
+    
+  
   # initial input checks
   assertthat::assert_that(is.data.frame(df))
   if (!is.null(years)) {
@@ -104,7 +110,26 @@ indicator_native_range_year <- function(
     )
     
   }
+  
   response_type <- match.arg(response_type)
+  # Check relative (deprecated)
+  warning_detail <- paste(
+    "Use argument `response_type = 'relative'` for displaying relative numbers",
+    "in the plot. The use of boolean parameter `relative` is deprecated since",
+    "version 3.0.0."
+  )
+  if (lifecycle::is_present(relative)) {
+    lifecycle::deprecate_warn(
+      when = "3.0.0",
+      what = "trias::indicator_native_range_year(relative)",
+      details = warning_detail
+    )
+  }
+  # Define the right response_type
+  if (lifecycle::is_present(relative)) {
+    response_type <- "relative"
+  }
+  
   assertthat::assert_that(is.character(taxon_key_col),
     msg = "Argument taxon_key_col has to be a character."
   )

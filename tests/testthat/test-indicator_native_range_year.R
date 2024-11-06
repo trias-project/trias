@@ -165,3 +165,16 @@ test_that("Test output type, class, slots and columns", {
   }
   
 })
+
+test_that("relative arg is deprecated", {
+    rlang::with_options(
+      lifecycle_verbosity = "warning",
+      expect_warning(
+        indicator_native_range_year(
+          df = cleaned_input_test_df,
+          years = c(2000, 2005),
+          relative = TRUE
+        )
+      )
+    )
+  })

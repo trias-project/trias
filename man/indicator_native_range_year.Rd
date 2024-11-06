@@ -13,6 +13,7 @@ indicator_native_range_year(
   x_lab = "year",
   y_lab = "alien species",
   response_type = c("absolute", "relative", "cumulative"),
+  relative = lifecycle::deprecated(),
   taxon_key_col = "key",
   first_observed = "first_observed"
 )
@@ -41,6 +42,9 @@ should be one of \code{c("absolute", "relative", "cumulative")}.
 Default: \code{"absolute"}. If "absolute" the number per year and location
 is displayed; if "relative" each bar is standardised per year before stacking;
 if "cumulative" the cumulative number over years per location.}
+
+\item{relative}{(logical) if TRUE each bar is standardised before
+stacking. Deprecated, use \code{response_type = 'relative'} instead.}
 
 \item{taxon_key_col}{character. Name of the column of \code{df} containing
 taxon IDs. Default: \code{"key"}.}
