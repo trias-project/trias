@@ -194,10 +194,14 @@ indicator_native_range_year <- function(
 
   if (response_type == "relative") {
     position <- "fill"
-    text <- paste0(summaryData$location, "<br>", summaryData$perc, "%")
+    text <- paste0(summaryData$location, 
+      "<br>", y_lab, ": ", summaryData$perc, "%", 
+      "<br>", x_lab, ": ", summaryData$first_observed)
   } else {
     position <- "stack"
-    text <- paste0(summaryData$location, "<br>", summaryData$value)
+    text <- paste0(summaryData$location, 
+      "<br>", y_lab, ": ", summaryData$value, 
+      "<br>", x_lab, ": ", summaryData$first_observed)
   }
 
   pl <- ggplot2::ggplot(data = summaryData, ggplot2::aes(
