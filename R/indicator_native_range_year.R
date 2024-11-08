@@ -212,10 +212,10 @@ indicator_native_range_year <- function(
   )) +
     ggplot2::geom_bar(position = position, stat = "identity") +
     ggplot2::scale_x_discrete(
-      breaks = seq(
-        min(years, na.rm = TRUE),
-        max(years, na.rm = TRUE),
-        x_major_scale_stepsize
+      breaks = nice_seq(
+        start_year = min(years, na.rm = TRUE),
+        end_year = max(years, na.rm = TRUE),
+        step_size = x_major_scale_stepsize
       )
     ) +
     ggplot2::xlab(x_lab) +
