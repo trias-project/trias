@@ -7,17 +7,17 @@
 #' @return integer vector, all cut values
 #' 
 #' @author mvarewyck
+#' @importFrom utils tail
 nice_seq <- function(start_year, end_year, step_size) {
   
   # Calculate the first "nice" cut point (round up to the nearest multiple of step_size)
   first_nice_cut <- ceiling(start_year / step_size) * step_size
-  other_nice_cuts <- seq(from = first_nice_cut + step_size, to = end_year, by = step_size)
+  nice_cuts <- seq(from = first_nice_cut, to = end_year, by = step_size)
   
   cuts <- c(
     start_year, 
-    first_nice_cut,
-    other_nice_cuts,
-    if (end_year > tail(other_nice_cuts, n = 1)) end_year 
+    nice_cuts,
+    if (end_year > tail(nice_cuts, n = 1)) end_year 
   )
   
   return(cuts)
