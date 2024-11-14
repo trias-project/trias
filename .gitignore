@@ -41,3 +41,6 @@ rsconnect/
 
 # Mac OS X
 .DS_Store
+
+# pdfs created by testing plots
+/tests/testthat/*.pdf
