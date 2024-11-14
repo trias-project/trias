@@ -17,7 +17,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-6413-3185")),
     person("Pieter", "Huybrechts", , "pieter.huybrechts@inbo.be", role = "ctb",
            comment = c(ORCID = "0000-0002-6658-6062")),
-    person("Machteld", "Varewyck", , "machteld.varewyck@openanalytics.eu", role = "ctb",
+    person("Machteld", "Varewyck", , "machteld.varewyck@openanalytics.eu", role = "aut",
            comment = c(ORCID = "0009-0003-0496-0447")),
     person("Research Institute for Nature and Forest (INBO)", role = c("cph", "fnd"), email = "info@inbo.be",
            comment = "https://www.vlaanderen.be/inbo/en-gb/"),

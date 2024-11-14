@@ -6,7 +6,6 @@
 #' @param step_size (integer) The max distance between two cut values 
 #' @return integer vector, all cut values
 #' 
-#' @author mvarewyck
 #' @importFrom utils tail
 nice_seq <- function(start_year, end_year, step_size) {
   
