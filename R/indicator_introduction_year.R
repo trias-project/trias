@@ -225,7 +225,7 @@ indicator_introduction_year <- function(df,
       ),
       minor_breaks = nice_seq(
         start_year = start_year_plot,
-        end_year = maxDate, 
+        end_year = maxDate,
         step_size = x_minor_scale_stepsize
       )
     ) +
