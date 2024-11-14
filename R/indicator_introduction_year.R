@@ -1,11 +1,12 @@
 #' Generate nice sequence with slightly different cut values compared to \code{\link[base]{seq}}
 #' 
 #' The inner values are forced to be a multiple of the stepsize
-#' @param start_year (integer) The min cut value 
-#' @param end_year (integer) The max cut value
-#' @param step_size (integer) The max distance between two cut values 
-#' @return integer vector, all cut values
 #' 
+#' @param start_year (integer) The min cut value.
+#' @param end_year (integer) The max cut value.
+#' @param step_size (integer) The max distance between two cut values.
+#' 
+#' @return (integer vector) All cut values.
 nice_seq <- function(start_year, end_year, step_size) {
   
   # Calculate the first "nice" cut point (round up to the nearest multiple of step_size)
