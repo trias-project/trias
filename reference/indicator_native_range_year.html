@@ -11,7 +11,7 @@ plot from reporting - rshiny - grofwildjacht"><meta property="og:image" content=
 
     <a class="navbar-brand me-2" href="../index.html">trias</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +20,7 @@ plot from reporting - rshiny - grofwildjacht"><meta property="og:image" content=
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/trias-project/trias/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -47,9 +48,11 @@ plot from reporting - rshiny - grofwildjacht</p>
 <span>  <span class="va">df</span>,</span>
 <span>  years <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"native_range"</span>, <span class="st">"native_continent"</span><span class="op">)</span>,</span>
+<span>  x_major_scale_stepsize <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  x_lab <span class="op">=</span> <span class="st">"year"</span>,</span>
 <span>  y_lab <span class="op">=</span> <span class="st">"alien species"</span>,</span>
-<span>  relative <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  response_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"absolute"</span>, <span class="st">"relative"</span>, <span class="st">"cumulative"</span><span class="op">)</span>,</span>
+<span>  relative <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  taxon_key_col <span class="op">=</span> <span class="st">"key"</span>,</span>
 <span>  first_observed <span class="op">=</span> <span class="st">"first_observed"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -75,6 +78,11 @@ are taken into account.</p></dd>
 column called as the selected <code>type</code> must be present in <code>df</code>.</p></dd>
 
 
+<dt id="arg-x-major-scale-stepsize">x_major_scale_stepsize<a class="anchor" aria-label="anchor" href="#arg-x-major-scale-stepsize"></a></dt>
+<dd><p>(integer) Parameter that indicates the breaks
+of the x axis. Default: 10.</p></dd>
+
+
 <dt id="arg-x-lab">x_lab<a class="anchor" aria-label="anchor" href="#arg-x-lab"></a></dt>
 <dd><p>character string, label of the x-axis. Default: "year".</p></dd>
 
@@ -84,9 +92,17 @@ column called as the selected <code>type</code> must be present in <code>df</cod
 species".</p></dd>
 
 
+<dt id="arg-response-type">response_type<a class="anchor" aria-label="anchor" href="#arg-response-type"></a></dt>
+<dd><p>(character) summary type of response to be displayed;
+should be one of <code>c("absolute", "relative", "cumulative")</code>.
+Default: <code>"absolute"</code>. If "absolute" the number per year and location
+is displayed; if "relative" each bar is standardised per year before stacking;
+if "cumulative" the cumulative number over years per location.</p></dd>
+
+
 <dt id="arg-relative">relative<a class="anchor" aria-label="anchor" href="#arg-relative"></a></dt>
-<dd><p>(logical) if TRUE (default), each bar is standardised before
-stacking.</p></dd>
+<dd><p>(logical) if <code>TRUE</code> each bar is standardised before
+stacking. Deprecated, use <code>response_type = "relative"</code> instead.</p></dd>
 
 
 <dt id="arg-taxon-key-col">taxon_key_col<a class="anchor" aria-label="anchor" href="#arg-taxon-key-col"></a></dt>
@@ -146,11 +162,11 @@ given year, <code>n</code>/<code>total</code>*100.</p></li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://twitter.com/damianozingaro" class="external-link">Damiano Oldoni</a>, Soria Delva, Sander Devisscher, Research Institute for Nature and Forest (INBO), <a href="https://trias-project.be" class="external-link"><img src="https://osf.io/dqvfk/?action=download" width="72"></a>, <a href="https://www.riparias.be" class="external-link"><img src="https://www.riparias.be/static/images/bbpf.png" width="72"></a>, European Union’s Horizon Europe Research and Innovation Programme (ID No 101059592).</p>
+  <p>Developed by <a href="https://twitter.com/damianozingaro" class="external-link">Damiano Oldoni</a>, Soria Delva, Sander Devisscher, Machteld Varewyck, Research Institute for Nature and Forest (INBO), <a href="https://trias-project.be" class="external-link"><img src="https://osf.io/dqvfk/?action=download" width="72"></a>, <a href="https://www.riparias.be" class="external-link"><img src="https://www.riparias.be/static/images/bbpf.png" width="72"></a>, European Union’s Horizon Europe Research and Innovation Programme (ID No 101059592).</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>
