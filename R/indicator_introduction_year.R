@@ -6,7 +6,6 @@
 #' @param step_size (integer) The max distance between two cut values 
 #' @return integer vector, all cut values
 #' 
-#' @importFrom utils tail
 nice_seq <- function(start_year, end_year, step_size) {
   
   # Calculate the first "nice" cut point (round up to the nearest multiple of step_size)
@@ -16,7 +15,7 @@ nice_seq <- function(start_year, end_year, step_size) {
   cuts <- c(
     start_year, 
     nice_cuts,
-    if (end_year > tail(nice_cuts, n = 1)) end_year 
+    if (end_year > utils::tail(nice_cuts, n = 1)) end_year 
   )
   
   return(cuts)
