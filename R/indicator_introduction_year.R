@@ -1,3 +1,32 @@
+#' Generate nice sequence with slightly different cut values compared to \code{\link[base]{seq}}
+#' 
+#' The inner values are forced to be a multiple of the stepsize
+#' 
+#' @param start_year (integer) The min cut value.
+#' @param end_year (integer) The max cut value.
+#' @param step_size (integer) The max distance between two cut values.
+#' 
+#' @return (integer vector) All cut values.
+#' 
+#' @noRd
+nice_seq <- function(start_year, end_year, step_size) {
+  
+  # Calculate the first "nice" cut point (round up to the nearest multiple of step_size)
+  first_nice_cut <- ceiling(start_year / step_size) * step_size
+  nice_cuts <- seq(from = first_nice_cut, to = end_year, by = step_size)
+  
+  cuts <- c(
+    start_year, 
+    nice_cuts,
+    if (end_year > utils::tail(nice_cuts, n = 1)) end_year 
+  )
+  
+  return(cuts)
+  
+}
+
+
+
 #' Plot number of new introductions per year.
 #'
 #' @description Calculate how many new species has been introduced in a year.
@@ -189,15 +218,15 @@ indicator_introduction_year <- function(df,
     ggplot2::xlab(x_lab) +
     ggplot2::ylab(y_lab) +
     ggplot2::scale_x_continuous(
-      breaks = seq(
-        start_year_plot,
-        maxDate,
-        x_major_scale_stepsize
+      breaks = nice_seq(
+        start_year = start_year_plot,
+        end_year = maxDate, 
+        step_size = x_major_scale_stepsize
       ),
-      minor_breaks = seq(
-        start_year_plot,
-        maxDate,
-        x_minor_scale_stepsize
+      minor_breaks = nice_seq(
+        start_year = start_year_plot,
+        end_year = maxDate,
+        step_size = x_minor_scale_stepsize
       )
     ) +
     ggplot2::coord_cartesian(xlim = c(start_year_plot, maxDate))

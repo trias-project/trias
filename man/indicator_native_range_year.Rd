@@ -9,9 +9,11 @@ indicator_native_range_year(
   df,
   years = NULL,
   type = c("native_range", "native_continent"),
+  x_major_scale_stepsize = 10,
   x_lab = "year",
   y_lab = "alien species",
-  relative = FALSE,
+  response_type = c("absolute", "relative", "cumulative"),
+  relative = lifecycle::deprecated(),
   taxon_key_col = "key",
   first_observed = "first_observed"
 )
@@ -27,13 +29,22 @@ are taken into account.}
 \code{c("native_range", "native_continent")}. Default: \code{"native_range"}. A
 column called as the selected \code{type} must be present in \code{df}.}
 
+\item{x_major_scale_stepsize}{(integer) Parameter that indicates the breaks
+of the x axis. Default: 10.}
+
 \item{x_lab}{character string, label of the x-axis. Default: "year".}
 
 \item{y_lab}{character string, label of the y-axis. Default: "number of alien
 species".}
 
-\item{relative}{(logical) if TRUE (default), each bar is standardised before
-stacking.}
+\item{response_type}{(character) summary type of response to be displayed;
+should be one of \code{c("absolute", "relative", "cumulative")}.
+Default: \code{"absolute"}. If "absolute" the number per year and location
+is displayed; if "relative" each bar is standardised per year before stacking;
+if "cumulative" the cumulative number over years per location.}
+
+\item{relative}{(logical) if \code{TRUE} each bar is standardised before
+stacking. Deprecated, use \code{response_type = "relative"} instead.}
 
 \item{taxon_key_col}{character. Name of the column of \code{df} containing
 taxon IDs. Default: \code{"key"}.}

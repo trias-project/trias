@@ -1,7 +1,7 @@
 Package: trias
 Title: Process Data for the Project Tracking Invasive Alien Species
     (TrIAS)
-Version: 2.3.1
+Version: 3.0.0
 Authors@R: c(
     person("Damiano", "Oldoni", , "damiano.oldoni@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3445-7562")),
@@ -17,7 +17,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-6413-3185")),
     person("Pieter", "Huybrechts", , "pieter.huybrechts@inbo.be", role = "ctb",
            comment = c(ORCID = "0000-0002-6658-6062")),
-    person("Machteld", "Varewyck", , "machteld.varewyck@openanalytics.eu", role = "ctb",
+    person("Machteld", "Varewyck", , "machteld.varewyck@openanalytics.eu", role = "aut",
            comment = c(ORCID = "0009-0003-0496-0447")),
     person("Research Institute for Nature and Forest (INBO)", role = c("cph", "fnd"), email = "info@inbo.be",
            comment = "https://www.vlaanderen.be/inbo/en-gb/"),
@@ -46,6 +46,7 @@ Imports:
     ggplot2,
     gratia (>= 0.9.0),
     leaflet,
+    lifecycle,
     mgcv,
     plotly,
     purrr,

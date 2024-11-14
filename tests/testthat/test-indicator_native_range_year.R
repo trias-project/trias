@@ -52,6 +52,17 @@ test_that("Arg: years", {
   )
 })
 
+
+test_that("Arg: x_major_scale_stepsize", {
+    expect_error(
+      indicator_native_range_year(cleaned_input_test_df,
+        x_major_scale_stepsize = "10"
+      ),
+      "Argument x_major_scale_stepsize has to be a number."
+    )
+  })
+
+
 test_that("Arg: first_observed", {
   expect_error(
     indicator_native_range_year(input_test_df, 
@@ -79,64 +90,6 @@ test_that("Param: labels", {
 })
 
 test_that("Test output type, class, slots and columns", {
-  plot_output <-
-    indicator_native_range_year(cleaned_input_test_df,
-                                years = c(2000, 2005)
-  )
-  plot_output_rel <-
-    indicator_native_range_year(cleaned_input_test_df,
-                                years = c(2000, 2005),
-                                relative = TRUE
-  )
-  # output is a list
-  expect_type(plot_output, type = "list")
-  expect_type(plot_output_rel, type = "list")
-  
-  # output has the right three slots
-  slots <- c("static_plot", "interactive_plot", "data")
-  expect_equal(names(plot_output), slots)
-  expect_equal(names(plot_output_rel), slots)
-  
-  # static plot slot is a list with gg as class
-  expect_type(plot_output$static_plot, type = "list")
-  expect_type(plot_output_rel$static_plot, type = "list")
-  expect_s3_class(plot_output$static_plot, class = c("gg", "ggplot"))
-  expect_s3_class(plot_output_rel$static_plot, class = c("gg", "ggplot"))
-  
-  # interactive plot slot is a list with plotly and htmlwidget as class
-  expect_type(plot_output$interactive_plot, type = "list")
-  expect_type(plot_output_rel$interactive_plot, type = "list")
-  expect_s3_class(plot_output$interactive_plot, class = c("plotly", "htmlwidget"))
-  expect_s3_class(plot_output_rel$interactive_plot, class = c("plotly", "htmlwidget"))
-  
-  # data is a data.frame (tibble)
-  expect_type(plot_output$data, type = "list")
-  expect_s3_class(plot_output$data, class = c("data.frame", "tbl_df"))
-  expect_type(plot_output_rel$data, type = "list")
-  expect_s3_class(plot_output_rel$data, class = c("data.frame", "tbl_df"))
-  
-  # data contains only columns year, native_range, n, total and perc in this
-  # order
-  expect_equal(
-    names(plot_output$data),
-    c("year", "native_range", "n", "total", "perc")
-  )
-  expect_equal(
-    names(plot_output_rel$data),
-    c("year", "native_range", "n", "total", "perc")
-  )
-  
-  # columns year and native_range of data slot are factors
-  expect_true(is.factor(plot_output$data$year))
-  expect_true(is.factor(plot_output$data$native_range))
-  # columns n and total of data slot are integers
-  expect_true(is.integer(plot_output$data$n))
-  expect_true(is.integer(plot_output$data$total))
-  # column perc of data slot is double
-  expect_true(is.double(plot_output$data$perc))
-  
-  # data slot is not affected by value of related arg
-  expect_identical(plot_output$data, plot_output_rel$data)
   
   # function automatically retains unique records per species & type
   invasive_df <- cleaned_input_test_df[
@@ -144,6 +97,84 @@ test_that("Test output type, class, slots and columns", {
   ]
   nRecords <- nrow(unique(invasive_df[, c("last_observed", "native_range")]))
   plot_output_invasive <- indicator_native_range_year(invasive_df)
-  expect_equal(nrow(plot_output_invasive$data), nRecords)
+  expect_equal(nrow(plot_output_invasive$data), nRecords)  
+    
+  # Otherwise too many entries in legend
+  cleaned_input_test_df <- cleaned_input_test_df[grepl("america", cleaned_input_test_df$native_range, ignore.case = TRUE), ]
+  
+  plot_output_list <- list(
+    # absolute
+    absolute = indicator_native_range_year(df = cleaned_input_test_df,
+                                years = c(2000, 2005)
+                            ),
+    # relative                                
+    relative = indicator_native_range_year(df = cleaned_input_test_df,
+                                years = c(2000, 2005),
+                                response_type = "relative"
+                            ),
+    # cumulative
+    cumulative = indicator_native_range_year(df = cleaned_input_test_df,
+                                years = c(2000, 2005),
+                                response_type = "cumulative"
+                            )
+  )
+  
+  # data slot is not affected by value of related arg
+  expect_identical(plot_output_list$absolute$data, plot_output_list$relative$data)
+  
+  for (response_type in names(plot_output_list)) {
+    
+    plot_output <- plot_output_list[[response_type]]
+    
+    # output is a list
+    expect_type(plot_output, type = "list")
+    
+    # output has the right three slots
+    slots <- c("static_plot", "interactive_plot", "data")
+    expect_equal(names(plot_output), slots, info = response_type)
+    
+    # static plot slot is a list with gg as class
+    expect_type(plot_output$static_plot, type = "list")
+    expect_s3_class(plot_output$static_plot, class = c("gg", "ggplot"))
+    
+    # interactive plot slot is a list with plotly and htmlwidget as class
+    expect_type(plot_output$interactive_plot, type = "list")
+    expect_s3_class(plot_output$interactive_plot, class = c("plotly", "htmlwidget"))
+    
+    # data is a data.frame (tibble)
+    expect_type(plot_output$data, type = "list")
+    expect_s3_class(plot_output$data, class = c("data.frame", "tbl_df"))
+    
+    # data contains only columns year, native_range, n, total and perc in this
+    # order
+    expect_equal(
+      names(plot_output$data),
+      c("year", "native_range", "n", "total", "perc"),
+      info = response_type
+    )
+    
+    # columns year and native_range of data slot are factors
+    expect_true(is.factor(plot_output$data$year), info = response_type)
+    expect_true(is.factor(plot_output$data$native_range), info = response_type)
+    # columns n and total of data slot are integers
+    expect_true(is.integer(plot_output$data$n), info = response_type)
+    expect_true(is.integer(plot_output$data$total), info = response_type)
+    # column perc of data slot is double
+    expect_true(is.double(plot_output$data$perc), info = response_type)
+    
+  }
   
 })
+
+test_that("relative arg is deprecated", {
+    rlang::with_options(
+      lifecycle_verbosity = "warning",
+      expect_warning(
+        indicator_native_range_year(
+          df = cleaned_input_test_df,
+          years = c(2000, 2005),
+          relative = TRUE
+        )
+      )
+    )
+  })

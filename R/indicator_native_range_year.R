@@ -11,11 +11,18 @@
 #' @param type character, native_range level of interest should be one of
 #'   `c("native_range", "native_continent")`. Default: `"native_range"`. A
 #'   column called as the selected `type` must be present in `df`.
+#' @param x_major_scale_stepsize (integer) Parameter that indicates the breaks
+#'   of the x axis. Default: 10.
 #' @param x_lab character string, label of the x-axis. Default: "year".
 #' @param y_lab character string, label of the y-axis. Default: "number of alien
 #'   species".
-#' @param relative (logical) if TRUE (default), each bar is standardised before
-#'   stacking.
+#' @param response_type (character) summary type of response to be displayed;
+#'   should be one of `c("absolute", "relative", "cumulative")`. 
+#'   Default: `"absolute"`. If "absolute" the number per year and location
+#' is displayed; if "relative" each bar is standardised per year before stacking;
+#' if "cumulative" the cumulative number over years per location.
+#' @param relative (logical) if `TRUE` each bar is standardised before
+#'   stacking. Deprecated, use `response_type = "relative"` instead.
 #' @param taxon_key_col character. Name of the column of `df` containing
 #'   taxon IDs. Default: `"key"`.
 #' @param first_observed (character) Name of the column in `data`
@@ -62,11 +69,15 @@ indicator_native_range_year <- function(
     df,
     years = NULL,
     type = c("native_range", "native_continent"),
+    x_major_scale_stepsize = 10,
     x_lab = "year",
     y_lab = "alien species",
-    relative = FALSE,
+    response_type = c("absolute", "relative", "cumulative"),
+    relative = lifecycle::deprecated(),
     taxon_key_col = "key",
     first_observed = "first_observed") {
+    
+  
   # initial input checks
   assertthat::assert_that(is.data.frame(df))
   if (!is.null(years)) {
@@ -84,6 +95,9 @@ indicator_native_range_year <- function(
   assertthat::assert_that(type %in% names(df),
                           msg = sprintf("Column %s not present in df.", type)
   )
+  assertthat::assert_that(is.numeric(x_major_scale_stepsize),
+    msg = "Argument x_major_scale_stepsize has to be a number."
+  )
   if (!is.null(x_lab)) {
     assertthat::assert_that(is.character(x_lab),
                             msg = "Argument x_lab has to be a character or NULL."
@@ -95,9 +109,21 @@ indicator_native_range_year <- function(
     )
     
   }
-  assertthat::assert_that(is.logical(relative),
-                          msg = "Argument relative has to be a logical."
-  )
+  
+  response_type <- match.arg(response_type)
+  # Check `relative` argument (deprecated)
+  if (lifecycle::is_present(relative)) {
+    lifecycle::deprecate_warn(
+      when = "3.0.0",
+      what = "trias::indicator_native_range_year(relative = )", 
+      with = "trias::indicator_native_range_year(response_type = )"
+    )
+  }
+  # Define the right response_type
+  if (lifecycle::is_present(relative)) {
+    response_type <- "relative"
+  }
+  
   assertthat::assert_that(is.character(taxon_key_col),
     msg = "Argument taxon_key_col has to be a character."
   )
@@ -126,6 +152,7 @@ indicator_native_range_year <- function(
   )
 
   # Select data
+  plotData <- plotData[!duplicated(plotData[, c("key", "first_observed", "location")]), ]
   plotData <- plotData[plotData$first_observed %in% years, c("first_observed", "location")]
   plotData <- plotData[!is.na(plotData$first_observed) & !is.na(plotData$location), ]
   
@@ -134,9 +161,7 @@ indicator_native_range_year <- function(
   plotData$location <- as.factor(plotData$location)
   plotData$location <- droplevels(plotData$location)
   
-  # Filter out duplicates
-  plotData <- unique(plotData, by = c("key", "first_observed", "location"))
-
+  
   # Summarize data per native_range and year
   summaryData <- reshape2::melt(table(plotData), id.vars = "first_observed")
   summaryData <- summaryData %>%
@@ -145,10 +170,12 @@ indicator_native_range_year <- function(
       total = sum(.data$value),
       perc = round((.data$value / .data$total) * 100, 2)
     )
-
-  # Summarize data per year
-  totalCount <- table(plotData$first_observed)
-
+  if (response_type == "cumulative")
+    summaryData <- summaryData %>%
+      dplyr::group_by(.data$location) %>%
+      dplyr::mutate(
+        value = cumsum(.data$value)
+      )
 
   # For optimal displaying in the plot
   summaryData$location <- as.factor(summaryData$location)
@@ -159,12 +186,16 @@ indicator_native_range_year <- function(
 
   # Create plot
 
-  if (relative == TRUE) {
+  if (response_type == "relative") {
     position <- "fill"
-    text <- paste0(summaryData$location, "<br>", summaryData$perc, "%")
+    text <- paste0(summaryData$location, 
+      "<br>", y_lab, ": ", summaryData$perc, "%", 
+      "<br>", x_lab, ": ", summaryData$first_observed)
   } else {
     position <- "stack"
-    text <- paste0(summaryData$location, "<br>", summaryData$value)
+    text <- paste0(summaryData$location, 
+      "<br>", y_lab, ": ", summaryData$value, 
+      "<br>", x_lab, ": ", summaryData$first_observed)
   }
 
   pl <- ggplot2::ggplot(data = summaryData, ggplot2::aes(
@@ -174,11 +205,18 @@ indicator_native_range_year <- function(
     text = text
   )) +
     ggplot2::geom_bar(position = position, stat = "identity") +
+    ggplot2::scale_x_discrete(
+      breaks = nice_seq(
+        start_year = min(years, na.rm = TRUE),
+        end_year = max(years, na.rm = TRUE),
+        step_size = x_major_scale_stepsize
+      )
+    ) +
     ggplot2::xlab(x_lab) +
     ggplot2::ylab(y_lab) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5))
 
-  if (relative == TRUE) {
+  if (response_type == "relative") {
     pl <- pl + ggplot2::scale_y_continuous(labels = scales::percent_format())
   }
 
@@ -191,7 +229,7 @@ indicator_native_range_year <- function(
     )
 
   # To prevent warnings in UI
-  pl$elementId <- NULL
+  pl_2$elementId <- NULL
 
   # Change variable name
   names(summaryData)[names(summaryData) == "value"] <- "n"
