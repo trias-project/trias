@@ -7,6 +7,8 @@
 #' @param step_size (integer) The max distance between two cut values.
 #' 
 #' @return (integer vector) All cut values.
+#' 
+#' @noRd
 nice_seq <- function(start_year, end_year, step_size) {
   
   # Calculate the first "nice" cut point (round up to the nearest multiple of step_size)
