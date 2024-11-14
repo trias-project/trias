@@ -1,9 +1,514 @@
+# --------------------------------------------
+# CITATION file created with {cffr} R package
+# See also: https://docs.ropensci.org/cffr/
+# --------------------------------------------
+ 
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-authors:
-- family-names: "Oldoni"
-  given-names: "Damiano"
-  orcid: "https://orcid.org/0000-0003-3445-7562"
-title: "trias"
+message: 'To cite package "trias" in publications use:'
+type: software
+license: MIT
+title: 'trias: Process Data for the Project Tracking Invasive Alien Species (TrIAS)'
 version: 3.0.1
-url: "https://github.com/trias-project/trias"
+abstract: This package provides functionality to facilitate the data processing for
+  the project Tracking Invasive Alien Species (TrIAS <http://trias-project.be>).
+authors:
+- family-names: Oldoni
+  given-names: Damiano
+  email: damiano.oldoni@inbo.be
+  orcid: https://orcid.org/0000-0003-3445-7562
+- family-names: Delva
+  given-names: Soria
+  email: soria.delva@inbo.be
+  orcid: https://orcid.org/0000-0002-7164-6031
+- family-names: Devisscher
+  given-names: Sander
+  email: sander.devisscher@inbo.be
+  orcid: https://orcid.org/0000-0003-2015-5731
+- family-names: Varewyck
+  given-names: Machteld
+  email: machteld.varewyck@openanalytics.eu
+  orcid: https://orcid.org/0009-0003-0496-0447
+repository: https://inbo.r-universe.dev/bin/windows/contrib/4.4
+repository-code: https://github.com/trias-project/trias
+url: https://trias-project.github.io/trias
+contact:
+- family-names: Oldoni
+  given-names: Damiano
+  email: damiano.oldoni@inbo.be
+  orcid: https://orcid.org/0000-0003-3445-7562
+keywords:
+- invasive-species
+- oscibio
+- r
+- r-package
+- rstats
+references:
+- type: software
+  title: 'R: A Language and Environment for Statistical Computing'
+  notes: Depends
+  url: https://www.R-project.org/
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2024'
+  version: '>= 3.6'
+- type: software
+  title: assertable
+  abstract: 'assertable: Verbose Assertions for Tabular Data (Data.frames and Data.tables)'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=assertable
+  authors:
+  - family-names: Nguyen
+    given-names: Grant
+    email: grant.nguyen@gmail.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.assertable
+- type: software
+  title: assertthat
+  abstract: 'assertthat: Easy Pre and Post Assertions'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=assertthat
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.assertthat
+- type: software
+  title: dplyr
+  abstract: 'dplyr: A Grammar of Data Manipulation'
+  notes: Imports
+  url: https://dplyr.tidyverse.org
+  repository: https://CRAN.R-project.org/package=dplyr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+    orcid: https://orcid.org/0000-0003-4757-117X
+  - family-names: François
+    given-names: Romain
+    orcid: https://orcid.org/0000-0002-2444-4226
+  - family-names: Henry
+    given-names: Lionel
+  - family-names: Müller
+    given-names: Kirill
+    orcid: https://orcid.org/0000-0002-1416-3412
+  - family-names: Vaughan
+    given-names: Davis
+    email: davis@posit.co
+    orcid: https://orcid.org/0000-0003-4777-038X
+  year: '2024'
+  doi: 10.32614/CRAN.package.dplyr
+  version: '>= 1.0'
+- type: software
+  title: egg
+  abstract: 'egg: Extensions for ''ggplot2'': Custom Geom, Custom Themes, Plot Alignment,
+    Labelled Panels, Symmetric Scales, and Fixed Panel Size'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=egg
+  authors:
+  - family-names: Auguie
+    given-names: Baptiste
+    email: baptiste.auguie@gmail.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.egg
+- type: software
+  title: forcats
+  abstract: 'forcats: Tools for Working with Categorical Variables (Factors)'
+  notes: Imports
+  url: https://forcats.tidyverse.org/
+  repository: https://CRAN.R-project.org/package=forcats
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.forcats
+- type: software
+  title: ggplot2
+  abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
+  notes: Imports
+  url: https://ggplot2.tidyverse.org
+  repository: https://CRAN.R-project.org/package=ggplot2
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+    orcid: https://orcid.org/0000-0003-4757-117X
+  - family-names: Chang
+    given-names: Winston
+    orcid: https://orcid.org/0000-0002-1576-2126
+  - family-names: Henry
+    given-names: Lionel
+  - family-names: Pedersen
+    given-names: Thomas Lin
+    email: thomas.pedersen@posit.co
+    orcid: https://orcid.org/0000-0002-5147-4711
+  - family-names: Takahashi
+    given-names: Kohske
+  - family-names: Wilke
+    given-names: Claus
+    orcid: https://orcid.org/0000-0002-7470-9261
+  - family-names: Woo
+    given-names: Kara
+    orcid: https://orcid.org/0000-0002-5125-4188
+  - family-names: Yutani
+    given-names: Hiroaki
+    orcid: https://orcid.org/0000-0002-3385-7233
+  - family-names: Dunnington
+    given-names: Dewey
+    orcid: https://orcid.org/0000-0002-9415-4582
+  - family-names: Brand
+    given-names: Teun
+    name-particle: van den
+    orcid: https://orcid.org/0000-0002-9335-7468
+  year: '2024'
+  doi: 10.32614/CRAN.package.ggplot2
+- type: software
+  title: gratia
+  abstract: 'gratia: Graceful ''ggplot''-Based Graphics and Other Functions for GAMs
+    Fitted Using ''mgcv'''
+  notes: Imports
+  url: https://gavinsimpson.github.io/gratia/
+  repository: https://CRAN.R-project.org/package=gratia
+  authors:
+  - family-names: Simpson
+    given-names: Gavin L.
+    email: ucfagls@gmail.com
+    orcid: https://orcid.org/0000-0002-9084-8413
+  year: '2024'
+  doi: 10.32614/CRAN.package.gratia
+  version: '>= 0.9.0'
+- type: software
+  title: leaflet
+  abstract: 'leaflet: Create Interactive Web Maps with the JavaScript ''Leaflet''
+    Library'
+  notes: Imports
+  url: https://rstudio.github.io/leaflet/
+  repository: https://CRAN.R-project.org/package=leaflet
+  authors:
+  - family-names: Cheng
+    given-names: Joe
+    email: joe@posit.co
+  - family-names: Schloerke
+    given-names: Barret
+    email: barret@posit.co
+    orcid: https://orcid.org/0000-0001-9986-114X
+  - family-names: Karambelkar
+    given-names: Bhaskar
+  - family-names: Xie
+    given-names: Yihui
+  year: '2024'
+  doi: 10.32614/CRAN.package.leaflet
+- type: software
+  title: lifecycle
+  abstract: 'lifecycle: Manage the Life Cycle of your Package Functions'
+  notes: Imports
+  url: https://lifecycle.r-lib.org/
+  repository: https://CRAN.R-project.org/package=lifecycle
+  authors:
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@posit.co
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+    orcid: https://orcid.org/0000-0003-4757-117X
+  year: '2024'
+  doi: 10.32614/CRAN.package.lifecycle
+- type: software
+  title: mgcv
+  abstract: 'mgcv: Mixed GAM Computation Vehicle with Automatic Smoothness Estimation'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=mgcv
+  authors:
+  - family-names: Wood
+    given-names: Simon
+    email: simon.wood@r-project.org
+  year: '2024'
+  doi: 10.32614/CRAN.package.mgcv
+- type: software
+  title: plotly
+  abstract: 'plotly: Create Interactive Web Graphics via ''plotly.js'''
+  notes: Imports
+  url: https://plotly-r.com
+  repository: https://CRAN.R-project.org/package=plotly
+  authors:
+  - family-names: Sievert
+    given-names: Carson
+    email: cpsievert1@gmail.com
+    orcid: https://orcid.org/0000-0002-4958-2844
+  - family-names: Parmer
+    given-names: Chris
+    email: chris@plot.ly
+  - family-names: Hocking
+    given-names: Toby
+    email: tdhock5@gmail.com
+  - family-names: Chamberlain
+    given-names: Scott
+    email: myrmecocystus@gmail.com
+  - family-names: Ram
+    given-names: Karthik
+    email: karthik.ram@gmail.com
+  - family-names: Corvellec
+    given-names: Marianne
+    email: marianne.corvellec@igdore.org
+    orcid: https://orcid.org/0000-0002-1994-3581
+  - family-names: Despouy
+    given-names: Pedro
+    email: pedro@plot.ly
+  year: '2024'
+  doi: 10.32614/CRAN.package.plotly
+- type: software
+  title: purrr
+  abstract: 'purrr: Functional Programming Tools'
+  notes: Imports
+  url: https://purrr.tidyverse.org/
+  repository: https://CRAN.R-project.org/package=purrr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+    orcid: https://orcid.org/0000-0003-4757-117X
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@rstudio.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.purrr
+- type: software
+  title: readr
+  abstract: 'readr: Read Rectangular Text Data'
+  notes: Imports
+  url: https://readr.tidyverse.org
+  repository: https://CRAN.R-project.org/package=readr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Hester
+    given-names: Jim
+  - family-names: Bryan
+    given-names: Jennifer
+    email: jenny@posit.co
+    orcid: https://orcid.org/0000-0002-6983-2759
+  year: '2024'
+  doi: 10.32614/CRAN.package.readr
+- type: software
+  title: reshape2
+  abstract: 'reshape2: Flexibly Reshape Data: A Reboot of the Reshape Package'
+  notes: Imports
+  url: https://github.com/hadley/reshape
+  repository: https://CRAN.R-project.org/package=reshape2
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: h.wickham@gmail.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.reshape2
+- type: software
+  title: rgbif
+  abstract: 'rgbif: Interface to the Global Biodiversity Information Facility API'
+  notes: Imports
+  url: https://docs.ropensci.org/rgbif/
+  repository: https://CRAN.R-project.org/package=rgbif
+  authors:
+  - family-names: Chamberlain
+    given-names: Scott
+    orcid: https://orcid.org/0000-0003-1444-9135
+  - family-names: Oldoni
+    given-names: Damiano
+    orcid: https://orcid.org/0000-0003-3445-7562
+  - family-names: Waller
+    given-names: John
+    email: jwaller@gbif.org
+    orcid: https://orcid.org/0000-0002-7302-5976
+  year: '2024'
+  doi: 10.32614/CRAN.package.rgbif
+  version: '>= 3.0'
+- type: software
+  title: rlang
+  abstract: 'rlang: Functions for Base Types and Core R and ''Tidyverse'' Features'
+  notes: Imports
+  url: https://rlang.r-lib.org
+  repository: https://CRAN.R-project.org/package=rlang
+  authors:
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@posit.co
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  year: '2024'
+  doi: 10.32614/CRAN.package.rlang
+- type: software
+  title: rnaturalearth
+  abstract: 'rnaturalearth: World Map Data from Natural Earth'
+  notes: Imports
+  url: https://docs.ropensci.org/rnaturalearth/
+  repository: https://CRAN.R-project.org/package=rnaturalearth
+  authors:
+  - family-names: Massicotte
+    given-names: Philippe
+    email: pmassicotte@hotmail.com
+    orcid: https://orcid.org/0000-0002-5919-4116
+  - family-names: South
+    given-names: Andy
+    email: southandy@gmail.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.rnaturalearth
+- type: software
+  title: scales
+  abstract: 'scales: Scale Functions for Visualization'
+  notes: Imports
+  url: https://scales.r-lib.org
+  repository: https://CRAN.R-project.org/package=scales
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Pedersen
+    given-names: Thomas Lin
+    email: thomas.pedersen@posit.co
+    orcid: https://orcid.org/0000-0002-5147-4711
+  - family-names: Seidel
+    given-names: Dana
+  year: '2024'
+  doi: 10.32614/CRAN.package.scales
+- type: software
+  title: sf
+  abstract: 'sf: Simple Features for R'
+  notes: Imports
+  url: https://r-spatial.github.io/sf/
+  repository: https://CRAN.R-project.org/package=sf
+  authors:
+  - family-names: Pebesma
+    given-names: Edzer
+    email: edzer.pebesma@uni-muenster.de
+    orcid: https://orcid.org/0000-0001-8049-7069
+  year: '2024'
+  doi: 10.32614/CRAN.package.sf
+- type: software
+  title: stringr
+  abstract: 'stringr: Simple, Consistent Wrappers for Common String Operations'
+  notes: Imports
+  url: https://stringr.tidyverse.org
+  repository: https://CRAN.R-project.org/package=stringr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  year: '2024'
+  doi: 10.32614/CRAN.package.stringr
+- type: software
+  title: svDialogs
+  abstract: 'svDialogs: ''SciViews'' - Standard Dialog Boxes for Windows, MacOS and
+    Linuxes'
+  notes: Imports
+  url: https://www.sciviews.org/svDialogs/
+  repository: https://CRAN.R-project.org/package=svDialogs
+  authors:
+  - family-names: Grosjean
+    given-names: Philippe
+    email: phgrosjean@sciviews.org
+    orcid: https://orcid.org/0000-0002-2694-9471
+  year: '2024'
+  doi: 10.32614/CRAN.package.svDialogs
+- type: software
+  title: tibble
+  abstract: 'tibble: Simple Data Frames'
+  notes: Imports
+  url: https://tibble.tidyverse.org/
+  repository: https://CRAN.R-project.org/package=tibble
+  authors:
+  - family-names: Müller
+    given-names: Kirill
+    email: kirill@cynkra.com
+    orcid: https://orcid.org/0000-0002-1416-3412
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.tibble
+- type: software
+  title: tidyr
+  abstract: 'tidyr: Tidy Messy Data'
+  notes: Imports
+  url: https://tidyr.tidyverse.org
+  repository: https://CRAN.R-project.org/package=tidyr
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Vaughan
+    given-names: Davis
+    email: davis@posit.co
+  - family-names: Girlich
+    given-names: Maximilian
+  year: '2024'
+  doi: 10.32614/CRAN.package.tidyr
+- type: software
+  title: tidyselect
+  abstract: 'tidyselect: Select from a Set of Strings'
+  notes: Imports
+  url: https://tidyselect.r-lib.org
+  repository: https://CRAN.R-project.org/package=tidyselect
+  authors:
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@posit.co
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  year: '2024'
+  doi: 10.32614/CRAN.package.tidyselect
+  version: '>= 1.2.0'
+- type: software
+  title: utils
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2024'
+- type: software
+  title: covr
+  abstract: 'covr: Test Coverage for Packages'
+  notes: Suggests
+  url: https://covr.r-lib.org
+  repository: https://CRAN.R-project.org/package=covr
+  authors:
+  - family-names: Hester
+    given-names: Jim
+    email: james.f.hester@gmail.com
+  year: '2024'
+  doi: 10.32614/CRAN.package.covr
+- type: software
+  title: knitr
+  abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
+  notes: Suggests
+  url: https://yihui.org/knitr/
+  repository: https://CRAN.R-project.org/package=knitr
+  authors:
+  - family-names: Xie
+    given-names: Yihui
+    email: xie@yihui.name
+    orcid: https://orcid.org/0000-0003-0645-5666
+  year: '2024'
+  doi: 10.32614/CRAN.package.knitr
+- type: software
+  title: testthat
+  abstract: 'testthat: Unit Testing for R'
+  notes: Suggests
+  url: https://testthat.r-lib.org
+  repository: https://CRAN.R-project.org/package=testthat
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  year: '2024'
+  doi: 10.32614/CRAN.package.testthat
+
