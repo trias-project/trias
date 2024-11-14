@@ -1,9 +1,11 @@
 #' Interactively get & store credentials in the system environment
 #'
-#' @param x a character with the name of the system environment variable to get
-#'   and store
-#' @return a character vector containing the value of the system variable
 #' @importFrom svDialogs dlgInput
+#' @param x character. Name of the system environment variable to get
+#'   and store.
+#'   
+#' @return character. Vector containing the value(s) of the system variable.
+#' 
 #' @noRd
 get_cred <- function(x) {
   cred <- Sys.getenv(x)
