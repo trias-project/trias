@@ -3,8 +3,8 @@
 #' @param x a character with the name of the system environment variable to get
 #'   and store
 #' @return a character vector containing the value of the system variable
-#' @export
 #' @importFrom svDialogs dlgInput
+#' @noRd
 get_cred <- function(x) {
   cred <- Sys.getenv(x)
 
