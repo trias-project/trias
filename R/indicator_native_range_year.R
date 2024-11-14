@@ -21,7 +21,7 @@
 #'   Default: `"absolute"`. If "absolute" the number per year and location
 #' is displayed; if "relative" each bar is standardised per year before stacking;
 #' if "cumulative" the cumulative number over years per location.
-#' @param relative (logical) if TRUE each bar is standardised before
+#' @param relative (logical) if `TRUE` each bar is standardised before
 #'   stacking. Deprecated, use `response_type = "relative"` instead.
 #' @param taxon_key_col character. Name of the column of `df` containing
 #'   taxon IDs. Default: `"key"`.
@@ -111,7 +111,7 @@ indicator_native_range_year <- function(
   }
   
   response_type <- match.arg(response_type)
-  # Check relative (deprecated)
+  # Check `relative` argument (deprecated)
   warning_detail <- paste(
     "Use argument `response_type = 'relative'` for displaying relative numbers",
     "in the plot. The use of boolean parameter `relative` is deprecated since",
