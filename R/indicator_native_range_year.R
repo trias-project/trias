@@ -45,7 +45,6 @@
 #'   given year, `n`/`total`*100.
 #' @export
 #' @importFrom dplyr %>% .data
-#' @importFrom lifecycle deprecated is_present deprecate_warn
 #' @examples
 #' \dontrun{
 #' library(readr)
