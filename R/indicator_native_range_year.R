@@ -17,12 +17,12 @@
 #' @param y_lab character string, label of the y-axis. Default: "number of alien
 #'   species".
 #' @param response_type (character) summary type of response to be displayed;
-#'   should be one of \code{c("absolute", "relative", "cumulative")}. 
-#'   Default: \code{"absolute"}. If "absolute" the number per year and location
+#'   should be one of `c("absolute", "relative", "cumulative")`. 
+#'   Default: `"absolute"`. If "absolute" the number per year and location
 #' is displayed; if "relative" each bar is standardised per year before stacking;
 #' if "cumulative" the cumulative number over years per location.
 #' @param relative (logical) if TRUE each bar is standardised before
-#'   stacking. Deprecated, use \code{response_type = 'relative'} instead.
+#'   stacking. Deprecated, use `response_type = "relative"` instead.
 #' @param taxon_key_col character. Name of the column of `df` containing
 #'   taxon IDs. Default: `"key"`.
 #' @param first_observed (character) Name of the column in `data`
