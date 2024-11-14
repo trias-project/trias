@@ -43,8 +43,8 @@ Default: \code{"absolute"}. If "absolute" the number per year and location
 is displayed; if "relative" each bar is standardised per year before stacking;
 if "cumulative" the cumulative number over years per location.}
 
-\item{relative}{(logical) if TRUE each bar is standardised before
-stacking. Deprecated, use \code{response_type = 'relative'} instead.}
+\item{relative}{(logical) if \code{TRUE} each bar is standardised before
+stacking. Deprecated, use \code{response_type = "relative"} instead.}
 
 \item{taxon_key_col}{character. Name of the column of \code{df} containing
 taxon IDs. Default: \code{"key"}.}
