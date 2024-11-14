@@ -1,4 +1,3 @@
-#' @importFrom readr read_tsv
 context("output_gbif_get_taxa")
 
 

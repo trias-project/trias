@@ -1,3 +1,7 @@
+# trias 3.0.1
+
+- Function `get_cred()` is not exported anymore (#146). Internally used only.
+
 # trias 3.0.0
 
 - Allow to specify x-scale stepsize for `indicator_native_range_year()` (#143)

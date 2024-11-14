@@ -196,7 +196,7 @@ climate_match <- function(region,
                                     "countryCode"
                      )) %>% 
       dplyr::filter(.data$acceptedTaxonKey %in% taxon_key)
-  }else{
+  } else {
     gbif_user <- get_cred("gbif_user")
     gbif_pwd <- get_cred("gbif_pwd")
     gbif_email <- get_cred("gbif_email")
