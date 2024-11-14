@@ -112,16 +112,11 @@ indicator_native_range_year <- function(
   
   response_type <- match.arg(response_type)
   # Check `relative` argument (deprecated)
-  warning_detail <- paste(
-    "Use argument `response_type = 'relative'` for displaying relative numbers",
-    "in the plot. The use of boolean parameter `relative` is deprecated since",
-    "version 3.0.0."
-  )
   if (lifecycle::is_present(relative)) {
     lifecycle::deprecate_warn(
       when = "3.0.0",
-      what = "trias::indicator_native_range_year(relative)",
-      details = warning_detail
+      what = "trias::indicator_native_range_year(relative = )", 
+      with = "trias::indicator_native_range_year(response_type = )"
     )
   }
   # Define the right response_type
