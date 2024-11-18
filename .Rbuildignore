@@ -10,3 +10,4 @@
 ^appveyor\.yml$
 ^\.github$
 ^codecov\.yml$
+^CITATION\.cff$

@@ -1,6 +1,7 @@
 # trias 3.0.1
 
 - Function `get_cred()` is not exported anymore (#146). Internally used only.
+- Add `CITATION.cff` (#139)
 
 # trias 3.0.0
 
