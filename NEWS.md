@@ -1,3 +1,6 @@
+# trias 3.0.2
+
+- `CITATION.cff` is updated automatically via GitHub Actions (#151).
 # trias 3.0.1
 
 - Function `get_cred()` is not exported anymore (#146). Internally used only.
