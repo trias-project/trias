@@ -668,9 +668,9 @@ apply_gam <- function(df,
           deriv1 %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em1 = dplyr::case_when(
-            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
-            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
-            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= - 0.01 ~ -1,
+            .data$lower_ci < 0.01 & .data$upper_ci > - 0.01 ~ 0,
+            .data$lower_ci >= 0.01 & .data$upper_ci > 0 ~ 1
           )) %>%
           dplyr::select(!!dplyr::sym(year), "em1") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
@@ -678,9 +678,9 @@ apply_gam <- function(df,
         em2 <- deriv2 %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em2 = dplyr::case_when(
-            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
-            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
-            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= - 0.01 ~ -1,
+            .data$lower_ci < 0.01 & .data$upper_ci > - 0.01 ~ 0,
+            .data$lower_ci >= 0.01 & .data$upper_ci > 0 ~ 1
           )) %>%
           dplyr::select(!!dplyr::sym(year), "em2") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))

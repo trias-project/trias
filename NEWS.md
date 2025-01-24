@@ -1,5 +1,6 @@
 # trias 3.0.2
 
+- Improve `apply_gam()` to avoid emerging status change for negligible near zero values (#150).
 - `CITATION.cff` is updated automatically via GitHub Actions (#151).
 # trias 3.0.1
 
