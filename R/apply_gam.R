@@ -862,17 +862,22 @@ plot_ribbon_em <- function(df_plot,
       ) +
       ggplot2::geom_line(ggplot2::aes(x = .data$year, y = .data$fit),
                          color = "grey50") +
-      ggplot2::geom_point(ggplot2::aes(
-        x = .data$year,
-        y = .data$fit,
-        color = factor(.data$em_status)
-      ),
-      size = 2
-      ) +
+      ggplot2::geom_point(
+        mapping = ggplot2::aes(
+          x = .data$year,
+          y = .data$fit,
+          color = factor(
+            .data$em_status, 
+            levels = names(colors_em)
+          )
+        ),
+        size = 2,
+        show.legend = TRUE) +
       ggplot2::scale_colour_manual(
         values = colors_em,
         labels = labels_em,
-        name = "Emerging status"
+        name = "Emerging status",
+        drop = FALSE
       ) +
       ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
   } else {
