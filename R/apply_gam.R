@@ -824,6 +824,7 @@ apply_gam <- function(df,
 #'   are returned. Default: \code{FALSE}.
 #' @return a ggplot2 plot object.
 #' @importFrom dplyr .data %>%
+#' @noRd
 plot_ribbon_em <- function(df_plot,
                            x_axis = "year",
                            y_axis = "obs",
