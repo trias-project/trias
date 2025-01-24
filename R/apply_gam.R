@@ -895,7 +895,7 @@ plot_ribbon_em <- function(df_plot,
 
 #' Add annotation when status cannot be assessed
 #'
-#' Internal function to be used when GAM cannot be applied to it doesn't
+#' Internal function to be used when GAM cannot be applied as it doesn't
 #' converge.
 #'
 #' @param plot_obs ggplot2 plot object showing the observations.
