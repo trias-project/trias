@@ -1,3 +1,9 @@
+# trias 3.0.2
+
+- Improve `apply_gam()` to avoid emerging status change for negligible near zero values (#150).
+- Show all emerging status values in the legend of the plots returned by `apply_gam()` (#152).
+- `CITATION.cff` is updated automatically via GitHub Actions (#151).
+
 # trias 3.0.1
 
 - Function `get_cred()` is not exported anymore (#146). Internally used only.

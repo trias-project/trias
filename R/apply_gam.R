@@ -668,9 +668,9 @@ apply_gam <- function(df,
           deriv1 %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em1 = dplyr::case_when(
-            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
-            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
-            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= - 0.01 ~ -1,
+            .data$lower_ci < 0.01 & .data$upper_ci > - 0.01 ~ 0,
+            .data$lower_ci >= 0.01 & .data$upper_ci > 0 ~ 1
           )) %>%
           dplyr::select(!!dplyr::sym(year), "em1") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
@@ -678,9 +678,9 @@ apply_gam <- function(df,
         em2 <- deriv2 %>%
           dplyr::filter(!is.na(!!dplyr::sym(year))) %>%
           dplyr::mutate(em2 = dplyr::case_when(
-            .data$lower_ci < 0 & .data$upper_ci <= 0 ~ -1,
-            .data$lower_ci < 0 & .data$upper_ci > 0 ~ 0,
-            .data$lower_ci >= 0 & .data$upper_ci > 0 ~ 1
+            .data$lower_ci < 0 & .data$upper_ci <= - 0.01 ~ -1,
+            .data$lower_ci < 0.01 & .data$upper_ci > - 0.01 ~ 0,
+            .data$lower_ci >= 0.01 & .data$upper_ci > 0 ~ 1
           )) %>%
           dplyr::select(!!dplyr::sym(year), "em2") %>%
           dplyr::mutate(!!dplyr::sym(year) := round(!!dplyr::sym(year)))
@@ -824,6 +824,7 @@ apply_gam <- function(df,
 #'   are returned. Default: \code{FALSE}.
 #' @return a ggplot2 plot object.
 #' @importFrom dplyr .data %>%
+#' @noRd
 plot_ribbon_em <- function(df_plot,
                            x_axis = "year",
                            y_axis = "obs",
@@ -862,17 +863,22 @@ plot_ribbon_em <- function(df_plot,
       ) +
       ggplot2::geom_line(ggplot2::aes(x = .data$year, y = .data$fit),
                          color = "grey50") +
-      ggplot2::geom_point(ggplot2::aes(
-        x = .data$year,
-        y = .data$fit,
-        color = factor(.data$em_status)
-      ),
-      size = 2
-      ) +
+      ggplot2::geom_point(
+        mapping = ggplot2::aes(
+          x = .data$year,
+          y = .data$fit,
+          color = factor(
+            .data$em_status, 
+            levels = names(colors_em)
+          )
+        ),
+        size = 2,
+        show.legend = TRUE) +
       ggplot2::scale_colour_manual(
         values = colors_em,
         labels = labels_em,
-        name = "Emerging status"
+        name = "Emerging status",
+        drop = FALSE
       ) +
       ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
   } else {
@@ -889,7 +895,7 @@ plot_ribbon_em <- function(df_plot,
 
 #' Add annotation when status cannot be assessed
 #'
-#' Internal function to be used when GAM cannot be applied to it doesn't
+#' Internal function to be used when GAM cannot be applied as it doesn't
 #' converge.
 #'
 #' @param plot_obs ggplot2 plot object showing the observations.
