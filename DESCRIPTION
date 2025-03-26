@@ -25,7 +25,7 @@ Authors@R: c(
            comment = "https://trias-project.be"),
     person("LIFE RIPARIAS", role = "fnd",
            comment = "https://www.riparias.be"),
-    person("European Union's Horizon Europe Research and Innovation Programme (ID No 101059592)", role = "fnd",
+    person("B-Cubed (Horizon Europe ID No 101059592)", role = "fnd",
            comment = "https://b-cubed.eu/")
   )
 Description: This package provides functionality to facilitate the data
