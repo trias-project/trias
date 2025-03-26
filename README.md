@@ -25,7 +25,13 @@ To get started, see:
 
 ## Installation
 
-You can install the development version of trias from
+Install **trias** in R:
+
+```
+install.packages("trias", repos = "https://inbo.r-universe.dev")
+```
+
+You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
