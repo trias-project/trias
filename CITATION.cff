@@ -8,7 +8,8 @@ message: 'To cite package "trias" in publications use:'
 type: software
 license: MIT
 title: 'trias: Process Data for the Project Tracking Invasive Alien Species (TrIAS)'
-version: 3.0.1
+version: 3.0.2
+doi: 10.32614/CRAN.package.trias
 abstract: This package provides functionality to facilitate the data processing for
   the project Tracking Invasive Alien Species (TrIAS <http://trias-project.be>).
 authors:
@@ -28,7 +29,7 @@ authors:
   given-names: Machteld
   email: machteld.varewyck@openanalytics.eu
   orcid: https://orcid.org/0009-0003-0496-0447
-repository: https://inbo.r-universe.dev/bin/windows/contrib/4.4
+repository: https://inbo.r-universe.dev/
 repository-code: https://github.com/trias-project/trias
 url: https://trias-project.github.io/trias
 contact:
@@ -52,7 +53,7 @@ references:
   institution:
     name: R Foundation for Statistical Computing
     address: Vienna, Austria
-  year: '2024'
+  year: '2025'
   version: '>= 3.6'
 - type: software
   title: assertable
@@ -63,7 +64,7 @@ references:
   - family-names: Nguyen
     given-names: Grant
     email: grant.nguyen@gmail.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.assertable
 - type: software
   title: assertthat
@@ -74,7 +75,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.assertthat
 - type: software
   title: dplyr
@@ -99,7 +100,7 @@ references:
     given-names: Davis
     email: davis@posit.co
     orcid: https://orcid.org/0000-0003-4777-038X
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.dplyr
   version: '>= 1.0'
 - type: software
@@ -112,7 +113,7 @@ references:
   - family-names: Auguie
     given-names: Baptiste
     email: baptiste.auguie@gmail.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.egg
 - type: software
   title: forcats
@@ -124,7 +125,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.forcats
 - type: software
   title: ggplot2
@@ -164,7 +165,7 @@ references:
     given-names: Teun
     name-particle: van den
     orcid: https://orcid.org/0000-0002-9335-7468
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.ggplot2
 - type: software
   title: gratia
@@ -178,7 +179,7 @@ references:
     given-names: Gavin L.
     email: ucfagls@gmail.com
     orcid: https://orcid.org/0000-0002-9084-8413
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.gratia
   version: '>= 0.9.0'
 - type: software
@@ -200,7 +201,7 @@ references:
     given-names: Bhaskar
   - family-names: Xie
     given-names: Yihui
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.leaflet
 - type: software
   title: lifecycle
@@ -216,7 +217,7 @@ references:
     given-names: Hadley
     email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.lifecycle
 - type: software
   title: mgcv
@@ -227,7 +228,7 @@ references:
   - family-names: Wood
     given-names: Simon
     email: simon.wood@r-project.org
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.mgcv
 - type: software
   title: plotly
@@ -259,7 +260,7 @@ references:
   - family-names: Despouy
     given-names: Pedro
     email: pedro@plot.ly
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.plotly
 - type: software
   title: purrr
@@ -270,12 +271,12 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Henry
     given-names: Lionel
-    email: lionel@rstudio.com
-  year: '2024'
+    email: lionel@posit.co
+  year: '2025'
   doi: 10.32614/CRAN.package.purrr
 - type: software
   title: readr
@@ -293,7 +294,7 @@ references:
     given-names: Jennifer
     email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.readr
 - type: software
   title: reshape2
@@ -305,7 +306,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: h.wickham@gmail.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.reshape2
 - type: software
   title: rgbif
@@ -324,7 +325,7 @@ references:
     given-names: John
     email: jwaller@gbif.org
     orcid: https://orcid.org/0000-0002-7302-5976
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.rgbif
   version: '>= 3.0'
 - type: software
@@ -340,7 +341,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.rlang
 - type: software
   title: rnaturalearth
@@ -356,7 +357,7 @@ references:
   - family-names: South
     given-names: Andy
     email: southandy@gmail.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.rnaturalearth
 - type: software
   title: scales
@@ -374,7 +375,7 @@ references:
     orcid: https://orcid.org/0000-0002-5147-4711
   - family-names: Seidel
     given-names: Dana
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.scales
 - type: software
   title: sf
@@ -387,7 +388,7 @@ references:
     given-names: Edzer
     email: edzer.pebesma@uni-muenster.de
     orcid: https://orcid.org/0000-0001-8049-7069
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.sf
 - type: software
   title: stringr
@@ -399,7 +400,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.stringr
 - type: software
   title: svDialogs
@@ -413,7 +414,7 @@ references:
     given-names: Philippe
     email: phgrosjean@sciviews.org
     orcid: https://orcid.org/0000-0002-2694-9471
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.svDialogs
 - type: software
   title: tibble
@@ -429,7 +430,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.tibble
 - type: software
   title: tidyr
@@ -446,7 +447,7 @@ references:
     email: davis@posit.co
   - family-names: Girlich
     given-names: Maximilian
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.tidyr
 - type: software
   title: tidyselect
@@ -461,7 +462,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.tidyselect
   version: '>= 1.2.0'
 - type: software
@@ -473,7 +474,7 @@ references:
   institution:
     name: R Foundation for Statistical Computing
     address: Vienna, Austria
-  year: '2024'
+  year: '2025'
 - type: software
   title: covr
   abstract: 'covr: Test Coverage for Packages'
@@ -484,7 +485,7 @@ references:
   - family-names: Hester
     given-names: Jim
     email: james.f.hester@gmail.com
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.covr
 - type: software
   title: knitr
@@ -497,7 +498,7 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.knitr
 - type: software
   title: testthat
@@ -509,6 +510,6 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2024'
+  year: '2025'
   doi: 10.32614/CRAN.package.testthat
 
