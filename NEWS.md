@@ -1,3 +1,8 @@
+# trias 3.0.3
+
+- Align code in `verify_tax()` to tidyselect 1.1.0: using an external vector in
+selections was deprecated in tidyselect 1.1.0.
+
 # trias 3.0.2
 
 - Improve `apply_gam()` to avoid emerging status change for negligible near zero values (#150).
