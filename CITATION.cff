@@ -8,8 +8,7 @@ message: 'To cite package "trias" in publications use:'
 type: software
 license: MIT
 title: 'trias: Process Data for the Project Tracking Invasive Alien Species (TrIAS)'
-version: 3.0.2
-doi: 10.32614/CRAN.package.trias
+version: 3.0.3
 abstract: This package provides functionality to facilitate the data processing for
   the project Tracking Invasive Alien Species (TrIAS <http://trias-project.be>).
 authors:
@@ -29,7 +28,6 @@ authors:
   given-names: Machteld
   email: machteld.varewyck@openanalytics.eu
   orcid: https://orcid.org/0009-0003-0496-0447
-repository: https://inbo.r-universe.dev/
 repository-code: https://github.com/trias-project/trias
 url: https://trias-project.github.io/trias
 contact:
