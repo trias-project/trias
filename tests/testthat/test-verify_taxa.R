@@ -909,13 +909,13 @@ test_that("consitency input - output", {
         nrow(output2$info$new_unmatched_taxa)
   )
   expect_true(nrow(output1$verification %>%
-    filter(!is.na(verificationKey))) <=
+    dplyr::filter(!is.na(verificationKey))) <=
     nrow(output1$info$check_verificationKey))
   expect_true(
     nrow(my_taxa %>%
-      filter(bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"))) ==
+      dplyr::filter(bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"))) ==
       nrow(output2$taxa %>%
-        filter(!is.na(verificationKey)))
+        dplyr::filter(!is.na(verificationKey)))
   )
   expect_true(all(output1$info$new_synonyms$outdated == FALSE))
   expect_true(all(output2$info$new_synonyms$outdated == FALSE))
