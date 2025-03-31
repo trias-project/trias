@@ -14,6 +14,7 @@ status](https://www.r-pkg.org/badges/version/trias)](https://CRAN.R-project.org/
 [![repo
 status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![name status badge](https://inbo.r-universe.dev/badges/:name?color=c04384)](https://inbo.r-universe.dev/)
+[![DOI](https://zenodo.org/badge/111584976.svg)](https://doi.org/10.5281/zenodo.15115213)
 <!-- badges: end -->
 
 Trias is an R package providing functionality for the [Tracking Invasive
