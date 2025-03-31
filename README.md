@@ -7,10 +7,14 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/trias)](https://CRAN.R-project.org/package=trias)
+[![Release](https://img.shields.io/github/v/release/trias-project/trias.svg)](https://github.com/trias-project/trias/releases)
+[![trias status badge](https://inbo.r-universe.dev/trias/badges/version)](https://inbo.r-universe.dev/trias)
 [![R-CMD-check](https://github.com/trias-project/trias/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/trias-project/trias/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/trias-project/trias/branch/main/graph/badge.svg)](https://app.codecov.io/gh/trias-project/trias/)
 [![repo
 status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![name status badge](https://inbo.r-universe.dev/badges/:name?color=c04384)](https://inbo.r-universe.dev/)
+[![DOI](https://zenodo.org/badge/111584976.svg)](https://doi.org/10.5281/zenodo.15115213)
 <!-- badges: end -->
 
 Trias is an R package providing functionality for the [Tracking Invasive
