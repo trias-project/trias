@@ -19,14 +19,14 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-6658-6062")),
     person("Machteld", "Varewyck", , "machteld.varewyck@openanalytics.eu", role = "aut",
            comment = c(ORCID = "0009-0003-0496-0447")),
-    person("Research Institute for Nature and Forest (INBO)", role = c("cph", "fnd"), email = "info@inbo.be",
-           comment = "https://www.vlaanderen.be/inbo/en-gb/"),
+    person("Research Institute for Nature and Forest (INBO)", role = c("cph", "fnd"),
+           comment = c(ROR = "00j54wy13")),
     person("TrIAS", role = "fnd",
            comment = "https://trias-project.be"),
     person("LIFE RIPARIAS", role = "fnd",
            comment = "https://www.riparias.be"),
-    person("B-Cubed (Horizon Europe ID No 101059592)", role = "fnd",
-           comment = "https://b-cubed.eu/")
+    person("European Union", role = "fnd",
+           comment = "https://doi.org/10.3030/101059592")
   )
 Description: This package provides functionality to facilitate the data
     processing for the project Tracking Invasive Alien Species (TrIAS
