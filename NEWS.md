@@ -1,3 +1,7 @@
+# trias 3.0.4
+
+- Improve `indicator_native_range_year()`: Add option for including missing years as gaps on x-axis in the plot (#163).
+
 # trias 3.0.3
 
 - Align code in `verify_taxa()` to tidyselect 1.1.0: using an external vector in
