@@ -1,6 +1,6 @@
-# trias 3.0.4
+# trias 3.1.0
 
-- Improve `indicator_native_range_year()`: Add option for including missing years as gaps on x-axis in the plot (#163).
+- Improve `indicator_native_range_year()`: Add option `x_include_missing` for including missing years as gaps on x-axis in the plot (#163).
 
 # trias 3.0.3
 

@@ -62,6 +62,14 @@ test_that("Arg: x_major_scale_stepsize", {
     )
   })
 
+test_that("Arg: x_include_missing", {
+    expect_error(
+      indicator_native_range_year(cleaned_input_test_df,
+        x_include_missing = "TRUE"
+      ),
+      "Argument x_include_missing has to be a logical."
+    )
+  })
 
 test_that("Arg: first_observed", {
   expect_error(
@@ -165,6 +173,32 @@ test_that("Test output type, class, slots and columns", {
   }
   
 })
+
+test_that("x_include_missing arg for indicator_native_range", {
+  
+    plot_output <- indicator_native_range_year(
+      df = cleaned_input_test_df,
+      years = c(2000, 2005),
+      x_include_missing = TRUE
+    )
+    
+    # output is a list
+    expect_type(plot_output, type = "list")
+    
+    # static plot slot is a list with gg as class
+    expect_type(plot_output$static_plot, type = "list")
+    expect_s3_class(plot_output$static_plot, class = c("gg", "ggplot"))
+    
+    # interactive plot slot is a list with plotly and htmlwidget as class
+    expect_type(plot_output$interactive_plot, type = "list")
+    expect_s3_class(plot_output$interactive_plot, class = c("plotly", "htmlwidget"))
+    
+    # data is a data.frame (tibble)
+    expect_type(plot_output$data, type = "list")
+    expect_s3_class(plot_output$data, class = c("data.frame", "tbl_df"))
+  
+  })
+
 
 test_that("relative arg is deprecated", {
     rlang::with_options(

@@ -10,6 +10,7 @@ indicator_native_range_year(
   years = NULL,
   type = c("native_range", "native_continent"),
   x_major_scale_stepsize = 10,
+  x_include_missing = FALSE,
   x_lab = "year",
   y_lab = "alien species",
   response_type = c("absolute", "relative", "cumulative"),
@@ -31,6 +32,12 @@ column called as the selected \code{type} must be present in \code{df}.}
 
 \item{x_major_scale_stepsize}{(integer) Parameter that indicates the breaks
 of the x axis. Default: 10.}
+
+\item{x_include_missing}{(logical) if \code{TRUE} all consecutive years are
+displayed on the x-axis, even if 0 records are available. If \code{FALSE}
+(default) years with 0 count will be omitted and the x-axis is compressed.
+Range is determined by either \code{years} if specified,
+otherwise by the range of \code{first_observed} column in the \code{df}.}
 
 \item{x_lab}{character string, label of the x-axis. Default: "year".}
 

@@ -13,7 +13,7 @@
 #'   column called as the selected `type` must be present in `df`.
 #' @param x_major_scale_stepsize (integer) Parameter that indicates the breaks
 #'   of the x axis. Default: 10.
-#' @param include_missing_years (logical) if `TRUE` all consecutive years are 
+#' @param x_include_missing (logical) if `TRUE` all consecutive years are 
 #'   displayed on the x-axis, even if 0 records are available. If `FALSE` 
 #'   (default) years with 0 count will be omitted and the x-axis is compressed.
 #'   Range is determined by either \code{years} if specified, 
@@ -75,7 +75,7 @@ indicator_native_range_year <- function(
     years = NULL,
     type = c("native_range", "native_continent"),
     x_major_scale_stepsize = 10,
-    include_missing_years = FALSE,
+    x_include_missing = FALSE,
     x_lab = "year",
     y_lab = "alien species",
     response_type = c("absolute", "relative", "cumulative"),
@@ -103,6 +103,9 @@ indicator_native_range_year <- function(
   )
   assertthat::assert_that(is.numeric(x_major_scale_stepsize),
     msg = "Argument x_major_scale_stepsize has to be a number."
+  )
+  assertthat::assert_that(is.logical(x_include_missing),
+    msg = "Argument x_include_missing has to be a logical."
   )
   if (!is.null(x_lab)) {
     assertthat::assert_that(is.character(x_lab),
@@ -183,7 +186,7 @@ indicator_native_range_year <- function(
         value = cumsum(.data$value)
       )
   
-  if (include_missing_years) {
+  if (x_include_missing) {
     
     allYears <- seq(
       from = min(years),
