@@ -74,7 +74,7 @@ testthat::test_that("Limit is a number", {
 })
 
 testthat::test_that("taxon_keys not found in GBIF, error from rgbif", {
-  skip_if_offline()
+  skip_on_os(os = "windows")
   testthat::expect_error(
     gbif_get_taxa(taxon_keys = 103451),
     "Entity not found for uri: /",
