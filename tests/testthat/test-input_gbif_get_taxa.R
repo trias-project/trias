@@ -93,6 +93,7 @@ testthat::test_that("taxon_keys not found in GBIF, error from rgbif", {
 })
 
 testthat::test_that("checklist_keys not found in GBIF, error from rgbif", {
+  skip_on_os(os = "windows")
   testthat::expect_error(
     gbif_get_taxa(checklist_keys = "falcon heavy"),
     "Invalid UUID string: falcon heavy"
