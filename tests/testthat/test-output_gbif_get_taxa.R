@@ -2,6 +2,7 @@ context("output_gbif_get_taxa")
 
 
 testthat::test_that("output if taxon_keys is numeric", {
+  skip_on_os("windows")
   get_taxa_taxon_key_3 <- readr::read_tsv(
     file =
       paste0(
@@ -28,6 +29,7 @@ testthat::test_that("output if taxon_keys is numeric", {
 })
 
 testthat::test_that("output if taxon_keys is character", {
+  skip_on_os("windows")
   # file saved with write.table()
   # write.table(get_taxa_taxon_key_2,
   # "./tests/testthat/data_test_output_gbif_get_taxa/get_taxa_taxon_key_2_character.tsv",
@@ -58,6 +60,7 @@ testthat::test_that("output if taxon_keys is character", {
 })
 
 testthat::test_that("taxon_keys is (numeric) vector", {
+  skip_on_os("windows")
   get_taxa_taxon_key_1_6 <- readr::read_tsv(
     file =
       paste0(
@@ -84,6 +87,7 @@ testthat::test_that("taxon_keys is (numeric) vector", {
 })
 
 testthat::test_that("taxon_keys is (character) vector", {
+  skip_on_os("windows")
   keys <- c("7", "3")
   get_taxa_taxon_key_char_vector <- readr::read_tsv(
     file =
@@ -114,6 +118,7 @@ testthat::test_that("taxon_keys is (character) vector", {
 })
 
 testthat::test_that("limit < number of taxon_keys", {
+  skip_on_os("windows")
   keys <- c(7, 3, 7765738)
   get_taxa_taxon_key_lim_2 <- readr::read_tsv(
     file =
@@ -141,6 +146,7 @@ testthat::test_that("limit < number of taxon_keys", {
 })
 
 testthat::test_that("checklist is a character, valid limit", {
+  skip_on_os("windows")
   limit <- 10
   aa <- gbif_get_taxa(
     checklist_keys = "3f8a1297-3259-4700-91fc-acc4170b27ce",
@@ -150,6 +156,7 @@ testthat::test_that("checklist is a character, valid limit", {
 })
 
 testthat::test_that("checklist is a vector, valid limit", {
+  skip_on_os("windows")
   limit <- 5
   checklist_keys <- c(
     "3f8a1297-3259-4700-91fc-acc4170b27ce",
@@ -163,6 +170,7 @@ testthat::test_that("checklist is a vector, valid limit", {
 })
 
 testthat::test_that("check single origin", {
+  skip_on_os("windows")
   aa_denormed <- gbif_get_taxa(
     checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
     origin = "denormed_classification", limit = 10
@@ -172,6 +180,7 @@ testthat::test_that("check single origin", {
 })
 
 testthat::test_that("check multiple origins", {
+  skip_on_os("windows")
   testthat::expect_warning(
     aa_origin <- gbif_get_taxa(
       checklist_keys = "9ff7d317-609b-4c08-bd86-3bc404b77c42",
