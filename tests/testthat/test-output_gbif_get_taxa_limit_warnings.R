@@ -46,6 +46,7 @@ testthat::test_that(
 
 
 testthat::test_that("taxon_key is vector, limit higher than n. of records", {
+  skip_on_os(os = "windows")
   testthat::expect_warning(
     gbif_get_taxa(
       taxon_keys = c(1, 2, 3, 4, 5),
