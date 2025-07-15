@@ -1,6 +1,7 @@
 context("output_get_taxa_limit_warnings")
 
 testthat::test_that("checklist is character, limit higher than n. of records", {
+  skip_on_os(os = "windows")
   testthat::expect_warning(
     gbif_get_taxa(
       checklist_keys = "e2a2c3f4-60e5-4724-8bb8-4b0618fbd9df",
@@ -13,6 +14,7 @@ testthat::test_that("checklist is character, limit higher than n. of records", {
 testthat::test_that(
   paste("checklist is vector,",
         "limit higher than n. of records in all datasets"), {
+  skip_on_os(os = "windows")
   testthat::expect_warning(
     gbif_get_taxa(
       checklist_keys = c(
@@ -28,6 +30,7 @@ testthat::test_that(
 testthat::test_that(
   paste("checklist is vector, limit higher than n. of records",
         "in one of the datasets"), {
+  skip_on_os(os = "windows")
   testthat::expect_warning(
     gbif_get_taxa(
       checklist_keys = c(
