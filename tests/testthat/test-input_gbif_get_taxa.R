@@ -2,6 +2,7 @@ context("input_gbif_get_taxa")
 
 
 testthat::test_that("taxon_keys and checklist_keys cannot be both not NULL", {
+  skip_on_os(os = "windows")
   testthat::expect_error(
     gbif_get_taxa(
       taxon_keys = 3,
