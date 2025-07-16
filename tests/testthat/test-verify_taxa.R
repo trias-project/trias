@@ -168,7 +168,8 @@ my_taxa <- read.delim(
 # Read `my_taxa_vk`, which has a column `verificationKey` whose values will be
 # overwritten by `verify_taxa()`
 my_taxa_vk <- read.delim("data_test_input_verify_taxa/my_taxa_vk.tsv",
-           sep = "\t"
+           sep = "\t",
+           na = ""
 )
 # Code to create the dataframe `my_taxa_vk` from `my_taxa`, as saved in
 # `my_taxa_vk.tsv`
@@ -411,7 +412,8 @@ my_verification <- read.delim(
 # Read `my_taxa_other_colnames` from `my_taxa_other_colnames.tsv`
 my_taxa_other_colnames <- read.delim(
   "data_test_input_verify_taxa/my_taxa_other_colnames.tsv",
-  sep = "\t"
+  sep = "\t",
+  na = ""
 )
 # Code to create the dataframe `my_taxa_other_colnames` from `my_taxa` as saved
 # in `my_taxa_other_colnames.tsv`
@@ -428,7 +430,8 @@ my_verification_other_colnames <- read.delim(
   paste0("data_test_input_verify_taxa/",
          "my_verification_other_colnames.tsv"
          ),
-  sep = "\t"
+  sep = "\t",
+  na = ""
 )
 # Code to create the dataframe `my_verification_other_colnames` from
 # `my_verification` as saved in `my_verification_other_colnames.tsv`
