@@ -1,427 +1,448 @@
 # Define inputs
 
-my_taxa <- tibble::tibble(
-  taxonKey = c(
-    141117238,
-    113794952,
-    141264857,
-    100480872,
-    141264614,
-    100220432,
-    141264835,
-    140562956,
-    145953989,
-    148437916,
-    141264849,
-    101790530
-  ),
-  scientificName = c(
-    "Aspius aspius",
-    "Rana catesbeiana",
-    "Polystichum tsus-simense J.Smith",
-    "Apus apus (Linnaeus, 1758)",
-    "Begonia x semperflorens hort.",
-    "Rana catesbeiana",
-    "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
-    "Ferrissia fragilis",
-    "Ferrissia fragilis",
-    "Ferrissia fragilis",
-    "Pterocarya x rhederiana C.K. Schneider",
-    "Stenelmis williami Schmude"
-  ),
-  datasetKey = c(
-    "98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
-    "e4746398-f7c4-47a1-a474-ae80a4f18e92",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "39653f3e-8d6b-4a94-a202-859359c164c5",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "b351a324-77c4-41c9-a909-f30f77268bc4",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "289244ee-e1c1-49aa-b2d7-d379391ce265",
-    "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
-    "1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "9ca92552-f23a-41a8-a140-01abaa31c931"
-  ),
-  bb_key = c(
-    2360181,
-    2427092,
-    2651108,
-    5228676,
-    NA,
-    2427092,
-    NA,
-    2291152,
-    2291152,
-    2291152,
-    NA,
-    1033588
-  ),
-  bb_scientificName = c(
-    "Aspius aspius (Linnaeus, 1758)",
-    "Rana catesbeiana Shaw, 1802",
-    "Polystichum tsus-simense (Hook.) J.Sm.",
-    "Apus apus (Linnaeus, 1758)",
-    NA,
-    "Rana catesbeiana Shaw, 1802",
-    NA,
-    "Ferrissia fragilis (Tryon, 1863)",
-    "Ferrissia fragilis (Tryon, 1863)",
-    "Ferrissia fragilis (Tryon, 1863)",
-    NA,
-    "Stenelmis williami Schmude"
-  ),
-  bb_kingdom = c(
-    "Animalia",
-    "Animalia",
-    "Plantae",
-    "Animalia",
-    NA,
-    "Animalia",
-    NA,
-    "Animalia",
-    "Animalia",
-    "Animalia",
-    NA,
-    "Animalia"
-  ),
-  bb_rank = c(
-    "SPECIES",
-    "SPECIES",
-    "SPECIES",
-    "SPECIES",
-    NA,
-    "SPECIES",
-    NA,
-    "SPECIES",
-    "SPECIES",
-    "SPECIES",
-    NA,
-    "SPECIES"
-  ),
-  bb_taxonomicStatus = c(
-    "SYNONYM",
-    "SYNONYM",
-    "SYNONYM",
-    "ACCEPTED",
-    NA,
-    "SYNONYM",
-    NA,
-    "SYNONYM",
-    "SYNONYM",
-    "SYNONYM",
-    NA,
-    "SYNONYM"
-  ),
-  bb_acceptedKey = c(
-    5851603,
-    2427091,
-    4046493,
-    NA,
-    NA,
-    2427091,
-    NA,
-    9520065,
-    9520065,
-    9520065,
-    NA,
-    1033553
-  ),
-  bb_acceptedName = c(
-    "Leuciscus aspius (Linnaeus, 1758)",
-    "Lithobates catesbeianus (Shaw, 1802)",
-    "Polystichum luctuosum (Kunze) Moore.",
-    NA,
-    NA,
-    "Lithobates catesbeianus (Shaw, 1802)",
-    NA,
-    "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)",
-    NA,
-    "Stenelmis Dufour, 1835"
-  ),
-  taxonID = c(
-    "alien-fishes-checklist:taxon:c937610f85ea8a74f105724c8f198049",
-    "88",
-    "alien-plants-belgium:taxon:57c1d111f14fd5f3271b0da53c05c745",
-    "4512",
-    "alien-plants-belgium:taxon:9a6c5ed8907ff169433fe44fcbff0705",
-    "80-syn",
-    "alien-plants-belgium:taxon:29409d1e1adc88d6357dd0be13350d6c",
-    "alien-macroinvertebrates-checklist:taxon:73f271d93128a4e566e841ea6e3abff0",
-    "rinse-checklist:taxon:7afe7b1fbdd06cbdfe97272567825c09",
-    "ad-hoc-checklist:taxon:32dc2e18733fffa92ba4e1b35d03c4e2",
-    "alien-plants-belgium:taxon:56d6564f59d9092401c454849213366f",
-    "193729"
-  )
+# Read `my_taxa` from `my_taxa.tsv`
+my_taxa <- read.delim(
+  "data_test_input_verify_taxa/my_taxa.tsv",
+  sep = "\t",
+  na = ""
 )
 
-# Add column verificationKey which will be overwritten by verify_taxa
-my_taxa_vk <- dplyr::mutate(my_taxa, verificationKey = 1)
+# Code to create the dataframe `my_taxa` saved as `my_taxa.tsv`
+# my_taxa <- tibble::tibble(
+#   taxonKey = c(
+#     141117238,
+#     113794952,
+#     141264857,
+#     100480872,
+#     141264614,
+#     100220432,
+#     141264835,
+#     140562956,
+#     145953989,
+#     148437916,
+#     141264849,
+#     101790530
+#   ),
+#   scientificName = c(
+#     "Aspius aspius",
+#     "Rana catesbeiana",
+#     "Polystichum tsus-simense J.Smith",
+#     "Apus apus (Linnaeus, 1758)",
+#     "Begonia x semperflorens hort.",
+#     "Rana catesbeiana",
+#     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
+#     "Ferrissia fragilis",
+#     "Ferrissia fragilis",
+#     "Ferrissia fragilis",
+#     "Pterocarya x rhederiana C.K. Schneider",
+#     "Stenelmis williami Schmude"
+#   ),
+#   datasetKey = c(
+#     "98940a79-2bf1-46e6-afd6-ba2e85a26f9f",
+#     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#     "39653f3e-8d6b-4a94-a202-859359c164c5",
+#     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#     "b351a324-77c4-41c9-a909-f30f77268bc4",
+#     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#     "289244ee-e1c1-49aa-b2d7-d379391ce265",
+#     "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
+#     "1f3505cd-5d98-4e23-bd3b-ffe59d05d7c2",
+#     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#     "9ca92552-f23a-41a8-a140-01abaa31c931"
+#   ),
+#   bb_key = c(
+#     2360181,
+#     2427092,
+#     2651108,
+#     5228676,
+#     NA,
+#     2427092,
+#     NA,
+#     2291152,
+#     2291152,
+#     2291152,
+#     NA,
+#     1033588
+#   ),
+#   bb_scientificName = c(
+#     "Aspius aspius (Linnaeus, 1758)",
+#     "Rana catesbeiana Shaw, 1802",
+#     "Polystichum tsus-simense (Hook.) J.Sm.",
+#     "Apus apus (Linnaeus, 1758)",
+#     NA,
+#     "Rana catesbeiana Shaw, 1802",
+#     NA,
+#     "Ferrissia fragilis (Tryon, 1863)",
+#     "Ferrissia fragilis (Tryon, 1863)",
+#     "Ferrissia fragilis (Tryon, 1863)",
+#     NA,
+#     "Stenelmis williami Schmude"
+#   ),
+#   bb_kingdom = c(
+#     "Animalia",
+#     "Animalia",
+#     "Plantae",
+#     "Animalia",
+#     NA,
+#     "Animalia",
+#     NA,
+#     "Animalia",
+#     "Animalia",
+#     "Animalia",
+#     NA,
+#     "Animalia"
+#   ),
+#   bb_rank = c(
+#     "SPECIES",
+#     "SPECIES",
+#     "SPECIES",
+#     "SPECIES",
+#     NA,
+#     "SPECIES",
+#     NA,
+#     "SPECIES",
+#     "SPECIES",
+#     "SPECIES",
+#     NA,
+#     "SPECIES"
+#   ),
+#   bb_taxonomicStatus = c(
+#     "SYNONYM",
+#     "SYNONYM",
+#     "SYNONYM",
+#     "ACCEPTED",
+#     NA,
+#     "SYNONYM",
+#     NA,
+#     "SYNONYM",
+#     "SYNONYM",
+#     "SYNONYM",
+#     NA,
+#     "SYNONYM"
+#   ),
+#   bb_acceptedKey = c(
+#     5851603,
+#     2427091,
+#     4046493,
+#     NA,
+#     NA,
+#     2427091,
+#     NA,
+#     9520065,
+#     9520065,
+#     9520065,
+#     NA,
+#     1033553
+#   ),
+#   bb_acceptedName = c(
+#     "Leuciscus aspius (Linnaeus, 1758)",
+#     "Lithobates catesbeianus (Shaw, 1802)",
+#     "Polystichum luctuosum (Kunze) Moore.",
+#     NA,
+#     NA,
+#     "Lithobates catesbeianus (Shaw, 1802)",
+#     NA,
+#     "Ferrissia californica (Rowell, 1863)",
+#     "Ferrissia californica (Rowell, 1863)",
+#     "Ferrissia californica (Rowell, 1863)",
+#     NA,
+#     "Stenelmis Dufour, 1835"
+#   ),
+#   taxonID = c(
+#     "alien-fishes-checklist:taxon:c937610f85ea8a74f105724c8f198049",
+#     "88",
+#     "alien-plants-belgium:taxon:57c1d111f14fd5f3271b0da53c05c745",
+#     "4512",
+#     "alien-plants-belgium:taxon:9a6c5ed8907ff169433fe44fcbff0705",
+#     "80-syn",
+#     "alien-plants-belgium:taxon:29409d1e1adc88d6357dd0be13350d6c",
+#     "alien-macroinvertebrates-checklist:taxon:73f271d93128a4e566e841ea6e3abff0",
+#     "rinse-checklist:taxon:7afe7b1fbdd06cbdfe97272567825c09",
+#     "ad-hoc-checklist:taxon:32dc2e18733fffa92ba4e1b35d03c4e2",
+#     "alien-plants-belgium:taxon:56d6564f59d9092401c454849213366f",
+#     "193729"
+#   )
+# )
 
-my_verification <- tibble::tibble(
-  taxonKey = c(
-    113794952,
-    141264857,
-    143920280,
-    141264835,
-    141264614,
-    140562956,
-    145953989,
-    128897752,
-    101790530,
-    141265523
-  ),
-  scientificName = c(
-    "Rana catesbeiana",
-    "Polystichum tsus-simense J.Smith",
-    "Lemnaceae",
-    "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
-    "Begonia x semperflorens hort.",
-    "Ferrissia fragilis",
-    "Ferrissia fragilis",
-    "Python reticulatus Fitzinger, 1826",
-    "Stenelmis williami Schmude",
-    "Veronica austriaca Jacq."
-  ),
-  datasetKey = c(
-    "e4746398-f7c4-47a1-a474-ae80a4f18e92",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "e4746398-f7c4-47a1-a474-ae80a4f18e92",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42",
-    "289244ee-e1c1-49aa-b2d7-d379391ce265",
-    "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
-    "7ddf754f-d193-4cc9-b351-99906754a03b",
-    "9ca92552-f23a-41a8-a140-01abaa31c931",
-    "9ff7d317-609b-4c08-bd86-3bc404b77c42"
-  ),
-  bb_key = c(
-    2427092,
-    2651108,
-    6723,
-    NA,
-    NA,
-    2291152,
-    2291152,
-    7587934,
-    1033588,
-    NA
-  ),
-  bb_scientificName = c(
-    "Rana catesbeiana Shaw, 1802",
-    "Polystichum tsus-tsus-tsus (Hook.) Captain",
-    "Lemnaceae",
-    NA,
-    NA,
-    "Ferrissia fragilis (Tryon, 1863)",
-    "Ferrissia fragilis (Tryon, 1863)",
-    "Python reticulatus Fitzinger, 1826",
-    "Stenelmis williami Schmude",
-    NA
-  ),
-  bb_kingdom = c(
-    "Animalia",
-    "Plantae",
-    "Plantae",
-    NA,
-    NA,
-    "Animalia",
-    "Animalia",
-    "Animalia",
-    "Animalia",
-    NA
-  ),
-  bb_rank = c(
-    "SPECIES",
-    "SPECIES",
-    "FAMILY",
-    NA,
-    NA,
-    "SPECIES",
-    "SPECIES",
-    "SPECIES",
-    "SPECIES",
-    NA
-  ),
-  bb_taxonomicStatus = c(
-    "SYNONYM",
-    "SYNONYM",
-    "SYNONYM",
-    NA,
-    NA,
-    "SYNONYM",
-    "SYNONYM",
-    "SYNONYM",
-    "SYNONYM",
-    NA
-  ),
-  bb_acceptedKey = c(
-    2427091,
-    4046493,
-    6979,
-    NA,
-    NA,
-    9520065,
-    9520065,
-    9260388,
-    1033553,
-    NA
-  ),
-  bb_acceptedName = c(
-    "Lithobates dummyus (Batman, 2018)",
-    "Polystichum luctuosum (Kunze) Moore.",
-    "Araceae",
-    NA,
-    NA,
-    "Ferrissia californica (Rowell, 1863)",
-    "Ferrissia californica (Rowell, 1863)",
-    "Malayopython reticulatus (Schneider, 1801)",
-    "Stenelmis Dufour, 1835",
-    NA
-  ),
-  bb_acceptedKingdom = c(
-    "Animalia",
-    "Plantae",
-    "Plantae",
-    NA,
-    NA,
-    "Animalia",
-    "Animalia",
-    "Animalia",
-    "Animalia",
-    NA
-  ),
-  bb_acceptedRank = c(
-    "SPECIES",
-    "SPECIES",
-    "FAMILY",
-    NA,
-    NA,
-    "SPECIES",
-    "SPECIES",
-    "SPECIES",
-    "GENUS",
-    NA
-  ),
-  bb_acceptedTaxonomicStatus = c(
-    "ACCEPTED",
-    "ACCEPTED",
-    "ACCEPTED",
-    NA,
-    NA,
-    "ACCEPTED",
-    "ACCEPTED",
-    "ACCEPTED",
-    "ACCEPTED",
-    NA
-  ),
-  verificationKey = c(
-    2427091,
-    4046493,
-    6979,
-    "2805420,2805363",
-    NA,
-    NA,
-    NA,
-    9260388,
-    NA,
-    3172099
-  ),
-  remarks = c(
-    "dummy example 1: bb_acceptedName should be updated.",
-    "dummy example 2: bb_scientificName should be updated.",
-    "dummy example 3: not used anymore. Set outdated = TRUE.",
-    "dummy example 4: multiple keys in verificationKey are allowed.",
-    "dummy example 5: nothing should happen.",
-    "dummy example 6: datasetKey should not be modified. If new taxa come in
-   with same name from other checklsits, they should be added as new rows.
-   Report them as duplicates in duplicates_taxa",
-    "dummy example 7: datasetKey should not be modified. If new taxa come in
-   with same name from other checklsits, they should be added as new rows.
-   Report them as duplicates in duplicates_taxa",
-    "dummy example 9: outdated synonym. outdated is already TRUE. No actions.",
-    "dummy example 10: outdated synonym. Not outdated anymore. Change outdated
-   back to FALSE.",
-    "dummy example 11: outdated unmatched taxa. Set outdated = TRUE."
-  ),
-  verifiedBy = c(
-    "Damiano Oldoni",
-    "Peter Desmet",
-    "Stijn Van Hoey",
-    "Tanja Milotic",
-    NA,
-    NA,
-    NA,
-    "Lien Reyserhove",
-    NA,
-    "Dimitri Brosens"
-  ),
-  dateAdded = as.Date(
-    c(
-      "2018-07-01",
-      "2018-07-01",
-      "2018-07-01",
-      "2018-07-16",
-      "2018-07-16",
-      "2018-07-01",
-      "2018-11-20",
-      "2018-12-01",
-      "2018-12-02",
-      "2018-12-03"
-    )
-  ),
-  outdated = c(
-    FALSE,
-    FALSE,
-    FALSE,
-    FALSE,
-    FALSE,
-    FALSE,
-    FALSE,
-    TRUE,
-    TRUE,
-    FALSE
-  )
+# Read `my_taxa_vk`, which has a column `verificationKey` whose values will be
+# overwritten by `verify_taxa()`
+my_taxa_vk <- read.delim("data_test_input_verify_taxa/my_taxa_vk.tsv",
+           sep = "\t",
+           na = ""
 )
+# Code to create the dataframe `my_taxa_vk` from `my_taxa`, as saved in
+# `my_taxa_vk.tsv`
+# my_taxa_vk <- dplyr::mutate(my_taxa, verificationKey = 1)
 
-my_taxa_other_colnames <-
-  dplyr::rename(
-    my_taxa,
-    checklist = datasetKey,
-    scientific_names = scientificName
-  )
+# Read `my_verification` from `my_verification.tsv`
+my_verification <- read.delim(
+  "data_test_input_verify_taxa/my_verification.tsv",
+  sep = "\t",
+  na = ""
+)
+# Code to create the dataframe `my_verification` as saved in
+# `my_verification.tsv`
+# my_verification <- tibble::tibble(
+#   taxonKey = c(
+#     113794952,
+#     141264857,
+#     143920280,
+#     141264835,
+#     141264614,
+#     140562956,
+#     145953989,
+#     128897752,
+#     101790530,
+#     141265523
+#   ),
+#   scientificName = c(
+#     "Rana catesbeiana",
+#     "Polystichum tsus-simense J.Smith",
+#     "Lemnaceae",
+#     "Spiranthes cernua (L.) Richard x S. odorata (Nuttall) Lindley",
+#     "Begonia x semperflorens hort.",
+#     "Ferrissia fragilis",
+#     "Ferrissia fragilis",
+#     "Python reticulatus Fitzinger, 1826",
+#     "Stenelmis williami Schmude",
+#     "Veronica austriaca Jacq."
+#   ),
+#   datasetKey = c(
+#     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#     "e4746398-f7c4-47a1-a474-ae80a4f18e92",
+#     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#     "9ff7d317-609b-4c08-bd86-3bc404b77c42",
+#     "289244ee-e1c1-49aa-b2d7-d379391ce265",
+#     "3f5e930b-52a5-461d-87ec-26ecd66f14a3",
+#     "7ddf754f-d193-4cc9-b351-99906754a03b",
+#     "9ca92552-f23a-41a8-a140-01abaa31c931",
+#     "9ff7d317-609b-4c08-bd86-3bc404b77c42"
+#   ),
+#   bb_key = c(
+#     2427092,
+#     2651108,
+#     6723,
+#     NA,
+#     NA,
+#     2291152,
+#     2291152,
+#     7587934,
+#     1033588,
+#     NA
+#   ),
+#   bb_scientificName = c(
+#     "Rana catesbeiana Shaw, 1802",
+#     "Polystichum tsus-tsus-tsus (Hook.) Captain",
+#     "Lemnaceae",
+#     NA,
+#     NA,
+#     "Ferrissia fragilis (Tryon, 1863)",
+#     "Ferrissia fragilis (Tryon, 1863)",
+#     "Python reticulatus Fitzinger, 1826",
+#     "Stenelmis williami Schmude",
+#     NA
+#   ),
+#   bb_kingdom = c(
+#     "Animalia",
+#     "Plantae",
+#     "Plantae",
+#     NA,
+#     NA,
+#     "Animalia",
+#     "Animalia",
+#     "Animalia",
+#     "Animalia",
+#     NA
+#   ),
+#   bb_rank = c(
+#     "SPECIES",
+#     "SPECIES",
+#     "FAMILY",
+#     NA,
+#     NA,
+#     "SPECIES",
+#     "SPECIES",
+#     "SPECIES",
+#     "SPECIES",
+#     NA
+#   ),
+#   bb_taxonomicStatus = c(
+#     "SYNONYM",
+#     "SYNONYM",
+#     "SYNONYM",
+#     NA,
+#     NA,
+#     "SYNONYM",
+#     "SYNONYM",
+#     "SYNONYM",
+#     "SYNONYM",
+#     NA
+#   ),
+#   bb_acceptedKey = c(
+#     2427091,
+#     4046493,
+#     6979,
+#     NA,
+#     NA,
+#     9520065,
+#     9520065,
+#     9260388,
+#     1033553,
+#     NA
+#   ),
+#   bb_acceptedName = c(
+#     "Lithobates dummyus (Batman, 2018)",
+#     "Polystichum luctuosum (Kunze) Moore.",
+#     "Araceae",
+#     NA,
+#     NA,
+#     "Ferrissia californica (Rowell, 1863)",
+#     "Ferrissia californica (Rowell, 1863)",
+#     "Malayopython reticulatus (Schneider, 1801)",
+#     "Stenelmis Dufour, 1835",
+#     NA
+#   ),
+#   bb_acceptedKingdom = c(
+#     "Animalia",
+#     "Plantae",
+#     "Plantae",
+#     NA,
+#     NA,
+#     "Animalia",
+#     "Animalia",
+#     "Animalia",
+#     "Animalia",
+#     NA
+#   ),
+#   bb_acceptedRank = c(
+#     "SPECIES",
+#     "SPECIES",
+#     "FAMILY",
+#     NA,
+#     NA,
+#     "SPECIES",
+#     "SPECIES",
+#     "SPECIES",
+#     "GENUS",
+#     NA
+#   ),
+#   bb_acceptedTaxonomicStatus = c(
+#     "ACCEPTED",
+#     "ACCEPTED",
+#     "ACCEPTED",
+#     NA,
+#     NA,
+#     "ACCEPTED",
+#     "ACCEPTED",
+#     "ACCEPTED",
+#     "ACCEPTED",
+#     NA
+#   ),
+#   verificationKey = c(
+#     2427091,
+#     4046493,
+#     6979,
+#     "2805420,2805363",
+#     NA,
+#     NA,
+#     NA,
+#     9260388,
+#     NA,
+#     3172099
+#   ),
+#   remarks = c(
+#     "dummy example 1: bb_acceptedName should be updated.",
+#     "dummy example 2: bb_scientificName should be updated.",
+#     "dummy example 3: not used anymore. Set outdated = TRUE.",
+#     "dummy example 4: multiple keys in verificationKey are allowed.",
+#     "dummy example 5: nothing should happen.",
+#     "dummy example 6: datasetKey should not be modified. If new taxa come in with same name from other checklists, they should be added as new rows. Report them as duplicates in duplicates_taxa",
+#     "dummy example 7: datasetKey should not be modified. If new taxa come in with same name from other checklsits, they should be added as new rows. Report them as duplicates in duplicates_taxa",
+#     "dummy example 8: outdated synonym. outdated is already TRUE. No actions.",
+#     "dummy example 9: outdated synonym. Not outdated anymore. Change outdated back to FALSE.",
+#     "dummy example 10: outdated unmatched taxa. Set outdated = TRUE."
+#   ),
+#   verifiedBy = c(
+#     "Damiano Oldoni",
+#     "Peter Desmet",
+#     "Stijn Van Hoey",
+#     "Tanja Milotic",
+#     NA,
+#     NA,
+#     NA,
+#     "Lien Reyserhove",
+#     NA,
+#     "Dimitri Brosens"
+#   ),
+#   dateAdded = as.Date(
+#     c(
+#       "2018-07-01",
+#       "2018-07-01",
+#       "2018-07-01",
+#       "2018-07-16",
+#       "2018-07-16",
+#       "2018-07-01",
+#       "2018-11-20",
+#       "2018-12-01",
+#       "2018-12-02",
+#       "2018-12-03"
+#     )
+#   ),
+#   outdated = c(
+#     FALSE,
+#     FALSE,
+#     FALSE,
+#     FALSE,
+#     FALSE,
+#     FALSE,
+#     FALSE,
+#     TRUE,
+#     TRUE,
+#     FALSE
+#   )
+# )
 
-my_verification_other_colnames <-
-  dplyr::rename(
-    my_verification,
-    backbone_scientific_names = bb_scientificName,
-    backbone_accepted_names = bb_acceptedName,
-    is_outdated = outdated,
-    author_verification = verifiedBy
-  )
+# Read `my_taxa_other_colnames` from `my_taxa_other_colnames.tsv`
+my_taxa_other_colnames <- read.delim(
+  "data_test_input_verify_taxa/my_taxa_other_colnames.tsv",
+  sep = "\t",
+  na = ""
+)
+# Code to create the dataframe `my_taxa_other_colnames` from `my_taxa` as saved
+# in `my_taxa_other_colnames.tsv`
+# my_taxa_other_colnames <-
+#   dplyr::rename(
+#     my_taxa,
+#     checklist = datasetKey,
+#     scientific_names = scientificName
+#   )
 
-my_taxa_duplicates <-
-  my_taxa[1:2, ]
-my_taxa_duplicates$taxonKey[2] <- my_taxa_duplicates$taxonKey[1]
-
-my_verification_duplicates <-
-  my_verification[1:2, ]
-my_verification_duplicates$taxonKey[2] <- my_verification_duplicates$taxonKey[1]
-
-my_taxa_nas <-
-  my_taxa_duplicates
-my_taxa_nas$taxonKey[2] <- NA_real_
-
-my_verification_nas <-
-  my_verification_duplicates
-my_verification_nas$taxonKey[2] <- NA_real_
-
+# Read `my_verification_other_colnames` from
+# `my_verification_other_colnames.tsv`
+my_verification_other_colnames <- read.delim(
+  paste0("data_test_input_verify_taxa/",
+         "my_verification_other_colnames.tsv"
+         ),
+  sep = "\t",
+  na = ""
+)
+# Code to create the dataframe `my_verification_other_colnames` from
+# `my_verification` as saved in `my_verification_other_colnames.tsv`
+# my_verification_other_colnames <-
+#   dplyr::rename(
+#     my_verification,
+#     backbone_scientific_names = bb_scientificName,
+#     backbone_accepted_names = bb_acceptedName,
+#     is_outdated = outdated,
+#     author_verification = verifiedBy
+#   )
 
 context("input_verify_taxa")
 
 test_that("taxa is a data frame", {
+  skip_on_os("windows")
   expect_error(
     verify_taxa(
       taxa = 3,
@@ -440,6 +461,7 @@ test_that("taxa is a data frame", {
 
 
 test_that("verification is a data frame", {
+  skip_on_os("windows")
   expect_error(
     verify_taxa(
       taxa = my_taxa,
@@ -456,9 +478,16 @@ test_that("verification is a data frame", {
   )
 })
 
-
 # no missing taxon keys in both input taxa and verification df (if not NULL)
 test_that("No missing taxon keys in input taxa and verification dfs", {
+  skip_on_os("windows")
+  my_taxa_nas <- my_taxa[1:2, ]
+  my_taxa_nas$taxonKey[2] <- my_taxa_nas$taxonKey[1]
+  my_taxa_nas$taxonKey[2] <- NA_real_
+  my_verification_nas <- my_verification[1:2, ]
+  my_verification_nas$taxonKey[2] <- my_verification_nas$taxonKey[1]
+  my_verification_nas$taxonKey[2] <- NA_real_
+  
   expect_error(
     verify_taxa(taxa = my_taxa_nas, verification = my_verification),
     paste(
@@ -477,6 +506,14 @@ test_that("No missing taxon keys in input taxa and verification dfs", {
 
 # taxon keys are unique
 test_that("Taxon keys are unique in input taxa and verification dfs", {
+  skip_on_os("windows")
+  my_taxa_duplicates <-
+    my_taxa[1:2, ]
+  my_taxa_duplicates$taxonKey[2] <- my_taxa_duplicates$taxonKey[1]
+  my_verification_duplicates <-
+    my_verification[1:2, ]
+  my_verification_duplicates$taxonKey[2] <- 
+    my_verification_duplicates$taxonKey[1]
   expect_error(
     verify_taxa(taxa = my_taxa_duplicates, verification = my_verification),
     paste(
@@ -523,6 +560,7 @@ taxa_test2 <- tibble::tibble(
 )
 
 test_that("taxa column names are correct", {
+  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = taxa_test1,
     verification = my_verification
@@ -564,6 +602,7 @@ taxa_test3 <- tibble::tibble(
 )
 
 test_that("consistency of 'taxa' about GBIF backbone info columns", {
+  skip_on_os("windows")
   expect_error(
     verify_taxa(
       taxa = taxa_test3,
@@ -729,6 +768,7 @@ verification_test7 <- tibble::tibble(
 )
 
 test_that("verify_taxa column names are correct", {
+  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test1
@@ -759,6 +799,7 @@ test_that("verify_taxa column names are correct", {
 })
 
 test_that("synonym relations are inconsistent", {
+  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test3
@@ -769,6 +810,7 @@ test_that("synonym relations are inconsistent", {
 })
 
 test_that("accepted taxa in verification input", {
+  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test4
@@ -779,6 +821,7 @@ test_that("accepted taxa in verification input", {
 })
 
 test_that("restrictions on input columns of verification", {
+  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test5
@@ -789,6 +832,7 @@ test_that("restrictions on input columns of verification", {
 })
 
 test_that("valid datsetKey values", {
+  skip_on_os("windows")
   expect_error(
     verify_taxa(
       taxa = my_taxa,
@@ -811,24 +855,26 @@ test_that("valid datsetKey values", {
   )
 })
 
+
 context("output_verify_taxa")
 
-# output
-output1 <- verify_taxa(taxa = my_taxa, verification = my_verification)
-output2 <- verify_taxa(taxa = my_taxa)
-output3 <- verify_taxa(taxa = my_taxa_vk, verification = my_verification)
-output4 <- verify_taxa(
-  taxa = my_taxa_other_colnames,
-  verification = my_verification_other_colnames,
-  datasetKey = "checklist",
-  scientificName = "scientific_names",
-  verification_bb_scientificName = "backbone_scientific_names",
-  verification_bb_acceptedName = "backbone_accepted_names",
-  verification_outdated = "is_outdated",
-  verification_verifiedBy = "author_verification"
-)
-outputs <- list(output1, output2, output3, output4)
 test_that("output structure", {
+  skip_on_os("windows")
+  # Generate outputs using the `verify_taxa()` function
+  output1 <- verify_taxa(taxa = my_taxa, verification = my_verification)
+  output2 <- verify_taxa(taxa = my_taxa)
+  output3 <- verify_taxa(taxa = my_taxa_vk, verification = my_verification)
+  output4 <- verify_taxa(
+    taxa = my_taxa_other_colnames,
+    verification = my_verification_other_colnames,
+    datasetKey = "checklist",
+    scientificName = "scientific_names",
+    verification_bb_scientificName = "backbone_scientific_names",
+    verification_bb_acceptedName = "backbone_accepted_names",
+    verification_outdated = "is_outdated",
+    verification_verifiedBy = "author_verification"
+  )
+  outputs <- list(output1, output2, output3, output4)
   expect_true(all(purrr::map_lgl(outputs, function(x) {
     class(x) == "list"
   })))
@@ -871,26 +917,43 @@ test_that("output structure", {
     ))
   )
   expect_true(all(names(output4$info$new_synonyms) ==
-    names(my_verification_other_colnames)))
+                    names(my_verification_other_colnames)))
   expect_true(all(names(output4$info$new_unmatched_taxa) ==
-    names(my_verification_other_colnames)))
+                    names(my_verification_other_colnames)))
   expect_true(
     all(names(output4$info$updated_bb_scientificName) ==
-      c(
-        "taxonKey", "bb_key", "bb_acceptedKey",
-        "backbone_scientific_names", "updated_backbone_scientific_names"
-      ))
+          c(
+            "taxonKey", "bb_key", "bb_acceptedKey",
+            "backbone_scientific_names", "updated_backbone_scientific_names"
+          ))
   )
   expect_true(
     all(names(output4$info$updated_bb_acceptedName) ==
-      c(
-        "taxonKey", "bb_key", "bb_acceptedKey",
-        "backbone_accepted_names", "updated_backbone_accepted_names"
-      ))
+          c(
+            "taxonKey", "bb_key", "bb_acceptedKey",
+            "backbone_accepted_names", "updated_backbone_accepted_names"
+          ))
   )
 })
 
 test_that("consitency input - output", {
+  skip_on_os("windows")
+  # Generate outputs
+  output1 <- verify_taxa(taxa = my_taxa, verification = my_verification)
+  output2 <- verify_taxa(taxa = my_taxa)
+  output3 <- verify_taxa(taxa = my_taxa_vk, verification = my_verification)
+  output4 <- verify_taxa(
+    taxa = my_taxa_other_colnames,
+    verification = my_verification_other_colnames,
+    datasetKey = "checklist",
+    scientificName = "scientific_names",
+    verification_bb_scientificName = "backbone_scientific_names",
+    verification_bb_acceptedName = "backbone_accepted_names",
+    verification_outdated = "is_outdated",
+    verification_verifiedBy = "author_verification"
+  )
+  outputs <- list(output1, output2, output3, output4)
+  
   expect_true(nrow(output1$taxa) == nrow(my_taxa))
   expect_true(nrow(output2$taxa) == nrow(my_taxa))
   expect_true(ncol(output1$taxa) == ncol(my_taxa) + 1)
@@ -900,22 +963,22 @@ test_that("consitency input - output", {
   expect_true(
     nrow(output1$verification) ==
       nrow(my_verification) +
-        nrow(output1$info$new_synonyms) +
-        nrow(output1$info$new_unmatched_taxa)
+      nrow(output1$info$new_synonyms) +
+      nrow(output1$info$new_unmatched_taxa)
   )
   expect_true(
     nrow(output2$verification) ==
       nrow(output2$info$new_synonyms) +
-        nrow(output2$info$new_unmatched_taxa)
+      nrow(output2$info$new_unmatched_taxa)
   )
   expect_true(nrow(output1$verification %>%
-    dplyr::filter(!is.na(verificationKey))) <=
-    nrow(output1$info$check_verificationKey))
+                     dplyr::filter(!is.na(verificationKey))) <=
+                nrow(output1$info$check_verificationKey))
   expect_true(
     nrow(my_taxa %>%
-      dplyr::filter(bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"))) ==
+           dplyr::filter(bb_taxonomicStatus %in% c("ACCEPTED", "DOUBTFUL"))) ==
       nrow(output2$taxa %>%
-        dplyr::filter(!is.na(verificationKey)))
+             dplyr::filter(!is.na(verificationKey)))
   )
   expect_true(all(output1$info$new_synonyms$outdated == FALSE))
   expect_true(all(output2$info$new_synonyms$outdated == FALSE))
@@ -1096,6 +1159,21 @@ output2_duplicates <-
   )
 
 test_that("output data.frames are correct", {
+  skip_on_os("windows")
+  output1 <- verify_taxa(taxa = my_taxa, verification = my_verification)
+  output2 <- verify_taxa(taxa = my_taxa)
+  output3 <- verify_taxa(taxa = my_taxa_vk, verification = my_verification)
+  output4 <- verify_taxa(
+    taxa = my_taxa_other_colnames,
+    verification = my_verification_other_colnames,
+    datasetKey = "checklist",
+    scientificName = "scientific_names",
+    verification_bb_scientificName = "backbone_scientific_names",
+    verification_bb_acceptedName = "backbone_accepted_names",
+    verification_outdated = "is_outdated",
+    verification_verifiedBy = "author_verification"
+  )
+  outputs <- list(output1, output2, output3, output4)
   expect_equivalent(output1$taxa, output1_taxa)
   expect_equivalent(output2$taxa, output2_taxa)
   # output4 with default column names should be exactly equal to output1
@@ -1124,7 +1202,7 @@ test_that("output data.frames are correct", {
       # new synonyms and unmatched got paste date
       dplyr::select(-dateAdded)
   )
-
+  
   output4_default_names_new_synonyms <-
     output4$info$new_synonyms %>%
     dplyr::rename(
@@ -1153,7 +1231,7 @@ test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-
+  
   output4_default_names_new_unmatched_taxa <-
     output4$info$new_unmatched_taxa %>%
     dplyr::rename(
@@ -1182,7 +1260,7 @@ test_that("output data.frames are correct", {
       # unmatched got past date
       dplyr::select(-dateAdded)
   )
-
+  
   output4_default_names_outdated_unmatched_taxa <-
     output4$info$outdated_unmatched_taxa %>%
     dplyr::rename(
@@ -1203,7 +1281,7 @@ test_that("output data.frames are correct", {
     output2$info$outdated_unmatched_taxa,
     output2_outdated_unmatched_taxa
   )
-
+  
   output4_default_names_outdated_synonyms <-
     output4$info$outdated_synonyms %>%
     dplyr::rename(
@@ -1224,7 +1302,7 @@ test_that("output data.frames are correct", {
     output2$info$outdated_synonyms,
     output2_outdated_synonyms
   )
-
+  
   output4_default_names_updated_bb_scientificName <-
     output4$info$updated_bb_scientificName %>%
     dplyr::rename(
@@ -1243,7 +1321,7 @@ test_that("output data.frames are correct", {
     output2$info$updated_bb_scientificName,
     output2_updated_bb_scientificName
   )
-
+  
   output4_default_names_updated_bb_acceptedName <-
     output4$info$updated_bb_acceptedName %>%
     dplyr::rename(
@@ -1262,7 +1340,7 @@ test_that("output data.frames are correct", {
     output2$info$updated_bb_acceptedName,
     output2_updated_bb_acceptedName
   )
-
+  
   output4_default_names_duplicates <-
     output4$info$duplicates %>%
     dplyr::rename(bb_scientificName = backbone_scientific_names)

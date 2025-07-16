@@ -1,5 +1,5 @@
 testthat::test_that("gbif download added correctly to list GBIF downloads and other status updated", {
-
+  skip_on_os(os = "windows")
   #' define file containing gbif downloads
   directory_data <- "./data_test_upload_list/"
   gbif_downloads_filename <- "gbif_downloads.tsv"

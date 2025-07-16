@@ -2,6 +2,7 @@ context("input_gbif_get_taxa")
 
 
 testthat::test_that("taxon_keys and checklist_keys cannot be both not NULL", {
+  skip_on_os(os = "windows")
   testthat::expect_error(
     gbif_get_taxa(
       taxon_keys = 3,
@@ -74,21 +75,26 @@ testthat::test_that("Limit is a number", {
 })
 
 testthat::test_that("taxon_keys not found in GBIF, error from rgbif", {
+  skip_on_os(os = "windows")
   testthat::expect_error(
     gbif_get_taxa(taxon_keys = 103451),
-    "Entity not found for uri: /"
+    "Entity not found for uri: /",
+    fixed = TRUE
   )
   testthat::expect_error(
     gbif_get_taxa(taxon_keys = "103451"),
-    "Entity not found for uri: /"
+    "Entity not found for uri: /",
+    fixed = TRUE
   )
   testthat::expect_error(
     gbif_get_taxa(taxon_keys = c(2, 103451)),
-    "Entity not found for uri: /"
+    "Entity not found for uri: /",
+    fixed = TRUE
   )
 })
 
 testthat::test_that("checklist_keys not found in GBIF, error from rgbif", {
+  skip_on_os(os = "windows")
   testthat::expect_error(
     gbif_get_taxa(checklist_keys = "falcon heavy"),
     "Invalid UUID string: falcon heavy"

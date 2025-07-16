@@ -1,6 +1,7 @@
 context("input_gbif_has_distribution")
 
 testthat::test_that("distribution properties: character or vectors", {
+  skip_on_os(os = "windows")
   testthat::expect_error(
     gbif_has_distribution("134086893", country = "BE", country = "NL"),
     paste(

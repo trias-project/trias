@@ -13,6 +13,11 @@
 #'   column called as the selected `type` must be present in `df`.
 #' @param x_major_scale_stepsize (integer) Parameter that indicates the breaks
 #'   of the x axis. Default: 10.
+#' @param x_include_missing (logical) if `TRUE` all consecutive years are 
+#'   displayed on the x-axis, even if 0 records are available. If `FALSE` 
+#'   (default) years with 0 count will be omitted and the x-axis is compressed.
+#'   Range is determined by either \code{years} if specified, 
+#'   otherwise by the range of \code{first_observed} column in the \code{df}. 
 #' @param x_lab character string, label of the x-axis. Default: "year".
 #' @param y_lab character string, label of the y-axis. Default: "number of alien
 #'   species".
@@ -70,6 +75,7 @@ indicator_native_range_year <- function(
     years = NULL,
     type = c("native_range", "native_continent"),
     x_major_scale_stepsize = 10,
+    x_include_missing = FALSE,
     x_lab = "year",
     y_lab = "alien species",
     response_type = c("absolute", "relative", "cumulative"),
@@ -97,6 +103,9 @@ indicator_native_range_year <- function(
   )
   assertthat::assert_that(is.numeric(x_major_scale_stepsize),
     msg = "Argument x_major_scale_stepsize has to be a number."
+  )
+  assertthat::assert_that(is.logical(x_include_missing),
+    msg = "Argument x_include_missing has to be a logical."
   )
   if (!is.null(x_lab)) {
     assertthat::assert_that(is.character(x_lab),
@@ -176,6 +185,23 @@ indicator_native_range_year <- function(
       dplyr::mutate(
         value = cumsum(.data$value)
       )
+  
+  if (x_include_missing) {
+    
+    allYears <- seq(
+      from = min(years),
+      to = max(years),
+      by = 1)
+    missingData <- data.frame(
+      first_observed = allYears[!allYears %in% summaryData$first_observed],
+      location = unique(summaryData$location)[1],
+      value = 0,
+      total = 0,
+      perc = 0
+    )
+    summaryData <- merge(summaryData, missingData, all = TRUE)
+    
+  }
 
   # For optimal displaying in the plot
   summaryData$location <- as.factor(summaryData$location)
