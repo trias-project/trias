@@ -2,6 +2,7 @@
 
 - Fix a bug in `indicator_native_range_year()` when `response_type = "cumulative"` and `x_include_missing = TRUE` (#166). Unit-tests for `indicator_native_range_year()` are also extended.
 - Add some more examples in documentation of `indicator_native_range_year()`.
+- - Improved the logic for determining x-axis scale steps to better handle cases with a small range of years.
 
 # trias 3.1.0
 
