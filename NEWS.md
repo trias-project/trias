@@ -1,3 +1,8 @@
+# trias 3.1.1
+
+- Fix a bug in `indicator_native_range_year()` when `response_type = "cumulative"` and `x_include_missing = TRUE` (#166). Unit-tests for `indicator_native_range_year()` are also extended.
+- Add some more examples in documentation of `indicator_native_range_year()`.
+
 # trias 3.1.0
 
 - Improve `indicator_native_range_year()`: Add option `x_include_missing` for including missing years as gaps on x-axis in the plot (#163).
