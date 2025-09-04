@@ -121,7 +121,7 @@ indicator_native_range_year(data, response_type = "cumulative")
 indicator_native_range_year(
   data,
   response_type = "cumulative",
-  x_include_missing = TRUE,
+  x_include_missing = TRUE
 )
 }
 }
