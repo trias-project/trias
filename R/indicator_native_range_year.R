@@ -85,7 +85,7 @@
 #' # Include missing years on the x-axis
 #' indicator_native_range_year(
 #'   data,
-#'   response_type = "cumulative"
+#'   response_type = "cumulative",
 #'   x_include_missing = TRUE,
 #' )
 #' }
