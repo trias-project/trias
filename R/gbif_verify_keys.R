@@ -35,7 +35,7 @@
 #' # input is a vector
 #' keys1 <- c(
 #'   "12323785387253", # invalid GBIF taxonKey
-#'   "128545334", # valid taxonKey, not a GBIF Backbone key
+#'   "194877248", # valid taxonKey, not a GBIF Backbone key
 #'   "1000693", # a GBIF Backbone key, synonym
 #'   "1000310", # a GBIF Backbone key, accepted
 #'   NA, NA
@@ -109,13 +109,14 @@ gbif_verify_keys <- function(keys, col_keys = "key") {
   names(keys) <- as.character(keys)
   gbif_info <-
     keys %>%
-    purrr::map(~ tryCatch(rgbif::name_usage(.)$data[1, ],
+    purrr::map(~ tryCatch(
+      rgbif::name_usage(., curlopts=list(http_version = 2))$data[1, ],
       error = function(e) {
-        print(paste("Key", ., "is an invalid GBIF taxon key."))
+        message(paste("Key", ., "is an invalid GBIF taxon key."))
       }
-    ))
+  ))
   check_keys <-
-    purrr::map_df(gbif_info, ~ is.character(.) == FALSE)
+    purrr::map_df(gbif_info, ~ is.null(.) == FALSE)
   check_keys <-
     check_keys %>%
     tidyr::gather(key = "key", value = "is_taxonKey") %>%
