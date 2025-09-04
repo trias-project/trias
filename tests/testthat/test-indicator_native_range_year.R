@@ -246,7 +246,7 @@ test_that("x_include_missing arg for indicator_native_range", {
     plot_output_relative$data$year %in% missing_years
   ] == 0))
   
-  # When `reponse_type` = "relative", columns `year` and `native_range` of data
+  # When `response_type` = "relative", columns `year` and `native_range` of data
   # slot are still factors
   expect_true(is.factor(plot_output_relative$data$year))
   expect_true(is.factor(plot_output_relative$data$native_range))
