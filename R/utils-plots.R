@@ -15,12 +15,9 @@ nice_seq <- function(start_year, end_year, step_size) {
   first_nice_cut <- ceiling(start_year / step_size) * step_size
   nice_cuts <- seq(from = first_nice_cut, to = end_year, by = step_size)
   
-  cuts <- c(
+  c(
     start_year, 
     nice_cuts,
     if (end_year > utils::tail(nice_cuts, n = 1)) end_year 
   )
-  
-  return(cuts)
-  
 }
