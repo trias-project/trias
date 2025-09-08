@@ -1,3 +1,10 @@
+# trias 3.1.1
+
+- Fix a bug in `indicator_native_range_year()` when `response_type = "cumulative"` and `x_include_missing = TRUE` (#166). Unit-tests for `indicator_native_range_year()` are also extended.
+- Add some more examples in documentation of `indicator_native_range_year()`.
+- Improved the logic for determining x-axis scale steps to better handle cases with a small range of years.
+- Fix `gbif_verify_keys()` and its tests. It appeared a strange anomaly while checking if a key is a valid taxon key. Also, made use for the first time of the rgbif patch (#805) to avoid GBIF API issues for Windows users (#165).
+
 # trias 3.1.0
 
 - Improve `indicator_native_range_year()`: Add option `x_include_missing` for including missing years as gaps on x-axis in the plot (#163).

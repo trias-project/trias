@@ -50,8 +50,8 @@ Default: \code{"absolute"}. If "absolute" the number per year and location
 is displayed; if "relative" each bar is standardised per year before stacking;
 if "cumulative" the cumulative number over years per location.}
 
-\item{relative}{(logical) if \code{TRUE} each bar is standardised before
-stacking. Deprecated, use \code{response_type = "relative"} instead.}
+\item{relative}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} (logical) If \code{TRUE} each
+bar is standardised before stacking. Deprecated, use \code{response_type = "relative"} instead.}
 
 \item{taxon_key_col}{character. Name of the column of \code{df} containing
 taxon IDs. Default: \code{"key"}.}
@@ -103,7 +103,25 @@ data <- read_tsv(datafile,
     first_observed = col_double(),
     last_observed = col_double()
   )
+) 
+data <- data[data$locality == "Belgium", ]
+
+# Specify the type of native range we are interested in
+indicator_native_range_year(data, type = "native_continent")
+
+# Specify the years we are interested in
+indicator_native_range_year(data, years = 2010:2013)
+indicator_native_range_year(data, years = c(2010, 2013))
+
+# Specify the response type
+indicator_native_range_year(data, response_type = "relative")
+indicator_native_range_year(data, response_type = "cumulative")
+
+# Include missing years on the x-axis
+indicator_native_range_year(
+  data,
+  response_type = "cumulative",
+  x_include_missing = TRUE
 )
-indicator_native_range_year(data, "native_continent", years = c(2010,2013))
 }
 }

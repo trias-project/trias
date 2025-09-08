@@ -26,7 +26,8 @@ test_that("test several input types", {
   )
   
   # input df doesn't contain column with name keys
-  expect_error(gbif_verify_keys(data.frame(bad_col_name = 12)),
+  expect_error(
+    gbif_verify_keys(data.frame(bad_col_name = 12)),
     paste(
       "Column with keys not found.",
       "Did you forget maybe to pass",
@@ -38,13 +39,15 @@ test_that("test several input types", {
 
 test_that("output type and content", {
   
-  # basic vector with input keys for tests
+  # basic character vector with input keys for tests
   keys1 <- c(
     "12323785387253", # is not a taxonkey
-    "172331902", # not a taxonKey from Backbone, but kingdom Animalia from CoL
-    "1000693", # is a synonym: Pterodina calcaris Langer, 1909,
+    # not a taxonKey from Backbone, but Cherax destructor from RIPARIAS target
+    # species list
+    "194877248",
+    "1000693", # is a synonym from Backbone: Pterodina calcaris Langer, 1909,
     # Synonym of Testudinella parva (Ternetz, 1892)
-    "1000310", # accepted taxon: Pyrococcus woesei Zillig, 1988
+    "1000310", # accepted taxon from Backbone: Pyrococcus woesei Zillig, 1988
     NA, NA
   )
   
@@ -70,13 +73,10 @@ test_that("output type and content", {
   output2 <- gbif_verify_keys(keys2)
   output3 <- gbif_verify_keys(keys3)
   output4 <- gbif_verify_keys(keys4)
-
+  
   # output expected
   output_keys <- dplyr::tibble(
-    key = c(
-      12323785387253, 172331902,
-      1000693, 1000310
-    ),
+    key = as.numeric(keys1[!is.na(keys1)]),
     is_taxonKey = c(FALSE, TRUE, TRUE, TRUE),
     is_from_gbif_backbone = c(NA, FALSE, TRUE, TRUE),
     is_synonym = c(NA, NA, TRUE, FALSE)
@@ -95,8 +95,8 @@ test_that("output type and content", {
   expect_equal(class(output2), c("tbl_df", "tbl", "data.frame"))
   expect_equal(class(output3), c("tbl_df", "tbl", "data.frame"))
   expect_equal(class(output2), c("tbl_df", "tbl", "data.frame"))
-
-
+  
+  
   # output content is the same for all kinds of inputs
   expect_true(nrow(output1) == nrow(output_keys))
   expect_true(nrow(output2) == nrow(output_keys))
@@ -115,12 +115,14 @@ test_that("function works even with duplicated taxon keys", {
   # basic vector with input keys for tests
   keys_with_duplicates <- c(
     "12323785387253", # is not a taxonkey
-    "172331902", # not a taxonKey from Backbone, but kingdom Animalia from CoL
+    # not a taxonKey from Backbone, but Cherax destructor from RIPARIAS target
+    # species list
+    "194877248",
     "1000693", # is a synonym: Pterodina calcaris Langer, 1909,
     # Synonym of Testudinella parva (Ternetz, 1892)
     "1000310", # accepted taxon: Pyrococcus woesei Zillig, 1988
     "12323785387253", # duplicate
-    "172331902", # duplicate
+    "194877248", # duplicate
     "1000693", # duplicate
     "1000310" # duplicate
   )

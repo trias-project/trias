@@ -47,7 +47,7 @@ GBIF Backbone.)
 # input is a vector
 keys1 <- c(
   "12323785387253", # invalid GBIF taxonKey
-  "128545334", # valid taxonKey, not a GBIF Backbone key
+  "194877248", # valid taxonKey, not a GBIF Backbone key
   "1000693", # a GBIF Backbone key, synonym
   "1000310", # a GBIF Backbone key, accepted
   NA, NA

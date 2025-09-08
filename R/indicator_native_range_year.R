@@ -26,8 +26,9 @@
 #'   Default: `"absolute"`. If "absolute" the number per year and location
 #' is displayed; if "relative" each bar is standardised per year before stacking;
 #' if "cumulative" the cumulative number over years per location.
-#' @param relative (logical) if `TRUE` each bar is standardised before
-#'   stacking. Deprecated, use `response_type = "relative"` instead.
+#' @param relative `r lifecycle::badge("deprecated")` (logical) If `TRUE` each
+#'   bar is standardised before stacking. Deprecated, use `response_type =
+#'   "relative"` instead.
 #' @param taxon_key_col character. Name of the column of `df` containing
 #'   taxon IDs. Default: `"key"`.
 #' @param first_observed (character) Name of the column in `data`
@@ -67,8 +68,26 @@
 #'     first_observed = col_double(),
 #'     last_observed = col_double()
 #'   )
+#' ) 
+#' data <- data[data$locality == "Belgium", ]
+#' 
+#' # Specify the type of native range we are interested in
+#' indicator_native_range_year(data, type = "native_continent")
+#' 
+#' # Specify the years we are interested in
+#' indicator_native_range_year(data, years = 2010:2013)
+#' indicator_native_range_year(data, years = c(2010, 2013))
+#' 
+#' # Specify the response type
+#' indicator_native_range_year(data, response_type = "relative")
+#' indicator_native_range_year(data, response_type = "cumulative")
+#' 
+#' # Include missing years on the x-axis
+#' indicator_native_range_year(
+#'   data,
+#'   response_type = "cumulative",
+#'   x_include_missing = TRUE
 #' )
-#' indicator_native_range_year(data, "native_continent", years = c(2010,2013))
 #' }
 indicator_native_range_year <- function(
     df,
@@ -82,7 +101,7 @@ indicator_native_range_year <- function(
     relative = lifecycle::deprecated(),
     taxon_key_col = "key",
     first_observed = "first_observed") {
-    
+  
   
   # initial input checks
   assertthat::assert_that(is.data.frame(df))
@@ -102,10 +121,10 @@ indicator_native_range_year <- function(
                           msg = sprintf("Column %s not present in df.", type)
   )
   assertthat::assert_that(is.numeric(x_major_scale_stepsize),
-    msg = "Argument x_major_scale_stepsize has to be a number."
+                          msg = "Argument x_major_scale_stepsize has to be a number."
   )
   assertthat::assert_that(is.logical(x_include_missing),
-    msg = "Argument x_include_missing has to be a logical."
+                          msg = "Argument x_include_missing has to be a logical."
   )
   if (!is.null(x_lab)) {
     assertthat::assert_that(is.character(x_lab),
@@ -134,7 +153,7 @@ indicator_native_range_year <- function(
   }
   
   assertthat::assert_that(is.character(taxon_key_col),
-    msg = "Argument taxon_key_col has to be a character."
+                          msg = "Argument taxon_key_col has to be a character."
   )
   assertable::assert_colnames(df, taxon_key_col, only_colnames = FALSE)
   assertthat::assert_that(is.character(first_observed),
@@ -149,81 +168,98 @@ indicator_native_range_year <- function(
     dplyr::rename_at(dplyr::vars(dplyr::all_of(first_observed)), ~"first_observed") %>%
     dplyr::rename_at(dplyr::vars(dplyr::all_of(taxon_key_col)), ~"key")
   
-  if (is.null(years)) {
-    years <- sort(unique(df$first_observed))
-  }
-
   plotData <- df
-
   plotData$location <- switch(type,
-    native_range = plotData$native_range,
-    native_continent = plotData$native_continent
+                              native_range = plotData$native_range,
+                              native_continent = plotData$native_continent
   )
-
+  
   # Select data
-  plotData <- plotData[!duplicated(plotData[, c("key", "first_observed", "location")]), ]
-  plotData <- plotData[plotData$first_observed %in% years, c("first_observed", "location")]
-  plotData <- plotData[!is.na(plotData$first_observed) & !is.na(plotData$location), ]
+  plotData <- plotData[
+    !duplicated(plotData[, c("key", "first_observed", "location")]),
+  ]
+  # Remove rows with NA in first_observed or location
+  plotData <- plotData[
+    !is.na(plotData$first_observed) & !is.na(plotData$location),
+  ]
+  if (is.null(years)) {
+    years <- sort(unique(plotData$first_observed))
+  }
+  plotData <- plotData[
+    plotData$first_observed %in% years, c("first_observed", "location")
+  ]
   
   # Set location and first_observed to factors
   plotData$first_observed <- as.factor(plotData$first_observed)
   plotData$location <- as.factor(plotData$location)
   plotData$location <- droplevels(plotData$location)
   
-  
   # Summarize data per native_range and year
   summaryData <- reshape2::melt(table(plotData), id.vars = "first_observed")
   summaryData <- summaryData %>%
     dplyr::group_by(.data$first_observed) %>%
     dplyr::mutate(
-      total = sum(.data$value),
+      # Get total value over all locations
+      total = sum(.data$value), 
       perc = round((.data$value / .data$total) * 100, 2)
     )
   if (response_type == "cumulative")
     summaryData <- summaryData %>%
-      dplyr::group_by(.data$location) %>%
-      dplyr::mutate(
-        value = cumsum(.data$value)
-      )
-  
-  if (x_include_missing) {
-    
-    allYears <- seq(
-      from = min(years),
-      to = max(years),
-      by = 1)
-    missingData <- data.frame(
-      first_observed = allYears[!allYears %in% summaryData$first_observed],
-      location = unique(summaryData$location)[1],
-      value = 0,
-      total = 0,
-      perc = 0
+    dplyr::group_by(.data$location) %>%
+    dplyr::mutate(
+      value = cumsum(.data$value)
     )
-    summaryData <- merge(summaryData, missingData, all = TRUE)
-    
+  summaryData <- dplyr::ungroup(summaryData)
+  
+  if (x_include_missing == TRUE) {
+    summaryData <- summaryData %>%
+      # Add missing years / locations with NA values
+      tidyr::complete(
+        first_observed = tidyr::full_seq(.data$first_observed, period = 1),
+        location = unique(plotData$location)
+      ) %>%
+      dplyr::group_by(.data$location)
+    if (response_type == "cumulative") {
+      # Add previous value in missing years
+      summaryData <- summaryData %>%
+        tidyr::fill(
+          dplyr::any_of(c("value", "total", "perc")),
+          .direction = "down"
+        )
+    } else {
+      # Add missing years with 0 values
+      summaryData <- summaryData %>%
+        tidyr::replace_na(list(value = 0L, total = 0L, perc = 0))
+    }
+    summaryData <- summaryData %>%
+      dplyr::ungroup() %>%
+      dplyr::arrange(.data$first_observed)
   }
-
+  
   # For optimal displaying in the plot
   summaryData$location <- as.factor(summaryData$location)
-  summaryData$location <- factor(summaryData$location, levels = rev(levels(summaryData$location)))
+  summaryData$location <- factor(
+    summaryData$location,
+    levels = rev(levels(summaryData$location))
+  )
   summaryData$first_observed <- as.factor(summaryData$first_observed)
-
-
-
+  
+  
+  
   # Create plot
-
+  
   if (response_type == "relative") {
     position <- "fill"
     text <- paste0(summaryData$location, 
-      "<br>", y_lab, ": ", summaryData$perc, "%", 
-      "<br>", x_lab, ": ", summaryData$first_observed)
+                   "<br>", y_lab, ": ", summaryData$perc, "%", 
+                   "<br>", x_lab, ": ", summaryData$first_observed)
   } else {
     position <- "stack"
     text <- paste0(summaryData$location, 
-      "<br>", y_lab, ": ", summaryData$value, 
-      "<br>", x_lab, ": ", summaryData$first_observed)
+                   "<br>", y_lab, ": ", summaryData$value, 
+                   "<br>", x_lab, ": ", summaryData$first_observed)
   }
-
+  
   pl <- ggplot2::ggplot(data = summaryData, ggplot2::aes(
     x = .data$first_observed,
     y = .data$value,
@@ -235,17 +271,20 @@ indicator_native_range_year <- function(
       breaks = nice_seq(
         start_year = min(years, na.rm = TRUE),
         end_year = max(years, na.rm = TRUE),
-        step_size = x_major_scale_stepsize
+        step_size = min(
+          x_major_scale_stepsize,
+          max(years, na.rm = TRUE) - min(years, na.rm = TRUE) + 1
+        )
       )
     ) +
     ggplot2::xlab(x_lab) +
     ggplot2::ylab(y_lab) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5))
-
+  
   if (response_type == "relative") {
     pl <- pl + ggplot2::scale_y_continuous(labels = scales::percent_format())
   }
-
+  
   pl_2 <- plotly::ggplotly(data = summaryData, pl, tooltip = "text") %>%
     plotly::layout(
       xaxis = list(title = x_lab, tickangle = "auto"),
@@ -253,14 +292,14 @@ indicator_native_range_year <- function(
       margin = list(b = 80, t = 100),
       barmode = ifelse(nlevels(summaryData$first_observed) == 1, "group", "stack")
     )
-
+  
   # To prevent warnings in UI
   pl_2$elementId <- NULL
-
+  
   # Change variable name
   names(summaryData)[names(summaryData) == "value"] <- "n"
   names(summaryData)[names(summaryData) == "first_observed"] <- "year"
   names(summaryData)[names(summaryData) == "location"] <- "native_range"
-
+  
   return(list(static_plot = pl, interactive_plot = pl_2, data = summaryData))
 }
