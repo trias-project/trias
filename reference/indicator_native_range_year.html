@@ -11,7 +11,7 @@ plot from reporting - rshiny - grofwildjacht"><meta property="og:image" content=
 
     <a class="navbar-brand me-2" href="../index.html">trias</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,8 +110,8 @@ if "cumulative" the cumulative number over years per location.</p></dd>
 
 
 <dt id="arg-relative">relative<a class="anchor" aria-label="anchor" href="#arg-relative"></a></dt>
-<dd><p>(logical) if <code>TRUE</code> each bar is standardised before
-stacking. Deprecated, use <code>response_type = "relative"</code> instead.</p></dd>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> (logical) If <code>TRUE</code> each
+bar is standardised before stacking. Deprecated, use <code>response_type = "relative"</code> instead.</p></dd>
 
 
 <dt id="arg-taxon-key-col">taxon_key_col<a class="anchor" aria-label="anchor" href="#arg-taxon-key-col"></a></dt>
@@ -161,8 +161,26 @@ given year, <code>n</code>/<code>total</code>*100.</p></li>
 <span class="r-in"><span>    first_observed <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    last_observed <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_atomic.html" class="external-link">col_double</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span> </span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="va">data</span><span class="op">$</span><span class="va">locality</span> <span class="op">==</span> <span class="st">"Belgium"</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Specify the type of native range we are interested in</span></span></span>
+<span class="r-in"><span><span class="fu">indicator_native_range_year</span><span class="op">(</span><span class="va">data</span>, type <span class="op">=</span> <span class="st">"native_continent"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Specify the years we are interested in</span></span></span>
+<span class="r-in"><span><span class="fu">indicator_native_range_year</span><span class="op">(</span><span class="va">data</span>, years <span class="op">=</span> <span class="fl">2010</span><span class="op">:</span><span class="fl">2013</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">indicator_native_range_year</span><span class="op">(</span><span class="va">data</span>, years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">2013</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Specify the response type</span></span></span>
+<span class="r-in"><span><span class="fu">indicator_native_range_year</span><span class="op">(</span><span class="va">data</span>, response_type <span class="op">=</span> <span class="st">"relative"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">indicator_native_range_year</span><span class="op">(</span><span class="va">data</span>, response_type <span class="op">=</span> <span class="st">"cumulative"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Include missing years on the x-axis</span></span></span>
+<span class="r-in"><span><span class="fu">indicator_native_range_year</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">data</span>,</span></span>
+<span class="r-in"><span>  response_type <span class="op">=</span> <span class="st">"cumulative"</span>,</span></span>
+<span class="r-in"><span>  x_include_missing <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">indicator_native_range_year</span><span class="op">(</span><span class="va">data</span>, <span class="st">"native_continent"</span>, years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>,<span class="fl">2013</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

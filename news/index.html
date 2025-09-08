@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">trias</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,13 @@
       <small>Source: <a href="https://github.com/trias-project/trias/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="3.1.1" id="trias-311">trias 3.1.1<a class="anchor" aria-label="anchor" href="#trias-311"></a></h2>
+<ul><li>Fix a bug in <code><a href="../reference/indicator_native_range_year.html">indicator_native_range_year()</a></code> when <code>response_type = "cumulative"</code> and <code>x_include_missing = TRUE</code> (<a href="https://github.com/trias-project/trias/issues/166" class="external-link">#166</a>). Unit-tests for <code><a href="../reference/indicator_native_range_year.html">indicator_native_range_year()</a></code> are also extended.</li>
+<li>Add some more examples in documentation of <code><a href="../reference/indicator_native_range_year.html">indicator_native_range_year()</a></code>.</li>
+<li>Improved the logic for determining x-axis scale steps to better handle cases with a small range of years.</li>
+<li>Fix <code><a href="../reference/gbif_verify_keys.html">gbif_verify_keys()</a></code> and its tests. It appeared a strange anomaly while checking if a key is a valid taxon key. Also, made use for the first time of the rgbif patch (<a href="https://github.com/trias-project/trias/issues/805" class="external-link">#805</a>) to avoid GBIF API issues for Windows users (<a href="https://github.com/trias-project/trias/issues/165" class="external-link">#165</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.1.0" id="trias-310">trias 3.1.0<a class="anchor" aria-label="anchor" href="#trias-310"></a></h2>
 <ul><li>Improve <code><a href="../reference/indicator_native_range_year.html">indicator_native_range_year()</a></code>: Add option <code>x_include_missing</code> for including missing years as gaps on x-axis in the plot (<a href="https://github.com/trias-project/trias/issues/163" class="external-link">#163</a>).</li>
