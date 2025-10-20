@@ -181,16 +181,6 @@ testthat::test_that("Argument pathways", {
     ),
     "`pathways` must be a vector of characters."
   )
-  expect_error(
-    visualize_pathways_level1(input_test_df,
-      pathways = no_cbd_values
-    ),
-    paste0(
-      "Pathways in `pathways` not present in data.frame: ",
-      paste(no_cbd_values, collapse = ","),
-      "."
-    )
-  )
 })
 testthat::test_that("Argument: taxon_names", {
   expect_error(

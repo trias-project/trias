@@ -377,8 +377,8 @@ visualize_pathways_level1 <- function(df,
         data_top_graph
       ) +
       ggplot2::geom_bar(
-        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level1)),
-        stats = "identity"
+        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level1), y = "count"),
+        stat = "identity"
       ) +
       ggplot2::scale_x_discrete(drop = FALSE) +
       ggplot2::xlab(y_lab) +
@@ -398,10 +398,8 @@ visualize_pathways_level1 <- function(df,
       facet_graph <-
         ggplot2::ggplot(
           df,
-          ggplot2::aes(x = forcats::fct_rev(.data$pathway_level1)),
-          stats = "identity"
+          ggplot2::aes(x = forcats::fct_rev(.data$pathway_level1))
         ) +
-        ggplot2::scale_x_discrete(drop = FALSE) +
         ggplot2::geom_bar() +
         ggplot2::xlab(y_lab) +
         ggplot2::ylab(x_lab) +

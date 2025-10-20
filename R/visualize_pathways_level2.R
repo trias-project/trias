@@ -455,12 +455,13 @@ visualize_pathways_level2 <- function(df,
   if (nrow(data_top_graph) > 0) {
     top_graph <-
       ggplot2::ggplot(
-        data_top_graph,
-        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2)),
-        stats = "identity"
+        data_top_graph
+      ) +
+      ggplot2::geom_bar(
+        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2), y = "count"),
+        stat = "identity"
       ) +
       ggplot2::scale_x_discrete(drop = FALSE) +
-      ggplot2::geom_bar() +
       ggplot2::xlab(y_lab) +
       ggplot2::ylab(x_lab) +
       ggplot2::coord_flip() +
@@ -478,10 +479,8 @@ visualize_pathways_level2 <- function(df,
       facet_graph <-
         ggplot2::ggplot(
           df,
-          ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2)),
-          stats = "identity"
+          ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2))
         ) +
-        ggplot2::scale_x_discrete(drop = FALSE) +
         ggplot2::geom_bar() +
         ggplot2::xlab(y_lab) + # invert labels to get them right after flipping
         ggplot2::ylab(x_lab) +
