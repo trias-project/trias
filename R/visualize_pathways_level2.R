@@ -249,16 +249,6 @@ visualize_pathways_level2 <- function(df,
     assertthat::assert_that(is.character(pathways),
       msg = "`pathways` must be a vector of characters."
     )
-    invalid_pathways <- pathways[!pathways %in%
-      df[[pathway_level2_names]]]
-    assertthat::assert_that(length(invalid_pathways) == 0,
-      msg = paste0(
-        "Pathways in `pathways` not present in ",
-        "data.frame: ",
-        paste(invalid_pathways, collapse = ","),
-        "."
-      )
-    )
   }
   # Check taxon_names
   assertthat::assert_that(is.character(taxon_names),
@@ -466,8 +456,10 @@ visualize_pathways_level2 <- function(df,
     top_graph <-
       ggplot2::ggplot(
         data_top_graph,
-        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2))
+        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2)),
+        stats = "identity"
       ) +
+      ggplot2::scale_x_discrete(drop = FALSE) +
       ggplot2::geom_bar() +
       ggplot2::xlab(y_lab) +
       ggplot2::ylab(x_lab) +
@@ -486,8 +478,10 @@ visualize_pathways_level2 <- function(df,
       facet_graph <-
         ggplot2::ggplot(
           df,
-          ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2))
+          ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2)),
+          stats = "identity"
         ) +
+        ggplot2::scale_x_discrete(drop = FALSE) +
         ggplot2::geom_bar() +
         ggplot2::xlab(y_lab) + # invert labels to get them right after flipping
         ggplot2::ylab(x_lab) +
