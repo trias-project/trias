@@ -24,7 +24,8 @@
 #'   containing information about pathways at level 1. Default:
 #'   `pathway_level1`.
 #' @param pathways character. Vector with pathways level 1 to visualize. The
-#'   pathways are displayed following the order as in this vector.
+#'   pathways are displayed following the order as in this vector. It may
+#'   contain pathways not present in the column given by `pathway_level1_names`.
 #' @param taxon_names character. Name of the column of `df` containing
 #'   information about taxa. This parameter is used to uniquely identify taxa.
 #' @param kingdom_names character. Name of the column of `df` containing
@@ -63,13 +64,12 @@
 #'   "interim/data_input_checklist_indicators.tsv"
 #' )
 #' data <- read_tsv(datafile,
-#'   na = "NA",
+#'   na = "",
 #'   col_types = cols(
 #'     .default = col_character(),
 #'     key = col_double(),
 #'     nubKey = col_double(),
 #'     speciesKey = col_double(),
-#'     acceptedKey = col_double(),
 #'     first_observed = col_double(),
 #'     last_observed = col_double()
 #'   )
@@ -98,7 +98,15 @@
 #'
 #' # Only taxa with pathways "corridor" and "escape"
 #' visualize_pathways_level1(data, pathways = c("corridor", "escape"))
-#'
+#' 
+#' # Pathways not present in data can also being shown if specified in
+#' `pathways`
+#' visualize_pathways_level1(
+#'   data,
+#'   category = "Fungi",
+#'   pathways = c("corridor", "escape", "unknown")
+#' )
+#'  
 #' # Add a title
 #' visualize_pathways_level1(
 #'   data,

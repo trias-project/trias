@@ -60,7 +60,8 @@ in combination with \code{category} equal to \code{"Chordata"} or \code{"Not Cho
 Facet \code{kingdom} is allowed only with category equal to \code{NULL}.}
 
 \item{pathways}{character. Vector with pathways level 2 to visualize. The
-pathways are displayed following the order as in this vector.}
+pathways are displayed following the order as in this vector. It may
+contain pathways not present in the column given by \code{pathway_level1_names}.}
 
 \item{pathway_level1_names}{character. Name of the column of \code{df}
 containing information about pathways at level 1. Default:
@@ -145,11 +146,24 @@ visualize_pathways_level2(
   category = "Chordata"
 )
 
-# select some pathways only
+# Select some pathways only
 visualize_pathways_level2(
   df = data, 
   chosen_pathway_level1 = "escape",
   pathways = c("pet", "horticulture")
+)
+
+# `pathways` can contain pathways not present in data
+visualize_pathways_level2(
+  df = data,
+  chosen_pathway_level1 = "escape",
+  category = "Chordata",
+  pathways = c(
+    "agriculture", # not present
+    "forestry", # not present
+    "pet", 
+    "unknown"
+  )
 )
 
 # facet phylum
