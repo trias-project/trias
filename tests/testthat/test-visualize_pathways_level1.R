@@ -350,7 +350,8 @@ testthat::test_that("Test output class", {
   expect_true(
     all(c("gg", "ggplot") %in% class(output_general$plot))
   )
-  # plot slot is NULL if output is empty
+  expect_s3_class(output_with_facet$plot, class = "egg")
+  # plot slot is NULL if no data to plot
   testthat::expect_null(empty_output$plot)
   
   # data_top_graph is a data.frame (tibble) if not NULL
