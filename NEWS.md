@@ -1,3 +1,7 @@
+# trias 3.1.2
+
+- Allow empty pathways in `visualize_pathways_level1()` and `visualize_pathways_level2()` functions (#168).
+
 # trias 3.1.1
 
 - Fix a bug in `indicator_native_range_year()` when `response_type = "cumulative"` and `x_include_missing = TRUE` (#166). Unit-tests for `indicator_native_range_year()` are also extended.
