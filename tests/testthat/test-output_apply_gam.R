@@ -823,18 +823,18 @@ test_that("Test second derivative", {
 test_that("Test plot", {
 
   # plot is always an obejct of class ggplot
-  expect_true(all(class(basic_gam$plot) == c("gg", "ggplot")))
-  expect_true(all(class(basic_gam_ys$plot) == c("gg", "ggplot")))
-  expect_true(all(class(corrected_gam$plot) == c("gg", "ggplot")))
-  expect_true(all(class(corrected_gam_ys$plot) == c("gg", "ggplot")))
-  expect_true(all(class(basic_gam_occ$plot) == c("gg", "ggplot")))
-  expect_true(all(class(basic_gam_taxon_key_as_number$plot) == c("gg", "ggplot")))
-  expect_true(all(class(basic_gam_taxon_key_as_string$plot) == c("gg", "ggplot")))
-  expect_true(all(class(basic_gam_taxon_key_and_name$plot) == c("gg", "ggplot")))
-  expect_true(all(class(basic_gam_bad$plot) == c("gg", "ggplot")))
-  expect_true(all(class(basic_gam_bad_ys$plot) == c("gg", "ggplot")))
-  expect_true(all(class(corrected_gam_bad$plot) == c("gg", "ggplot")))
-  expect_true(all(class(corrected_gam_bad_ys$plot) == c("gg", "ggplot")))
+  expect_true(all(c("gg", "ggplot") %in% class(basic_gam$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(basic_gam_ys$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(corrected_gam$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(corrected_gam_ys$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(basic_gam_occ$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(basic_gam_taxon_key_as_number$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(basic_gam_taxon_key_as_string$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(basic_gam_taxon_key_and_name$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(basic_gam_bad$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(basic_gam_bad_ys$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(corrected_gam_bad$plot)))
+  expect_true(all(c("gg", "ggplot") %in% class(corrected_gam_bad_ys$plot)))
 
   # All plot titles start with "GAM"
   title_plot <- basic_gam_name$plot$labels$title

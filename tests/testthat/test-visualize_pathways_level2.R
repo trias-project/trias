@@ -242,17 +242,6 @@ testthat::test_that("Argument pathways", {
     ),
     "`pathways` must be a vector of characters."
   )
-  testthat::expect_error(
-    visualize_pathways_level2(input_test_df,
-      chosen_pathway_level1 = "escape",
-      pathways = no_cbd_values
-    ),
-    paste0(
-      "Pathways in `pathways` not present in data.frame: ",
-      paste(no_cbd_values, collapse = ","),
-      "."
-    )
-  )
 })
 testthat::test_that("Argument: taxon_names", {
   testthat::expect_error(
@@ -458,11 +447,12 @@ testthat::test_that("Test output class", {
   testthat::expect_type(output_with_facet, type = "list")
   testthat::expect_type(empty_output, type = "list")
   
-  # plot slot is a list with gg as class if not NULL
-  testthat::expect_type(output_general$plot, type = "list")
-  testthat::expect_type(output_with_facet$plot, type = "list")
-  testthat::expect_s3_class(output_general$plot, class = "gg")
-  testthat::expect_s3_class(output_with_facet$plot, class = "egg")
+  # plot slot is a ggplot obejct or eeg if faceting is activated
+  expect_true(
+    all(c("gg", "ggplot") %in% class(output_general$plot))
+  )
+  expect_s3_class(output_with_facet$plot, class = "egg")
+  # plot is NULL if no data to plot
   testthat::expect_null(empty_output$plot)
   
   # data_top_graph is a data.frame (tibble) if not NULL

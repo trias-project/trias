@@ -39,7 +39,8 @@
 #'   containing information about pathways at level 2. Default:
 #'   `pathway_level2`.
 #' @param pathways character. Vector with pathways level 2 to visualize. The
-#'   pathways are displayed following the order as in this vector.
+#'   pathways are displayed following the order as in this vector. It may
+#'   contain pathways not present in the column given by `pathway_level1_names`.
 #' @param taxon_names character. Name of the column of `df` containing
 #'   information about taxa. This parameter is used to uniquely identify taxa.
 #' @param kingdom_names character. Name of the column of `df` containing
@@ -105,11 +106,24 @@
 #'   category = "Chordata"
 #' )
 #' 
-#' # select some pathways only
+#' # Select some pathways only
 #' visualize_pathways_level2(
 #'   df = data, 
 #'   chosen_pathway_level1 = "escape",
 #'   pathways = c("pet", "horticulture")
+#' )
+#' 
+#' # `pathways` can contain pathways not present in data
+#' visualize_pathways_level2(
+#'   df = data,
+#'   chosen_pathway_level1 = "escape",
+#'   category = "Chordata",
+#'   pathways = c(
+#'     "agriculture", # not present
+#'     "forestry", # not present
+#'     "pet", 
+#'     "unknown"
+#'   )
 #' )
 #'
 #' # facet phylum
@@ -248,16 +262,6 @@ visualize_pathways_level2 <- function(df,
   if (!is.null(pathways)) {
     assertthat::assert_that(is.character(pathways),
       msg = "`pathways` must be a vector of characters."
-    )
-    invalid_pathways <- pathways[!pathways %in%
-      df[[pathway_level2_names]]]
-    assertthat::assert_that(length(invalid_pathways) == 0,
-      msg = paste0(
-        "Pathways in `pathways` not present in ",
-        "data.frame: ",
-        paste(invalid_pathways, collapse = ","),
-        "."
-      )
     )
   }
   # Check taxon_names
@@ -465,10 +469,13 @@ visualize_pathways_level2 <- function(df,
   if (nrow(data_top_graph) > 0) {
     top_graph <-
       ggplot2::ggplot(
-        data_top_graph,
-        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2))
+        data_top_graph
       ) +
-      ggplot2::geom_bar() +
+      ggplot2::geom_bar(
+        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2), y = "count"),
+        stat = "identity"
+      ) +
+      ggplot2::scale_x_discrete(drop = FALSE) +
       ggplot2::xlab(y_lab) +
       ggplot2::ylab(x_lab) +
       ggplot2::coord_flip() +

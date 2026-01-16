@@ -141,9 +141,10 @@ test_that("Test output type, class, slots and columns", {
     slots <- c("static_plot", "interactive_plot", "data")
     expect_equal(names(plot_output), slots, info = response_type)
     
-    # static plot slot is a list with gg as class
-    expect_type(plot_output$static_plot, type = "list")
-    expect_s3_class(plot_output$static_plot, class = c("gg", "ggplot"))
+    # static plot slot is a ggplot object
+    expect_true(
+      all(c("gg", "ggplot") %in% class(plot_output$static_plot))
+    )
     
     # interactive plot slot is a list with plotly and htmlwidget as class
     expect_type(plot_output$interactive_plot, type = "list")
@@ -186,9 +187,10 @@ test_that("x_include_missing arg for indicator_native_range", {
   # output is a list
   expect_type(plot_output_absolute, type = "list")
   
-  # static plot slot is a list with gg as class
-  expect_type(plot_output_absolute$static_plot, type = "list")
-  expect_s3_class(plot_output_absolute$static_plot, class = c("gg", "ggplot"))
+  # static plot slot is a ggplot object
+  expect_true(
+    all(c("gg", "ggplot") %in% class(plot_output_absolute$static_plot))
+  )
   
   # interactive plot slot is a list with plotly and htmlwidget as class
   expect_type(plot_output_absolute$interactive_plot, type = "list")

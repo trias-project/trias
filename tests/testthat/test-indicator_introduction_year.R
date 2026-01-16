@@ -133,10 +133,10 @@ test_that("Test output class", {
   expect_type(plot_output_without_facets, type = "list")
   expect_type(plot_output_with_facets, type = "list")
   
-  # plot slot is a list with gg as class
-  expect_type(plot_output_without_facets$plot, type = "list")
-  expect_type(plot_output_with_facets$plot, type = "list")
-  expect_s3_class(plot_output_without_facets$plot, class = "gg")
+  # plot slot is a ggplot object or an egg object if faceting is activated
+  expect_true(
+    all(c("gg", "ggplot") %in% class(plot_output_without_facets$plot))
+  )
   expect_s3_class(plot_output_with_facets$plot, class = "egg")
   
   # data_top_graph is a data.frame (tibble)
