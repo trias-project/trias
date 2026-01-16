@@ -42,7 +42,8 @@ in combination with \code{category} equal to \code{"Chordata"} or \code{"Not Cho
 Facet \code{kingdom} is allowed only with category equal to \code{NULL}.}
 
 \item{pathways}{character. Vector with pathways level 1 to visualize. The
-pathways are displayed following the order as in this vector.}
+pathways are displayed following the order as in this vector. It may
+contain pathways not present in the column given by \code{pathway_level1_names}.}
 
 \item{pathway_level1_names}{character. Name of the column of \code{df}
 containing information about pathways at level 1. Default:
@@ -98,13 +99,12 @@ datafile <- paste0(
   "interim/data_input_checklist_indicators.tsv"
 )
 data <- read_tsv(datafile,
-  na = "NA",
+  na = "",
   col_types = cols(
     .default = col_character(),
     key = col_double(),
     nubKey = col_double(),
     speciesKey = col_double(),
-    acceptedKey = col_double(),
     first_observed = col_double(),
     last_observed = col_double()
   )
@@ -134,6 +134,14 @@ visualize_pathways_level1(data, from = 1950)
 # Only taxa with pathways "corridor" and "escape"
 visualize_pathways_level1(data, pathways = c("corridor", "escape"))
 
+# Pathways not present in data can also being shown if specified in
+`pathways`
+visualize_pathways_level1(
+  data,
+  category = "Fungi",
+  pathways = c("corridor", "escape", "unknown")
+)
+ 
 # Add a title
 visualize_pathways_level1(
   data,
