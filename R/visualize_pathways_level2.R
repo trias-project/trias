@@ -39,7 +39,7 @@
 #'   containing information about pathways at level 2. Default:
 #'   `pathway_level2`.
 #' @param pathways character. Vector with pathways level 2 to visualize. The
-#'   pathways are displayed following the order as in this vector.
+#'   pathways are displayed following the order as in this vector. It may
 #'   contain pathways not present in the column given by `pathway_level1_names`.
 #' @param taxon_names character. Name of the column of `df` containing
 #'   information about taxa. This parameter is used to uniquely identify taxa.
