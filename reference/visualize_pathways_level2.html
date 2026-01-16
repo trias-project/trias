@@ -11,7 +11,7 @@ pathways at level 2, given a pathway level 1. Possible breakpoints: taxonomic
 
     <a class="navbar-brand me-2" href="../index.html">trias</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -113,7 +113,8 @@ Facet <code>kingdom</code> is allowed only with category equal to <code>NULL</co
 
 <dt id="arg-pathways">pathways<a class="anchor" aria-label="anchor" href="#arg-pathways"></a></dt>
 <dd><p>character. Vector with pathways level 2 to visualize. The
-pathways are displayed following the order as in this vector.</p></dd>
+pathways are displayed following the order as in this vector. It may
+contain pathways not present in the column given by <code>pathway_level1_names</code>.</p></dd>
 
 
 <dt id="arg-pathway-level-names">pathway_level1_names<a class="anchor" aria-label="anchor" href="#arg-pathway-level-names"></a></dt>
@@ -214,11 +215,24 @@ plot in <code>plot</code>. <code>NULL</code> is returned if <code>facet_column</
 <span class="r-in"><span>  category <span class="op">=</span> <span class="st">"Chordata"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># select some pathways only</span></span></span>
+<span class="r-in"><span><span class="co"># Select some pathways only</span></span></span>
 <span class="r-in"><span><span class="fu">visualize_pathways_level2</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  df <span class="op">=</span> <span class="va">data</span>, </span></span>
 <span class="r-in"><span>  chosen_pathway_level1 <span class="op">=</span> <span class="st">"escape"</span>,</span></span>
 <span class="r-in"><span>  pathways <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pet"</span>, <span class="st">"horticulture"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `pathways` can contain pathways not present in data</span></span></span>
+<span class="r-in"><span><span class="fu">visualize_pathways_level2</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  df <span class="op">=</span> <span class="va">data</span>,</span></span>
+<span class="r-in"><span>  chosen_pathway_level1 <span class="op">=</span> <span class="st">"escape"</span>,</span></span>
+<span class="r-in"><span>  category <span class="op">=</span> <span class="st">"Chordata"</span>,</span></span>
+<span class="r-in"><span>  pathways <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"agriculture"</span>, <span class="co"># not present</span></span></span>
+<span class="r-in"><span>    <span class="st">"forestry"</span>, <span class="co"># not present</span></span></span>
+<span class="r-in"><span>    <span class="st">"pet"</span>, </span></span>
+<span class="r-in"><span>    <span class="st">"unknown"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># facet phylum</span></span></span>
@@ -271,7 +285,7 @@ plot in <code>plot</code>. <code>NULL</code> is returned if <code>facet_column</
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
