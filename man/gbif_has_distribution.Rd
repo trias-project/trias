@@ -2,7 +2,7 @@
 % Please edit documentation in R/gbif_has_distribution.R
 \name{gbif_has_distribution}
 \alias{gbif_has_distribution}
-\title{Compare desired distribution information with actual one.}
+\title{Compare desired distribution information with actual one}
 \usage{
 gbif_has_distribution(taxon_key, ...)
 }
@@ -57,3 +57,18 @@ gbif_has_distribution("145953242",
 )
 }
 }
+\seealso{
+Other checklist functions: 
+\code{\link{gbif_get_taxa}()},
+\code{\link{gbif_verify_keys}()},
+\code{\link{get_table_pathways}()},
+\code{\link{indicator_introduction_year}()},
+\code{\link{indicator_native_range_year}()},
+\code{\link{indicator_total_year}()},
+\code{\link{verify_taxa}()},
+\code{\link{visualize_pathways_level1}()},
+\code{\link{visualize_pathways_level2}()},
+\code{\link{visualize_pathways_year_level1}()},
+\code{\link{visualize_pathways_year_level2}()}
+}
+\concept{checklist functions}
