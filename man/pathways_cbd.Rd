@@ -11,7 +11,8 @@ A tibble data.frame with 2 columns: \code{pathway_level1} and
 \code{pathway_level2}.
 }
 \description{
-Function to get all CBD pathays of introdution at level 1 (\code{pathway_level1})
-and level 2 (\code{pathway_level2}). Added pathway \code{unknown} at level 1 and level
-2 for classifying taxa without pathway (at level 1 or level 2) information.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+It is deprecated as of trias 3.1.3. Please use the data frame
+\url{pathwayscbd} directly instead.
 }

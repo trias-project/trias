@@ -2,7 +2,7 @@
 % Please edit documentation in R/indicator_total_year.R
 \name{indicator_total_year}
 \alias{indicator_total_year}
-\title{Create cumulative number of alien species indicator plot.}
+\title{Plot the cumulative number of alien species per year}
 \usage{
 indicator_total_year(
   df,
@@ -95,3 +95,18 @@ indicator_total_year(data, first_observed = "first_observed")
 indicator_total_year(data, x_lab = "YEAR", y_lab = NULL)
 }
 }
+\seealso{
+Other checklist functions: 
+\code{\link{gbif_get_taxa}()},
+\code{\link{gbif_has_distribution}()},
+\code{\link{gbif_verify_keys}()},
+\code{\link{get_table_pathways}()},
+\code{\link{indicator_introduction_year}()},
+\code{\link{indicator_native_range_year}()},
+\code{\link{verify_taxa}()},
+\code{\link{visualize_pathways_level1}()},
+\code{\link{visualize_pathways_level2}()},
+\code{\link{visualize_pathways_year_level1}()},
+\code{\link{visualize_pathways_year_level2}()}
+}
+\concept{checklist functions}

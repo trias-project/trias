@@ -34,6 +34,7 @@
 #'   before \code{eval_year}?} \item{\code{dr_4}: logical. Output of decision
 #'   rule 4 answers to the question: is the value in column \code{y_var} the
 #'   maximum ever observed up to \code{eval_year}?}}
+#' @family occurrence functions
 #' @export
 #' @importFrom dplyr .data %>%
 #' @importFrom rlang sym !! :=

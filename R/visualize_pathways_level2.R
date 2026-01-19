@@ -7,7 +7,7 @@
 #' @param df df.
 #' @param chosen_pathway_level1 character. A pathway level 1. If CBD standard is
 #'   followed (see argument `cbd_standard`), one of the level 1 pathways from
-#'   `pathways_cbd()`.
+#'   `pathwayscbd`.
 #' @param category `NULL` (default) or character. One of the kingdoms as given
 #'   in GBIF or `Chordata` (the phylum) or `Not Chordata` (all other phyla of
 #'   `Animalia`):
@@ -52,7 +52,7 @@
 #' @param first_observed character. Name of the column of `df` containing
 #'   information about year of introduction. Default: `"first_observed"`.
 #' @param cbd_standard logical. If `TRUE` the values of pathway level 2 are
-#'   checked based on CBD standard as returned by `pathways_cbd()`. Error is
+#'   checked based on CBD standard as in `pathwayscbd`. Error is
 #'   returned if unmatched values are found. If `FALSE`, a warning is returned.
 #'   Default: `TRUE`.
 #' @param title `NULL` or character. Title of the graph. Default: `NULL`.
@@ -67,6 +67,7 @@
 #' - `data_facet_graph`: data.frame (tibble) with data used for the faceting
 #' plot in `plot`. `NULL` is returned if `facet_column` is `NULL`.
 #'
+#' @family checklist functions
 #' @export
 #' 
 #' @importFrom dplyr %>% .data
@@ -402,7 +403,7 @@ visualize_pathways_level2 <- function(df,
     ))
   # Import all CBD pathways level 2 within chosen pathway level 1
   pathways_level2_all <-
-    pathways_cbd() %>%
+    pathwayscbd %>%
     dplyr::filter(.data$pathway_level1 == chosen_pathway_level1) %>%
     dplyr::distinct(.data$pathway_level2)
   # Select pathways

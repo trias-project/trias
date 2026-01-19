@@ -1,0 +1,186 @@
+---
+title: "Checklist functions"
+author: Damiano Oldoni
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Checklist functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+This vignette demonstrates the main checklist functions in the trias package for analyzing and visualizing alien species data.
+
+```{r load-package}
+library(trias)
+library(dplyr)
+library(readr)
+```
+
+## Load data
+
+We'll use example data from the TrIAS indicators repository:
+
+```{r load-data}
+df <- read_tsv(
+  "https://raw.githubusercontent.com/trias-project/indicators/master/data/interim/data_input_checklist_indicators.tsv",
+  show_col_types = FALSE
+)
+
+# Preview the data
+head(df)
+```
+
+## Time of introduction
+
+### Number of introductions per year
+
+The `indicator_introduction_year()` function shows how many new alien species were introduced each year.
+
+```{r introduction-year}
+# Plot number of new introductions per year
+result <- indicator_introduction_year(
+  df = df,
+  start_year_plot = 1950,
+  smooth_span = 0.85
+)
+
+# Display the plot
+result$plot
+```
+
+### Cumulative number of alien species
+
+The `indicator_total_year()` function displays the cumulative number of alien species over time.
+
+```{r total-year}
+# Plot cumulative number of alien species
+result <- indicator_total_year(
+  df = df,
+  start_year_plot = 1950
+)
+
+# Display the plot
+result$plot
+```
+
+## Native range
+
+The `indicator_native_range_year()` function creates an interactive visualization showing the number of alien species per native region and year of introduction.
+
+```{r native-range}
+# Plot species by native range over time
+result <- indicator_native_range_year(
+  df = df,
+  type = "native_range",
+  response_type = "absolute"
+)
+
+# Display the plot
+result$plot
+```
+
+## Pathways of introduction
+
+### Pathway data
+
+The package includes the `pathwayscbd` dataset containing CBD standard pathways at level 1 and level 2.
+
+```{r pathways-data}
+# View available CBD pathways
+pathwayscbd
+```
+
+### Visualize pathways at level 1
+
+The `visualize_pathways_level1()` function creates bar graphs showing the number of taxa introduced through different CBD pathways at level 1.
+
+```{r pathways-level1}
+# Visualize pathways level 1
+result <- visualize_pathways_level1(
+  df = df,
+  category = NULL,
+  from = NULL
+)
+
+# Display the plot
+result$plot
+```
+
+### Visualize pathways over time at level 1
+
+The `visualize_pathways_year_level1()` function shows pathway trends over time.
+
+```{r pathways-year-level1}
+# Visualize pathways level 1 over time
+result <- visualize_pathways_year_level1(
+  df = df,
+  bin = 10,
+  from = 1970
+)
+
+# Display the plot
+result$plot
+```
+
+### Visualize pathways at level 2
+
+The `visualize_pathways_level2()` function creates bar graphs for CBD pathways at level 2 for a specific level 1 pathway.
+
+```{r pathways-level2}
+# Visualize pathways level 2 for "escape"
+result <- visualize_pathways_level2(
+  df = df,
+  chosen_pathway_level1 = "escape",
+  category = NULL
+)
+
+# Display the plot
+result$plot
+```
+
+### Visualize pathways over time at level 2
+
+The `visualize_pathways_year_level2()` function shows level 2 pathway trends over time for a specific level 1 pathway.
+
+```{r pathways-year-level2}
+# Visualize pathways level 2 over time
+result <- visualize_pathways_year_level2(
+  df = df,
+  chosen_pathway_level1 = "escape",
+  bin = 10,
+  from = 1970
+)
+
+# Display the plot
+result$plot
+```
+
+### Pathway count table
+
+The `get_table_pathways()` function creates a summary table with the number of taxa per pathway and example species.
+
+```{r pathways-table}
+# Get pathway count table
+pathway_table <- get_table_pathways(
+  df = df,
+  category = NULL,
+  from = NULL,
+  n_species = 5
+)
+
+# Display first rows
+head(pathway_table)
+```
+
+## Additional resources
+
+For more information on individual functions, see the [Reference](https://trias-project.github.io/trias/reference/index.html#checklist-based-functions) page.

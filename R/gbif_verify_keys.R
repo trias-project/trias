@@ -27,6 +27,7 @@
 #' `NA` for other two columns. If a key didn't pass the second check
 #' (`is_from_gbif_backbone` = `FALSE`) then `is_synonym` = `NA`.
 #' 
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr .data %>%
 #' @importFrom rlang !!

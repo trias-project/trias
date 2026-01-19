@@ -44,6 +44,7 @@
 #' - `single_species_maps` a list of leaflet objects per taxon_key displaying 
 #' the current and future climate scenarios
 #' 
+#' @family climate match functions
 #' @export
 #' @importFrom dplyr %>% .data
 #' @examples

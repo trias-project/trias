@@ -49,6 +49,7 @@
 #'   during a given year.
 #'   - `perc`: percentage of species introduced from the native range for a 
 #'   given year, `n`/`total`*100.
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr %>% .data
 #' @examples

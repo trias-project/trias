@@ -95,6 +95,7 @@
 #'   \item{\code{check_verificationKey}: df. Check if provided
 #'   \code{verificationKey}s can be found in backbone.} }} }
 #'
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr %>% .data
 #'

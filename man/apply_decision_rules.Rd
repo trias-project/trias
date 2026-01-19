@@ -79,3 +79,8 @@ apply_decision_rules(df,
   year = "y"
 )
 }
+\seealso{
+Other occurrence functions: 
+\code{\link{apply_gam}()}
+}
+\concept{occurrence functions}

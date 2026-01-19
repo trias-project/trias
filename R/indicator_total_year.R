@@ -1,4 +1,4 @@
-#' Create cumulative number of alien species indicator plot.
+#' Plot the cumulative number of alien species per year
 #'
 #' This function calculates the cumulative number of taxa introduced per year.
 #' To do this, a column of input dataframe containing temporal information about
@@ -34,6 +34,7 @@
 #' - `data_facet_graph`: data.frame (tibble) with data used for the faceting
 #' plot in `plot`. If `facet_column` is NULL, NULL is returned.
 #'
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr %>% .data
 #' @importFrom rlang !! !!!

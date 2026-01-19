@@ -29,6 +29,7 @@
 #'
 #' @return a data.frame with 4 columns: `pathway_level1`, `pathway_level2`, `n`
 #'   (number of taxa) and `examples`.
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr %>% .data
 #' @importFrom rlang !!

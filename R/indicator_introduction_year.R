@@ -1,4 +1,4 @@
-#' Plot number of new introductions per year.
+#' Plot the number of new introductions per year
 #'
 #' @description Calculate how many new species has been introduced in a year.
 #'
@@ -30,6 +30,7 @@
 #' - `data_facet_graph`: data.frame (tibble) with data used for the faceting
 #' plot in `plot`. If `facet_column` is NULL, NULL is returned.
 #'
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr %>% .data
 #' @importFrom rlang !! !!!

@@ -326,3 +326,8 @@ no_gam_applied <- apply_gam(df_gam,
 no_gam_applied$plot
 }
 }
+\seealso{
+Other occurrence functions: 
+\code{\link{apply_decision_rules}()}
+}
+\concept{occurrence functions}

@@ -1,4 +1,4 @@
-#' Compare desired distribution information with actual one.
+#' Compare desired distribution information with actual one
 #'
 #' This function compares GBIF distribution information based on a single taxon
 #' key with user requests and returns a logical (TRUE or FALSE). Comparison is
@@ -10,6 +10,7 @@
 #' country (and its synonym: countryCode), status (and its synonym:
 #' occurrenceStatus) and establishmentMeans.
 #' @return a logical, TRUE or FALSE.
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr %>%
 #' @examples

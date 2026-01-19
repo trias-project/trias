@@ -48,3 +48,4 @@ downloads from GBIF and updates the status of all downloads with status
 If a download key is passed which is not present in the file it will be added
 as a new line.
 }
+\concept{download functions}
