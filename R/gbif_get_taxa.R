@@ -14,6 +14,7 @@
 #' A warning is given if limit is higher than the length of taxon_keys or number of records
 #' in the checklist_keys (if string) or any of the checklist_keys (if vector)
 #' @return A data.frame with all returned attributes for any taxa
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr %>% .data
 #' @examples

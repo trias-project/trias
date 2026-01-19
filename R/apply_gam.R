@@ -116,6 +116,7 @@
 #' emerging status. If emerging status cannot be assessed only observations are
 #' plotted.
 #' }
+#' @family occurrence functions
 #' @export
 #' @importFrom dplyr %>% .data
 #' @importFrom rlang !! :=

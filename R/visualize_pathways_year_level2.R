@@ -63,6 +63,7 @@
 #' - `data_facet_graph`: data.frame (tibble) with data used for the faceting
 #' plot in `plot`. `NULL` is returned if `facet_column` is `NULL`.
 #'
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr %>% .data
 #' @importFrom rlang !!

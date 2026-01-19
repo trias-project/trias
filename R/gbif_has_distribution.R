@@ -10,6 +10,7 @@
 #' country (and its synonym: countryCode), status (and its synonym:
 #' occurrenceStatus) and establishmentMeans.
 #' @return a logical, TRUE or FALSE.
+#' @family checklist functions
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
