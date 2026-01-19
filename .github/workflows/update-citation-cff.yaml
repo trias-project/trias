@@ -19,6 +19,8 @@ name: Update CITATION.cff
 jobs:
   update-citation-cff:
     runs-on: macos-latest
+    permissions:
+      contents: write
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
