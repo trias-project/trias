@@ -8,7 +8,7 @@ input_test_df <- read.delim(
 )
 
 valid_pathways <-
-  pathways_cbd() %>%
+  pathways_cbd %>%
   dplyr::distinct(pathway_level1) %>%
   dplyr::pull()
 

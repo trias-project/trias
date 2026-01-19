@@ -37,7 +37,7 @@
 #' @param first_observed character. Name of the column of `df` containing
 #'   information about year of introduction. Default: `"first_observed"`.
 #' @param cbd_standard logical. If TRUE the values of pathway level 1 are
-#'   checked based on CBD standard as returned by `pathways_cbd()`. Error is
+#'   checked based on CBD standard as in `pathways_cbd`. Error is
 #'   returned if unmatched values are found. If FALSE, a warning is returned.
 #'   Default: TRUE.
 #' @param title `NULL` or character. Title of the graph. Default: `NULL`.
@@ -321,7 +321,7 @@ visualize_pathways_level1 <- function(df,
     ))
   # Import all CBD pathways level 1
   pathways_level1_all <-
-    pathways_cbd() %>%
+    pathways_cbd %>%
     dplyr::distinct(.data$pathway_level1)
   # Select pathways
   if (!is.null(pathways)) {
