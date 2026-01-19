@@ -1,3 +1,7 @@
+# trias 3.1.3
+
+- Remove the function pathways_cbd(). Use data frame `pathways_cbd` directly (#134).
+
 # trias 3.1.2
 
 - Allow empty pathways in `visualize_pathways_level1()` and `visualize_pathways_level2()` functions (#168).
