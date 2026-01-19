@@ -15,7 +15,7 @@ n_first_observed_na <-
   nrow(input_test_df_with_nas) - nrow(input_test_df)
 
 valid_pathways <-
-  pathways_cbd %>%
+  pathwayscbd %>%
   dplyr::distinct(pathway_level1) %>%
   dplyr::pull()
 

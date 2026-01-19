@@ -82,7 +82,7 @@ one of: \code{"Chordata"}, \code{"Not Chordata"}.  Default: \code{"phylum"}.}
 information about year of introduction. Default: \code{"first_observed"}.}
 
 \item{cbd_standard}{logical. If \code{TRUE} the values of pathway level 1 are
-checked based on CBD standard as in \code{pathways_cbd}. Error is
+checked based on CBD standard as in \code{pathwayscbd}. Error is
 returned if unmatched values are found. If \code{FALSE}, a warning is returned.
 Default: \code{TRUE}.}
 

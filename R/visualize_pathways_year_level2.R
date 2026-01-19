@@ -48,7 +48,7 @@
 #' @param first_observed character. Name of the column of `df` containing
 #'   information about year of introduction. Default: `"first_observed"`.
 #' @param cbd_standard logical. If `TRUE` the values of pathway level 1 are
-#'   checked based on CBD standard as in `pathways_cbd`. Error is
+#'   checked based on CBD standard as in `pathwayscbd`. Error is
 #'   returned if unmatched values are found. If `FALSE`, a warning is returned.
 #'   Default: `TRUE`.
 #' @param title `NULL` or character. Title of the graph. Default: `NULL`.
