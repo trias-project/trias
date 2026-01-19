@@ -6,17 +6,22 @@ template:
 navbar:
   bg: dark
 
-authors:
-  Damiano Oldoni:
-    href: "https://twitter.com/damianozingaro"
-  Peter Desmet:
-    href: "https://twitter.com/peterdesmet"
-  TrIAS:
-    href: "https://trias-project.be"
-    html: "<img src='https://osf.io/dqvfk/?action=download' width=72>"
-  LIFE RIPARIAS:
-    href: "https://www.riparias.be"
-    html: "<img src='https://www.riparias.be/static/images/bbpf.png' width=72>"
-  B-Cubed (Horizon Europe ID No 101059592):
-    href: "https://b-cubed.eu"
-    html: "<img src='https://b-cubed.eu/brand-kit?&download=177&file_name=B3_logo_vertical_full.png' width=72>"
+reference:
+- title: Checklist based functions
+  contents:
+  - has_concept("checklist functions")
+- title: Occurrence based functions
+  contents:
+  - has_concept("occurrence functions")
+- title: Download functions
+  contents:
+  - has_concept("download functions")
+- title: Climate match functions
+  contents:
+  - has_concept("climate match functions")
+- title: Climate match datasets
+  contents:
+  - has_concept("climate data")
+- title: Checklist datasets
+  contents:
+  - has_concept("checklist data")

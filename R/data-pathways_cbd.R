@@ -10,5 +10,5 @@
 #' - `pathway_level2`: (character) CBD pathway level 2
 #' 
 #' @source [CBD Standard](https://www.cbd.int/)
-#' @family "checklist data"
+#' @family checklist data
 "pathways_cbd"

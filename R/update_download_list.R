@@ -27,6 +27,7 @@
 #'   link to a page with download information. Default: "https://doi.org/".
 #' @return message with the performed updates
 #'
+#' @family download functions
 #' @export
 update_download_list <- function(file, download_to_add, input_checklist,
                                  url_doi_base = "https://doi.org/") {
