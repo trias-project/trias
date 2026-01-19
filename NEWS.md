@@ -1,7 +1,7 @@
 # trias 3.1.3
 
-- Function `pathways_cbd()` is deprecated. Use data frame `pathways_cbd` directly (#134).
-- Add vignettes about checklist and occurrence based functions.
+- Function `pathways_cbd()` is deprecated. Use data frame `pathwayscbd` directly (#134).
+- Add vignettes about checklist and occurrence based functions (#170).
 
 # trias 3.1.2
 

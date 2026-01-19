@@ -25,3 +25,10 @@ reference:
 - title: Checklist datasets
   contents:
   - has_concept("checklist data")
+
+articles:
+- title: Vignettes
+  navbar: ~
+  contents:
+  - checklist-functions
+  - occurrence-functions

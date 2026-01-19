@@ -1,5 +1,6 @@
 ---
-title: "Checklist based functions"
+title: "Checklist functions"
+author: Damiano Oldoni
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Checklist functions}
@@ -91,15 +92,11 @@ result$plot
 
 ### Pathway data
 
-The package includes the `pathways_cbd` dataset containing CBD standard pathways at level 1 and level 2.
+The package includes the `pathwayscbd` dataset containing CBD standard pathways at level 1 and level 2.
 
 ```{r pathways-data}
 # View available CBD pathways
-head(pathways_cbd)
-
-# Distinct level 1 pathways
-pathways_cbd %>%
-  distinct(pathway_level1)
+pathwayscbd
 ```
 
 ### Visualize pathways at level 1
