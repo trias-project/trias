@@ -2,15 +2,15 @@
 
 ## Authors
 
-- **[Damiano Oldoni](https://twitter.com/damianozingaro)**. Author,
-  maintainer. [](https://orcid.org/0000-0003-3445-7562)
+- **Damiano Oldoni**. Author, maintainer.
+  [](https://orcid.org/0000-0003-3445-7562)
 
 - **Soria Delva**. Author. [](https://orcid.org/0000-0002-7164-6031)
 
 - **Tim Adriaens**. Contributor.
   [](https://orcid.org/0000-0001-7268-4200)
 
-- **[Peter Desmet](https://twitter.com/peterdesmet)**. Contributor.
+- **Peter Desmet**. Contributor.
   [](https://orcid.org/0000-0002-8442-8025)
 
 - **Sander Devisscher**. Author.
@@ -49,12 +49,12 @@ Source:
 
 Oldoni D, Delva S, Devisscher S, Varewyck M (2026). *trias: Process Data
 for the Project Tracking Invasive Alien Species (TrIAS)*. R package
-version 3.1.2, <https://github.com/trias-project/trias>.
+version 3.1.3, <https://github.com/trias-project/trias>.
 
     @Manual{,
       title = {trias: Process Data for the Project Tracking Invasive Alien Species (TrIAS)},
       author = {Damiano Oldoni and Soria Delva and Sander Devisscher and Machteld Varewyck},
       year = {2026},
-      note = {R package version 3.1.2},
+      note = {R package version 3.1.3},
       url = {https://github.com/trias-project/trias},
     }

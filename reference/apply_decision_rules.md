@@ -86,6 +86,11 @@ Based on the decision rules output we define the emergency status value,
 - (`dr_1` is `TRUE` and `dr_3` is `FALSE`) or (`dr_1`, `dr_2` and `dr_3`
   are `FALSE`): `em = 1` (unclear)
 
+## See also
+
+Other occurrence functions:
+[`apply_gam()`](https://trias-project.github.io/trias/reference/apply_gam.md)
+
 ## Examples
 
 ``` r

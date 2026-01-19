@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">trias</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,11 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/checklist-functions.html">Checklist functions</a></li>
+    <li><a class="dropdown-item" href="../articles/occurrence-functions.html">Occurrence functions</a></li>
+  </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -31,7 +36,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="checklist-based-functions">Checklist based functions<a class="anchor" aria-label="anchor" href="#checklist-based-functions"></a></h2>
 
 
 
@@ -41,34 +46,6 @@
 
 
       <dl><dt>
-
-          <code><a href="apply_decision_rules.html">apply_decision_rules()</a></code>
-
-        </dt>
-        <dd>Apply decision rules to time series and assess emerging status</dd>
-
-        <dt>
-
-          <code><a href="apply_gam.html">apply_gam()</a></code>
-
-        </dt>
-        <dd>Apply GAM to time series and assess emerging status</dd>
-
-        <dt>
-
-          <code><a href="climate_match.html">climate_match()</a></code>
-
-        </dt>
-        <dd>Create a set of climate matching outputs</dd>
-
-        <dt>
-
-          <code><a href="future.html">future</a></code>
-
-        </dt>
-        <dd>Future climate list of sf objects</dd>
-
-        <dt>
 
           <code><a href="gbif_get_taxa.html">gbif_get_taxa()</a></code>
 
@@ -80,7 +57,7 @@
           <code><a href="gbif_has_distribution.html">gbif_has_distribution()</a></code>
 
         </dt>
-        <dd>Compare desired distribution information with actual one.</dd>
+        <dd>Compare desired distribution information with actual one</dd>
 
         <dt>
 
@@ -101,7 +78,7 @@
           <code><a href="indicator_introduction_year.html">indicator_introduction_year()</a></code>
 
         </dt>
-        <dd>Plot number of new introductions per year.</dd>
+        <dd>Plot the number of new introductions per year</dd>
 
         <dt>
 
@@ -115,35 +92,14 @@
           <code><a href="indicator_total_year.html">indicator_total_year()</a></code>
 
         </dt>
-        <dd>Create cumulative number of alien species indicator plot.</dd>
-
-        <dt>
-
-          <code><a href="legends.html">legends</a></code>
-
-        </dt>
-        <dd>Legends for climate shapefiles</dd>
-
-        <dt>
-
-          <code><a href="observed.html">observed</a></code>
-
-        </dt>
-        <dd>Historical climate sf objects</dd>
+        <dd>Plot the cumulative number of alien species per year</dd>
 
         <dt>
 
           <code><a href="pathways_cbd.html">pathways_cbd()</a></code>
-
+          <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
         </dt>
         <dd>Pathways of introduction as defined by CBD</dd>
-
-        <dt>
-
-          <code><a href="update_download_list.html">update_download_list()</a></code>
-
-        </dt>
-        <dd>Update the list with all downloads</dd>
 
         <dt>
 
@@ -179,12 +135,114 @@
 
         </dt>
         <dd>Plot number of introduced taxa over time for pathways level 2</dd>
+      </dl></div><div class="section level2">
+      <h2 id="occurrence-based-functions">Occurrence based functions<a class="anchor" aria-label="anchor" href="#occurrence-based-functions"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="apply_decision_rules.html">apply_decision_rules()</a></code>
+
+        </dt>
+        <dd>Apply decision rules to time series and assess emerging status</dd>
+
+        <dt>
+
+          <code><a href="apply_gam.html">apply_gam()</a></code>
+
+        </dt>
+        <dd>Apply GAM to time series and assess emerging status</dd>
+      </dl></div><div class="section level2">
+      <h2 id="download-functions">Download functions<a class="anchor" aria-label="anchor" href="#download-functions"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="update_download_list.html">update_download_list()</a></code>
+
+        </dt>
+        <dd>Update the list with all downloads</dd>
+      </dl></div><div class="section level2">
+      <h2 id="climate-match-functions">Climate match functions<a class="anchor" aria-label="anchor" href="#climate-match-functions"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="climate_match.html">climate_match()</a></code>
+
+        </dt>
+        <dd>Create a set of climate matching outputs</dd>
+      </dl></div><div class="section level2">
+      <h2 id="climate-match-datasets">Climate match datasets<a class="anchor" aria-label="anchor" href="#climate-match-datasets"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="future.html">future</a></code>
+
+        </dt>
+        <dd>Future climate list of sf objects</dd>
+
+        <dt>
+
+          <code><a href="legends.html">legends</a></code>
+
+        </dt>
+        <dd>Legends for climate shapefiles</dd>
+
+        <dt>
+
+          <code><a href="observed.html">observed</a></code>
+
+        </dt>
+        <dd>Historical climate sf objects</dd>
+      </dl></div><div class="section level2">
+      <h2 id="checklist-datasets">Checklist datasets<a class="anchor" aria-label="anchor" href="#checklist-datasets"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pathwayscbd.html">pathwayscbd</a></code>
+
+        </dt>
+        <dd>Pathways of introduction as defined by CBD</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://twitter.com/damianozingaro" class="external-link">Damiano Oldoni</a>, Soria Delva, Sander Devisscher, Machteld Varewyck, Research Institute for Nature and Forest (INBO), <a href="https://trias-project.be" class="external-link"><img src="https://osf.io/dqvfk/?action=download" width="72"></a>, <a href="https://www.riparias.be" class="external-link"><img src="https://www.riparias.be/static/images/bbpf.png" width="72"></a>, European Union.</p>
+  <p>Developed by Damiano Oldoni, Soria Delva, Sander Devisscher, Machteld Varewyck, Research Institute for Nature and Forest (INBO), <a href="https://trias-project.be" class="external-link"><img src="https://osf.io/dqvfk/?action=download" width="72"></a>, <a href="https://www.riparias.be" class="external-link"><img src="https://www.riparias.be/static/images/bbpf.png" width="72"></a>, European Union.</p>
 </div>
 
 <div class="pkgdown-footer-right">

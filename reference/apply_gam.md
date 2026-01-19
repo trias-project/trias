@@ -308,6 +308,11 @@ function, we pass:
   | \-    | \-    | \+    | \-    | -3  | 0 (not emerging)         |
   | \-    | \-    | \-    | \-    | -4  | 0 (not emerging)         |
 
+## See also
+
+Other occurrence functions:
+[`apply_decision_rules()`](https://trias-project.github.io/trias/reference/apply_decision_rules.md)
+
 ## Examples
 
 ``` r

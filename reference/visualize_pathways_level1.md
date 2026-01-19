@@ -91,10 +91,8 @@ visualize_pathways_level1(
 - cbd_standard:
 
   logical. If TRUE the values of pathway level 1 are checked based on
-  CBD standard as returned by
-  [`pathways_cbd()`](https://trias-project.github.io/trias/reference/pathways_cbd.md).
-  Error is returned if unmatched values are found. If FALSE, a warning
-  is returned. Default: TRUE.
+  CBD standard as in `pathwayscbd`. Error is returned if unmatched
+  values are found. If FALSE, a warning is returned. Default: TRUE.
 
 - title:
 
@@ -122,6 +120,22 @@ A list with three slots:
 - `data_facet_graph`: data.frame (tibble) with data used for the
   faceting plot in `plot`. `NULL` is returned if `facet_column` is
   `NULL`.
+
+## See also
+
+Other checklist functions:
+[`gbif_get_taxa()`](https://trias-project.github.io/trias/reference/gbif_get_taxa.md),
+[`gbif_has_distribution()`](https://trias-project.github.io/trias/reference/gbif_has_distribution.md),
+[`gbif_verify_keys()`](https://trias-project.github.io/trias/reference/gbif_verify_keys.md),
+[`get_table_pathways()`](https://trias-project.github.io/trias/reference/get_table_pathways.md),
+[`indicator_introduction_year()`](https://trias-project.github.io/trias/reference/indicator_introduction_year.md),
+[`indicator_native_range_year()`](https://trias-project.github.io/trias/reference/indicator_native_range_year.md),
+[`indicator_total_year()`](https://trias-project.github.io/trias/reference/indicator_total_year.md),
+[`pathways_cbd()`](https://trias-project.github.io/trias/reference/pathways_cbd.md),
+[`verify_taxa()`](https://trias-project.github.io/trias/reference/verify_taxa.md),
+[`visualize_pathways_level2()`](https://trias-project.github.io/trias/reference/visualize_pathways_level2.md),
+[`visualize_pathways_year_level1()`](https://trias-project.github.io/trias/reference/visualize_pathways_year_level1.md),
+[`visualize_pathways_year_level2()`](https://trias-project.github.io/trias/reference/visualize_pathways_year_level2.md)
 
 ## Examples
 

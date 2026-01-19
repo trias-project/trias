@@ -1,5 +1,14 @@
 # Changelog
 
+## trias 3.1.3
+
+- Function
+  [`pathways_cbd()`](https://trias-project.github.io/trias/reference/pathways_cbd.md)
+  is deprecated. Use data frame `pathwayscbd` directly
+  ([\#134](https://github.com/trias-project/trias/issues/134)).
+- Add vignettes about checklist and occurrence based functions
+  ([\#170](https://github.com/trias-project/trias/issues/170)).
+
 ## trias 3.1.2
 
 - Allow empty pathways in
