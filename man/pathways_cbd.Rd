@@ -16,3 +16,19 @@ A tibble data.frame with 2 columns: \code{pathway_level1} and
 It is deprecated as of trias 3.1.3. Please use the data frame
 \url{pathwayscbd} directly instead.
 }
+\seealso{
+Other checklist functions: 
+\code{\link{gbif_get_taxa}()},
+\code{\link{gbif_has_distribution}()},
+\code{\link{gbif_verify_keys}()},
+\code{\link{get_table_pathways}()},
+\code{\link{indicator_introduction_year}()},
+\code{\link{indicator_native_range_year}()},
+\code{\link{indicator_total_year}()},
+\code{\link{verify_taxa}()},
+\code{\link{visualize_pathways_level1}()},
+\code{\link{visualize_pathways_level2}()},
+\code{\link{visualize_pathways_year_level1}()},
+\code{\link{visualize_pathways_year_level2}()}
+}
+\concept{checklist functions}

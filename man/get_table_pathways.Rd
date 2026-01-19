@@ -102,6 +102,7 @@ Other checklist functions:
 \code{\link{indicator_introduction_year}()},
 \code{\link{indicator_native_range_year}()},
 \code{\link{indicator_total_year}()},
+\code{\link{pathways_cbd}()},
 \code{\link{verify_taxa}()},
 \code{\link{visualize_pathways_level1}()},
 \code{\link{visualize_pathways_level2}()},

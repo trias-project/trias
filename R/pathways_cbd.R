@@ -8,6 +8,7 @@
 #'
 #' @return A tibble data.frame with 2 columns: `pathway_level1` and
 #'   `pathway_level2`.
+#' @family checklist functions
 #' @export
 #' @usage pathways_cbd()
 pathways_cbd <- function() {
