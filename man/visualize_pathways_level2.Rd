@@ -28,7 +28,7 @@ visualize_pathways_level2(
 
 \item{chosen_pathway_level1}{character. A pathway level 1. If CBD standard is
 followed (see argument \code{cbd_standard}), one of the level 1 pathways from
-\code{pathways_cbd}.}
+\code{pathwayscbd}.}
 
 \item{category}{\code{NULL} (default) or character. One of the kingdoms as given
 in GBIF or \code{Chordata} (the phylum) or \verb{Not Chordata} (all other phyla of
@@ -215,6 +215,7 @@ Other checklist functions:
 \code{\link{indicator_introduction_year}()},
 \code{\link{indicator_native_range_year}()},
 \code{\link{indicator_total_year}()},
+\code{\link{pathways_cbd}()},
 \code{\link{verify_taxa}()},
 \code{\link{visualize_pathways_level1}()},
 \code{\link{visualize_pathways_year_level1}()},
