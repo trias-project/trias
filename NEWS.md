@@ -1,6 +1,6 @@
 # trias 3.1.3
 
-- Remove the function pathways_cbd(). Use data frame `pathways_cbd` directly (#134).
+- Function `pathways_cbd()` is deprecated. Use data frame `pathways_cbd` directly (#134).
 
 # trias 3.1.2
 

@@ -9,7 +9,7 @@ input_test_df <- read.delim(
 
 
 valid_pathways_escape <-
-  pathways_cbd %>%
+  pathwayscbd %>%
   filter(pathway_level1 == "escape") %>%
   distinct(pathway_level2) %>%
   pull()

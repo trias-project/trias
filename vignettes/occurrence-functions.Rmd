@@ -1,0 +1,198 @@
+---
+title: "Occurrence functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Occurrence functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+This vignette demonstrates the occurrence-based functions in the trias package for assessing emerging status of alien species using time series data.
+
+```{r load-package}
+library(trias)
+library(dplyr)
+```
+
+## Introduction
+
+The occurrence functions analyze time series of observations or occupancy data to detect emerging alien species. Two approaches are available:
+
+1. **Decision rules** - Apply simple logical rules to assess emerging status
+2. **GAM (Generalized Additive Models)** - Use statistical models to detect significant trends
+
+## Decision rules approach
+
+The `apply_decision_rules()` function applies a set of decision rules to time series data to assess emerging status at a specific evaluation year.
+
+### Example data
+
+Let's create example time series data for two taxa:
+
+```{r decision-rules-data}
+df_rules <- tibble(
+  taxonID = c(rep(1008955, 10), rep(2493598, 3)),
+  year = c(seq(2009, 2018), seq(2016, 2018)),
+  obs = c(1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 3, 0)
+)
+
+# View the data
+df_rules
+```
+
+### Apply decision rules
+
+```{r apply-decision-rules}
+# Apply decision rules to assess emerging status in 2016
+result <- apply_decision_rules(
+  df = df_rules,
+  eval_year = 2016,
+  y_var = "obs",
+  taxonKey = "taxonID",
+  year = "year"
+)
+
+# View the results
+result
+```
+
+### Understanding the results
+
+The function returns:
+
+- **em_status**: Emergency status (0-3)
+  - 0: Not emerging
+  - 1: Unclear
+  - 2: Potentially emerging
+  - 3: Emerging
+- **dr_1**: Does the time series contain only one positive value at evaluation year?
+- **dr_2**: Is value at evaluation year above median value?
+- **dr_3**: Does the time series contain only zeros in the five years before evaluation year?
+- **dr_4**: Is the value at evaluation year the maximum ever observed?
+
+## GAM approach
+
+The `apply_gam()` function uses Generalized Additive Models to assess the emerging status of a species over a time window. This is a more sophisticated statistical approach that can detect trends and account for research effort bias. It can also be applied on the number of observations or occupancy data (number of occupied grid cells), if given.
+
+### Example data
+
+```{r gam-data}
+df_gam <- tibble(
+  taxonKey = rep(3003709, 24),
+  canonicalName = rep("Rosa glauca", 24),
+  year = seq(1995, 2018),
+  n = c(
+    1, 1, 0, 0, 0, 2, 0, 0, 1, 3, 1, 2, 0, 5, 0, 5, 4, 2, 1,
+    1, 3, 3, 8, 10
+  ),
+  n_class = c(
+    1, 1, 0, 0, 0, 2, 0, 0, 1, 3, 1, 2, 0, 4, 0, 3, 3, 2, 1,
+    1, 2, 2, 4, 5
+  )
+)
+
+# View the data
+head(df_gam, 10)
+```
+
+### Apply GAM
+
+```{r apply-gam}
+# Apply GAM to assess emerging status
+result_gam <- apply_gam(
+  df = df_gam,
+  y_var = "n",
+  eval_years = c(2017, 2018),
+  year = "year",
+  taxonKey = "taxonKey",
+  type_indicator = "observations",
+  name = "Rosa glauca",
+  p_max = 0.1,
+  saveplot = FALSE,
+  verbose = FALSE
+)
+
+# Display the plot
+result_gam$plot
+```
+
+### Understanding GAM results
+
+The `apply_gam()` function returns a list with:
+
+- **em_summary**: Data frame summarizing emerging status for each evaluation year
+- **output**: Detailed GAM model output with predictions and confidence intervals
+- **plot**: Visualization showing:
+  - Observed values (points)
+  - GAM model fit (line)
+  - Confidence intervals (shaded area)
+  - Emerging status indicators
+
+```{r gam-summary}
+result_gam$em_summary
+```
+
+```{r gam-output}
+result_gam$output
+```
+
+Other components include:
+- **model**: The formula behind the GAM modelling
+
+```{r gam-model}  
+result_gam$model
+```
+
+- **first_derivative** and **second_derivative**: Data frames with derivatives of the GAM fit, with confidence intervals.
+
+```{r gam-derivatives}
+result_gam$first_derivative
+```
+
+```{r gam-second-derivative}
+result_gam$second_derivative
+```
+
+### Correcting for research effort
+
+The GAM approach can also correct for research effort bias using a baseline covariate:
+
+```{r gam-baseline}
+# Apply GAM with baseline correction
+result_gam_corrected <- apply_gam(df_gam,
+  y_var = "n",
+  eval_years = 2018,
+  baseline_var = "n_class",
+  taxon_key = 3003709,
+  name = "Rosa glauca",
+  verbose = TRUE
+)
+
+# Display the plot
+result_gam_corrected$plot
+```
+
+## Choosing between approaches
+
+**Use GAM when:**
+- You have sufficient data (at least 10-15 time points)
+- You want to account for trends and variability
+- You need to correct for research effort bias
+- You want statistical confidence measures
+
+**Use decision rules when:**
+- You have limited data (and GAM doesn't work)
+- You want quick assessments
+
+## Additional resources
+
+For more information on individual functions, see the [Reference](https://trias-project.github.io/trias/reference/index.html#occurrence-based-functions) page.

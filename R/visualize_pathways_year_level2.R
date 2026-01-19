@@ -406,7 +406,7 @@ visualize_pathways_year_level2 <- function(
     ))
   # Import all CBD pathways level 2 within chosen pathway level 1
   pathways_level2_all <-
-    pathways_cbd %>%
+    pathwayscbd %>%
     dplyr::filter(.data$pathway_level1 == chosen_pathway_level1) %>%
     dplyr::distinct(.data$pathway_level2)
   # Select pathways

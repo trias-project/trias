@@ -11,4 +11,4 @@
 #' 
 #' @source [CBD Standard](https://www.cbd.int/)
 #' @family checklist data
-"pathways_cbd"
+"pathwayscbd"

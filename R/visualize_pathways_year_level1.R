@@ -342,7 +342,7 @@ visualize_pathways_year_level1 <- function(
     ))
   # Import all CBD pathways level 1
   pathways_level1_all <-
-    pathways_cbd %>%
+    pathwayscbd %>%
     dplyr::distinct(.data$pathway_level1)
   # Select pathways
   if (!is.null(pathways)) {
