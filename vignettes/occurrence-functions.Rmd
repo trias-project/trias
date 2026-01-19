@@ -70,7 +70,7 @@ result
 
 The function returns:
 
-- **em_status**: Emergency status (0-3)
+- **em_status**: Emerging status (0-3)
   - 0: Not emerging
   - 1: Unclear
   - 2: Potentially emerging
