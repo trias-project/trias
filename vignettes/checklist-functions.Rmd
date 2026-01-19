@@ -44,7 +44,7 @@ head(df)
 
 The `indicator_introduction_year()` function shows how many new alien species were introduced each year.
 
-```{r introduction-year, fig.width=7, fig.height=5}
+```{r introduction-year}
 # Plot number of new introductions per year
 result <- indicator_introduction_year(
   df = df,
@@ -60,7 +60,7 @@ result$plot
 
 The `indicator_total_year()` function displays the cumulative number of alien species over time.
 
-```{r total-year, fig.width=7, fig.height=5}
+```{r total-year}
 # Plot cumulative number of alien species
 result <- indicator_total_year(
   df = df,
@@ -75,7 +75,7 @@ result$plot
 
 The `indicator_native_range_year()` function creates an interactive visualization showing the number of alien species per native region and year of introduction.
 
-```{r native-range, fig.width=7, fig.height=5}
+```{r native-range}
 # Plot species by native range over time
 result <- indicator_native_range_year(
   df = df,
@@ -106,7 +106,7 @@ pathways_cbd %>%
 
 The `visualize_pathways_level1()` function creates bar graphs showing the number of taxa introduced through different CBD pathways at level 1.
 
-```{r pathways-level1, fig.width=7, fig.height=5}
+```{r pathways-level1}
 # Visualize pathways level 1
 result <- visualize_pathways_level1(
   df = df,
@@ -122,7 +122,7 @@ result$plot
 
 The `visualize_pathways_year_level1()` function shows pathway trends over time.
 
-```{r pathways-year-level1, fig.width=7, fig.height=5}
+```{r pathways-year-level1}
 # Visualize pathways level 1 over time
 result <- visualize_pathways_year_level1(
   df = df,
@@ -138,7 +138,7 @@ result$plot
 
 The `visualize_pathways_level2()` function creates bar graphs for CBD pathways at level 2 for a specific level 1 pathway.
 
-```{r pathways-level2, fig.width=7, fig.height=5}
+```{r pathways-level2}
 # Visualize pathways level 2 for "escape"
 result <- visualize_pathways_level2(
   df = df,
@@ -154,7 +154,7 @@ result$plot
 
 The `visualize_pathways_year_level2()` function shows level 2 pathway trends over time for a specific level 1 pathway.
 
-```{r pathways-year-level2, fig.width=7, fig.height=5}
+```{r pathways-year-level2}
 # Visualize pathways level 2 over time
 result <- visualize_pathways_year_level2(
   df = df,
