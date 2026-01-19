@@ -7,7 +7,7 @@
 #' @param df df.
 #' @param chosen_pathway_level1 character. A pathway level 1. If CBD standard is
 #'   followed (see argument `cbd_standard`), one of the level 1 pathways from
-#'   `pathways_cbd`.
+#'   `pathwayscbd`.
 #' @param category `NULL` (default) or character. One of the kingdoms as given
 #'   in GBIF or `Chordata` (the phylum) or `Not Chordata` (all other phyla of
 #'   `Animalia`):
