@@ -24,6 +24,13 @@ test_that("datasetKey must be a scalar character", {
   )
 })
 
+test_that("`datasetKey` doesn't contain spaces", {
+  expect_error(
+    get_nubkeys(datasetKey = "a b"),
+    "`datasetKey` should not contain spaces."
+  )
+})
+
 test_that("allow_synonyms must be a scalar logical", {
   expect_error(
     get_nubkeys(

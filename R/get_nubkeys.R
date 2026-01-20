@@ -35,6 +35,11 @@ get_nubkeys <- function(datasetKey, allow_synonyms = TRUE) {
     all(purrr::is_scalar_character(datasetKey) & !is.na(datasetKey)),
     msg = "`datasetKey` should be a single (scalar) non-NA character value."
   )
+  # Return error if `datasetKey` contains spaces
+  assertthat::assert_that(
+    stringr::str_detect(datasetKey, "\\s") == FALSE,
+    msg = "`datasetKey` should not contain spaces."
+  )
   # Return error if `allow_synonyms` is NULL
   assertthat::assert_that(
     !is.null(allow_synonyms),
