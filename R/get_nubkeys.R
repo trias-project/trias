@@ -89,8 +89,8 @@ get_nubkeys <- function(datasetKey, allow_synonyms = TRUE) {
       purrr::compact()
 
     if (length(usage_data) == 0) {
-      # If all lookups failed, return an empty vector instead of erroring.
-      return(numeric(0))
+      # If all lookups failed, return an empty integer vector instead of erroring.
+      return(integer(0))
     }
 
     usage_data %>%
