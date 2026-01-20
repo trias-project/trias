@@ -50,6 +50,8 @@ devtools::install_github("trias-project/trias")
   : Compare desired distribution information with actual one
 - [`gbif_verify_keys()`](https://trias-project.github.io/trias/reference/gbif_verify_keys.md)
   : Check keys against GBIF Backbone Taxonomy
+- [`get_nubkeys()`](https://trias-project.github.io/trias/reference/get_nubkeys.md)
+  : Retrieve unique GBIF Backbone taxon keys from a species checklist
 - [`get_table_pathways()`](https://trias-project.github.io/trias/reference/get_table_pathways.md)
   : Pathway count indicator table
 - [`indicator_introduction_year()`](https://trias-project.github.io/trias/reference/indicator_introduction_year.md)

@@ -1,5 +1,11 @@
 # Changelog
 
+## trias 3.2.0
+
+- Add new function
+  [`get_nubkeys()`](https://trias-project.github.io/trias/reference/get_nubkeys.md)
+  to retrieve unique GBIF Backbone taxon keys from a species checklist.
+
 ## trias 3.1.3
 
 - Function

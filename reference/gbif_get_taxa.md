@@ -48,6 +48,7 @@ A data.frame with all returned attributes for any taxa
 Other checklist functions:
 [`gbif_has_distribution()`](https://trias-project.github.io/trias/reference/gbif_has_distribution.md),
 [`gbif_verify_keys()`](https://trias-project.github.io/trias/reference/gbif_verify_keys.md),
+[`get_nubkeys()`](https://trias-project.github.io/trias/reference/get_nubkeys.md),
 [`get_table_pathways()`](https://trias-project.github.io/trias/reference/get_table_pathways.md),
 [`indicator_introduction_year()`](https://trias-project.github.io/trias/reference/indicator_introduction_year.md),
 [`indicator_native_range_year()`](https://trias-project.github.io/trias/reference/indicator_native_range_year.md),
