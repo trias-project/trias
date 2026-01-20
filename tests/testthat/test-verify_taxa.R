@@ -442,7 +442,6 @@ my_verification_other_colnames <- read.delim(
 context("input_verify_taxa")
 
 test_that("taxa is a data frame", {
-  skip_on_os("windows")
   expect_error(
     verify_taxa(
       taxa = 3,
@@ -461,7 +460,6 @@ test_that("taxa is a data frame", {
 
 
 test_that("verification is a data frame", {
-  skip_on_os("windows")
   expect_error(
     verify_taxa(
       taxa = my_taxa,
@@ -480,7 +478,6 @@ test_that("verification is a data frame", {
 
 # no missing taxon keys in both input taxa and verification df (if not NULL)
 test_that("No missing taxon keys in input taxa and verification dfs", {
-  skip_on_os("windows")
   my_taxa_nas <- my_taxa[1:2, ]
   my_taxa_nas$taxonKey[2] <- my_taxa_nas$taxonKey[1]
   my_taxa_nas$taxonKey[2] <- NA_real_
@@ -506,7 +503,6 @@ test_that("No missing taxon keys in input taxa and verification dfs", {
 
 # taxon keys are unique
 test_that("Taxon keys are unique in input taxa and verification dfs", {
-  skip_on_os("windows")
   my_taxa_duplicates <-
     my_taxa[1:2, ]
   my_taxa_duplicates$taxonKey[2] <- my_taxa_duplicates$taxonKey[1]
@@ -560,7 +556,6 @@ taxa_test2 <- tibble::tibble(
 )
 
 test_that("taxa column names are correct", {
-  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = taxa_test1,
     verification = my_verification
@@ -602,7 +597,6 @@ taxa_test3 <- tibble::tibble(
 )
 
 test_that("consistency of 'taxa' about GBIF backbone info columns", {
-  skip_on_os("windows")
   expect_error(
     verify_taxa(
       taxa = taxa_test3,
@@ -768,7 +762,6 @@ verification_test7 <- tibble::tibble(
 )
 
 test_that("verify_taxa column names are correct", {
-  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test1
@@ -799,7 +792,6 @@ test_that("verify_taxa column names are correct", {
 })
 
 test_that("synonym relations are inconsistent", {
-  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test3
@@ -810,7 +802,6 @@ test_that("synonym relations are inconsistent", {
 })
 
 test_that("accepted taxa in verification input", {
-  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test4
@@ -821,7 +812,6 @@ test_that("accepted taxa in verification input", {
 })
 
 test_that("restrictions on input columns of verification", {
-  skip_on_os("windows")
   expect_error(verify_taxa(
     taxa = my_taxa,
     verification = verification_test5
@@ -832,7 +822,6 @@ test_that("restrictions on input columns of verification", {
 })
 
 test_that("valid datsetKey values", {
-  skip_on_os("windows")
   expect_error(
     verify_taxa(
       taxa = my_taxa,
@@ -859,7 +848,6 @@ test_that("valid datsetKey values", {
 context("output_verify_taxa")
 
 test_that("output structure", {
-  skip_on_os("windows")
   # Generate outputs using the `verify_taxa()` function
   output1 <- verify_taxa(taxa = my_taxa, verification = my_verification)
   output2 <- verify_taxa(taxa = my_taxa)
@@ -937,7 +925,6 @@ test_that("output structure", {
 })
 
 test_that("consitency input - output", {
-  skip_on_os("windows")
   # Generate outputs
   output1 <- verify_taxa(taxa = my_taxa, verification = my_verification)
   output2 <- verify_taxa(taxa = my_taxa)
@@ -1159,7 +1146,6 @@ output2_duplicates <-
   )
 
 test_that("output data.frames are correct", {
-  skip_on_os("windows")
   output1 <- verify_taxa(taxa = my_taxa, verification = my_verification)
   output2 <- verify_taxa(taxa = my_taxa)
   output3 <- verify_taxa(taxa = my_taxa_vk, verification = my_verification)
