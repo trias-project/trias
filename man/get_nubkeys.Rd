@@ -25,8 +25,10 @@ them. The final keys are returned as unique values.
 This function is a wrapper around \code{rgbif::name_usage()} to retrieve the (unique) GBIF
 Backbone taxon keys (nubKeys) from a species checklist identified by its
 datasetKey. It allows to choose whether to return synonyms or accepted taxa
-only. In this case, \code{rgbif::name_usage()} is used a second time to get all
-the taxonomic information of the accepted taxa the synonyms are pointing to within the GBIF Backbone. Synonym relationships within the checklist itself are not taken into account.
+only. When \code{allow_synonyms}is FALSE, the function makes individual API calls for each nubKey in a loop. For checklists with many taxa, this could result in a large number of sequential API requests and it can take a long time to complete.
+}
+\details{
+Synonym relationships within the checklist itself are not taken into account.
 }
 \examples{
 dataset_key <- "e082b10e-476f-43c1-aa61-f8d92f33029a"

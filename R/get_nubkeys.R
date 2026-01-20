@@ -3,8 +3,9 @@
 #' This function is a wrapper around `rgbif::name_usage()` to retrieve the (unique) GBIF
 #' Backbone taxon keys (nubKeys) from a species checklist identified by its
 #' datasetKey. It allows to choose whether to return synonyms or accepted taxa
-#' only. In this case, `rgbif::name_usage()` is used a second time to get all
-#' the taxonomic information of the accepted taxa the synonyms are pointing to within the GBIF Backbone. Synonym relationships within the checklist itself are not taken into account.
+#' only. When `allow_synonyms`is FALSE, the function makes individual API calls for each nubKey in a loop. For checklists with many taxa, this could result in a large number of sequential API requests and it can take a long time to complete.
+#' 
+#' Synonym relationships within the checklist itself are not taken into account.
 #' @param datasetKey (character) Unique identifier of a GBIF species checklist.
 #' @param allow_synonyms (logical) Default: TRUE. If `FALSE`, the accepted taxa
 #'   the synonyms refers to are returned instead of the synonyms themselves.
