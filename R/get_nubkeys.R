@@ -1,4 +1,4 @@
-#' Retrieve unique GBIF Bakbone taxon keys from a species checklist
+#' Retrieve unique GBIF Backbone taxon keys from a species checklist
 #' 
 #' This function is a wrapper around `rgbif::name_usage()` to retrieve the (unique) GBIF
 #' Backbone taxon keys (nubKeys) from a species checklist identified by its
@@ -47,7 +47,7 @@ get_nubkeys <- function(datasetKey, allow_synonyms = TRUE) {
   )
   
   # Retrieve nubKeys from the checklist
-  df <- rgbif::name_usage(datasetKey = datasetKey, limit = 9999)$data %>%
+  df <- rgbif::name_usage(datasetKey = datasetKey, limit = 99999)$data %>%
     dplyr::filter(.data$origin == "SOURCE")
   # Throw a message if some taxa are not matched to GBIF Backbone (nubKey is NA)
   # and remove them from the list of nub_keys
@@ -64,7 +64,7 @@ get_nubkeys <- function(datasetKey, allow_synonyms = TRUE) {
   nub_keys <- df %>%
     dplyr::pull(.data$nubKey) %>%
     unique()
-  if (allow_synonyms == TRUE) {
+  if (allow_synonyms) {
     return(nub_keys)
   } else {
     nub_keys %>%
