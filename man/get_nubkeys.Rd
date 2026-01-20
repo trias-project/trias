@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_nubkeys.R
 \name{get_nubkeys}
 \alias{get_nubkeys}
-\title{Retrieve unique GBIF Bakbone taxon keys from a species checklist}
+\title{Retrieve unique GBIF Backbone taxon keys from a species checklist}
 \usage{
 get_nubkeys(datasetKey, allow_synonyms = TRUE)
 }
