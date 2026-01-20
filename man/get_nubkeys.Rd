@@ -10,7 +10,7 @@ get_nubkeys(datasetKey, allow_synonyms = TRUE)
 \item{datasetKey}{(character) Unique identifier of a GBIF species checklist.}
 
 \item{allow_synonyms}{(logical) Default: TRUE. If \code{FALSE}, the accepted taxa
-the synonyms refers to are returned instead of the synonyms themselves.}
+the synonyms refer to are returned instead of the synonyms themselves.}
 }
 \value{
 A (unique) vector of GBIF Backbone taxon keys (nubKeys). If
