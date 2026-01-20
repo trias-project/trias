@@ -1,4 +1,4 @@
-#' Retrieve unique GBIF Bakbone taxon keys from a species checklist
+#' Retrieve unique GBIF Backbone taxon keys from a species checklist
 #' 
 #' This function is a wrapper around `rgbif::name_usage()` to retrieve the (unique) GBIF
 #' Backbone taxon keys (nubKeys) from a species checklist identified by its
