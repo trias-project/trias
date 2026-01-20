@@ -64,7 +64,7 @@ get_nubkeys <- function(datasetKey, allow_synonyms = TRUE) {
   nub_keys <- df %>%
     dplyr::pull(.data$nubKey) %>%
     unique()
-  if (allow_synonyms == TRUE) {
+  if (allow_synonyms) {
     return(nub_keys)
   } else {
     nub_keys %>%
