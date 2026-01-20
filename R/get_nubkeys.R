@@ -67,8 +67,27 @@ get_nubkeys <- function(datasetKey, allow_synonyms = TRUE) {
   if (allow_synonyms) {
     return(nub_keys)
   } else {
-    nub_keys %>%
-      purrr::map(function(x) rgbif::name_usage(x)$data) %>%
+    # Safely retrieve name usage data for each nubKey so that a failure for a
+    # single key does not abort the entire operation.
+    safe_name_usage <- purrr::possibly(rgbif::name_usage, otherwise = NULL)
+
+    usage_data <- nub_keys %>%
+      purrr::map(function(x) {
+        res <- safe_name_usage(x)
+        if (is.null(res) || is.null(res$data)) {
+          warning(paste("Failed to retrieve taxonomic information for nubKey", x, "- skipping."))
+          return(NULL)
+        }
+        res$data
+      }) %>%
+      purrr::compact()
+
+    if (length(usage_data) == 0) {
+      # If all lookups failed, return an empty vector instead of erroring.
+      return(numeric(0))
+    }
+
+    usage_data %>%
       purrr::list_rbind() %>%
       # Choose the accepted taxa instead of synonyms
       dplyr::mutate(
