@@ -1,5 +1,3 @@
-context("test_visualize_pathways_level1")
-
 # input df
 input_test_df <- read.delim(
   test_path("data_test_pathways/input_data_pathways.tsv"),

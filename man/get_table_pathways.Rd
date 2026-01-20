@@ -99,6 +99,7 @@ Other checklist functions:
 \code{\link{gbif_get_taxa}()},
 \code{\link{gbif_has_distribution}()},
 \code{\link{gbif_verify_keys}()},
+\code{\link{get_nubkeys}()},
 \code{\link{indicator_introduction_year}()},
 \code{\link{indicator_native_range_year}()},
 \code{\link{indicator_total_year}()},

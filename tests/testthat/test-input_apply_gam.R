@@ -1,5 +1,3 @@
-context("test_input_apply_gam")
-
 df_gam <- data.frame(
   taxonKey = rep(2224970, 19),
   canonicalName = rep("Palaemon macrodactylus", 19),

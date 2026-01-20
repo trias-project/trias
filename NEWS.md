@@ -1,3 +1,8 @@
+# trias 3.2.0
+
+- Add new function `get_nubkeys()` to retrieve unique GBIF Backbone taxon keys from a species checklist.
+
+
 # trias 3.1.3
 
 - Function `pathways_cbd()` is deprecated. Use data frame `pathwayscbd` directly (#134).

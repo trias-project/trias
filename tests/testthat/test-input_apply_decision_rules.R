@@ -1,5 +1,3 @@
-context("test_input_decision_rules")
-
 df_dr <- dplyr::tibble(
   taxonID = c(rep(1008955, 10), rep(2493598, 3)),
   y = c(seq(2009, 2018), seq(2016, 2018)),
