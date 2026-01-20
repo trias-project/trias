@@ -154,7 +154,7 @@ test_that("Warning is given for taxa not matched to GBIF Backbone", {
   expect_warning(
     get_nubkeys(datasetKey = dataset_key),
     regexp = paste(
-      "taxa from the checklist with datasetKey",
+      "\\d+ taxa from the checklist with datasetKey",
        dataset_key,
       "are not matched to GBIF Backbone and are ignored."
     )
