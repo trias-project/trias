@@ -53,7 +53,27 @@ get_nubkeys <- function(datasetKey, allow_synonyms = TRUE) {
   )
   
   # Retrieve nubKeys from the checklist
-  df <- rgbif::name_usage(datasetKey = datasetKey, limit = 99999)$data %>%
+  res <- tryCatch(
+    rgbif::name_usage(datasetKey = datasetKey, limit = 99999),
+    error = function(e) {
+      stop(
+        "Failed to retrieve data from GBIF for datasetKey '",
+        datasetKey,
+        "': ",
+        conditionMessage(e),
+        call. = FALSE
+      )
+    }
+  )
+  if (is.null(res) || is.null(res$data)) {
+    stop(
+      "No data returned from GBIF for datasetKey '",
+      datasetKey,
+      "'. Please check that the datasetKey is valid.",
+      call. = FALSE
+    )
+  }
+  df <- res$data %>%
     dplyr::filter(.data$origin == "SOURCE")
   # Throw a message if some taxa are not matched to GBIF Backbone (nubKey is NA)
   # and remove them from the list of nub_keys
