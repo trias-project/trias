@@ -1,5 +1,3 @@
-context("test_gbif_verify_keys")
-
 test_that("test several input types", {
   # input contains nothing
   keys_null1 <- list()

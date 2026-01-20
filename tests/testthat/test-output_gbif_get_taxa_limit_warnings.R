@@ -1,5 +1,3 @@
-context("output_get_taxa_limit_warnings")
-
 testthat::test_that("checklist is character, limit higher than n. of records", {
   skip_on_os(os = "windows")
   testthat::expect_warning(

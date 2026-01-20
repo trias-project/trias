@@ -1,5 +1,3 @@
-context("output_gbif_get_taxa")
-
 
 testthat::test_that("output if taxon_keys is numeric", {
   get_taxa_taxon_key_3 <- readr::read_tsv(

@@ -1,5 +1,3 @@
-context("input_get_table_pathways")
-
 input_test_df <- data.frame(
   key = c(152543101, 152543102, 152543110, 152543115, 152543120),
   canonicalName = c(

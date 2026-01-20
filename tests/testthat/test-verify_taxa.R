@@ -439,7 +439,6 @@ my_verification_other_colnames <- read.delim(
 #     author_verification = verifiedBy
 #   )
 
-context("input_verify_taxa")
 
 test_that("taxa is a data frame", {
   expect_error(
@@ -845,7 +844,6 @@ test_that("valid datsetKey values", {
 })
 
 
-context("output_verify_taxa")
 
 test_that("output structure", {
   # Generate outputs using the `verify_taxa()` function

@@ -1,4 +1,3 @@
-context("test_output_decision_rules")
 library(dplyr)
 library(tibble)
 library(purrr)

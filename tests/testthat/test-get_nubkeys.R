@@ -1,5 +1,3 @@
-context("test-get_nubkeys")
-
 # Test input validation ----
 
 test_that("datasetKey must be a scalar character", {

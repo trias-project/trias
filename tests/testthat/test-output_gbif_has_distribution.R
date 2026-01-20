@@ -1,5 +1,3 @@
-context("output_gbif_has_distribution")
-
 testthat::test_that("gbif_has_distribution with user parameters", {
   skip_on_os(os = "windows")
   testthat::expect_true(gbif_has_distribution(140563025, country = "BE"))

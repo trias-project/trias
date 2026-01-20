@@ -1,5 +1,3 @@
-context("test_visualize_pathways_year_level2")
-
 # input df
 input_test_df_with_nas <- read.delim(
   test_path("data_test_pathways/input_data_pathways.tsv"),

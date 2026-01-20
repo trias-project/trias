@@ -1,5 +1,3 @@
-context("test_indicator_native_range_year")
-
 # test df
 input_test_df <- read.delim(
   test_path("data_test_input_graphs_indicators/test_visualization_df.tsv"),
