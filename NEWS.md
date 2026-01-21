@@ -1,3 +1,10 @@
+# trias 3.2.1
+
+This release is a patch to (try to) solve zenodo integration (#178):
+- Update `codemeta.json`.
+- `README.md` doesn't show the zenodo DOI badge anymore. It will be added again once the zenodo integration is fixed.
+
+`
 # trias 3.2.0
 
 - Add new function `get_nubkeys()` to retrieve unique GBIF Backbone taxon keys from a species checklist.

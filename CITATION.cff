@@ -8,9 +8,9 @@ message: 'To cite package "trias" in publications use:'
 type: software
 license: MIT
 title: 'trias: Process Data for the Project Tracking Invasive Alien Species (TrIAS)'
-version: 3.2.0
-abstract: This package provides functionality to facilitate the data processing for
-  the project Tracking Invasive Alien Species (TrIAS <http://trias-project.be>).
+version: 3.2.1
+abstract: R package to provide functionality to facilitate the data processing for
+  the project Tracking Invasive Alien Species (TrIAS <https://trias-project.be>).
 authors:
 - family-names: Oldoni
   given-names: Damiano

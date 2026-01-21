@@ -1,7 +1,7 @@
 Package: trias
 Title: Process Data for the Project Tracking Invasive Alien Species
     (TrIAS)
-Version: 3.2.0
+Version: 3.2.1
 Authors@R: c(
     person("Damiano", "Oldoni", , "damiano.oldoni@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3445-7562")),
@@ -29,9 +29,9 @@ Authors@R: c(
     person("European Union", role = "fnd",
            comment = "https://doi.org/10.3030/101059592")
   )
-Description: This package provides functionality to facilitate the data
+Description: R package to provide functionality to facilitate the data
     processing for the project Tracking Invasive Alien Species (TrIAS
-    <http://trias-project.be>).
+    <https://trias-project.be>).
 License: MIT + file LICENSE
 URL: https://github.com/trias-project/trias,
     https://trias-project.github.io/trias
