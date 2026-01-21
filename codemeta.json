@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/trias-project/trias",
   "issueTracker": "https://github.com/trias-project/trias/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "3.0.3",
+  "version": "3.2.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.2 (2024-10-31 ucrt)",
+  "runtimePlatform": "R version 4.5.1 (2025-06-13 ucrt)",
   "author": [
     {
       "@type": "Person",
@@ -73,20 +73,24 @@
       "familyName": "Huybrechts",
       "email": "pieter.huybrechts@inbo.be",
       "@id": "https://orcid.org/0000-0002-6658-6062"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Saar",
+      "familyName": "Junius",
+      "email": "saar.junius@openanalytics.eu"
     }
   ],
   "copyrightHolder": [
     {
       "@type": "Organization",
-      "name": "Research Institute for Nature and Forest (INBO)",
-      "email": "info@inbo.be"
+      "name": "Research Institute for Nature and Forest (INBO)"
     }
   ],
   "funder": [
     {
       "@type": "Organization",
-      "name": "Research Institute for Nature and Forest (INBO)",
-      "email": "info@inbo.be"
+      "name": "Research Institute for Nature and Forest (INBO)"
     },
     {
       "@type": "Organization",
@@ -98,7 +102,7 @@
     },
     {
       "@type": "Organization",
-      "name": "B-Cubed (Horizon Europe ID No 101059592)"
+      "name": "European Union"
     }
   ],
   "maintainer": [
@@ -454,8 +458,8 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "21728.84KB",
-  "releaseNotes": "https://github.com/trias-project/trias/blob/master/NEWS.md",
+  "fileSize": "21957.114KB",
+  "releaseNotes": "https://github.com/trias-project/trias/blob/main/NEWS.md",
   "readme": "https://github.com/trias-project/trias/blob/main/README.md",
   "contIntegration": ["https://github.com/trias-project/trias/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/trias-project/trias/"],
   "developmentStatus": "https://www.repostatus.org/#active",
