@@ -29,7 +29,7 @@ Authors@R: c(
     person("European Union", role = "fnd",
            comment = "https://doi.org/10.3030/101059592")
   )
-Description: This package provides functionality to facilitate the data
+Description: R package to provide functionality to facilitate the data
     processing for the project Tracking Invasive Alien Species (TrIAS
     <https://trias-project.be>).
 License: MIT + file LICENSE
