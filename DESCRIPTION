@@ -31,7 +31,7 @@ Authors@R: c(
   )
 Description: This package provides functionality to facilitate the data
     processing for the project Tracking Invasive Alien Species (TrIAS
-    <http://trias-project.be>).
+    <https://trias-project.be>).
 License: MIT + file LICENSE
 URL: https://github.com/trias-project/trias,
     https://trias-project.github.io/trias
