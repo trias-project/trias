@@ -1,6 +1,13 @@
 # Changelog
 
-## trias 3.2.0
+## trias 3.2.1
+
+This release is a patch to (try to) solve zenodo integration
+([\#178](https://github.com/trias-project/trias/issues/178)): - Update
+`codemeta.json`. - `README.md` doesn’t show the zenodo DOI badge
+anymore. It will be added again once the zenodo integration is fixed.
+
+\` \# trias 3.2.0
 
 - Add new function
   [`get_nubkeys()`](https://trias-project.github.io/trias/reference/get_nubkeys.md)

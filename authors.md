@@ -49,12 +49,12 @@ Source:
 
 Oldoni D, Delva S, Devisscher S, Varewyck M (2026). *trias: Process Data
 for the Project Tracking Invasive Alien Species (TrIAS)*. R package
-version 3.2.0, <https://github.com/trias-project/trias>.
+version 3.2.1, <https://github.com/trias-project/trias>.
 
     @Manual{,
       title = {trias: Process Data for the Project Tracking Invasive Alien Species (TrIAS)},
       author = {Damiano Oldoni and Soria Delva and Sander Devisscher and Machteld Varewyck},
       year = {2026},
-      note = {R package version 3.2.0},
+      note = {R package version 3.2.1},
       url = {https://github.com/trias-project/trias},
     }

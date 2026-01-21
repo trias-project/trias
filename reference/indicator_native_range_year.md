@@ -1,7 +1,7 @@
 # Create an interactive plot for the number of alien species per native region and year of introduction
 
 Based on
-[countYearProvince](https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/exoten/reporting-grofwild/R/countYearProvince.R)
+[countYearProvince](https://github.com/inbo/reporting-rshiny-grofwildjacht/blob/uat/reporting-grofwild/R/countYearProvince.R)
 plot from reporting - rshiny - grofwildjacht
 
 ## Usage
