@@ -1,3 +1,7 @@
+# trias 3.2.1
+
+- Update `codemeta.json`. Patch to solve zenodo integration (#178).
+`
 # trias 3.2.0
 
 - Add new function `get_nubkeys()` to retrieve unique GBIF Backbone taxon keys from a species checklist.
