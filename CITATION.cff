@@ -9,7 +9,7 @@ type: software
 license: MIT
 title: 'trias: Process Data for the Project Tracking Invasive Alien Species (TrIAS)'
 version: 3.2.1
-abstract: This package provides functionality to facilitate the data processing for
+abstract: R package to provide functionality to facilitate the data processing for
   the project Tracking Invasive Alien Species (TrIAS <https://trias-project.be>).
 authors:
 - family-names: Oldoni
