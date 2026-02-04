@@ -4,8 +4,7 @@
 
 # trias 3.2.1
 
-This release is a patch to (try to) solve zenodo integration (#178):
-- Update `codemeta.json`.
+- Update `codemeta.json`. Try to solve zenodo integration (#178).
 - `README.md` doesn't show the zenodo DOI badge anymore. It will be added again once the zenodo integration is fixed.
 
 `
