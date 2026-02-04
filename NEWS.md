@@ -1,3 +1,7 @@
+# trias 3.2.2
+
+- Fix y-axis ticks values in `visualize_pathways_level1()` and `visualize_pathways_level2()` plots.
+
 # trias 3.2.1
 
 This release is a patch to (try to) solve zenodo integration (#178):
