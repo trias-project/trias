@@ -473,8 +473,7 @@ visualize_pathways_level2 <- function(df,
         data_top_graph
       ) +
       ggplot2::geom_bar(
-        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2), y = "count"),
-        stat = "identity"
+        ggplot2::aes(x = forcats::fct_rev(.data$pathway_level2))
       ) +
       ggplot2::scale_x_discrete(drop = FALSE) +
       ggplot2::xlab(y_lab) +

@@ -405,3 +405,20 @@ testthat::test_that("test pathway factors and their order", {
     levels(output_less_pathways_inverted$data_top_graph$pathway_level1) ==
     pathways_selection_inverted))
 })
+
+testthat::test_that("test y-axis of top graph has ticks and values", {
+  # Build the plot to access its components
+  built_plot <- ggplot2::ggplot_build(output_general$plot)
+  
+  # Check that y-axis (count axis after coord_flip) has breaks/ticks
+  y_range <- built_plot$layout$panel_params[[1]]$x.range
+  y_breaks <- built_plot$layout$panel_scales_y[[1]]$break_positions()
+  
+  # Y-axis should have a positive range (the upper limit)
+  expect_true(y_range[2] > 0)
+  
+  # Y-axis should have breaks/ticks
+  expect_true(length(y_breaks) > 0)
+  # some breaks could be NA, typically the last one: use `any()`
+  expect_true(any(!is.na(y_breaks)))
+})
