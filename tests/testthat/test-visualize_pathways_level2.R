@@ -522,7 +522,7 @@ testthat::test_that("test y-axis of top graph has ticks and values", {
   built_plot <- ggplot2::ggplot_build(output_general$plot)
   
   # Check that y-axis (count axis after coord_flip) has breaks/ticks
-  y_range <- built_plot$layout$panel_params[[1]]$y.range
+  y_range <- built_plot$layout$panel_params[[1]]$x.range
   y_breaks <- built_plot$layout$panel_scales_y[[1]]$break_positions()
   
   # Y-axis should have a positive range (the upper limit)
