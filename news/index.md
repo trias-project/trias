@@ -1,11 +1,19 @@
 # Changelog
 
+## trias 3.2.2
+
+- Fix y-axis ticks values in
+  [`visualize_pathways_level1()`](https://trias-project.github.io/trias/reference/visualize_pathways_level1.md)
+  and
+  [`visualize_pathways_level2()`](https://trias-project.github.io/trias/reference/visualize_pathways_level2.md)
+  plots.
+
 ## trias 3.2.1
 
-This release is a patch to (try to) solve zenodo integration
-([\#178](https://github.com/trias-project/trias/issues/178)): - Update
-`codemeta.json`. - `README.md` doesn’t show the zenodo DOI badge
-anymore. It will be added again once the zenodo integration is fixed.
+- Update `codemeta.json`. Try to solve zenodo integration
+  ([\#178](https://github.com/trias-project/trias/issues/178)).
+- `README.md` doesn’t show the zenodo DOI badge anymore. It will be
+  added again once the zenodo integration is fixed.
 
 \` \# trias 3.2.0
 
