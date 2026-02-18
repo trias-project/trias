@@ -1,12 +1,20 @@
 # Changelog
 
+## trias 3.2.3
+
+- Fix a bug in
+  [`update_download_list()`](https://trias-project.github.io/trias/reference/update_download_list.md).
+  The fix ensures that the function can handle cases where there are no
+  existing downloads without throwing an error
+  ([\#183](https://github.com/trias-project/trias/issues/183)).
+
 ## trias 3.2.2
 
 - Fix y-axis ticks values in
   [`visualize_pathways_level1()`](https://trias-project.github.io/trias/reference/visualize_pathways_level1.md)
   and
   [`visualize_pathways_level2()`](https://trias-project.github.io/trias/reference/visualize_pathways_level2.md)
-  plots.
+  plots ([\#181](https://github.com/trias-project/trias/issues/181)).
 
 ## trias 3.2.1
 
