@@ -1,11 +1,26 @@
+testthat::test_that("Error returned if file does not contain the right columns", {
+  directory_data <- "./data_test_upload_list/"
+  gbif_downloads_filename <- "gbif_downloads_wrong_cols.tsv"
+  gbif_downloads_file <- paste0(directory_data, gbif_downloads_filename)
+  gbif_download_key_to_add <- "0003300-181003121212138"
+  checklist <- "https://raw.githubusercontent.com/trias-project/pipeline/9f20d33a14696bc42d059a2e0f50fb11c4f97d35/data/input/occ_indicator_emerging_species.tsv"
+  testthat::expect_error(
+    update_download_list(
+      file = gbif_downloads_file,
+      download_to_add = gbif_download_key_to_add,
+      input_checklist = checklist
+    ),
+    regexp = "The file should contain the following columns: gbif_download_key, input_checklist, gbif_download_created, gbif_download_status, gbif_download_doi"
+  )
+})
+
 testthat::test_that("gbif download added correctly to list GBIF downloads and other status updated", {
-  skip_on_os(os = "windows")
-  #' define file containing gbif downloads
+  # Define file containing gbif downloads
   directory_data <- "./data_test_upload_list/"
   gbif_downloads_filename <- "gbif_downloads.tsv"
   gbif_downloads_file <- paste0(directory_data, gbif_downloads_filename)
 
-  #' make a coy of it to replace original file at the end of the test
+  # Make a coy of it to replace original file at the end of the test
   gbif_downloads_filename_copy <- "gbif_downloads_copy.tsv"
   copy_file <- paste0(directory_data, gbif_downloads_filename_copy)
   file.copy(
@@ -18,12 +33,12 @@ testthat::test_that("gbif download added correctly to list GBIF downloads and ot
                               na = "",
                               lazy = FALSE)
 
-  #' define arguments related to new GBIF download
+  # Define arguments related to new GBIF download
   gbif_download_key_to_add <- "0003300-181003121212138"
   checklist <- "https://raw.githubusercontent.com/trias-project/pipeline/9f20d33a14696bc42d059a2e0f50fb11c4f97d35/data/input/occ_indicator_emerging_species.tsv"
 
 
-  #' apply update_download_list
+  # Apply update_download_list
   update_download_list(
     file = gbif_downloads_file,
     download_to_add = gbif_download_key_to_add,
