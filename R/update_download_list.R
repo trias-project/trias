@@ -31,6 +31,21 @@
 #' @export
 update_download_list <- function(file, download_to_add, input_checklist,
                                  url_doi_base = "https://doi.org/") {
+  # `file` must have the right columns
+  expected_columns <- c(
+    "gbif_download_key",
+    "input_checklist",
+    "gbif_download_created",
+    "gbif_download_status",
+    "gbif_download_doi"
+  )
+  assertthat::assert_that(
+    all(expected_columns %in% colnames(readr::read_tsv(file, n_max = 0))),
+    msg = paste(
+      "The file should contain the following columns:",
+      paste(expected_columns, collapse = ", ")
+    )
+  )
   downloads <- readr::read_tsv(file,
     trim_ws = TRUE,
     na = "",
@@ -66,7 +81,6 @@ update_download_list <- function(file, download_to_add, input_checklist,
   } else {
     print(paste("gbif_download_Key", download_to_add, "already present in", file))
   }
-  # check all downloads with status "PREPARING" or "RUNNING".
   changes <- FALSE
   for (i in 1:nrow(downloads)) {
     if (downloads$gbif_download_status[i] %in% c("RUNNING", "PREPARING")) {

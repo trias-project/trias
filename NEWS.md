@@ -1,6 +1,10 @@
+# trias 3.2.3
+
+- Fix a bug in `update_download_list()`. The fix ensures that the function can handle cases where there are no existing downloads without throwing an error (#183). 
+
 # trias 3.2.2
 
-- Fix y-axis ticks values in `visualize_pathways_level1()` and `visualize_pathways_level2()` plots.
+- Fix y-axis ticks values in `visualize_pathways_level1()` and `visualize_pathways_level2()` plots (#181).
 
 # trias 3.2.1
 
