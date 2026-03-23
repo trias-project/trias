@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# trias <img src="man/figures/logo.png" align="right" alt="" width="120">
+# trias <a href="https://trias-project.github.io/trias"><img src="man/figures/logo.png" align="right" height="138" alt="trias website" /></a>
 
 <!-- badges: start -->
 
