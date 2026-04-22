@@ -763,6 +763,7 @@ apply_gam <- function(df,
         # Create plot with conf. interval + colour for status
         plot_gam <- plot_ribbon_em(
           df_plot = output_model,
+          eval_years = eval_years,
           x_axis = year,
           y_axis = y_var,
           x_label = x_label,
@@ -838,19 +839,22 @@ apply_gam <- function(df,
 #' Plot time series with confidence limits and emerging status
 #'
 #' @param df_plot df. A data.frame containing data to plot.
+#' @param eval_years numeric. The year(s) for which the color of the points must
+#'   be shown.
 #' @param x_axis character. Name of column containing x-values. Default:
-#'   \code{"year"}.
+#'   `year`.
 #' @param y_axis character. Name of column containing y-values. Default:
 #'   \code{"number of observations"}.
-#' @param x_label character. x-axis label. Default: \code{"x"}.
-#' @param y_label character. y-axis label. Default: \code{"y"}.
-#' @param ptitle character. Plot title. Default: \code{NULL}.
-#' @param verbose logical. If \code{TRUE}, informations about possible issues
-#'   are returned. Default: \code{FALSE}.
+#' @param x_label character. x-axis label. Default: `x`.
+#' @param y_label character. y-axis label. Default: `y`.
+#' @param ptitle character. Plot title. Default: `NULL`.
+#' @param verbose logical. If `TRUE`, informations about possible issues
+#'   are returned. Default: `FALSE`.
 #' @return a ggplot2 plot object.
 #' @importFrom dplyr .data %>%
 #' @noRd
 plot_ribbon_em <- function(df_plot,
+                           eval_years,
                            x_axis = "year",
                            y_axis = "obs",
                            x_label = "x",
@@ -875,12 +879,20 @@ plot_ribbon_em <- function(df_plot,
     ggplot2::geom_point(color = "black") +
     ggplot2::ylab(y_label) +
     ggplot2::ggtitle(ptitle)
-
   if (all(
     all(abs(df_plot$lcl < 10^10)),
     all(abs(df_plot$ucl < 10^10)),
     all(abs(df_plot$fit < 10^10))
   )) {
+    # Only years to evaluate must be coloured according to emerging status
+    colors_df <- df_plot %>%
+      dplyr::mutate(
+        em_status = dplyr::if_else(
+          .data$year %in% eval_years,
+          .data$em_status,
+          NA_real_
+        )
+      )
     g <- g +
       ggplot2::geom_ribbon(ggplot2::aes(ymax = .data$ucl, ymin = .data$lcl),
                            fill = grDevices::grey(0.5),
@@ -889,6 +901,7 @@ plot_ribbon_em <- function(df_plot,
       ggplot2::geom_line(ggplot2::aes(x = .data$year, y = .data$fit),
                          color = "grey50") +
       ggplot2::geom_point(
+        data = colors_df,
         mapping = ggplot2::aes(
           x = .data$year,
           y = .data$fit,
@@ -903,6 +916,7 @@ plot_ribbon_em <- function(df_plot,
         values = colors_em,
         labels = labels_em,
         name = "Emerging status",
+        na.value = "black",  # Set color for NA values
         drop = FALSE
       ) +
       ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
