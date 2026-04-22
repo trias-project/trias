@@ -10,6 +10,9 @@
   previous behavior, but it can be set to `FALSE` to suppress the
   warning annotation in the plot
   ([\#186](https://github.com/trias-project/trias/issues/186)).
+- Remove default argument for required argument `y_var` in
+  [`apply_decision_rules()`](https://trias-project.github.io/trias/reference/apply_decision_rules.md)
+  ([\#188](https://github.com/trias-project/trias/issues/188)).
 
 ## trias 3.2.3
 
