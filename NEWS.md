@@ -1,6 +1,7 @@
 # trias 3.2.4
 
 - Add argument `status_warning` to `apply_gam()` to control whether a warning textual annotation is added to the plot when the GAM model cannot be used to assess the status of a species (e.g. due to insufficient data). The default is `TRUE` to maintain the previous behavior, but it can be set to `FALSE` to suppress the warning annotation in the plot (#186).
+- Remove default argument for required argument `y_var` in `apply_decision_rules()` (#188).
 
 # trias 3.2.3
 
