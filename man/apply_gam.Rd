@@ -332,7 +332,7 @@ no_gam_with_annotation <- apply_gam(
 )
 no_gam_with_annotation$plot
 
-# With textual annotation in the plot
+# Without textual annotation in the plot
 no_gam_without_annotation <- apply_gam(
   df_gam[19:24,],
   y_var = "n",
