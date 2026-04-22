@@ -49,7 +49,9 @@
 #'   `NULL`.
 #' @param verbose logical. If `TRUE` status of processing and possible issues
 #'   are returned. Default: `FALSE`.
-#'
+#' @param status_warning logical. If `TRUE` a warning message is added to the
+#'   plot as textual annotation if the status could not be assessed by GAM.
+#'   Default: `TRUE`.
 #' @return list with six slots:
 #' \enumerate{
 #'   \item `em_summary`: df. A data.frame summarizing the emerging status
@@ -225,7 +227,7 @@
 #'   taxon_key = 3003709,
 #'   type_indicator = "occupancy",
 #'   name = "Rosa glauca",
-#'   y_label = "occupancy",
+#'   y_label = "measured occupancy",
 #'   verbose = TRUE
 #' )
 #' # apply GAM using n as occupancy values and n_class as covariate (baseline)
@@ -236,7 +238,7 @@
 #'   taxon_key = 3003709,
 #'   type_indicator = "occupancy",
 #'   name = "Rosa glauca",
-#'   y_label = "occupancy",
+#'   y_label = "measured occupancy",
 #'   verbose = TRUE
 #' )
 #' # How to use other arguments
@@ -267,17 +269,32 @@
 #' cobs = rep(0, 24)
 #' )
 #'
-#' # if GAM cannot be applied a warning is returned and the plot mention it
+#' # if GAM cannot be applied a warning is returned and the plot mention it by default.
 #' \dontrun{
-#' no_gam_applied <- apply_gam(df_gam,
-#'                             y_var = "obs",
-#'                             eval_years = 2018,
-#'                             taxon_key = 3003709,
-#'                             name = "Rosa glauca",
-#'                             baseline_var = "cobs",
-#'                             verbose = TRUE
+#' # With textual annotation in the plot
+#' no_gam_with_annotation <- apply_gam(
+#'   df_gam[19:24,],
+#'   y_var = "n",
+#'   eval_years = 2018,
+#'   taxon_key = 3003709,
+#'   name = "Rosa glauca",
+#'   baseline_var = "n_class",
+#'   verbose = TRUE
 #' )
-#' no_gam_applied$plot
+#' no_gam_with_annotation$plot
+#' 
+#' # Without textual annotation in the plot
+#' no_gam_without_annotation <- apply_gam(
+#'   df_gam[19:24,],
+#'   y_var = "n",
+#'   eval_years = 2018,
+#'   taxon_key = 3003709,
+#'   name = "Rosa glauca",
+#'   baseline_var = "n_class",
+#'   verbose = TRUE,
+#'   status_warning = FALSE
+#' )
+#' no_gam_without_annotation$plot
 #' }
 apply_gam <- function(df,
                       y_var,
@@ -296,7 +313,8 @@ apply_gam <- function(df,
                       dir_name = NULL,
                       width = NULL,
                       height = NULL,
-                      verbose = FALSE) {
+                      verbose = FALSE,
+                      status_warning = TRUE) {
   if (is.numeric(taxon_key)) {
     taxon_key <- as.character(taxon_key)
   }
@@ -594,9 +612,11 @@ apply_gam <- function(df,
         ))
       }
       # add annotation saying that emergence status cannot be assessed
-      plot_gam <- add_annotation(plot_obs = plot_gam,
-                                 df = df,
-                                 y_axis = y_var)
+      if (status_warning) {
+        plot_gam <- add_annotation(plot_obs = plot_gam,
+                                   df = df,
+                                   y_axis = y_var)
+      }
     } else {
       if (isFALSE(p_ok)) {
         if (verbose) {
@@ -607,9 +627,11 @@ apply_gam <- function(df,
           ))
         }
         # add annotation saying that emergence status cannot be assessed
-        plot_gam <- add_annotation(plot_obs = plot_gam,
-                                   df = df,
-                                   y_axis = y_var)
+        if (status_warning) {
+          plot_gam <- add_annotation(plot_obs = plot_gam,
+                                     df = df,
+                                     y_axis = y_var)
+        }
       } else {
         output_model <- df
         # Add method
@@ -779,6 +801,7 @@ apply_gam <- function(df,
       }
     }
     # add annotation saying that emergence status cannot be assessed
+    if (warning)
     plot_gam <- add_annotation(plot_obs = plot_gam,
                                df = df,
                                y_axis = y_var)
