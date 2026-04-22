@@ -402,8 +402,8 @@ apply_gam <- function(df,
   )
 
   purrr::map2(
-    list(saveplot, verbose),
-    c("saveplot", "verbose"),
+    list(saveplot, verbose, status_warning),
+    c("saveplot", "verbose", "status_warning"),
     function(x, y) {
       assertthat::assert_that(is.logical(x),
                               msg = paste(
