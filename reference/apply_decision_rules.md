@@ -8,7 +8,7 @@ status at a specific time.
 ``` r
 apply_decision_rules(
   df,
-  y_var = "ncells",
+  y_var,
   eval_year,
   year = "year",
   taxonKey = "taxonKey"

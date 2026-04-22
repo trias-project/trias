@@ -24,7 +24,8 @@ apply_gam(
   dir_name = NULL,
   width = NULL,
   height = NULL,
-  verbose = FALSE
+  verbose = FALSE,
+  status_warning = TRUE
 )
 ```
 
@@ -127,6 +128,12 @@ apply_gam(
 
   logical. If `TRUE` status of processing and possible issues are
   returned. Default: `FALSE`.
+
+- status_warning:
+
+  logical. If `TRUE` a warning message is added to the plot as textual
+  annotation if the status could not be assessed by GAM. Default:
+  `TRUE`.
 
 ## Value
 
@@ -507,7 +514,7 @@ apply_gam(df_gam,
   taxon_key = 3003709,
   type_indicator = "occupancy",
   name = "Rosa glauca",
-  y_label = "occupancy",
+  y_label = "measured occupancy",
   verbose = TRUE
 )
 #> [1] "Analyzing: Rosa glauca(3003709)"
@@ -591,7 +598,7 @@ apply_gam(df_gam,
   taxon_key = 3003709,
   type_indicator = "occupancy",
   name = "Rosa glauca",
-  y_label = "occupancy",
+  y_label = "measured occupancy",
   verbose = TRUE
 )
 #> [1] "Analyzing: Rosa glauca(3003709)"
@@ -771,16 +778,31 @@ obs = c(
 cobs = rep(0, 24)
 )
 
-# if GAM cannot be applied a warning is returned and the plot mention it
+# if GAM cannot be applied a warning is returned and the plot mention it by default.
 if (FALSE) { # \dontrun{
-no_gam_applied <- apply_gam(df_gam,
-                            y_var = "obs",
-                            eval_years = 2018,
-                            taxon_key = 3003709,
-                            name = "Rosa glauca",
-                            baseline_var = "cobs",
-                            verbose = TRUE
+# With textual annotation in the plot
+no_gam_with_annotation <- apply_gam(
+  df_gam[19:24,],
+  y_var = "n",
+  eval_years = 2018,
+  taxon_key = 3003709,
+  name = "Rosa glauca",
+  baseline_var = "n_class",
+  verbose = TRUE
 )
-no_gam_applied$plot
+no_gam_with_annotation$plot
+
+# Without textual annotation in the plot
+no_gam_without_annotation <- apply_gam(
+  df_gam[19:24,],
+  y_var = "n",
+  eval_years = 2018,
+  taxon_key = 3003709,
+  name = "Rosa glauca",
+  baseline_var = "n_class",
+  verbose = TRUE,
+  status_warning = FALSE
+)
+no_gam_without_annotation$plot
 } # }
 ```
