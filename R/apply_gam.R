@@ -332,29 +332,28 @@ apply_gam <- function(df,
     c("y_var", "year", "taxonKey", "type_indicator", "x_label", "y_label"),
     function(x, y) {
       # Check right type of inputs
-      assertthat::assert_that(is.character(x),
-                              msg = paste0(
-                                paste(as.character(x), collapse = ","),
-                                " is not a character vector.",
-                                " Check value of argument ", y, "."
-                              )
+      assertthat::assert_that(
+        is.character(x),
+        msg = paste0(
+          paste(as.character(x), collapse = ","),
+          " is not a character vector.",
+          " Check value of argument ", y, "."
+        )
       )
       # Check y_var, year, taxonKey, type_indicator have length 1
-      assertthat::assert_that(length(x) == 1,
-                              msg = paste0(
-                                "Multiple values for argument ",
-                                paste0(y, collapse = ","),
-                                " provided."
-                              )
+      assertthat::assert_that(
+        length(x) == 1,
+        msg = paste("Multiple values for argument", y, "provided.")
       )
     }
   )
-  assertthat::assert_that(is.numeric(eval_years),
-                          msg = paste(
-                            paste(as.character(eval_years), collapse = ","),
-                            "is not a numeric or integer vector.",
-                            "Check value of argument eval_years."
-                          )
+  assertthat::assert_that(
+    is.numeric(eval_years),
+    msg = paste(
+      paste(as.character(eval_years), collapse = ","),
+      "is not a numeric or integer vector.",
+      "Check value of argument eval_years."
+    )
   )
 
   purrr::map2(
@@ -362,19 +361,18 @@ apply_gam <- function(df,
     c("baseline_var", "taxon_key", "name", "df_title", "dir_name"),
     function(x, y) {
       # check argument type
-      assertthat::assert_that(is.null(x) | is.character(x),
-                              msg = paste0(
-                                paste(as.character(x), collapse = ","),
-                                " is not a character vector.",
-                                " Check value of argument ", y, "."
-                              )
+      assertthat::assert_that(
+        is.null(x) | is.character(x),
+        msg = paste0(
+          paste(as.character(x), collapse = ","),
+          " is not a character vector.",
+          " Check value of argument ", y, "."
+        )
       )
-      # check length
-      assertthat::assert_that(length(x) < 2,
-                              msg = paste(
-                                "Multiple values for argument",
-                                y, "provided."
-                              )
+      # Check length
+      assertthat::assert_that(
+        length(x) < 2,
+        msg = paste("Multiple values for argument", y, "provided.")
       )
     }
   )
@@ -384,19 +382,18 @@ apply_gam <- function(df,
     c("width", "height"),
     function(x, y) {
       # check argument type
-      assertthat::assert_that(is.null(x) | is.numeric(x),
-                              msg = paste0(
-                                paste(as.character(x), collapse = ","),
-                                " is not numeric.",
-                                " Check value of argument ", y, "."
-                              )
+      assertthat::assert_that(
+        is.null(x) | is.numeric(x),
+        msg = paste0(
+          paste(as.character(x), collapse = ","),
+          " is not numeric.",
+          " Check value of argument ", y, "."
+        )
       )
-      # check length
-      assertthat::assert_that(length(x) < 2,
-                              msg = paste(
-                                "Multiple values for argument",
-                                y, "provided."
-                              )
+      # Check length
+      assertthat::assert_that(
+        length(x) < 2,
+        msg = paste("Multiple values for argument", y, "provided.")
       )
     }
   )
@@ -405,17 +402,21 @@ apply_gam <- function(df,
     list(saveplot, verbose, status_warning),
     c("saveplot", "verbose", "status_warning"),
     function(x, y) {
-      assertthat::assert_that(is.logical(x),
-                              msg = paste(
-                                paste(as.character(x), collapse = ","),
-                                "is not a logical vector.",
-                                "Check value of argument saveplot.",
-                                "Did you maybe use quotation marks?"
-                              )
+      assertthat::assert_that(
+        is.logical(x),
+        msg = paste0(
+          paste(as.character(x), collapse = ","),
+          " is not a logical vector.",
+          " Check value of argument ", y, ".",
+          " Did you maybe use quotation marks?"
+        )
       )
-      assertthat::assert_that(length(x) == 1,
-                              msg = paste("Multiple values for argument", y, "provided.")
+      # Check length
+      assertthat::assert_that(
+        length(x) == 1,
+        msg = paste("Multiple values for argument", y, "provided.")
       )
+      
     }
   )
 
