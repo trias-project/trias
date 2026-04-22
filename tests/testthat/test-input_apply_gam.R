@@ -217,7 +217,21 @@ testthat::test_that("Test inputs' types.", {
     ),
     paste(
       "1,1 is not a logical vector.",
-      "Check value of argument saveplot.",
+      "Check value of argument verbose.",
+      "Did you maybe use quotation marks?"
+    )
+  )
+  # status_warning
+  testthat::expect_error(
+    apply_gam(
+      df = df_gam,
+      y_var = "n_observations",
+      eval_years = 2018,
+      status_warning = c(1, 1)
+    ),
+    paste(
+      "1,1 is not a logical vector.",
+      "Check value of argument status_warning.",
       "Did you maybe use quotation marks?"
     )
   )
@@ -331,6 +345,16 @@ testthat::test_that("Test input length.", {
       verbose = c(FALSE, FALSE)
     ),
     "Multiple values for argument verbose provided."
+  )
+  testthat::expect_error(
+    apply_gam(
+      df = df_gam,
+      y_var = "n_observations",
+      eval_years = 2018,
+      status_warning = c(FALSE, FALSE)
+    ),
+    "Multiple values for argument status_warning provided.",
+    fixed = TRUE
   )
 })
 
