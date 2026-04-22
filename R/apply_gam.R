@@ -801,7 +801,7 @@ apply_gam <- function(df,
       }
     }
     # add annotation saying that emergence status cannot be assessed
-    if (warning)
+    if (status_warning)
     plot_gam <- add_annotation(plot_obs = plot_gam,
                                df = df,
                                y_axis = y_var)
