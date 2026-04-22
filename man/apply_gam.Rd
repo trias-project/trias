@@ -22,7 +22,8 @@ apply_gam(
   dir_name = NULL,
   width = NULL,
   height = NULL,
-  verbose = FALSE
+  verbose = FALSE,
+  status_warning = TRUE
 )
 }
 \arguments{
@@ -88,6 +89,10 @@ Default: \code{NULL}.}
 
 \item{verbose}{logical. If \code{TRUE} status of processing and possible issues
 are returned. Default: \code{FALSE}.}
+
+\item{status_warning}{logical. If \code{TRUE} a warning message is added to the
+plot as textual annotation if the status could not be assessed by GAM.
+Default: \code{TRUE}.}
 }
 \value{
 list with six slots:
@@ -271,7 +276,7 @@ apply_gam(df_gam,
   taxon_key = 3003709,
   type_indicator = "occupancy",
   name = "Rosa glauca",
-  y_label = "occupancy",
+  y_label = "measured occupancy",
   verbose = TRUE
 )
 # apply GAM using n as occupancy values and n_class as covariate (baseline)
@@ -282,7 +287,7 @@ apply_gam(df_gam,
   taxon_key = 3003709,
   type_indicator = "occupancy",
   name = "Rosa glauca",
-  y_label = "occupancy",
+  y_label = "measured occupancy",
   verbose = TRUE
 )
 # How to use other arguments
@@ -313,17 +318,32 @@ obs = c(
 cobs = rep(0, 24)
 )
 
-# if GAM cannot be applied a warning is returned and the plot mention it
+# if GAM cannot be applied a warning is returned and the plot mention it by default.
 \dontrun{
-no_gam_applied <- apply_gam(df_gam,
-                            y_var = "obs",
-                            eval_years = 2018,
-                            taxon_key = 3003709,
-                            name = "Rosa glauca",
-                            baseline_var = "cobs",
-                            verbose = TRUE
+# With textual annotation in the plot
+no_gam_with_annotation <- apply_gam(
+  df_gam[19:24,],
+  y_var = "n",
+  eval_years = 2018,
+  taxon_key = 3003709,
+  name = "Rosa glauca",
+  baseline_var = "n_class",
+  verbose = TRUE
 )
-no_gam_applied$plot
+no_gam_with_annotation$plot
+
+# Without textual annotation in the plot
+no_gam_without_annotation <- apply_gam(
+  df_gam[19:24,],
+  y_var = "n",
+  eval_years = 2018,
+  taxon_key = 3003709,
+  name = "Rosa glauca",
+  baseline_var = "n_class",
+  verbose = TRUE,
+  status_warning = FALSE
+)
+no_gam_without_annotation$plot
 }
 }
 \seealso{

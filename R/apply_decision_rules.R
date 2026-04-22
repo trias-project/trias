@@ -60,7 +60,7 @@
 #'   year = "y"
 #' )
 apply_decision_rules <- function(df,
-                                 y_var = "ncells",
+                                 y_var,
                                  eval_year,
                                  year = "year",
                                  taxonKey = "taxonKey") {

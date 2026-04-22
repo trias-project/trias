@@ -217,7 +217,21 @@ testthat::test_that("Test inputs' types.", {
     ),
     paste(
       "1,1 is not a logical vector.",
-      "Check value of argument saveplot.",
+      "Check value of argument verbose.",
+      "Did you maybe use quotation marks?"
+    )
+  )
+  # status_warning
+  testthat::expect_error(
+    apply_gam(
+      df = df_gam,
+      y_var = "n_observations",
+      eval_years = 2018,
+      status_warning = c(1, 1)
+    ),
+    paste(
+      "1,1 is not a logical vector.",
+      "Check value of argument status_warning.",
       "Did you maybe use quotation marks?"
     )
   )
@@ -230,7 +244,7 @@ testthat::test_that("Test input length.", {
       y_var = c("n_observations", "why a second col?"),
       eval_years = 2018
     ),
-    paste("Multiple values for argument y_var provided.")
+    "Multiple values for argument y_var provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -239,7 +253,7 @@ testthat::test_that("Test input length.", {
       year = c("year", "add a second to screw my code"),
       eval_years = 2018
     ),
-    paste("Multiple values for argument year provided.")
+    "Multiple values for argument year provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -248,7 +262,7 @@ testthat::test_that("Test input length.", {
       eval_years = 2018,
       taxonKey = c("taxonKey", "taxon_col")
     ),
-    paste("Multiple values for argument taxonKey provided.")
+    "Multiple values for argument taxonKey provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -257,7 +271,7 @@ testthat::test_that("Test input length.", {
       eval_years = 2018,
       type_indicator = c("occurrences", "occupancy")
     ),
-    paste("Multiple values for argument type_indicator provided.")
+    "Multiple values for argument type_indicator provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -266,7 +280,7 @@ testthat::test_that("Test input length.", {
       eval_years = 2018,
       baseline_var = c("q", "f")
     ),
-    paste("Multiple values for argument baseline_var provided.")
+    "Multiple values for argument baseline_var provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -275,7 +289,7 @@ testthat::test_that("Test input length.", {
       eval_years = 2018,
       name = c("1st_name", "2nd_name")
     ),
-    paste("Multiple values for argument name provided.")
+    "Multiple values for argument name provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -284,7 +298,7 @@ testthat::test_that("Test input length.", {
       eval_years = 2018,
       df_title = c("aaa", "bbb")
     ),
-    paste("Multiple values for argument df_title provided.")
+    "Multiple values for argument df_title provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -293,7 +307,7 @@ testthat::test_that("Test input length.", {
       eval_years = 2018,
       x_label = c("aaa", "bbb")
     ),
-    paste("Multiple values for argument x_label provided.")
+    "Multiple values for argument x_label provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -302,7 +316,7 @@ testthat::test_that("Test input length.", {
       eval_years = 2018,
       y_label = c("aaa", "bbb")
     ),
-    paste("Multiple values for argument y_label provided.")
+    "Multiple values for argument y_label provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -311,7 +325,7 @@ testthat::test_that("Test input length.", {
       eval_years = 2018,
       saveplot = c(FALSE, FALSE)
     ),
-    paste("Multiple values for argument saveplot provided.")
+    regexp = "Multiple values for argument saveplot provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -321,7 +335,7 @@ testthat::test_that("Test input length.", {
       saveplot = TRUE,
       dir_name = c("One_dir", "Second_dir")
     ),
-    paste("Multiple values for argument dir_name provided.")
+    "Multiple values for argument dir_name provided."
   )
   testthat::expect_error(
     apply_gam(
@@ -330,7 +344,17 @@ testthat::test_that("Test input length.", {
       eval_years = 2018,
       verbose = c(FALSE, FALSE)
     ),
-    paste("Multiple values for argument verbose provided.")
+    "Multiple values for argument verbose provided."
+  )
+  testthat::expect_error(
+    apply_gam(
+      df = df_gam,
+      y_var = "n_observations",
+      eval_years = 2018,
+      status_warning = c(FALSE, FALSE)
+    ),
+    "Multiple values for argument status_warning provided.",
+    fixed = TRUE
   )
 })
 
