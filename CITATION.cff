@@ -9,7 +9,6 @@ type: software
 license: MIT
 title: 'trias: Process Data for the Project Tracking Invasive Alien Species (TrIAS)'
 version: 3.2.4
-doi: 10.32614/CRAN.package.trias
 abstract: R package to provide functionality to facilitate the data processing for
   the project Tracking Invasive Alien Species (TrIAS <https://trias-project.be>).
 authors:
@@ -29,9 +28,9 @@ authors:
   given-names: Machteld
   email: machteld.varewyck@openanalytics.eu
   orcid: https://orcid.org/0009-0003-0496-0447
-repository: https://inbo.r-universe.dev/
 repository-code: https://github.com/trias-project/trias
 url: https://trias-project.github.io/trias
+date-released: '2026-04-22'
 contact:
 - family-names: Oldoni
   given-names: Damiano
