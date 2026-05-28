@@ -8,7 +8,8 @@ message: 'To cite package "trias" in publications use:'
 type: software
 license: MIT
 title: 'trias: Process Data for the Project Tracking Invasive Alien Species (TrIAS)'
-version: 3.2.3
+version: 3.2.4
+doi: 10.32614/CRAN.package.trias
 abstract: R package to provide functionality to facilitate the data processing for
   the project Tracking Invasive Alien Species (TrIAS <https://trias-project.be>).
 authors:
@@ -28,6 +29,7 @@ authors:
   given-names: Machteld
   email: machteld.varewyck@openanalytics.eu
   orcid: https://orcid.org/0009-0003-0496-0447
+repository: https://inbo.r-universe.dev/
 repository-code: https://github.com/trias-project/trias
 url: https://trias-project.github.io/trias
 contact:
@@ -48,10 +50,13 @@ references:
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
   year: '2026'
+  doi: 10.32614/R.manuals
   version: '>= 3.6'
 - type: software
   title: assertable
@@ -470,10 +475,13 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
   year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: covr
   abstract: 'covr: Test Coverage for Packages'
