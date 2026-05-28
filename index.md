@@ -18,6 +18,7 @@ To get started, see:
 Install **trias** in R:
 
 ``` r
+
 install.packages("trias", repos = "https://inbo.r-universe.dev")
 ```
 
@@ -25,6 +26,7 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("trias-project/trias")
 ```

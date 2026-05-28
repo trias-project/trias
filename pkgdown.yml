@@ -1,10 +1,10 @@
-pandoc: 3.1.11
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   checklist-functions: checklist-functions.html
   occurrence-functions: occurrence-functions.html
-last_built: 2026-04-22T15:28Z
+last_built: 2026-05-28T21:44Z
 urls:
   reference: https://trias-project.github.io/trias/reference
   article: https://trias-project.github.io/trias/articles

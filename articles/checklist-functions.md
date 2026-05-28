@@ -4,6 +4,7 @@ This vignette demonstrates the main checklist functions in the trias
 package for analyzing and visualizing alien species data.
 
 ``` r
+
 library(trias)
 library(dplyr)
 library(readr)
@@ -14,6 +15,7 @@ library(readr)
 We’ll use example data from the TrIAS indicators repository:
 
 ``` r
+
 df <- read_tsv(
   "https://raw.githubusercontent.com/trias-project/indicators/master/data/interim/data_input_checklist_indicators.tsv",
   show_col_types = FALSE
@@ -48,6 +50,7 @@ The
 function shows how many new alien species were introduced each year.
 
 ``` r
+
 # Plot number of new introductions per year
 result <- indicator_introduction_year(
   df = df,
@@ -70,6 +73,7 @@ The
 function displays the cumulative number of alien species over time.
 
 ``` r
+
 # Plot cumulative number of alien species
 result <- indicator_total_year(
   df = df,
@@ -92,6 +96,7 @@ function creates an interactive visualization showing the number of
 alien species per native region and year of introduction.
 
 ``` r
+
 # Plot species by native range over time
 result <- indicator_native_range_year(
   df = df,
@@ -114,6 +119,7 @@ The package includes the `pathwayscbd` dataset containing CBD standard
 pathways at level 1 and level 2.
 
 ``` r
+
 # View available CBD pathways
 pathwayscbd
 #> # A tibble: 51 × 2
@@ -140,6 +146,7 @@ function creates bar graphs showing the number of taxa introduced
 through different CBD pathways at level 1.
 
 ``` r
+
 # Visualize pathways level 1
 result <- visualize_pathways_level1(
   df = df,
@@ -165,6 +172,7 @@ The
 function shows pathway trends over time.
 
 ``` r
+
 # Visualize pathways level 1 over time
 result <- visualize_pathways_year_level1(
   df = df,
@@ -191,6 +199,7 @@ function creates bar graphs for CBD pathways at level 2 for a specific
 level 1 pathway.
 
 ``` r
+
 # Visualize pathways level 2 for "escape"
 result <- visualize_pathways_level2(
   df = df,
@@ -218,6 +227,7 @@ function shows level 2 pathway trends over time for a specific level 1
 pathway.
 
 ``` r
+
 # Visualize pathways level 2 over time
 result <- visualize_pathways_year_level2(
   df = df,
@@ -246,6 +256,7 @@ function creates a summary table with the number of taxa per pathway and
 example species.
 
 ``` r
+
 # Get pathway count table
 pathway_table <- get_table_pathways(
   df = df,

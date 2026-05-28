@@ -5,6 +5,7 @@ package for assessing emerging status of alien species using time series
 data.
 
 ``` r
+
 library(trias)
 library(dplyr)
 ```
@@ -32,6 +33,7 @@ emerging status at a specific evaluation year.
 Let’s create example time series data for two taxa:
 
 ``` r
+
 df_rules <- tibble(
   taxonID = c(rep(1008955, 10), rep(2493598, 3)),
   year = c(seq(2009, 2018), seq(2016, 2018)),
@@ -61,6 +63,7 @@ df_rules
 ### Apply decision rules
 
 ``` r
+
 # Apply decision rules to assess emerging status in 2016
 result <- apply_decision_rules(
   df = df_rules,
@@ -108,6 +111,7 @@ occupancy data (number of occupied grid cells), if given.
 ### Example data
 
 ``` r
+
 df_gam <- tibble(
   taxonKey = rep(3003709, 24),
   canonicalName = rep("Rosa glauca", 24),
@@ -142,6 +146,7 @@ head(df_gam, 10)
 ### Apply GAM
 
 ``` r
+
 # Apply GAM to assess emerging status
 result_gam <- apply_gam(
   df = df_gam,
@@ -179,6 +184,7 @@ function returns a list with:
   - Emerging status indicators
 
 ``` r
+
 result_gam$em_summary
 #> # A tibble: 2 × 5
 #>   taxonKey  year em_status growth method
@@ -188,6 +194,7 @@ result_gam$em_summary
 ```
 
 ``` r
+
 result_gam$output
 #> # A tibble: 24 × 14
 #>    taxonKey canonicalName  year     n n_class method   fit   ucl   lcl   em1
@@ -210,6 +217,7 @@ Other components include: - **model**: The formula behind the GAM
 modelling
 
 ``` r
+
 result_gam$model
 #> 
 #> Family: Negative Binomial(3.527) 
@@ -228,6 +236,7 @@ result_gam$model
   derivatives of the GAM fit, with confidence intervals.
 
 ``` r
+
 result_gam$first_derivative
 #> # A tibble: 24 × 7
 #>    smooth  derivative     se  crit  lower_ci upper_ci  year
@@ -246,12 +255,13 @@ result_gam$first_derivative
 ```
 
 ``` r
+
 result_gam$second_derivative
 #> # A tibble: 24 × 7
 #>    smooth  derivative      se  crit lower_ci upper_ci  year
 #>    <chr>        <dbl>   <dbl> <dbl>    <dbl>    <dbl> <dbl>
 #>  1 s(year)    0.00354 0.00938  1.28 -0.00847   0.0156 1995.
-#>  2 s(year)    0.00354 0.00937  1.28 -0.00847   0.0156 1996.
+#>  2 s(year)    0.00354 0.00938  1.28 -0.00847   0.0156 1996.
 #>  3 s(year)    0.00354 0.00937  1.28 -0.00847   0.0156 1997.
 #>  4 s(year)    0.00354 0.00937  1.28 -0.00847   0.0156 1998.
 #>  5 s(year)    0.00354 0.00937  1.28 -0.00847   0.0156 1999.
@@ -269,6 +279,7 @@ The GAM approach can also correct for research effort bias using a
 baseline covariate:
 
 ``` r
+
 # Apply GAM with baseline correction
 result_gam_corrected <- apply_gam(df_gam,
   y_var = "n",
