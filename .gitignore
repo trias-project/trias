@@ -45,3 +45,4 @@ rsconnect/
 
 # pdfs created by testing plots
 /tests/testthat/*.pdf
+.positai

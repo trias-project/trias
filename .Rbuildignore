@@ -11,3 +11,5 @@
 ^\.github$
 ^codecov\.yml$
 ^CITATION\.cff$
+^\.positai$
+^\.claude$
