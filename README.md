@@ -18,7 +18,7 @@ status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 badge](https://inbo.r-universe.dev/badges/:name?color=c04384)](https://inbo.r-universe.dev/)
 <!-- badges: end -->
 
-Trias is an R package originally conceived to provide functionalities
+trias is an R package originally conceived to provide functionalities
 for the [Tracking Invasive Alien Species
 (TrIAS)](https://trias-project.be) project. However, it has been further
 developed to support other similar projects, such as the [LIFE
