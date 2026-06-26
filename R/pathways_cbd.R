@@ -6,7 +6,7 @@
 #' It is deprecated as of trias 3.1.3. Please use the data frame
 #' [pathwayscbd]() directly instead.
 #'
-#' @return A tibble data.frame with 2 columns: `pathway_level1` and
+#' @returns A tibble data.frame with 2 columns: `pathway_level1` and
 #'   `pathway_level2`.
 #' @family checklist functions
 #' @export

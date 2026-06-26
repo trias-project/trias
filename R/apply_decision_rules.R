@@ -17,7 +17,7 @@
 #'   It has to be passed as string, e.g. \code{"taxon"}. Default:
 #'   \code{"taxonKey"}.
 #'
-#' @return df. A dataframe (tibble) containing emerging status. Columns:
+#' @returns df. A dataframe (tibble) containing emerging status. Columns:
 #'   \itemize{\item{\code{taxonKey}: column containing taxon ID. Column name
 #'   equal to value of argument \code{taxonKey}.} \item{\code{year}: column
 #'   containing temporal values. Column name equal to value of argument

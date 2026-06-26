@@ -71,7 +71,7 @@
 #'   passed as strings, e.g. \code{"verification_taxon_keys"}. Default: column
 #'   names as specified above in \code{verification}.
 #'
-#' @return list. List with three objects: \itemize{ \item{\code{taxa}: df.
+#' @returns list. List with three objects: \itemize{ \item{\code{taxa}: df.
 #'   Provided dataframe with additional column \code{verificationKey}.}
 #'   \item{\code{verification}: df. New or updated dataframe with verification
 #'   information.} \item{\code{info}: list. Dataframes with ancillary

@@ -24,7 +24,7 @@
 #' @param x_lab NULL or character. to set or remove the x-axis label.
 #' @param y_lab NULL or character. to set or remove the y-axis label.
 #'
-#' @return A list with three slots:
+#' @returns A list with three slots:
 #' - `plot`: ggplot2 object (or egg object if facets are used).
 #' - `data_top_graph`: data.frame (tibble) with data used for the main plot (top graph) in `plot`.
 #' - `data_facet_graph`: data.frame (tibble) with data used for the faceting

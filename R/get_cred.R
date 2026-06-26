@@ -3,7 +3,7 @@
 #' @param x character. Name of the system environment variable to get
 #'   and store.
 #'   
-#' @return character. Vector containing the value(s) of the system variable.
+#' @returns character. Vector containing the value(s) of the system variable.
 #' 
 #' @noRd
 get_cred <- function(x) {
