@@ -33,7 +33,7 @@ These sf objects contain worldwide climate classifications for
 different year intervals.
 }
 \seealso{
-Other climate data: 
+Other climate data:
 \code{\link{future}},
 \code{\link{legends}}
 }

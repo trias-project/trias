@@ -202,19 +202,19 @@ visualize_pathways_year_level2(
 }
 }
 \seealso{
-Other checklist functions: 
-\code{\link{gbif_get_taxa}()},
-\code{\link{gbif_has_distribution}()},
-\code{\link{gbif_verify_keys}()},
-\code{\link{get_nubkeys}()},
-\code{\link{get_table_pathways}()},
-\code{\link{indicator_introduction_year}()},
-\code{\link{indicator_native_range_year}()},
-\code{\link{indicator_total_year}()},
-\code{\link{pathways_cbd}()},
-\code{\link{verify_taxa}()},
-\code{\link{visualize_pathways_level1}()},
-\code{\link{visualize_pathways_level2}()},
-\code{\link{visualize_pathways_year_level1}()}
+Other checklist functions:
+\code{\link[=gbif_get_taxa]{gbif_get_taxa()}},
+\code{\link[=gbif_has_distribution]{gbif_has_distribution()}},
+\code{\link[=gbif_verify_keys]{gbif_verify_keys()}},
+\code{\link[=get_nubkeys]{get_nubkeys()}},
+\code{\link[=get_table_pathways]{get_table_pathways()}},
+\code{\link[=indicator_introduction_year]{indicator_introduction_year()}},
+\code{\link[=indicator_native_range_year]{indicator_native_range_year()}},
+\code{\link[=indicator_total_year]{indicator_total_year()}},
+\code{\link[=pathways_cbd]{pathways_cbd()}},
+\code{\link[=verify_taxa]{verify_taxa()}},
+\code{\link[=visualize_pathways_level1]{visualize_pathways_level1()}},
+\code{\link[=visualize_pathways_level2]{visualize_pathways_level2()}},
+\code{\link[=visualize_pathways_year_level1]{visualize_pathways_year_level1()}}
 }
 \concept{checklist functions}

@@ -80,7 +80,7 @@ apply_decision_rules(df,
 )
 }
 \seealso{
-Other occurrence functions: 
-\code{\link{apply_gam}()}
+Other occurrence functions:
+\code{\link[=apply_gam]{apply_gam()}}
 }
 \concept{occurrence functions}

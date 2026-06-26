@@ -347,7 +347,7 @@ no_gam_without_annotation$plot
 }
 }
 \seealso{
-Other occurrence functions: 
-\code{\link{apply_decision_rules}()}
+Other occurrence functions:
+\code{\link[=apply_decision_rules]{apply_decision_rules()}}
 }
 \concept{occurrence functions}
