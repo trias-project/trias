@@ -9,7 +9,7 @@
 #' Up to now it supports the following properties:
 #' country (and its synonym: countryCode), status (and its synonym:
 #' occurrenceStatus) and establishmentMeans.
-#' @return a logical, TRUE or FALSE.
+#' @returns a logical, TRUE or FALSE.
 #' @family checklist functions
 #' @export
 #' @importFrom dplyr %>%

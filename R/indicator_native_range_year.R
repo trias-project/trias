@@ -34,7 +34,7 @@
 #' @param first_observed (character) Name of the column in `data`
 #'   containing temporal information about introduction of the alien species.
 #'   Expressed as years.
-#' @return list with:
+#' @returns list with:
 #' - `static_plot`: ggplot object, for a
 #'   given species the observed number per year and per native range is plotted
 #'   in a stacked bar chart.

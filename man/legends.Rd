@@ -33,7 +33,7 @@ legends
 Legends for climate shapefiles
 }
 \seealso{
-Other climate data: 
+Other climate data:
 \code{\link{future}},
 \code{\link{observed}}
 }

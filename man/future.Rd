@@ -42,7 +42,7 @@ through intensive use of fossil fuel
 }
 }
 \seealso{
-Other climate data: 
+Other climate data:
 \code{\link{legends}},
 \code{\link{observed}}
 }

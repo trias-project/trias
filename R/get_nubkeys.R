@@ -9,7 +9,7 @@
 #' @param datasetKey (character) Unique identifier of a GBIF species checklist.
 #' @param allow_synonyms (logical) Default: TRUE. If `FALSE`, the accepted taxa
 #'   the synonyms refer to are returned instead of the synonyms themselves.
-#' @return A (unique) vector of GBIF Backbone taxon keys (nubKeys). If
+#' @returns A (unique) vector of GBIF Backbone taxon keys (nubKeys). If
 #'   `allow_synonyms` is `TRUE`, the keys are retrieved from
 #'   `rgbif::name_usage()$data` directly. If `allow_synonyms` is `FALSE`, the
 #'   accepted taxa keys are retrieved by calling `rgbif::name_usage()` for each

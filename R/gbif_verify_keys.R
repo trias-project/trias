@@ -15,7 +15,7 @@
 #' @param col_keys (character) name of column containing keys in case
 #'   `keys` is a data.frame.
 #'
-#' @return a data.frame with the following columns:
+#' @returns a data.frame with the following columns:
 #' - `key`: (numeric) keys as input keys.
 #' - `is_taxonKey`: (logical) is the key a valid GBIF taxon key?
 #' - `is_from_gbif_backbone`: (logical) is the key a valid taxon key from 

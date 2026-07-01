@@ -25,7 +25,7 @@
 #'   to download
 #' @param url_doi_base character. doi base URL; `url_doi_base` + doi form a
 #'   link to a page with download information. Default: "https://doi.org/".
-#' @return message with the performed updates
+#' @returns message with the performed updates
 #'
 #' @family download functions
 #' @export

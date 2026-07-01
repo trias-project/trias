@@ -24,7 +24,7 @@
 #' @param maps (boolean) indicating whether the maps should be created. 
 #' (default) TRUE, the maps are created.
 #' 
-#' @return list with: 
+#' @returns list with: 
 #' - `unfiltered`: a dataframe containing a summary per species and climate classification. 
 #' The climate classification is a result of a 
 #' overlay of the observations, filtered by coord_unc & BasisOfRecord, with the 

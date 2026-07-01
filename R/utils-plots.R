@@ -6,7 +6,7 @@
 #' @param end_year (integer) The max cut value.
 #' @param step_size (integer) The max distance between two cut values.
 #' 
-#' @return (integer vector) All cut values.
+#' @returns (integer vector) All cut values.
 #' 
 #' @noRd
 nice_seq <- function(start_year, end_year, step_size) {

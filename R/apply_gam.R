@@ -19,7 +19,7 @@
 #'   research effort bias. Default: `NULL`. If `NULL` internal variable
 #'   `method_em = "basic"`, otherwise `method_em = "correct_baseline"`. Value of
 #'   `method_em` will be part of title of output plot.
-#' @param  p_max numeric. A value between 0 and 1. Default: 0.1.
+#' @param p_max numeric. A value between 0 and 1. Default: 0.1.
 #' @param taxon_key numeric, character. Taxon key the timeseries belongs to.
 #'   Used exclusively in graph title and filename (if `saveplot = TRUE`).
 #'   Default: `NULL`.
@@ -52,7 +52,7 @@
 #' @param status_warning logical. If `TRUE` a warning message is added to the
 #'   plot as textual annotation if the status could not be assessed by GAM.
 #'   Default: `TRUE`.
-#' @return list with six slots:
+#' @returns list with six slots:
 #' \enumerate{
 #'   \item `em_summary`: df. A data.frame summarizing the emerging status
 #'   outputs. `em_summary` contains as many rows as the length of input variable
@@ -847,7 +847,7 @@ apply_gam <- function(df,
 #' @param ptitle character. Plot title. Default: \code{NULL}.
 #' @param verbose logical. If \code{TRUE}, informations about possible issues
 #'   are returned. Default: \code{FALSE}.
-#' @return a ggplot2 plot object.
+#' @returns a ggplot2 plot object.
 #' @importFrom dplyr .data %>%
 #' @noRd
 plot_ribbon_em <- function(df_plot,
@@ -930,7 +930,7 @@ plot_ribbon_em <- function(df_plot,
 #'   cannot be assessed".
 #' @param colour colour of the annotation. Default: red.
 #' @noRd
-#' @return an annotated ggplot2 plot object
+#' @returns an annotated ggplot2 plot object
 add_annotation <- function(
     plot_obs,
     df,
